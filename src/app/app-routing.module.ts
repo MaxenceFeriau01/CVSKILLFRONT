@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TestComponent } from './components/test/test.component';
+import { HomePageComponent } from './pages/homePage/homePage.component';
+
 
 const routes: Routes = [
-  { path: 'test', component: TestComponent  }    
+  { path: 'authentication', component: TestComponent  },
+  {path: '', component:HomePageComponent }    
 ];
 
 
