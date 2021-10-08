@@ -5,9 +5,9 @@
 export const environment = {
   production: false,
   uri_api: 'http://localhost:8080/',
-  //oauth_authority: 'https://preprod.aduges.com', //to do change that
-  //oauth_client_id: 'C250ce6f40653c8536a57f61c4bfcdadf8ff14636',// to do change that
- // oauth_redirect_uri: 'http://localhost:4200/',
+  oauth_authority: 'https://preprod.ee.com', //to do change that
+  oauth_client_id: 'C250ce6f40653c8536a57f61c4bfcdadf8ff14636',// to do change that
+  oauth_redirect_uri: 'http://localhost:4200/',
   dontUseConnection: true
 };
 

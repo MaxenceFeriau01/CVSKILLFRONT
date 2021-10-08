@@ -19,20 +19,19 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthenticationService {
-  //private currentUser: User;
-  private currentUserSubject: BehaviorSubject<User> | null;
+  
+  private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
 
   constructor(private http: HttpClient, private router: Router) {
     this.currentUserSubject = new BehaviorSubject<User>(
-      JSON.parse(localStorage.getItem('currentUser')|| '')
+      JSON.parse(localStorage.getItem('currentUser') || '')
     );
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): User|null {
-    
-    return this.currentUserSubject?this.currentUserSubject.value : null;
+  public get currentUserValue(): User {
+    return this.currentUserSubject.value;
   }
 
   login(credentials:any) {  
@@ -43,8 +42,8 @@ export class AuthenticationService {
           (res) => {
             if (res && res.token) {
               localStorage.setItem('token', res.token);
-              localStorage.setItem('currentUser', JSON.stringify(res));              
-              this.currentUserSubject?this.currentUserSubject.next(res):null; 
+              localStorage.setItem('currentUser', JSON.stringify(res));
+              this.currentUserSubject.next(res); console.log(res);
               return res;
             }
           },
@@ -67,22 +66,17 @@ export class AuthenticationService {
   }
 
   getCurrentUser() {
-    return this.currentUserSubject?.value;
+    return this.currentUserSubject.value;
   }
 
   isGrantedWithOneAtLeast(permissions: string[]): boolean {
     for (let permission of permissions) {
-      let rolesArray:Array<string>;
-      if(this.getCurrentUser() &&
-      this.getCurrentUser()?.roles){
-        rolesArray=this.getCurrentUser()?.roles ||[];
-      }else{
-        rolesArray=[];
-      }    
-
-      if (rolesArray.length > 0
+      if (
+        this.getCurrentUser() &&
+        this.getCurrentUser().roles &&
+        this.getCurrentUser().roles.length > 0
       ) {
-        for (let role of rolesArray) {
+        for (let role of this.getCurrentUser().roles) {
           if (role === permission) return true;
         }
       }
