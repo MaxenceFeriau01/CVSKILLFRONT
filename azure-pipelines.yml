@@ -1,0 +1,65 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- develop
+
+variables:
+  dockerRegistryServiceConnection: 'EntreprendreEnsemble-Mecenat'
+  imageRepository: 'aduges-front'
+  containerRegistry: 'EntreprendreEnsembleMecenatasr.azurecr.io'
+  dockerfilePath: '**/Dockerfile'
+  tag: '$(Build.BuildId)'
+  azureContainerRegistry: EntreprendreEnsembleMecenatasr.azurecr.io
+  vmImageName: 'ubuntu-latest'
+
+stages:
+- stage: Packaging
+  displayName: front packaging
+  jobs:  
+  - job: Packaging
+    displayName: front packaging
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '14.16.0'
+      displayName: 'Install Node.js'
+
+    - script: |
+        npm install -g @angular/cli
+        npm install
+        npm run build --forceConsistentCasingInFileNames -- --prod --configuration production
+      displayName: 'npm install and build Aduges'
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        path: $(System.DefaultWorkingDirectory)/dist/
+        artifact: dist
+
+
+- stage: Build
+  displayName: Docker image build
+  jobs:  
+  - job: Docker
+    displayName: Docker image build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: dist
+        path: $(Build.SourcesDirectory)/dist/
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+          latest
