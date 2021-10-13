@@ -7,7 +7,7 @@ trigger:
 - develop
 
 variables:
-  dockerRegistryServiceConnection: 'EntreprendreEnsemble-Mecenat'
+  dockerRegistryServiceConnection: 'EntreprendreEnsemble-Mecena-acr'
   imageRepository: 'entreprendreEnsemble-front'
   containerRegistry: 'EntreprendreEnsembleMecenatasr.azurecr.io'
   dockerfilePath: '**/Dockerfile'
