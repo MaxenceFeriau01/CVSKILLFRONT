@@ -40,7 +40,7 @@
             <mat-nav-list>
                 <a (click)="sidenav.toggle()" href="" mat-list-item><span>Close</span></a>
                 <a href="#stagiaires" mat-list-item><span>Stagiaires</span></a>
-                <a href="#enteprises" mat-list-item>Entreprises</a>
+                <a routerLink="company" mat-list-item>Entreprises</a>
                 <a href="#demande" mat-list-item>Demande</a>
                 <a href="#demandes" mat-list-item>Demandes</a>
                 <a href="#informations" mat-list-item>Mes informations</a>
@@ -48,9 +48,11 @@
                 <a href="#statistiques" mat-list-item>Statistiques</a>
                 <a href="#connection" mat-list-item>Connection</a>
                 <a href="#deconnection" mat-list-item>Deconnection</a>
+                <a href="authentication" mat-list-item>Test</a>
             </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content fxFlexFill style="min-height:200px;">
             Main content</mat-sidenav-content>
     </mat-sidenav-container>
+
 </div>
