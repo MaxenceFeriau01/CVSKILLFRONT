@@ -1,0 +1,39 @@
+<div class="search-results" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="1000"
+    [alwaysCallback]="true" [scrollWindow]="true" (scrolled)="onScrollDown()">
+    <mat-form-field appearance="fill">
+        <mat-select multiple [(ngModel)]="activityFilters" name="activityFilters" placeholder="Filtre par activités"
+            (selectionChange)="filterDisplayedCompanies()">
+            <mat-option *ngFor="let activity of activities" [value]="activity">
+                {{ activity.name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div fxLayout="row wrap" fxLayoutGap="5px grid">
+    <div class="flexLayout" fxFlex="22%" fxFlex.sm="45%" fxFlex.xs="100%" *ngFor="let company of displayedCompanies">
+        <mat-card>
+            <mat-card-header>
+                <div mat-card-avatar></div>
+                <mat-card-title>{{ company.name }}</mat-card-title>
+                <mat-card-subtitle class="activity-label" *ngFor="let activity of company.activities"> {{ activity.name
+                    }}</mat-card-subtitle>
+            </mat-card-header>
+            <img mat-card-image [src]="company.logo" alt="Logo de l'entreprise">
+            <mat-card-content>
+                <p>
+                    {{ company.description }}
+                </p>
+                <p *ngIf="!hideContact.get(company.id)">
+                    {{ company.contact }}
+                </p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button class="button-card" mat-button (click)="toggleDetails(company)"
+                    *ngIf="hideContact.get(company.id)">Obtenir les coordonnées</button>
+                <button class="button-card" mat-button (click)="toggleDetails(company)"
+                    *ngIf="!hideContact.get(company.id)">Réduire</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+<div #anchor></div>

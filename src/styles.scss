@@ -248,3 +248,14 @@ background: $mat-light-theme-background,
         font-family: 'Roboto';
     }
 }
+
+.mat-select-placeholder {
+    color:rgba($dark-text, 0.5);
+}
+
+.mat-select-value {
+    color:rgba(0, 0, 0);
+}
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
