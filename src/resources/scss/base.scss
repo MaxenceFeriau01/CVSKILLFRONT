@@ -1,0 +1,37 @@
+@import "breakpoint-sass";
+
+$font-family: "Roboto";
+$color-primary: #006d61;
+$color-primary-dark: darken($color-primary, 10%);
+$color-primary-light: lighten($color-primary, 10%);
+$color-secondary: #e8df14;
+$color-gray: #5d5d81;
+$color-secondary-dark: darken($color-secondary, 10%);
+$color-secondary-light: lighten($color-secondary, 10%);
+$color-white: #fefcfd;
+$color-black: #000;
+$color-red: #b70000;
+$color-red-dark: darken($color-red, 10%);
+$color-error-background: #ffdbd9;
+$color-error: #f44336;
+$color-warning: #757575;
+$color-success: #4bb543;
+$background-color: grey;
+$background-color-dark: darken($background-color, 10%);
+$header-height: 60px;
+
+@mixin breakpoint($point: tablet) {
+	@if $point == desktop-l {
+		@media only screen and (min-width: 1440px) {
+			@content;
+		}
+	} @else if $point == desktop {
+		@media only screen and (min-width: 1024px) {
+			@content;
+		}
+	} @else {
+		@media only screen and (min-width: 768px) {
+			@content;
+		}
+	}
+}

@@ -1,0 +1,31 @@
+.header {
+	background: $color-primary;
+	color: $color-white;
+	height: $header-height;
+	display: flex;
+	align-items: center;
+
+	.header_svg--home {
+		cursor: pointer;
+		padding-left: 10px;
+	}
+
+	.header_svg--menu {
+		cursor: pointer;
+		padding-left: 16px;
+	}
+
+	.header_svg--home:hover {
+		fill: $color-secondary;
+		transition: 0.5s ease all;
+	}
+	.header_svg--menu:hover {
+		fill: $color-secondary;
+		transition: 0.5s ease all;
+	}
+
+	a {
+		color: unset;
+		text-decoration: none;
+	}
+}

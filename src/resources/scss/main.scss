@@ -1,0 +1,28 @@
+@import "./base.scss";
+@import "../../components/sidebar/sidebar";
+@import "../../components/header/header";
+@import "../../components/spinners/spinners";
+@import "../../containers/app/app";
+@import "../../containers/companyPage/companyPage";
+
+body {
+	margin: 0;
+	font-family: $font-family !important;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background-color: $color-white;
+	height: 100vh;
+	overflow: hidden;
+
+	#root {
+		height: 100%;
+	}
+
+	.page {
+		padding: 5px;
+		width: 100%;
+	}
+
+	.d-flex {
+	}
+}

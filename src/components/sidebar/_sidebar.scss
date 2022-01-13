@@ -1,0 +1,40 @@
+.sidebar {
+	min-width: 220px;
+	width: 220px;
+	padding: 20px 10px;
+	box-shadow: 0 0 6px hsl(210 14% 90%);
+	height: 100%;
+	margin: 5px;
+	background-color: $color-white;
+	transition: 0.4s ease-in;
+
+	.link {
+		display: flex;
+		cursor: pointer;
+		border-radius: 30px;
+		color: unset;
+		text-decoration: none;
+	}
+	.link:hover {
+		transition: 0.5s ease all;
+		background-color: $color-white;
+		color: $color-secondary;
+		transition: color 100ms ease-out;
+	}
+	.link > h2 {
+		font-weight: 700;
+		font-size: 20px;
+		margin-right: 20px;
+	}
+
+	.link > .MuiSvgIcon-root {
+		padding: 17px;
+	}
+}
+
+.sidebar--closed {
+	min-width: 0px;
+	width: 0px;
+	padding: 20px 0;
+	opacity: 0;
+}

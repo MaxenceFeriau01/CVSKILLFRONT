@@ -1,0 +1,44 @@
+.company-select--activities {
+	width: 250px;
+}
+.company-container {
+	flex-flow: row wrap;
+	display: flex;
+	justify-content: center;
+	overflow-y: auto;
+	max-height: 95%;
+
+	.company-tile {
+		@include breakpoint {
+			width: 27%;
+		}
+
+		box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+			0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+		background-color: $color-white;
+
+		width: 45%;
+		margin: 10px;
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		min-height: 200px;
+		max-height: 200px;
+	}
+
+	.company-tile__contact {
+		color: $color-white;
+		background-color: $color-primary;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+		margin-top: auto;
+
+		span {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			margin: 5px 3px;
+		}
+	}
+}
