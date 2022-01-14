@@ -1,9 +1,11 @@
-@import "./base.scss";
+@import "./base.module.scss";
 @import "../../components/sidebar/sidebar";
 @import "../../components/header/header";
 @import "../../components/spinners/spinners";
+@import "../../components/inputs/inputs";
 @import "../../containers/app/app";
 @import "../../containers/companyPage/companyPage";
+@import "../../containers/companyDetailsPage/companyDetailsPage";
 
 body {
 	margin: 0;
@@ -19,10 +21,11 @@ body {
 	}
 
 	.page {
-		padding: 5px;
+		padding: 10px;
 		width: 100%;
+		overflow-y: auto;
 	}
-
-	.d-flex {
+	.d-none {
+		display: none;
 	}
 }

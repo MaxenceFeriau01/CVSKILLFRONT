@@ -81,9 +81,8 @@ class GeneralService<T> {
 				icon: "error",
 				confirmButtonText: "Ok",
 			})
-		} else {
-			throw error.response
 		}
+		throw error.response
 	}
 }
 

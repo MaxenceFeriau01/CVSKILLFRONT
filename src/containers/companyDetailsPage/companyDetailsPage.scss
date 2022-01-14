@@ -1,0 +1,22 @@
+.company-details-form {
+	display: flex;
+	flex-direction: column;
+	margin: 0 auto;
+	width: 80%;
+
+	button {
+		margin-top: 1em;
+	}
+	.MuiFormGroup-row {
+		justify-content: space-between;
+		width: 100%;
+		.MuiFormControl-root {
+			width: 46%;
+		}
+	}
+
+	.select-activities {
+		margin: 1em auto 0 auto;
+		width: 70%;
+	}
+}

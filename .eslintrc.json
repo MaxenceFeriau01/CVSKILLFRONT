@@ -24,6 +24,7 @@
 				"tsx": "never"
 			}
 		],
+		"react/no-unescaped-entities": "off",
 		"no-unused-vars": "off",
 		"react/jsx-indent": [0],
 		"react/react-in-jsx-scope": 0,
