@@ -1,6 +1,6 @@
 function HomePage() {
 	return (
-		<section>
+		<section className="page">
 			<h2>Welcome to the homepage!</h2>
 			<p>You can do this, I believe in you.</p>
 			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum

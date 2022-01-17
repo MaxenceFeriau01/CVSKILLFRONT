@@ -84,12 +84,10 @@ function CompanyDetailsPage() {
 		companyService.put(newCompany, companyId)
 	)
 
-	console.log(errors)
-
 	const onSubmit = (data: any) => postCompany.mutate(data)
 
 	return (
-		<>
+		<section className="page">
 			{company.isFetching && <OverlaySpinner />}
 			<Typography variant="h4" mb={2}>
 				Détails de la société
@@ -261,7 +259,7 @@ function CompanyDetailsPage() {
 						: "Créer une entreprise"}
 				</Button>
 			</form>
-		</>
+		</section>
 	)
 }
 

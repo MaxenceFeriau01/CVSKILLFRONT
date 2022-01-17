@@ -36,7 +36,7 @@ function App() {
 						<Header />
 						<main className="app-container">
 							<Sidebar />
-							<section className="page">{routes}</section>
+							{routes}
 						</main>
 					</div>
 				</ShowSidebarProvider>

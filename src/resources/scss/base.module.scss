@@ -1,14 +1,14 @@
 @import "breakpoint-sass";
 
 $font-family: "Roboto";
-$color-primary: #006d61;
+$color-primary: #2daf8e;
 $color-primary-dark: darken($color-primary, 10%);
 $color-primary-light: lighten($color-primary, 10%);
-$color-secondary: #e8df14;
+$color-secondary: #d3d61f;
 $color-gray: #5d5d81;
 $color-secondary-dark: darken($color-secondary, 10%);
 $color-secondary-light: lighten($color-secondary, 10%);
-$color-white: #fefcfd;
+$color-white: white;
 $color-black: #000;
 $color-red: #b70000;
 $color-red-dark: darken($color-red, 10%);

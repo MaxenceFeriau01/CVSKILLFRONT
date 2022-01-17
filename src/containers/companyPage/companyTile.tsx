@@ -13,7 +13,7 @@ function CompanyTile({ company }: CompanyProps) {
 				{company.logo ? "" : <PhotoIcon />}
 			</div>
 			<h4>{company.name}</h4>
-			<Box sx={{ display: "flex", mb: 1 }}>
+			<div>
 				{company.activities.length > 0 && <b>activitées : </b>}
 				{company.activities.map((activity, index) => (
 					// eslint-disable-next-line react/no-array-index-key
@@ -22,9 +22,9 @@ function CompanyTile({ company }: CompanyProps) {
 						{index !== company.activities.length - 1 ? ", " : ""}
 					</span>
 				))}
-			</Box>
+			</div>
 
-			<Box sx={{ mb: 1 }}>{company.siret}</Box>
+			<Box sx={{ mb: 1, mt: 1 }}>{company.siret}</Box>
 			<div className="company-tile__contact ">
 				<span>{company.contactMail}</span>
 				<span>{company.contactNum}</span>

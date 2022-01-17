@@ -28,4 +28,22 @@
 		color: unset;
 		text-decoration: none;
 	}
+
+	.header_svg--login {
+		display: flex;
+		align-items: center;
+		margin-left: auto;
+		margin-right: 10px;
+		cursor: pointer;
+
+		svg {
+			margin-right: 5px;
+		}
+	}
+
+	.header_svg--login:hover {
+		fill: $color-secondary;
+		transition: 0.5s ease all;
+		color: $color-secondary;
+	}
 }

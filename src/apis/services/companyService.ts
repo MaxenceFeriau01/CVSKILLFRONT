@@ -11,6 +11,7 @@ class CompanyService extends GeneralService<Company> {
 	getPaginationWithFilters(filters?: Object): Promise<PaginatedCompany> {
 		// ajout des filtres
 
+		console.log(filters)
 		return this.http
 			.get<PaginatedCompany>(this.url, { params: filters })
 			.then((res: any) => res.data)
