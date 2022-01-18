@@ -26,7 +26,7 @@ function LoginPage() {
 							value={value}
 							onChange={onChange}
 							label="Email"
-							variant="standard"
+							variant="outlined"
 							autoComplete="email"
 						/>
 					)}
@@ -42,7 +42,7 @@ function LoginPage() {
 							value={value}
 							onChange={onChange}
 							label="Mot de passe"
-							variant="standard"
+							variant="outlined"
 							autoComplete="password"
 						/>
 					)}

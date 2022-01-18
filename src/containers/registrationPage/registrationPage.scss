@@ -19,6 +19,8 @@
 		border-radius: 10px;
 		margin: auto;
 		padding: 10px;
+		overflow-y: auto;
+		overflow: hidden;
 
 		h4 {
 			color: $color-white;

@@ -14,7 +14,7 @@ function CompanyTile({ company }: CompanyProps) {
 			</div>
 			<h4>{company.name}</h4>
 			<div>
-				{company.activities.length > 0 && <b>activitées : </b>}
+				{company.activities.length > 0 && <b>activité(s) : </b>}
 				{company.activities.map((activity, index) => (
 					// eslint-disable-next-line react/no-array-index-key
 					<span key={index}>
@@ -23,7 +23,6 @@ function CompanyTile({ company }: CompanyProps) {
 					</span>
 				))}
 			</div>
-
 			<Box sx={{ mb: 1, mt: 1 }}>{company.siret}</Box>
 			<div className="company-tile__contact ">
 				<span>{company.contactMail}</span>

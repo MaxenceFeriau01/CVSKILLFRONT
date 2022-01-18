@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material"
 import { useRef, useState } from "react"
 import { useInfiniteQuery, useQuery } from "react-query"
 import ReactSelectOption from "../../apis/models/reactSelectOption"
@@ -53,16 +54,21 @@ function CompanyPage() {
 	}
 
 	return (
-		<section className="page">
-			<CustomSelect
-				className="company-select--activities"
-				placeholder="Filtre par activité"
-				options={activities.data}
-				onChange={(e: any) => selectHandleChange(e)}
-				isClearable
-				isSearchable
-				name="select"
-			/>
+		<section className="page company-page">
+			<header className="company-page-header">
+				<Typography className="title" variant="h4" align="center">
+					Les entreprises qui acceuillent
+				</Typography>
+				<CustomSelect
+					className="company-select--activities"
+					placeholder="Filtre par activité"
+					options={activities.data}
+					onChange={(e: any) => selectHandleChange(e)}
+					isClearable
+					isSearchable
+					name="select"
+				/>
+			</header>
 			<div onScroll={handleScroll} className="company-container">
 				{companies.isFetching && <OverlaySpinner />}
 

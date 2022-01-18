@@ -25,7 +25,7 @@ function RegistrationPage() {
 							value={value}
 							onChange={onChange}
 							label="Nom"
-							variant="standard"
+							variant="outlined"
 							autoComplete="family-name"
 						/>
 					)}
@@ -40,7 +40,7 @@ function RegistrationPage() {
 							value={value}
 							onChange={onChange}
 							label="Prénom"
-							variant="standard"
+							variant="outlined"
 							autoComplete="given-name"
 						/>
 					)}
@@ -55,7 +55,7 @@ function RegistrationPage() {
 							value={value}
 							onChange={onChange}
 							label="Telephone"
-							variant="standard"
+							variant="outlined"
 							type="tel"
 							autoComplete="tel"
 						/>
@@ -72,7 +72,7 @@ function RegistrationPage() {
 							value={value}
 							onChange={onChange}
 							label="Email"
-							variant="standard"
+							variant="outlined"
 							autoComplete="email"
 						/>
 					)}
@@ -88,7 +88,7 @@ function RegistrationPage() {
 							value={value}
 							onChange={onChange}
 							label="Mot de passe"
-							variant="standard"
+							variant="outlined"
 							autoComplete="password"
 						/>
 					)}

@@ -1,13 +1,37 @@
 .sidebar {
+	.sidebar-header {
+		height: $header-height;
+		background-color: $color-primary;
+		@include breakpoint {
+			display: none;
+		}
+	}
+
 	min-width: 220px;
 	width: 220px;
-	padding: 20px 10px;
+	padding: unset;
 	box-shadow: 0 0 6px hsl(210 14% 90%);
-	margin: 5px;
 	background-color: $color-white;
 	transition: 0.4s ease-in;
-	border-radius: 10px;
-	height: calc(100% - $header-height);
+	z-index: 996;
+	position: absolute;
+	height: 100%;
+	top: 0;
+	left: 0;
+	border-radius: 0;
+	margin: 0;
+
+	@include breakpoint {
+		position: relative;
+		border-radius: 10px;
+		height: calc(100% - calc($header-height + 10px));
+		margin: 5px;
+		padding: 0 10px;
+	}
+
+	.active {
+		color: $color-primary !important;
+	}
 
 	.link {
 		display: flex;
@@ -15,13 +39,14 @@
 		border-radius: 30px;
 		color: unset;
 		text-decoration: none;
+		transition: 0.5s ease all;
 	}
 	.link:hover {
-		transition: 0.5s ease all;
 		background-color: $color-white;
 		color: $color-secondary;
 		transition: color 100ms ease-out;
 	}
+
 	.link > h2 {
 		font-weight: 700;
 		font-size: 20px;
@@ -36,6 +61,5 @@
 .sidebar--closed {
 	min-width: 0px;
 	width: 0px;
-	padding: 20px 0;
 	opacity: 0;
 }

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 
 interface SidebarLinkProps {
 	text: string
@@ -8,10 +8,10 @@ interface SidebarLinkProps {
 
 function SidebarLink({ text, Icon, url }: SidebarLinkProps) {
 	return (
-		<Link className="link" to={url}>
+		<NavLink className="link" to={url}>
 			<Icon />
 			<h2>{text}</h2>
-		</Link>
+		</NavLink>
 	)
 }
 export default SidebarLink

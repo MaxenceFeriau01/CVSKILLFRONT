@@ -75,7 +75,7 @@ function CompanyDetailsPage() {
 		(newCompany: Company) => companyService.post(newCompany),
 		{
 			onSuccess: () => {
-				navigate("/companies")
+				navigate("/")
 			},
 		}
 	)
@@ -89,7 +89,13 @@ function CompanyDetailsPage() {
 	return (
 		<section className="page">
 			{company.isFetching && <OverlaySpinner />}
-			<Typography variant="h4" mb={2}>
+			<Typography
+				className="title"
+				variant="h4"
+				mb={2}
+				mt={2}
+				align="center"
+			>
 				Détails de la société
 			</Typography>
 
@@ -111,7 +117,7 @@ function CompanyDetailsPage() {
 							<TextField
 								required
 								label="Name"
-								variant="standard"
+								variant="outlined"
 								value={value}
 								onChange={onChange}
 								helperText="Nom de la société"
@@ -127,7 +133,7 @@ function CompanyDetailsPage() {
 							<TextField
 								required
 								label="Siret"
-								variant="standard"
+								variant="outlined"
 								value={value}
 								onChange={onChange}
 								helperText="Composé de 14 chiffres"
@@ -146,7 +152,7 @@ function CompanyDetailsPage() {
 							label="Description"
 							multiline
 							rows={4}
-							variant="standard"
+							variant="outlined"
 						/>
 					)}
 				/>
@@ -164,7 +170,7 @@ function CompanyDetailsPage() {
 								value={value}
 								onChange={onChange}
 								label="Prénom"
-								variant="standard"
+								variant="outlined"
 								autoComplete="given-name"
 							/>
 						)}
@@ -179,7 +185,7 @@ function CompanyDetailsPage() {
 								value={value}
 								onChange={onChange}
 								label="Nom"
-								variant="standard"
+								variant="outlined"
 								autoComplete="family-name"
 							/>
 						)}
@@ -196,7 +202,7 @@ function CompanyDetailsPage() {
 								value={value}
 								onChange={onChange}
 								label="Telephone"
-								variant="standard"
+								variant="outlined"
 								type="tel"
 								autoComplete="tel"
 							/>
@@ -212,7 +218,7 @@ function CompanyDetailsPage() {
 								value={value}
 								onChange={onChange}
 								label="Email"
-								variant="standard"
+								variant="outlined"
 								type="email"
 								autoComplete="email"
 							/>
