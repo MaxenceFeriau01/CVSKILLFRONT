@@ -69,6 +69,7 @@ function CompanyPage() {
 					name="select"
 				/>
 			</header>
+
 			<div onScroll={handleScroll} className="company-container">
 				{companies.isFetching && <OverlaySpinner />}
 
