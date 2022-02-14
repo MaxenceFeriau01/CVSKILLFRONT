@@ -89,16 +89,6 @@ function CompanyDetailsPage() {
 	return (
 		<section className="page">
 			{company.isFetching && <OverlaySpinner />}
-			<Typography
-				className="title"
-				variant="h4"
-				mb={2}
-				mt={2}
-				align="center"
-			>
-				Détails de la société
-			</Typography>
-
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className="company-details-form"

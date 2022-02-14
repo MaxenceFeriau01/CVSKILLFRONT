@@ -8,6 +8,7 @@
 @import "../../containers/companyDetailsPage/companyDetailsPage";
 @import "../../containers/loginPage/loginPage";
 @import "../../containers/registrationPage/registrationPage";
+@import "../../components/footer/footer";
 
 body {
 	margin: 0;
@@ -45,10 +46,9 @@ body {
 	}
 
 	.page {
-		padding: 5px;
 		width: 100%;
 		overflow-y: auto;
-		height: calc(100% - $header-height);
+		height: 100%;
 	}
 	.d-none {
 		display: none;
@@ -60,5 +60,9 @@ body {
 	input:-webkit-autofill:focus,
 	input:-webkit-autofill:active {
 		-webkit-box-shadow: 0 0 0 30px $color-white inset !important;
+	}
+
+	.MuiButton-root {
+		border: 1px solid $color-primary-light;
 	}
 }

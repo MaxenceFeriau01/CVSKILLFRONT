@@ -1,10 +1,10 @@
 .app {
-	height: 100%;
+	height: calc(100% - $footer-height);
 }
 
 .app-container {
 	display: flex;
-	height: 100%;
+	height: calc(100% - $header-height);
 }
 
 .overlay {

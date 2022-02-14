@@ -56,9 +56,6 @@ function CompanyPage() {
 	return (
 		<section className="page company-page">
 			<header className="company-page-header">
-				<Typography className="title" variant="h4" align="center">
-					Les entreprises qui acceuillent
-				</Typography>
 				<CustomSelect
 					className="company-select--activities"
 					placeholder="Filtre par activité"

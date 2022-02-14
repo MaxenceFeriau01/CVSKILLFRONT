@@ -7,10 +7,11 @@
 	overflow-y: unset !important;
 
 	.company-page-header {
-		height: 140px;
+		height: 65px;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-evenly;
+		margin: 0 5px;
 	}
 
 	.company-container {
@@ -19,16 +20,16 @@
 		justify-content: center;
 		overflow-y: auto;
 		//160px : it's the height of the header
-		height: calc(100% - 150px);
+		height: calc(100% - 70px);
 		.company-flip-card {
 			cursor: pointer;
 			width: 90%;
 			@include breakpoint {
-				width: 45%;
+				width: 46%;
 			}
 
 			@include breakpoint(desktop) {
-				width: 27%;
+				width: 29%;
 			}
 
 			height: 280px;

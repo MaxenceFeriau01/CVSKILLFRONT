@@ -6,6 +6,7 @@ import Sidebar from "../../components/sidebar/sidebar"
 import routes from "../../routes/routes"
 import ShowSidebarProvider from "../../contexts/showSidebarProvider"
 import variables from "../../resources/scss/base.module.scss"
+import Footer from "../../components/footer/footer"
 
 const theme = createTheme({
 	palette: {
@@ -38,6 +39,7 @@ function App() {
 							<Sidebar />
 							{routes}
 						</main>
+						<Footer />
 					</div>
 				</ShowSidebarProvider>
 				<ReactQueryDevtools initialIsOpen={false} />
