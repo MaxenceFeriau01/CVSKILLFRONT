@@ -22,8 +22,8 @@ import ReactSelectOption from "../../apis/models/reactSelectOption"
 import CustomSelect from "../../components/inputs/customSelect"
 
 interface PutCompany {
-	newCompany: Company
-	companyId: number
+	companyToUpdate: FormData
+	companyId: string
 }
 
 function CompanyDetailsPage() {
@@ -57,6 +57,13 @@ function CompanyDetailsPage() {
 				setValue("description", res.description)
 				const activities = res.activities.map((a: Activity) => a.id)
 				setValue("activities", activities, { shouldValidate: true })
+				if (res.logo) {
+					setImg({
+						file: null,
+						src: `data:image/png;base64,${res.logo}`,
+						alt: "Logo",
+					})
+				}
 			}),
 		{ enabled: id !== undefined }
 	)
@@ -72,7 +79,7 @@ function CompanyDetailsPage() {
 	)
 
 	const postCompany = useMutation(
-		(newCompany: Company) => companyService.post(newCompany),
+		(newCompany: any) => companyService.post(newCompany),
 		{
 			onSuccess: () => {
 				navigate("/")
@@ -80,15 +87,32 @@ function CompanyDetailsPage() {
 		}
 	)
 
-	const putCompany = useMutation(({ companyId, newCompany }: PutCompany) =>
-		companyService.put(newCompany, companyId)
+	const putCompany = useMutation(
+		({ companyId, companyToUpdate }: PutCompany) =>
+			companyService.put(companyToUpdate, companyId)
 	)
 
-	const onSubmit = (data: any) => postCompany.mutate(data)
+	const onSubmit = (data: any) => {
+		const formData = new FormData()
+		const newCompany = data
+		newCompany.activities = data.activities.map((a: any) => ({ id: a }))
+		newCompany.logo = null
+		if (file) {
+			formData.append("logo", file)
+		}
+
+		formData.append("company", JSON.stringify(newCompany))
+		if (id) putCompany.mutate({ companyId: id, companyToUpdate: formData })
+		else {
+			postCompany.mutate(formData)
+		}
+	}
 
 	return (
 		<section className="page">
-			{company.isFetching && <OverlaySpinner />}
+			{(company.isFetching ||
+				putCompany.isLoading ||
+				postCompany.isLoading) && <OverlaySpinner />}
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className="company-details-form"

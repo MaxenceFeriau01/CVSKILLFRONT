@@ -39,14 +39,14 @@ class GeneralService<T> {
 			.catch(GeneralService.handleError)
 	}
 
-	put(entity: T, id: number): Promise<T> {
+	put(entity: T, id: number | string): Promise<T> {
 		return this.http
 			.put<T>(`${this.url}/${id}`, entity)
 			.then(GeneralService.handleResponse)
 			.catch(GeneralService.handleError)
 	}
 
-	delete(id: number): Promise<T> {
+	delete(id: number | string): Promise<T> {
 		return this.http
 			.delete<T>(`${this.url}/${id}`)
 			.then(GeneralService.handleResponse)

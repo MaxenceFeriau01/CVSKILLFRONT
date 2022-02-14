@@ -7,7 +7,7 @@ import Company from "../models/company"
 import PaginatedCompany from "../models/paginatedCompany"
 import GeneralService from "./generalService"
 
-class CompanyService extends GeneralService<Company> {
+class CompanyService extends GeneralService<Company | any> {
 	getPaginationWithFilters(filters?: Object): Promise<PaginatedCompany> {
 		// ajout des filtres
 

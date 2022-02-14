@@ -19,7 +19,7 @@ class Company {
 
 	activities: Activity[]
 
-	logo: string
+	logo!: any
 
 	constructor(
 		id: number,
@@ -31,7 +31,7 @@ class Company {
 		siret: string,
 		description: string,
 		activities: Activity[],
-		logo: string
+		logo: any
 	) {
 		this.id = id
 		this.name = name

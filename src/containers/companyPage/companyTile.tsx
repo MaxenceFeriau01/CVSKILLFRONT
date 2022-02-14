@@ -1,5 +1,3 @@
-import { Box } from "@mui/material"
-import { Link } from "react-router-dom"
 import PhotoIcon from "@mui/icons-material/Photo"
 import ReactCardFlip from "react-card-flip"
 import { useState } from "react"
@@ -21,12 +19,19 @@ function CompanyTile({ company }: CompanyProps) {
 				onClick={() => setIsFlipped(!isFlipped)}
 			>
 				<div className="company-tile__image">
-					{company.logo ? "" : <PhotoIcon />}
+					{company.logo ? (
+						<img
+							alt="Logo"
+							src={`data:image/png;base64,${company.logo}`}
+						/>
+					) : (
+						<PhotoIcon />
+					)}
 				</div>
-				<h4>{company.name}</h4>
+				<h4>{company!.name}</h4>
 				<div>
-					{company.activities.length > 0 && <b>activité(s) : </b>}
-					{company.activities.map((activity, index) => (
+					{company.activities?.length > 0 && <b>activité(s) : </b>}
+					{company.activities?.map((activity, index) => (
 						// eslint-disable-next-line react/no-array-index-key
 						<span key={index}>
 							{activity.name}

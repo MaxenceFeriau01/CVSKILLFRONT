@@ -15,20 +15,21 @@ interface ImagePreviewProps {
 function ImagePreview({ img, setImg, register }: ImagePreviewProps) {
 	const onLogoChange = (e: any) => {
 		const file = e.target.files[0]
-
-		if (file && file.size < 5242880) {
-			setImg({
-				file: e.target.files[0],
-				src: URL.createObjectURL(e.target.files[0]),
-				alt: e.target.files[0].name,
-			})
-		} else {
-			Swal.fire({
-				title: `Erreur !`,
-				text: "Veuillez télécharger un fichier de moins de 5 Mo",
-				icon: "error",
-				confirmButtonText: "Ok",
-			})
+		if (file) {
+			if (file.size < 5242880) {
+				setImg({
+					file: e.target.files[0],
+					src: URL.createObjectURL(e.target.files[0]),
+					alt: e.target.files[0].name,
+				})
+			} else {
+				Swal.fire({
+					title: `Erreur !`,
+					text: "Veuillez télécharger un fichier de moins de 5 Mo",
+					icon: "error",
+					confirmButtonText: "Ok",
+				})
+			}
 		}
 	}
 
