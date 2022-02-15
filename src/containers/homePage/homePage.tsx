@@ -1,7 +1,7 @@
 import { Button } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 import useHideElement from "../../hooks/hideElement"
-import logo from "../../resources/images/logo.png"
+import logo from "../../resources/images/logo.svg"
 import internship from "../../resources/images/internship.svg"
 import working from "../../resources/images/working.svg"
 

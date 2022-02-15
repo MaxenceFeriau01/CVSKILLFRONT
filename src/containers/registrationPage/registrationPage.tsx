@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 import User from "../../apis/models/user"
 import userService from "../../apis/services/userService"
 import useHideElement from "../../hooks/hideElement"
-import logo from "../../resources/images/logo.png"
+import logo from "../../resources/images/logo.svg"
 
 function RegistrationPage() {
 	useHideElement(["sidebar", "header", "footer"])

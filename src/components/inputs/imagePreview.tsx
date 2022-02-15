@@ -46,7 +46,7 @@ function ImagePreview({ img, setImg, register }: ImagePreviewProps) {
 				type="file"
 				id="image"
 				name="image"
-				accept="image/*"
+				accept="image/png, image/jpeg"
 				className="d-none"
 				onChange={onLogoChange}
 			/>

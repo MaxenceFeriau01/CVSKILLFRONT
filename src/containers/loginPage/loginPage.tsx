@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import Credentials from "../../apis/models/credentials"
 import userService from "../../apis/services/userService"
 import useHideElement from "../../hooks/hideElement"
-import logo from "../../resources/images/logo.png"
+import logo from "../../resources/images/logo.svg"
 
 function LoginPage() {
 	useHideElement(["sidebar", "header", "footer"])
