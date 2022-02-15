@@ -8,6 +8,7 @@
 @import "../../containers/companyDetailsPage/companyDetailsPage";
 @import "../../containers/loginPage/loginPage";
 @import "../../containers/registrationPage/registrationPage";
+@import "../../containers/homePage/homePage";
 @import "../../components/footer/footer";
 
 body {
@@ -64,5 +65,27 @@ body {
 
 	.MuiButton-root {
 		border: 1px solid $color-primary-light;
+	}
+
+	::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+
+	/* Track */
+	::-webkit-scrollbar-track {
+		background: $color-primary;
+		border-radius: 3px;
+	}
+
+	/* Handle */
+	::-webkit-scrollbar-thumb {
+		background: $color-secondary;
+		border-radius: 3px;
+	}
+
+	/* Handle on hover */
+	::-webkit-scrollbar-thumb:hover {
+		background: $color-secondary-dark;
 	}
 }

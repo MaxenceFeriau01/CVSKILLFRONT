@@ -82,7 +82,7 @@ function CompanyDetailsPage() {
 		(newCompany: any) => companyService.post(newCompany),
 		{
 			onSuccess: () => {
-				navigate("/")
+				navigate("/companies")
 			},
 		}
 	)

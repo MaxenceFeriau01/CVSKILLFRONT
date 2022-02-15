@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material"
 import { useRef, useState } from "react"
 import { useInfiniteQuery, useQuery } from "react-query"
+import { Link } from "react-router-dom"
 import ReactSelectOption from "../../apis/models/reactSelectOption"
 
 import activityService from "../../apis/services/activityService"
@@ -69,7 +70,13 @@ function CompanyPage() {
 
 			<div onScroll={handleScroll} className="company-container">
 				{companies.isFetching && <OverlaySpinner />}
-
+				<Link
+					to="/new-company"
+					className="company-tile company-tile--add"
+				>
+					<span>+</span>
+					<b>Créer une entreprise</b>
+				</Link>
 				{companies?.data?.pages?.map(page =>
 					page?.content?.map(c => (
 						<CompanyTile key={c.id} company={c} />

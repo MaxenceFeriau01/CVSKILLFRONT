@@ -1,16 +1,32 @@
 import { Button, TextField, Typography } from "@mui/material"
 import { Controller, useForm } from "react-hook-form"
+import { useMutation } from "react-query"
 import { Link } from "react-router-dom"
+import Credentials from "../../apis/models/credentials"
+import userService from "../../apis/services/userService"
 import useHideElement from "../../hooks/hideElement"
 import logo from "../../resources/images/logo.png"
 
 function LoginPage() {
-	useHideElement(["sidebar", "header"])
+	useHideElement(["sidebar", "header", "footer"])
 
 	const { handleSubmit, control } = useForm()
+
+	const postAuthenticate = useMutation(
+		(credentials: Credentials) => userService.authenticate(credentials),
+		{
+			//	onSuccess: () => {
+			//	navigate("/")
+			//		},
+		}
+	)
+
+	const onSubmit = (data: any) => {
+		postAuthenticate.mutate(data)
+	}
 	return (
 		<section className="login">
-			<form className="login-form">
+			<form onSubmit={handleSubmit(onSubmit)} className="login-form">
 				<Typography variant="h4" mb={2}>
 					Authentification
 				</Typography>

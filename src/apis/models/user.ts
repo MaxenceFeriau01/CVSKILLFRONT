@@ -9,7 +9,7 @@ class User {
 
 	firstName!: string
 
-	id?: number
+	id?: string
 
 	lastName!: string
 }

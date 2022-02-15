@@ -15,11 +15,13 @@ function Header() {
 
 	function titleByUrl(): string {
 		switch (location.pathname) {
-			case "/":
+			case "/companies":
 				return "Les entreprises qui acceuillent"
 			case "/new-company":
 				return "Détails d'une entreprise"
 			default:
+				if (location.pathname.includes("/company-details/"))
+					return "Détails d'une entreprise"
 				return ""
 		}
 	}
@@ -29,7 +31,7 @@ function Header() {
 				onClick={() => toggleSideBar()}
 				className="header__svg--menu"
 			/>
-			<Link to="/">
+			<Link to="/companies">
 				<HomeIcon className="header__svg--home" />
 			</Link>
 			<span className="header__title">{titleByUrl()}</span>

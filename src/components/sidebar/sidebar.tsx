@@ -10,7 +10,11 @@ function Sidebar() {
 	return (
 		<div className={`sidebar ${showSidebar ? "" : "sidebar--closed"}`}>
 			<div className="sidebar-header" />
-			<SidebarLink url="/" text="Entreprises" Icon={BusinessIcon} />
+			<SidebarLink
+				url="/companies"
+				text="Entreprises"
+				Icon={BusinessIcon}
+			/>
 			<SidebarLink
 				url="/interns"
 				text="Stagiaires"

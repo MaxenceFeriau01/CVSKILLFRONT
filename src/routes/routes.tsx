@@ -7,7 +7,8 @@ import RegistrationPage from "../containers/registrationPage/registrationPage"
 
 const routes = (
 	<Routes>
-		<Route path="/" element={<CompanyPage />} />
+		<Route path="/" element={<HomePage />} />
+		<Route path="/companies" element={<CompanyPage />} />
 		<Route path="/company-details/:id" element={<CompanyDetailsPage />} />
 		<Route path="/new-company" element={<CompanyDetailsPage />} />
 		<Route path="/login" element={<LoginPage />} />
