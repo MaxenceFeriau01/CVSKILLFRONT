@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import ShowSidebarContext, { defaultState } from "./showSidebar"
 
 interface ShowSidebarProviderProps {
@@ -12,7 +12,7 @@ function ShowSidebarProvider({ children }: ShowSidebarProviderProps) {
 		<ShowSidebarContext.Provider
 			value={{
 				showSidebar,
-				setShowSidebar: () => setShowSidebar(!showSidebar),
+				setShowSidebar,
 			}}
 		>
 			{children}

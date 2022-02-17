@@ -11,6 +11,7 @@ import activityService from "../../apis/services/activityService"
 import jobService from "../../apis/services/jobService"
 import userService from "../../apis/services/userService"
 import CustomSelect from "../../components/inputs/customSelect"
+
 import useHideElement from "../../hooks/hideElement"
 import logo from "../../resources/images/logo.svg"
 import {
@@ -45,7 +46,7 @@ function RegistrationPage() {
 	)
 
 	useQuery("activities", () =>
-		activityService.getWithFilters().then(res => {
+		activityService.getAllWithFilters().then(res => {
 			const activities: Array<ReactSelectOption> = res.map(
 				(a: Activity) => ({
 					label: a.name,
@@ -57,7 +58,7 @@ function RegistrationPage() {
 	)
 
 	useQuery("jobs", () =>
-		jobService.getWithFilters().then(res => {
+		jobService.getAllWithFilters().then(res => {
 			const jobs: Array<ReactSelectOption> = res.map((j: Job) => ({
 				label: j.name,
 				value: j.id,

@@ -31,6 +31,8 @@ class User {
 	activities!: Array<Activity> | null
 
 	jobs!: Array<Job> | null
+
+	token!: string
 }
 
 export default User

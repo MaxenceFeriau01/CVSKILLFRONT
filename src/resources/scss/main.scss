@@ -20,16 +20,7 @@ body {
 	height: 100vh;
 	overflow: hidden;
 
-	background: #d7e1ec;
-	background: -webkit-linear-gradient(
-		top left,
-		#d7e1ec 0%,
-		$color-white 100%
-	);
-	background: -moz-linear-gradient(top left, #d7e1ec 0%, $color-white 100%);
-	background: -o-linear-gradient(top left, #d7e1ec 0%, $color-white 100%);
-	background: linear-gradient(to bottom right, #d7e1ec 0%, $color-white 100%);
-
+	background: $background-color;
 	#root {
 		height: 100vh;
 	}

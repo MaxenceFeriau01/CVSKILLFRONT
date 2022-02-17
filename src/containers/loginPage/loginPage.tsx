@@ -1,23 +1,31 @@
 import { Button, TextField, Typography } from "@mui/material"
+import { useContext } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useMutation } from "react-query"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Credentials from "../../apis/models/credentials"
+import User from "../../apis/models/user"
 import userService from "../../apis/services/userService"
+import UserContext from "../../contexts/user"
 import useHideElement from "../../hooks/hideElement"
 import logo from "../../resources/images/logo.svg"
 
 function LoginPage() {
 	useHideElement(["sidebar", "header", "footer"])
+	const navigate = useNavigate()
+
+	const { setUser } = useContext(UserContext)
 
 	const { handleSubmit, control } = useForm()
 
 	const postAuthenticate = useMutation(
 		(credentials: Credentials) => userService.authenticate(credentials),
 		{
-			//	onSuccess: () => {
-			//	navigate("/")
-			//		},
+			onSuccess: (data: User) => {
+				localStorage.setItem("user", JSON.stringify(data))
+				setUser(data)
+				navigate("/companies")
+			},
 		}
 	)
 

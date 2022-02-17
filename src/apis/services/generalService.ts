@@ -4,6 +4,7 @@
  */
 import axios, { AxiosInstance } from "axios"
 import Swal from "sweetalert2"
+import User from "../models/user"
 
 class GeneralService<T> {
 	// Variables
@@ -11,44 +12,84 @@ class GeneralService<T> {
 
 	protected http: AxiosInstance
 
+	protected user: User = new User()
+
 	constructor(endPoint: string) {
 		this.http = axios.create()
 		this.url = `${process.env.REACT_APP_BASE_API_URL}${endPoint}`
+		this.http.interceptors.response.use(
+			response => response,
+			err =>
+				new Promise((resolve, reject) => {
+					if (err.response?.status === 401) {
+						localStorage.removeItem("user")
+						window.location.replace("/login")
+					}
+					throw err
+				})
+		)
 	}
 
-	getById(id: any): Promise<T> {
+	authHeader() {
+		const storageItem = localStorage.getItem("user")
+
+		if (storageItem !== null) this.user = JSON.parse(storageItem)
+
+		if (this.user && this.user.token) {
+			// for Node.js Express back-end
+			return { Authorization: `Bearer ${this.user.token}` }
+		}
+		return undefined
+	}
+
+	get(id: any, specificUrl: string = ""): Promise<T> {
 		return this.http
-			.get<T>(`${this.url}/${id}`)
+			.get<T>(`${this.url}${specificUrl}/${id}`, {
+				headers: this.authHeader(),
+			})
 			.then(GeneralService.handleResponse)
 			.catch(GeneralService.handleError)
 	}
 
-	getWithFilters(filters?: Object): Promise<T[]> {
+	getAllWithFilters(filters?: Object): Promise<T[]> {
 		// ajout des filtres
 
 		return this.http
-			.get<T[]>(this.url, { params: filters })
+			.get<T[]>(this.url, { params: filters, headers: this.authHeader() })
 			.then(GeneralService.handleResponse)
+			.catch(GeneralService.handleError)
+	}
+
+	getAllPaginated(filters?: Object): Promise<T> {
+		return this.http
+			.get<T[]>(this.url, { params: filters, headers: this.authHeader() })
+			.then((res: any) => res.data)
 			.catch(GeneralService.handleError)
 	}
 
 	post(entity: T): Promise<T> {
 		return this.http
-			.post<T>(this.url, entity)
+			.post<T>(this.url, entity, {
+				headers: this.authHeader(),
+			})
 			.then(GeneralService.handleResponse)
 			.catch(GeneralService.handleError)
 	}
 
 	put(entity: T, id: number | string): Promise<T> {
 		return this.http
-			.put<T>(`${this.url}/${id}`, entity)
+			.put<T>(`${this.url}/${id}`, entity, {
+				headers: this.authHeader(),
+			})
 			.then(GeneralService.handleResponse)
 			.catch(GeneralService.handleError)
 	}
 
 	delete(id: number | string): Promise<T> {
 		return this.http
-			.delete<T>(`${this.url}/${id}`)
+			.delete<T>(`${this.url}/${id}`, {
+				headers: this.authHeader(),
+			})
 			.then(GeneralService.handleResponse)
 			.catch(GeneralService.handleError)
 	}

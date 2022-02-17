@@ -4,19 +4,9 @@
  */
 
 import Company from "../models/company"
-import PaginatedCompany from "../models/paginatedCompany"
 import GeneralService from "./generalService"
 
-class CompanyService extends GeneralService<Company | any> {
-	getPaginationWithFilters(filters?: Object): Promise<PaginatedCompany> {
-		// ajout des filtres
-
-		return this.http
-			.get<PaginatedCompany>(this.url, { params: filters })
-			.then((res: any) => res.data)
-			.catch(GeneralService.handleError)
-	}
-}
+class CompanyService extends GeneralService<Company | any> {}
 
 const companyService = new CompanyService("/companies")
 
