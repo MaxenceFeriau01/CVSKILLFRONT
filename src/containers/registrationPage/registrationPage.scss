@@ -7,23 +7,32 @@
 	flex-direction: column;
 
 	img {
-		width: 100%;
+		width: 80%;
+		margin: 0 auto;
 	}
 
 	.registration-form {
+		@include breakpoint {
+			width: 700px;
+		}
+		max-height: 90%;
 		position: relative;
-		width: 450px;
+		width: 90%;
 		background-color: $color-white;
 		flex-direction: column;
 		display: flex;
 		border-radius: 10px;
 		margin: auto;
 		padding: 10px;
-		overflow-y: auto;
-		overflow: hidden;
+		border: 1px solid $color-secondary;
 
 		.MuiButton-root {
-			margin: 10px;
+			margin: 10px auto;
+			width: 80%;
+
+			@include breakpoint {
+				width: 100%;
+			}
 		}
 
 		h4 {
@@ -40,7 +49,45 @@
 		}
 
 		.MuiFormControl-root {
-			margin: 10px;
+			z-index: 0;
+			margin: 10px 0;
+			width: 80%;
+			@include breakpoint {
+				width: 48%;
+			}
+
+			.MuiFormControl-root {
+				z-index: 0;
+				width: 100% !important;
+				margin: unset;
+			}
+		}
+
+		.select-form-control {
+			z-index: 2;
+			margin: 10px auto;
+			width: 80%;
+			@include breakpoint {
+				width: 100%;
+			}
+		}
+
+		.select-form-control--half-first {
+			z-index: 1;
+			margin: 10px 0;
+			width: 80%;
+			@include breakpoint {
+				width: 48%;
+			}
+		}
+
+		.select-form-control--half-second {
+			z-index: 0;
+			margin: 10px 0;
+			width: 80%;
+			@include breakpoint {
+				width: 48%;
+			}
 		}
 
 		.registration-form-registration {
@@ -58,7 +105,13 @@
 	}
 	.registration-form--scroll {
 		display: flex;
-		flex-direction: column;
-		overflow-y: scroll;
+		overflow-y: auto;
+		justify-content: center;
+		flex-wrap: wrap;
+		padding: 0 5px;
+
+		@include breakpoint {
+			justify-content: space-between;
+		}
 	}
 }

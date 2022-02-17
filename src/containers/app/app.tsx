@@ -1,6 +1,7 @@
 import { ReactQueryDevtools } from "react-query/devtools"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
+
 import Header from "../../components/header/header"
 import Sidebar from "../../components/sidebar/sidebar"
 import routes from "../../routes/routes"
@@ -11,10 +12,7 @@ import Footer from "../../components/footer/footer"
 const theme = createTheme({
 	palette: {
 		primary: {
-			// light: will be calculated from palette.primary.main,
 			main: variables.colorPrimary,
-			// dark: will be calculated from palette.primary.main,
-			// contrastText: will be calculated to contrast with palette.primary.main
 		},
 	},
 })

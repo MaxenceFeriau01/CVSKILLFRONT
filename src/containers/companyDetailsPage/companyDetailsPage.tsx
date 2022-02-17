@@ -250,7 +250,7 @@ function CompanyDetailsPage() {
 						render={({ field: { value, onChange, onBlur } }) => (
 							<CustomSelect
 								options={options}
-								placeholder="Choose..."
+								placeholder="Choisissez..."
 								isMulti
 								onChange={(lOptions: ReactSelectOption[]) =>
 									onChange(

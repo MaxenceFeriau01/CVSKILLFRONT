@@ -1,5 +1,5 @@
 class ReactSelectOption {
-	value!: number
+	value!: number | string
 
 	label!: string
 }

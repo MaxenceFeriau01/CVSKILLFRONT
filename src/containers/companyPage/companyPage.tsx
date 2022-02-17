@@ -13,7 +13,7 @@ import { PAGE, SIZE } from "./constants"
 
 function CompanyPage() {
 	const canFetch = useRef(true)
-	const [filter, setFilter] = useState<number | null>(null)
+	const [filter, setFilter] = useState<number | null | string>(null)
 
 	const companies = useInfiniteQuery(
 		["companies", filter],
