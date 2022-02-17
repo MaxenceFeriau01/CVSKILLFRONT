@@ -1,3 +1,6 @@
+import Activity from "./activity"
+import Job from "./job"
+
 class User {
 	email!: string
 
@@ -5,13 +8,29 @@ class User {
 
 	roles!: Array<string>
 
-	department!: string
-
 	firstName!: string
 
 	id?: string
 
-	lastName!: string
+	name!: string
+
+	phone!: String
+
+	postalCode!: number | null
+
+	dateOfBirth!: Date
+
+	status!: String
+
+	internshipPeriod!: String | null
+
+	civility!: String
+
+	diploma!: String | null
+
+	activities!: Array<Activity> | null
+
+	jobs!: Array<Job> | null
 }
 
 export default User

@@ -9,6 +9,7 @@ function CustomSelect(props: any) {
 			}, // border style on hover
 			border: "1px solid lightgray", // default border color
 			boxShadow: "none", // no box-shadow
+			zIndex: 1,
 		}),
 	}
 

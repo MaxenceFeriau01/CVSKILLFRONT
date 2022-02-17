@@ -29,7 +29,7 @@ function CompanyTile({ company }: CompanyProps) {
 					</span>
 				))}
 			</div>
-			<span className="company-tile__siret">{company.siret}</span>
+			<span className="company-tile__postal">{company.siret}</span>
 		</Link>
 	)
 }
