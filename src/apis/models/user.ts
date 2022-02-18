@@ -33,6 +33,10 @@ class User {
 	jobs!: Array<Job> | null
 
 	token!: string
+
+	cv!: File | null
+
+	coverLetter!: File | null
 }
 
 export default User
