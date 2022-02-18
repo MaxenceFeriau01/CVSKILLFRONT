@@ -47,8 +47,8 @@ class GeneralService<T> {
 			.get<T>(`${this.url}${specificUrl}/${id}`, {
 				headers: this.authHeader(),
 			})
-			.then(GeneralService.handleResponse)
-			.catch(GeneralService.handleError)
+			.then(this.handleResponse)
+			.catch(this.handleError)
 	}
 
 	getAllWithFilters(filters?: Object): Promise<T[]> {
@@ -56,24 +56,24 @@ class GeneralService<T> {
 
 		return this.http
 			.get<T[]>(this.url, { params: filters, headers: this.authHeader() })
-			.then(GeneralService.handleResponse)
-			.catch(GeneralService.handleError)
+			.then(this.handleResponse)
+			.catch(this.handleError)
 	}
 
 	getAllPaginated(filters?: Object): Promise<T> {
 		return this.http
 			.get<T[]>(this.url, { params: filters, headers: this.authHeader() })
 			.then((res: any) => res.data)
-			.catch(GeneralService.handleError)
+			.catch(this.handleError)
 	}
 
-	post(entity: T): Promise<T> {
+	post(entity: T, specificUrl: string = ""): Promise<T> {
 		return this.http
-			.post<T>(this.url, entity, {
+			.post<T>(this.url + specificUrl, entity, {
 				headers: this.authHeader(),
 			})
-			.then(GeneralService.handleResponse)
-			.catch(GeneralService.handleError)
+			.then(this.handleResponse)
+			.catch(this.handleError)
 	}
 
 	put(entity: T, id: number | string): Promise<T> {
@@ -81,8 +81,8 @@ class GeneralService<T> {
 			.put<T>(`${this.url}/${id}`, entity, {
 				headers: this.authHeader(),
 			})
-			.then(GeneralService.handleResponse)
-			.catch(GeneralService.handleError)
+			.then(this.handleResponse)
+			.catch(this.handleError)
 	}
 
 	delete(id: number | string): Promise<T> {
@@ -90,15 +90,15 @@ class GeneralService<T> {
 			.delete<T>(`${this.url}/${id}`, {
 				headers: this.authHeader(),
 			})
-			.then(GeneralService.handleResponse)
-			.catch(GeneralService.handleError)
+			.then(this.handleResponse)
+			.catch(this.handleError)
 	}
 
 	getUrl(): string {
 		return this.url
 	}
 
-	static handleResponse(response: any): any {
+	handleResponse(response: any): any {
 		if (response.results) {
 			return response.results
 		}
@@ -113,14 +113,16 @@ class GeneralService<T> {
 		return response
 	}
 
-	static handleError(error: any): void {
+	handleError(error: any): void {
 		// Formatted error from backend
 		if (error.response.data.message) {
 			Swal.fire({
-				title: `Erreur ${error.response.data.status}! `,
-				text: error.response.data.message,
+				position: "bottom-end",
+				title: error.response.data.message,
 				icon: "error",
-				confirmButtonText: "Ok",
+				showConfirmButton: false,
+				timer: 1500,
+				showCloseButton: true,
 			})
 		}
 		throw error.response

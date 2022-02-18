@@ -25,12 +25,12 @@ function Header() {
 	function titleByUrl(): string {
 		switch (location.pathname) {
 			case "/companies":
-				return "Les entreprises qui acceuillent"
+				return "Les entreprises"
 			case "/new-company":
-				return "Détails d'une entreprise"
+				return "Création d'une entreprise"
 			default:
 				if (location.pathname.includes("/company-details/"))
-					return "Détails d'une entreprise"
+					return "L'entreprise qui acceuille"
 				return ""
 		}
 	}

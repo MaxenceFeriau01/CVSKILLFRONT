@@ -2,7 +2,7 @@ import { Button, TextField, Typography } from "@mui/material"
 import { useContext } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useMutation } from "react-query"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import Credentials from "../../apis/models/credentials"
 import User from "../../apis/models/user"
 import userService from "../../apis/services/userService"
@@ -13,6 +13,7 @@ import logo from "../../resources/images/logo.svg"
 function LoginPage() {
 	useHideElement(["sidebar", "header", "footer"])
 	const navigate = useNavigate()
+	const { state } = useLocation()
 
 	const { setUser } = useContext(UserContext)
 
@@ -24,7 +25,8 @@ function LoginPage() {
 			onSuccess: (data: User) => {
 				localStorage.setItem("user", JSON.stringify(data))
 				setUser(data)
-				navigate("/companies")
+				if (state !== null) navigate(state as string)
+				else navigate("/companies")
 			},
 		}
 	)

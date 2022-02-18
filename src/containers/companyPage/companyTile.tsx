@@ -1,13 +1,43 @@
 import PhotoIcon from "@mui/icons-material/Photo"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import Swal from "sweetalert2"
+import { useContext } from "react"
+import UserContext from "../../contexts/user"
 import Company from "../../apis/models/company"
 
 interface CompanyProps {
 	company: Company
 }
 function CompanyTile({ company }: CompanyProps) {
+	const navigate = useNavigate()
+
+	const { user } = useContext(UserContext)
+
+	function onClick() {
+		if (user && user.token) {
+			navigate(`/company-details/${company.id}`)
+		} else {
+			Swal.fire({
+				title: "<strong>Non <u>connecté(e)</u>?</strong>",
+				icon: "info",
+				html:
+					"Vous devez vous <b>connecter</b>, " +
+					"pour profiter de l'ensemble des fonctionnalités.",
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: "Se connecter !",
+			}).then(result => {
+				/* Read more about isConfirmed, isDenied below */
+				if (result.isConfirmed) {
+					navigate("/login", {
+						state: `/company-details/${company.id}`,
+					})
+				}
+			})
+		}
+	}
 	return (
-		<Link to={`/company-details/${company.id}`} className="company-tile">
+		<div onClick={() => onClick()} className="company-tile">
 			<div className="company-tile__image">
 				{company.logo ? (
 					<img
@@ -30,7 +60,7 @@ function CompanyTile({ company }: CompanyProps) {
 				))}
 			</div>
 			<span className="company-tile__postal">{company.siret}</span>
-		</Link>
+		</div>
 	)
 }
 
