@@ -4,6 +4,7 @@
  */
 import axios, { AxiosInstance } from "axios"
 import Swal from "sweetalert2"
+import User from "../models/user"
 
 class GeneralService<T> {
 	// Variables
@@ -11,53 +12,93 @@ class GeneralService<T> {
 
 	protected http: AxiosInstance
 
+	protected user: User = new User()
+
 	constructor(endPoint: string) {
 		this.http = axios.create()
 		this.url = `${process.env.REACT_APP_BASE_API_URL}${endPoint}`
+		this.http.interceptors.response.use(
+			response => response,
+			err =>
+				new Promise((resolve, reject) => {
+					if (err.response?.status === 401) {
+						localStorage.removeItem("user")
+						window.location.replace("/login")
+					}
+					throw err
+				})
+		)
 	}
 
-	getById(id: any): Promise<T> {
+	authHeader() {
+		const storageItem = localStorage.getItem("user")
+
+		if (storageItem !== null) this.user = JSON.parse(storageItem)
+
+		if (this.user && this.user.token) {
+			// for Node.js Express back-end
+			return { Authorization: `Bearer ${this.user.token}` }
+		}
+		return undefined
+	}
+
+	get(id: any, specificUrl: string = ""): Promise<T> {
 		return this.http
-			.get<T>(`${this.url}/${id}`)
-			.then(GeneralService.handleResponse)
-			.catch(GeneralService.handleError)
+			.get<T>(`${this.url}${specificUrl}/${id}`, {
+				headers: this.authHeader(),
+			})
+			.then(this.handleResponse)
+			.catch(this.handleError)
 	}
 
-	getWithFilters(filters?: Object): Promise<T[]> {
+	getAllWithFilters(filters?: Object): Promise<T[]> {
 		// ajout des filtres
 
 		return this.http
-			.get<T[]>(this.url, { params: filters })
-			.then(GeneralService.handleResponse)
-			.catch(GeneralService.handleError)
+			.get<T[]>(this.url, { params: filters, headers: this.authHeader() })
+			.then(this.handleResponse)
+			.catch(this.handleError)
 	}
 
-	post(entity: T): Promise<T> {
+	getAllPaginated(filters?: Object): Promise<T> {
 		return this.http
-			.post<T>(this.url, entity)
-			.then(GeneralService.handleResponse)
-			.catch(GeneralService.handleError)
+			.get<T[]>(this.url, { params: filters, headers: this.authHeader() })
+			.then((res: any) => res.data)
+			.catch(this.handleError)
+	}
+
+	post(entity: T, specificUrl: string = ""): Promise<T> {
+		return this.http
+			.post<T>(this.url + specificUrl, entity, {
+				headers: this.authHeader(),
+			})
+			.then(this.handleResponse)
+			.catch(this.handleError)
 	}
 
 	put(entity: T, id: number | string): Promise<T> {
 		return this.http
-			.put<T>(`${this.url}/${id}`, entity)
-			.then(GeneralService.handleResponse)
-			.catch(GeneralService.handleError)
+			.put<T>(`${this.url}/${id}`, entity, {
+				headers: this.authHeader(),
+			})
+			.then(this.handleResponse)
+			.catch(this.handleError)
 	}
 
 	delete(id: number | string): Promise<T> {
 		return this.http
-			.delete<T>(`${this.url}/${id}`)
-			.then(GeneralService.handleResponse)
-			.catch(GeneralService.handleError)
+			.delete<T>(`${this.url}/${id}`, {
+				headers: this.authHeader(),
+			})
+			.then(this.handleResponse)
+			.catch(this.handleError)
 	}
 
 	getUrl(): string {
 		return this.url
 	}
 
-	static handleResponse(response: any): any {
+	handleResponse(response: any): any {
 		if (response.results) {
 			return response.results
 		}
@@ -72,14 +113,16 @@ class GeneralService<T> {
 		return response
 	}
 
-	static handleError(error: any): void {
+	handleError(error: any): void {
 		// Formatted error from backend
 		if (error.response.data.message) {
 			Swal.fire({
-				title: `Erreur ${error.response.data.status}! `,
-				text: error.response.data.message,
+				position: "bottom-end",
+				title: error.response.data.message,
 				icon: "error",
-				confirmButtonText: "Ok",
+				showConfirmButton: false,
+				timer: 1500,
+				showCloseButton: true,
 			})
 		}
 		throw error.response

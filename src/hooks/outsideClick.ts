@@ -12,9 +12,11 @@ function useOutsideClick(ref: any, action: any) {
 		}
 		// Bind the event listener
 		document.addEventListener("mousedown", handleClickOutside)
+		document.addEventListener("touchend", handleClickOutside)
 		return () => {
 			// Unbind the event listener on clean up
 			document.removeEventListener("mousedown", handleClickOutside)
+			document.removeEventListener("touchend", handleClickOutside)
 		}
 	}, [ref])
 }

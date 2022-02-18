@@ -8,6 +8,7 @@ import routes from "../../routes/routes"
 import ShowSidebarProvider from "../../contexts/showSidebarProvider"
 import variables from "../../resources/scss/base.module.scss"
 import Footer from "../../components/footer/footer"
+import UserProvider from "../../contexts/UserProvider"
 
 const theme = createTheme({
 	palette: {
@@ -29,17 +30,19 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<QueryClientProvider client={queryClient}>
-				<ShowSidebarProvider>
-					<div className="overlay" id="overlay" />
-					<div className="app">
-						<Header />
-						<main className="app-container">
-							<Sidebar />
-							{routes}
-						</main>
-						<Footer />
-					</div>
-				</ShowSidebarProvider>
+				<UserProvider>
+					<ShowSidebarProvider>
+						<div className="overlay" id="overlay" />
+						<div className="app">
+							<Header />
+							<main className="app-container">
+								<Sidebar />
+								{routes}
+							</main>
+							<Footer />
+						</div>
+					</ShowSidebarProvider>
+				</UserProvider>
 				<ReactQueryDevtools initialIsOpen={false} />
 			</QueryClientProvider>
 		</ThemeProvider>

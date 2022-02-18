@@ -7,21 +7,15 @@ import Credentials from "../models/credentials"
 import User from "../models/user"
 import GeneralService from "./generalService"
 
-class UserService extends GeneralService<User> {
+class UserService extends GeneralService<User | any> {
 	register(user: User): Promise<User> {
 		// ajout des filtres
 
-		return this.http
-			.post<User>(`${this.url}/register`, user)
-			.then(GeneralService.handleResponse)
-			.catch(GeneralService.handleError)
+		return this.post(user, "/register")
 	}
 
 	authenticate(credentials: Credentials): Promise<User> {
-		return this.http
-			.post<User>(`${this.url}/authenticate`, credentials)
-			.then(GeneralService.handleResponse)
-			.catch(GeneralService.handleError)
+		return this.post(credentials, "/authenticate")
 	}
 }
 

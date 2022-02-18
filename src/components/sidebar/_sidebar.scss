@@ -10,7 +10,7 @@
 	min-width: 220px;
 	width: 220px;
 	padding: unset;
-	box-shadow: 0 0 6px hsl(210 14% 90%);
+	box-shadow: $box-shadow;
 	background-color: $color-white;
 	transition: 0.4s ease-in;
 	z-index: 996;

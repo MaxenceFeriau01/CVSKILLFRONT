@@ -47,7 +47,7 @@ function CompanyDetailsPage() {
 	const company = useQuery(
 		"company",
 		() =>
-			companyService.getById(id).then((res: Company) => {
+			companyService.get(id).then((res: Company) => {
 				setValue("contactFirstName", res.contactFirstName)
 				setValue("contactLastName", res.contactLastName)
 				setValue("contactNum", res.contactNum)
@@ -69,7 +69,7 @@ function CompanyDetailsPage() {
 	)
 
 	useQuery("activities", () =>
-		activityService.getWithFilters().then(res => {
+		activityService.getAllWithFilters().then(res => {
 			const activities = res.map((a: Activity) => ({
 				label: a.name,
 				value: a.id,

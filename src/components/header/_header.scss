@@ -54,6 +54,62 @@
 		}
 	}
 
+	.header__user {
+		height: 40px;
+		width: 40px;
+		min-width: 40px;
+		margin-right: 5px;
+		border-radius: 50%;
+		margin-left: auto;
+		border: 2px solid $color-white;
+		color: $color-white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+
+		.popover {
+			position: absolute;
+			box-shadow: $box-shadow;
+			border-radius: 20px;
+			background: $color-white;
+			top: 70px;
+			right: 8px;
+			font-weight: 700;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+
+			.popover--disconnect {
+				padding: 16px 14px;
+				color: $color-red;
+				border-radius: 0px 0px 20px 20px;
+				transition: 0.5s ease all;
+
+				&:hover {
+					background-color: #f1d6e4;
+				}
+			}
+			.popover--profil {
+				padding: 16px 14px;
+				border-radius: 20px 20px 0 0;
+				transition: all 0.5s ease;
+				color: $color-black;
+
+				&:hover {
+					background-color: $color-primary;
+					color: $color-white;
+				}
+			}
+
+			p {
+				width: 90%;
+				margin: 0 auto;
+				border-top: 1px solid $color-secondary;
+			}
+		}
+	}
+
 	.header__svg--login:hover {
 		fill: $color-secondary;
 		transition: 0.5s ease all;

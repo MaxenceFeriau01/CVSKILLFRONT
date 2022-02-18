@@ -16,10 +16,15 @@ $color-error-background: #ffdbd9;
 $color-error: #f44336;
 $color-warning: #757575;
 $color-success: #4bb543;
-$background-color: grey;
-$background-color-dark: darken($background-color, 10%);
+$background-color: linear-gradient(
+	to bottom right,
+	#d7e1ec 0%,
+	$color-white 100%
+);
+
 $header-height: 60px;
 $footer-height: 45px;
+$box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
 @mixin breakpoint($point: tablet) {
 	@if $point == desktop-l {

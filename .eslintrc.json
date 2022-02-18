@@ -30,6 +30,8 @@
 		"react/react-in-jsx-scope": 0,
 		"react/jsx-indent-props": [2, "tab"],
 		"react/jsx-props-no-spreading": "off",
+		"no-unsafe-optional-chaining": "off",
+		"class-methods-use-this": "off",
 		"react/jsx-filename-extension": [
 			1,
 			{ "extensions": [".js", ".jsx", ".ts", ".tsx"] }
