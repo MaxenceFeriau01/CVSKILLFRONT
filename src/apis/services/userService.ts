@@ -8,7 +8,7 @@ import User from "../models/user"
 import GeneralService from "./generalService"
 
 class UserService extends GeneralService<User | any> {
-	register(user: User): Promise<User> {
+	register(user: FormData): Promise<User> {
 		// ajout des filtres
 
 		return this.post(user, "/register")

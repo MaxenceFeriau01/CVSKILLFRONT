@@ -121,7 +121,6 @@ class GeneralService<T> {
 				title: error.response.data.message,
 				icon: "error",
 				showConfirmButton: false,
-				timer: 1500,
 				showCloseButton: true,
 			})
 		}

@@ -35,6 +35,15 @@
 			}
 		}
 
+		.file-control {
+			z-index: 0;
+			margin-top: 10px;
+			width: 80%;
+			@include breakpoint {
+				width: 48%;
+			}
+		}
+
 		h4 {
 			color: $color-white;
 			width: 100%;

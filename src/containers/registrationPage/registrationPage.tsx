@@ -1,4 +1,11 @@
-import { Alert, Button, InputLabel, TextField, Typography } from "@mui/material"
+import {
+	Alert,
+	Button,
+	FormHelperText,
+	InputLabel,
+	TextField,
+	Typography,
+} from "@mui/material"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useMutation, useQuery } from "react-query"
@@ -11,6 +18,8 @@ import activityService from "../../apis/services/activityService"
 import jobService from "../../apis/services/jobService"
 import userService from "../../apis/services/userService"
 import CustomSelect from "../../components/inputs/customSelect"
+import FileUpload from "../../components/inputs/fileUpload"
+import OverlaySpinner from "../../components/spinners/overlaySpinner"
 
 import useHideElement from "../../hooks/hideElement"
 import logo from "../../resources/images/logo.svg"
@@ -34,10 +43,11 @@ function RegistrationPage() {
 		control,
 		formState: { errors },
 		watch,
+		register,
 	} = useForm()
 
 	const postRegister = useMutation(
-		(newCompany: User) => userService.register(newCompany),
+		(newUser: FormData) => userService.register(newUser),
 		{
 			onSuccess: () => {
 				navigate("/login")
@@ -68,7 +78,9 @@ function RegistrationPage() {
 	)
 
 	const onSubmit = (data: any) => {
-		const toCreate: User = data
+		const formData = new FormData()
+
+		const toCreate: User = { ...data }
 		if (toCreate.status === "Collégien") {
 			toCreate.activities = null
 			toCreate.jobs = null
@@ -83,11 +95,22 @@ function RegistrationPage() {
 
 		toCreate.activities = data.activities?.map((a: any) => ({ id: a }))
 		toCreate.jobs = data.jobs?.map((j: any) => ({ id: j }))
-		postRegister.mutate(toCreate)
+		toCreate.cv = null
+		toCreate.coverLetter = null
+
+		formData.append("user", JSON.stringify(toCreate))
+		formData.append("cv", data.cv?.length > 0 ? data.cv[0] : null)
+		formData.append(
+			"coverLetter",
+			data.coverLetter?.length > 0 ? data.coverLetter[0] : null
+		)
+
+		postRegister.mutate(formData)
 	}
 
 	return (
 		<section className="registration">
+			{postRegister.isLoading && <OverlaySpinner />}
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className="registration-form"
@@ -488,6 +511,27 @@ function RegistrationPage() {
 							</div>
 						</>
 					)}
+					<div className="file-control">
+						<FileUpload
+							register={register("cv")}
+							id="cv"
+							accept=".pdf"
+							text="Importer un CV"
+							value={watch("cv")}
+						/>
+						<FormHelperText>pdf only</FormHelperText>
+					</div>
+
+					<div className="file-control">
+						<FileUpload
+							register={register("coverLetter")}
+							id="coverLetter"
+							accept=".pdf"
+							text="Importer une lettre de motivation"
+							value={watch("coverLetter")}
+						/>
+						<FormHelperText>pdf only</FormHelperText>
+					</div>
 				</div>
 				<Button type="submit">S'inscrire</Button>
 				<span className="registration-form-registration">
