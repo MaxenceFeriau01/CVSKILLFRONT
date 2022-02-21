@@ -11,14 +11,14 @@ import { Controller, useForm } from "react-hook-form"
 
 import { useMutation, useQuery } from "react-query"
 import { useNavigate, useParams } from "react-router-dom"
-import Company from "../../apis/models/company"
-import activityService from "../../apis/services/activityService"
+import Company from "../../api/models/company"
+import activityService from "../../api/services/activityService"
 
-import companyService from "../../apis/services/companyService"
+import companyService from "../../api/services/companyService"
 import ImagePreview from "../../components/inputs/imagePreview"
 import OverlaySpinner from "../../components/spinners/overlaySpinner"
-import Activity from "../../apis/models/activity"
-import ReactSelectOption from "../../apis/models/reactSelectOption"
+import Activity from "../../api/models/activity"
+import ReactSelectOption from "../../api/models/reactSelectOption"
 import CustomSelect from "../../components/inputs/customSelect"
 
 interface PutCompany {

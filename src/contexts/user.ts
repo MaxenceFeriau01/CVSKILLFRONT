@@ -1,5 +1,5 @@
 import React from "react"
-import User from "../apis/models/user"
+import User from "../api/models/user"
 
 interface IUserContext {
 	user: User | null

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import { useContext } from "react"
 import UserContext from "../../contexts/user"
-import Company from "../../apis/models/company"
+import Company from "../../api/models/company"
 
 interface CompanyProps {
 	company: Company

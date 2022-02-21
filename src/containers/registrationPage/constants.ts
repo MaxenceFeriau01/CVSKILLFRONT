@@ -1,4 +1,4 @@
-import ReactSelectOption from "../../apis/models/reactSelectOption"
+import ReactSelectOption from "../../api/models/reactSelectOption"
 
 export const CIVILITY_OPTIONS: Array<ReactSelectOption> = [
 	{
