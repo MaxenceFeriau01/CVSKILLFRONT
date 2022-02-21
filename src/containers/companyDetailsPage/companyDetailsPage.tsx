@@ -20,6 +20,8 @@ import OverlaySpinner from "../../components/spinners/overlaySpinner"
 import Activity from "../../api/models/activity"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 import CustomSelect from "../../components/inputs/customSelect"
+import HasRight from "../../components/rights/hasRight"
+import { ROLE } from "../../utils/rights"
 
 interface PutCompany {
 	companyToUpdate: FormData
@@ -273,11 +275,13 @@ function CompanyDetailsPage() {
 						</Alert>
 					)}
 				</div>
-				<Button type="submit">
-					{id !== undefined
-						? "Mettre à jour"
-						: "Créer une entreprise"}
-				</Button>
+				<HasRight roles={[ROLE.ADMIN]}>
+					<Button type="submit">
+						{id !== undefined
+							? "Mettre à jour"
+							: "Créer une entreprise"}
+					</Button>
+				</HasRight>
 			</form>
 		</section>
 	)

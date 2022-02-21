@@ -1,9 +1,8 @@
-import { Typography } from "@mui/material"
 import { useRef, useState } from "react"
 import { useInfiniteQuery, useQuery } from "react-query"
 import { Link } from "react-router-dom"
 import Company from "../../api/models/company"
-import PaginatedCompany from "../../api/models/paginatedCompany"
+
 import ReactSelectOption from "../../api/models/reactSelectOption"
 
 import activityService from "../../api/services/activityService"
