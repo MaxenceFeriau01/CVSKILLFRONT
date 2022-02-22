@@ -10,14 +10,7 @@ import PrivateRoute from "./privateRoute"
 
 const routes = (
 	<Routes>
-		<Route
-			path="/"
-			element={
-				<PrivateRoute>
-					<HomePage />
-				</PrivateRoute>
-			}
-		/>
+		<Route path="/" element={<HomePage />} />
 		<Route path="/companies" element={<CompanyPage />} />
 		<Route path="/company-details/:id" element={<CompanyDetailsPage />} />
 		<Route
@@ -30,14 +23,7 @@ const routes = (
 		/>
 		<Route path="/login" element={<LoginPage />} />
 		<Route path="/registration" element={<RegistrationPage />} />
-		<Route
-			path="*"
-			element={
-				<PrivateRoute roles={[ROLE.ADMIN]}>
-					<HomePage />
-				</PrivateRoute>
-			}
-		/>
+		<Route path="*" element={<HomePage />} />
 		<Route path="/403" element={<ForbiddenPage />} />
 	</Routes>
 )

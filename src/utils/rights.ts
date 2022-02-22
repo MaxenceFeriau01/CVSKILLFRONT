@@ -1,24 +1,22 @@
-import User from "../api/models/user"
+/**
+ *
+ * @param roles  accepted roles
+ * @param userRoles  current user roles
+ * @return true if the user has the roles, false otherwise
+ */
 
-export function hasRoles(roles: Array<string>): boolean {
-	// Mean it's public root
-
+export function hasRoles(
+	roles: Array<string>,
+	userRoles: Array<string>
+): boolean {
+	// Mean it's public route
 	if (roles.length === 0) {
 		return true
 	}
-	const storageItem = localStorage.getItem("user")
-	let user: User | null = null
-	if (storageItem !== null) {
-		user = JSON.parse(storageItem)
-	}
+
+	return roles.every(role => userRoles.includes(role))
+
 	// If few roles are required but no token
-	if (
-		roles.length > 0 &&
-		(user === null || Array.isArray(user.roles) === false)
-	) {
-		return false
-	}
-	return roles.every(role => user?.roles.includes(role))
 }
 
 export function isAuth(): boolean {

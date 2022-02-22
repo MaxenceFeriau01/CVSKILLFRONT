@@ -1,24 +1,35 @@
 import { Navigate, useLocation } from "react-router-dom"
-import { ReactElement } from "react"
+import { ReactElement, useEffect, useState } from "react"
 import { isAuth, hasRoles } from "../utils/rights"
+import userService from "../api/services/userService"
 
 interface PrivateRouteProps {
 	children: ReactElement<any, any>
-	roles?: Array<string>
+	roles?: Array<string> // The specific roles how has access to the route
 }
 // Show the specific route according  to the user's roles
-function PrivateRoute({ children, roles }: PrivateRouteProps) {
+function PrivateRoute({
+	children,
+	roles,
+}: PrivateRouteProps): ReactElement<any, any> | null {
+	const [usersRoles, setUsersRoles] = useState<null | Array<string>>(null)
+	useEffect(() => {
+		userService.getUserRoles().then(res => setUsersRoles(res))
+	}, [])
 	const location = useLocation()
 
 	if (!isAuth()) {
 		return <Navigate to="/login" state={{ from: location }} />
 	}
 
-	if (!hasRoles(roles || [])) {
-		return <Navigate to="/403" />
+	if (usersRoles != null) {
+		if (!hasRoles(roles || [], usersRoles)) {
+			return <Navigate to="/403" />
+		}
+		return children
 	}
 
-	return children
+	return null
 }
 
 export default PrivateRoute

@@ -32,7 +32,9 @@ function App() {
 			<QueryClientProvider client={queryClient}>
 				<UserProvider>
 					<ShowSidebarProvider>
-						<div className="overlay" id="overlay" />
+						<div className="overlay" id="overlay">
+							<div className="spin overlay-spin" />
+						</div>
 						<div className="app">
 							<Header />
 							<main className="app-container">
