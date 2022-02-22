@@ -6,7 +6,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import Credentials from "../../api/models/credentials"
 import User from "../../api/models/user"
 import userService from "../../api/services/userService"
-import OverlaySpinner from "../../components/spinners/overlaySpinner"
 import UserContext from "../../contexts/user"
 import useHideElement from "../../hooks/hideElement"
 import logo from "../../resources/images/logo.svg"
@@ -37,7 +36,6 @@ function LoginPage() {
 	}
 	return (
 		<section className="login">
-			{postAuthenticate.isLoading && <OverlaySpinner />}
 			<form onSubmit={handleSubmit(onSubmit)} className="login-form">
 				<Typography variant="h4" mb={2}>
 					Authentification

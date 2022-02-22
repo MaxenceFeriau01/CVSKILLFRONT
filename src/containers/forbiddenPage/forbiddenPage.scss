@@ -1,0 +1,29 @@
+.forbidden {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+
+	text-align: center;
+
+	img {
+		width: 70%;
+		max-height: 80%;
+		margin: auto auto 0 auto;
+	}
+
+	.link-company {
+		color: $color-primary;
+	}
+
+	.forbidden-info {
+		color: $color-red;
+	}
+
+	span {
+		font-size: 18px;
+	}
+
+	div {
+		margin: 0 auto auto auto;
+	}
+}

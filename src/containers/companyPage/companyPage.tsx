@@ -1,15 +1,15 @@
-import { Typography } from "@mui/material"
 import { useRef, useState } from "react"
 import { useInfiniteQuery, useQuery } from "react-query"
 import { Link } from "react-router-dom"
 import Company from "../../api/models/company"
-import PaginatedCompany from "../../api/models/paginatedCompany"
+
 import ReactSelectOption from "../../api/models/reactSelectOption"
 
 import activityService from "../../api/services/activityService"
 import companyService from "../../api/services/companyService"
 import CustomSelect from "../../components/inputs/customSelect"
-import OverlaySpinner from "../../components/spinners/overlaySpinner"
+import HasRight from "../../components/rights/hasRight"
+import { ROLE } from "../../utils/rights"
 import CompanyTile from "./companyTile"
 import { PAGE, SIZE } from "./constants"
 
@@ -71,14 +71,15 @@ function CompanyPage() {
 			</header>
 
 			<div onScroll={handleScroll} className="company-container">
-				{companies.isFetching && <OverlaySpinner />}
-				<Link
-					to="/new-company"
-					className="company-tile company-tile--add"
-				>
-					<span>+</span>
-					<b>Créer une entreprise</b>
-				</Link>
+				<HasRight roles={[ROLE.ADMIN]}>
+					<Link
+						to="/new-company"
+						className="company-tile company-tile--add"
+					>
+						<span>+</span>
+						<b>Créer une entreprise</b>
+					</Link>
+				</HasRight>
 				{companies?.data?.pages?.map(page =>
 					page?.content?.map((c: Company) => (
 						<CompanyTile key={c.id} company={c} />

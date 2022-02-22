@@ -16,10 +16,11 @@ import activityService from "../../api/services/activityService"
 
 import companyService from "../../api/services/companyService"
 import ImagePreview from "../../components/inputs/imagePreview"
-import OverlaySpinner from "../../components/spinners/overlaySpinner"
 import Activity from "../../api/models/activity"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 import CustomSelect from "../../components/inputs/customSelect"
+import HasRight from "../../components/rights/hasRight"
+import { ROLE } from "../../utils/rights"
 
 interface PutCompany {
 	companyToUpdate: FormData
@@ -47,7 +48,7 @@ function CompanyDetailsPage() {
 	const company = useQuery(
 		"company",
 		() =>
-			companyService.get(id).then((res: Company) => {
+			companyService.getById(id).then((res: Company) => {
 				setValue("contactFirstName", res.contactFirstName)
 				setValue("contactLastName", res.contactLastName)
 				setValue("contactNum", res.contactNum)
@@ -110,9 +111,6 @@ function CompanyDetailsPage() {
 
 	return (
 		<section className="page">
-			{(company.isFetching ||
-				putCompany.isLoading ||
-				postCompany.isLoading) && <OverlaySpinner />}
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className="company-details-form"
@@ -273,11 +271,13 @@ function CompanyDetailsPage() {
 						</Alert>
 					)}
 				</div>
-				<Button type="submit">
-					{id !== undefined
-						? "Mettre à jour"
-						: "Créer une entreprise"}
-				</Button>
+				<HasRight roles={[ROLE.ADMIN]}>
+					<Button type="submit">
+						{id !== undefined
+							? "Mettre à jour"
+							: "Créer une entreprise"}
+					</Button>
+				</HasRight>
 			</form>
 		</section>
 	)

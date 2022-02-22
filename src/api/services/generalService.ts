@@ -17,36 +17,57 @@ class GeneralService<T> {
 	constructor(endPoint: string) {
 		this.http = axios.create()
 		this.url = `${process.env.REACT_APP_BASE_API_URL}${endPoint}`
+		// Intercept every requests
+		this.http.interceptors.request.use(
+			config => {
+				const newConfig = config
+				// Show loading spinner
+
+				document.getElementById("overlay")!.style.display = "unset"
+
+				// Add jwtToken to every request
+				const storageItem = localStorage.getItem("user")
+
+				if (storageItem !== null) this.user = JSON.parse(storageItem)
+
+				if (this.user && this.user.token) {
+					newConfig!.headers!.Authorization = `Bearer ${this.user.token}`
+				}
+
+				return newConfig
+			},
+			error => Promise.reject(error)
+		)
+		// Intercept every responses
 		this.http.interceptors.response.use(
-			response => response,
+			response => {
+				// Remove loading spinner
+				document.getElementById("overlay")!.style.display = "none"
+				return response
+			},
 			err =>
 				new Promise((resolve, reject) => {
 					if (err.response?.status === 401) {
 						localStorage.removeItem("user")
 						window.location.replace("/login")
 					}
+					// Remove loading spinner
+					document.getElementById("overlay")!.style.display = "none"
 					throw err
 				})
 		)
 	}
 
-	authHeader() {
-		const storageItem = localStorage.getItem("user")
-
-		if (storageItem !== null) this.user = JSON.parse(storageItem)
-
-		if (this.user && this.user.token) {
-			// for Node.js Express back-end
-			return { Authorization: `Bearer ${this.user.token}` }
-		}
-		return undefined
+	getById(id: any): Promise<T> {
+		return this.http
+			.get<T>(`${this.url}/${id}`)
+			.then(this.handleResponse)
+			.catch(this.handleError)
 	}
 
-	get(id: any, specificUrl: string = ""): Promise<T> {
+	get(url: string): Promise<T> {
 		return this.http
-			.get<T>(`${this.url}${specificUrl}/${id}`, {
-				headers: this.authHeader(),
-			})
+			.get<T>(`${this.url}${url}`)
 			.then(this.handleResponse)
 			.catch(this.handleError)
 	}
@@ -55,41 +76,35 @@ class GeneralService<T> {
 		// ajout des filtres
 
 		return this.http
-			.get<T[]>(this.url, { params: filters, headers: this.authHeader() })
+			.get<T[]>(this.url, { params: filters })
 			.then(this.handleResponse)
 			.catch(this.handleError)
 	}
 
 	getAllPaginated(filters?: Object): Promise<T> {
 		return this.http
-			.get<T[]>(this.url, { params: filters, headers: this.authHeader() })
+			.get<T[]>(this.url, { params: filters })
 			.then((res: any) => res.data)
 			.catch(this.handleError)
 	}
 
 	post(entity: T, specificUrl: string = ""): Promise<T> {
 		return this.http
-			.post<T>(this.url + specificUrl, entity, {
-				headers: this.authHeader(),
-			})
+			.post<T>(this.url + specificUrl, entity)
 			.then(this.handleResponse)
 			.catch(this.handleError)
 	}
 
 	put(entity: T, id: number | string): Promise<T> {
 		return this.http
-			.put<T>(`${this.url}/${id}`, entity, {
-				headers: this.authHeader(),
-			})
+			.put<T>(`${this.url}/${id}`, entity)
 			.then(this.handleResponse)
 			.catch(this.handleError)
 	}
 
 	delete(id: number | string): Promise<T> {
 		return this.http
-			.delete<T>(`${this.url}/${id}`, {
-				headers: this.authHeader(),
-			})
+			.delete<T>(`${this.url}/${id}`)
 			.then(this.handleResponse)
 			.catch(this.handleError)
 	}

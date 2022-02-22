@@ -19,7 +19,6 @@ import jobService from "../../api/services/jobService"
 import userService from "../../api/services/userService"
 import CustomSelect from "../../components/inputs/customSelect"
 import FileUpload from "../../components/inputs/fileUpload"
-import OverlaySpinner from "../../components/spinners/overlaySpinner"
 
 import useHideElement from "../../hooks/hideElement"
 import logo from "../../resources/images/logo.svg"
@@ -110,7 +109,6 @@ function RegistrationPage() {
 
 	return (
 		<section className="registration">
-			{postRegister.isLoading && <OverlaySpinner />}
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className="registration-form"
