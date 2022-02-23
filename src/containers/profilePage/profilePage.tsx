@@ -2,7 +2,7 @@ import { Button, Typography } from "@mui/material"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useMutation, useQuery } from "react-query"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import Activity from "../../api/models/activity"
 import Job from "../../api/models/job"
 import ReactSelectOption from "../../api/models/reactSelectOption"
@@ -11,13 +11,10 @@ import activityService from "../../api/services/activityService"
 import jobService from "../../api/services/jobService"
 import userService from "../../api/services/userService"
 
-import logo from "../../resources/images/logo.svg"
-import useHideElement from "../../hooks/hideElement"
+import profile from "../../resources/images/profile.svg"
 import UserControls from "../../components/controls/userControls"
 
-function RegistrationPage() {
-	useHideElement(["sidebar", "header", "footer"])
-
+function ProfilePage() {
 	const [activitiesOptions, setActivitiesOptions] =
 		useState<Array<ReactSelectOption>>()
 	const [jobsOptions, setJobsOptions] = useState<Array<ReactSelectOption>>()
@@ -29,6 +26,7 @@ function RegistrationPage() {
 		formState: { errors },
 		watch,
 		register,
+		setValue,
 	} = useForm()
 
 	const postRegister = useMutation(
@@ -38,6 +36,36 @@ function RegistrationPage() {
 				navigate("/login")
 			},
 		}
+	)
+
+	useQuery("user", () =>
+		userService.getUser().then((res: any) => {
+			Object.keys(res).forEach((key: any) => {
+				switch (key) {
+					case "activities":
+						setValue(
+							"activities",
+							res.activities.map((a: Activity) => a.id),
+							{
+								shouldValidate: true,
+							}
+						)
+						break
+					case "jobs":
+						setValue(
+							"jobs",
+							res.jobs.map((j: Job) => j.id),
+							{
+								shouldValidate: true,
+							}
+						)
+						break
+					default:
+						setValue(key, res[key])
+						break
+				}
+			})
+		})
 	)
 
 	useQuery("activities", () =>
@@ -94,32 +122,22 @@ function RegistrationPage() {
 	}
 
 	return (
-		<section className="registration">
-			<form
-				onSubmit={handleSubmit(onSubmit)}
-				className="registration-form"
-			>
-				<Typography variant="h4" mb={2}>
-					Inscription
-				</Typography>
-				<img src={logo} alt="logo" />
-				<div className="registration-form--scroll">
-					<UserControls
-						jobsOptions={jobsOptions}
-						activitiesOptions={activitiesOptions}
-						control={control}
-						watch={watch}
-						errors={errors}
-						register={register}
-					/>
-				</div>
-				<Button type="submit">S'inscrire</Button>
-				<span className="registration-form-registration">
-					Déja inscrit? <Link to="/login">Se connecter</Link>
-				</span>
+		<section className="profile">
+			<img src={profile} alt="profile" />
+
+			<form onSubmit={handleSubmit(onSubmit)} className="profile-form">
+				<UserControls
+					jobsOptions={jobsOptions}
+					activitiesOptions={activitiesOptions}
+					control={control}
+					watch={watch}
+					errors={errors}
+					register={register}
+				/>
+				<Button type="submit">Mettre à jour</Button>
 			</form>
 		</section>
 	)
 }
 
-export default RegistrationPage
+export default ProfilePage
