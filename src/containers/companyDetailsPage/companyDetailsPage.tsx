@@ -20,7 +20,7 @@ import Activity from "../../api/models/activity"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 import CustomSelect from "../../components/inputs/customSelect"
 import HasRight from "../../components/rights/hasRight"
-import { ROLE } from "../../utils/rights"
+import Role from "../../enums/Role"
 
 interface PutCompany {
 	companyToUpdate: FormData
@@ -271,7 +271,7 @@ function CompanyDetailsPage() {
 						</Alert>
 					)}
 				</div>
-				<HasRight roles={[ROLE.ADMIN]}>
+				<HasRight roles={[Role.ADMIN]}>
 					<Button type="submit">
 						{id !== undefined
 							? "Mettre à jour"

@@ -1,8 +1,10 @@
-import { Button, Typography } from "@mui/material"
+/* eslint-disable react/jsx-no-bind */
+import { Button } from "@mui/material"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useMutation, useQuery } from "react-query"
 import { useNavigate } from "react-router-dom"
+
 import Activity from "../../api/models/activity"
 import Job from "../../api/models/job"
 import ReactSelectOption from "../../api/models/reactSelectOption"
@@ -13,6 +15,7 @@ import userService from "../../api/services/userService"
 
 import profile from "../../resources/images/profile.svg"
 import UserControls from "../../components/controls/userControls"
+import FileDb from "../../api/models/fileDb"
 
 function ProfilePage() {
 	const [activitiesOptions, setActivitiesOptions] =
@@ -59,6 +62,17 @@ function ProfilePage() {
 								shouldValidate: true,
 							}
 						)
+						break
+					case "files":
+						res.files?.forEach((element: FileDb) => {
+							if (element.type === "CV") {
+								setValue("cv", element)
+							}
+							if (element.type === "COVER_LETTER") {
+								setValue("coverLetter", element)
+							}
+						})
+
 						break
 					default:
 						setValue(key, res[key])
@@ -124,7 +138,6 @@ function ProfilePage() {
 	return (
 		<section className="profile">
 			<img src={profile} alt="profile" />
-
 			<form onSubmit={handleSubmit(onSubmit)} className="profile-form">
 				<UserControls
 					jobsOptions={jobsOptions}

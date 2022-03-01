@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom"
 import { ReactElement, useEffect, useState } from "react"
-import { isAuth, hasRoles } from "../utils/rights"
+import { isAuth, hasRoles } from "../utils/rightsUtil"
 import userService from "../api/services/userService"
 
 interface PrivateRouteProps {

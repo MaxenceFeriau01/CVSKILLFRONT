@@ -27,7 +27,6 @@ class GeneralService<T> {
 
 				document.getElementById("overlay")!.style.display = "unset"
 				GeneralService.requestCounter += 1
-				console.log(GeneralService.requestCounter)
 
 				// Add jwtToken to every request
 				const storageItem = localStorage.getItem("user")

@@ -25,6 +25,35 @@ body {
 		height: 100vh;
 	}
 
+	.modal {
+		@include breakpoint {
+			width: 70%;
+			height: 70%;
+		}
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 95%;
+		height: 95%;
+		background-color: $color-white;
+		border-radius: 10px;
+		padding: 15px;
+
+		.modal__close {
+			position: absolute;
+			right: 20px;
+			font-size: 27px;
+			text-transform: lowercase;
+			cursor: pointer;
+			z-index: 1;
+		}
+
+		&:focus {
+			outline: thin dotted;
+		}
+	}
+
 	.MuiInputBase-formControl {
 		background-color: $color-white;
 	}

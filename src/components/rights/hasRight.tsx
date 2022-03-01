@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from "react"
 import userService from "../../api/services/userService"
-import { hasRoles, isAuth } from "../../utils/rights"
+import { hasRoles, isAuth } from "../../utils/rightsUtil"
 
 /**
  * @param roles  accepted roles

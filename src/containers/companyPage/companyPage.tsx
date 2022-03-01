@@ -9,7 +9,7 @@ import activityService from "../../api/services/activityService"
 import companyService from "../../api/services/companyService"
 import CustomSelect from "../../components/inputs/customSelect"
 import HasRight from "../../components/rights/hasRight"
-import { ROLE } from "../../utils/rights"
+import Role from "../../enums/Role"
 import CompanyTile from "./companyTile"
 import { PAGE, SIZE } from "./constants"
 
@@ -71,7 +71,7 @@ function CompanyPage() {
 			</header>
 
 			<div onScroll={handleScroll} className="company-container">
-				<HasRight roles={[ROLE.ADMIN]}>
+				<HasRight roles={[Role.ADMIN]}>
 					<Link
 						to="/new-company"
 						className="company-tile company-tile--add"

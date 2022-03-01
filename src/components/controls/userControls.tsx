@@ -86,6 +86,7 @@ function UserControls({
 			<div className="MuiFormControl-root">
 				<Controller
 					name="dateOfBirth"
+					defaultValue=""
 					control={control}
 					rules={{
 						required: "La date de naissance est requise",
@@ -94,9 +95,8 @@ function UserControls({
 						<TextField
 							label="Date de naissance"
 							type="date"
-							defaultValue="2000-01-01"
 							onChange={onChange}
-							value={value}
+							value={value || "2000-01-01"}
 							required
 						/>
 					)}
@@ -107,12 +107,12 @@ function UserControls({
 			</div>
 			<Controller
 				name="postalCode"
+				defaultValue=""
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<TextField
 						label="Code postal"
 						type="number"
-						defaultValue="69000"
 						onChange={onChange}
 						value={value}
 					/>

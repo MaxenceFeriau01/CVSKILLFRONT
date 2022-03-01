@@ -27,9 +27,3 @@ export function isAuth(): boolean {
 	}
 	return false
 }
-
-export enum ROLE {
-	ADMIN = "ROLE_ADMIN",
-	USER = "ROLE_USER",
-	COMPANY = "ROLE_COMPANY",
-}
