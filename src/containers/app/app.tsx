@@ -4,7 +4,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles"
 
 import { pdfjs } from "react-pdf"
 import Header from "../../components/header/header"
-import Sidebar from "../../components/sidebar/sidebar"
 import routes from "../../routes/routes"
 import ShowSidebarProvider from "../../contexts/showSidebarProvider"
 import variables from "../../resources/scss/base.module.scss"
@@ -40,10 +39,7 @@ function App() {
 						</div>
 						<div className="app">
 							<Header />
-							<main className="app-container">
-								<Sidebar />
-								{routes}
-							</main>
+							<main className="app-container">{routes}</main>
 							<Footer />
 						</div>
 					</ShowSidebarProvider>

@@ -121,7 +121,6 @@ function ProfilePage() {
 
 	const onSubmit = (data: any) => {
 		const formData = new FormData()
-		console.log(data)
 		const toUpdate: User = { ...data }
 		if (toUpdate.status === "Collégien") {
 			toUpdate.activities = null

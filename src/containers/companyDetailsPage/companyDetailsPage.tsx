@@ -113,7 +113,7 @@ function CompanyDetailsPage() {
 		<section className="page">
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className="company-details-form"
+				className="content company-details-form"
 			>
 				<ImagePreview
 					img={{ alt, src }}

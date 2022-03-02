@@ -16,7 +16,7 @@ import useHideElement from "../../hooks/hideElement"
 import UserControls from "../../components/controls/userControls"
 
 function RegistrationPage() {
-	useHideElement(["sidebar", "header", "footer"])
+	useHideElement(["header", "footer"])
 
 	const [activitiesOptions, setActivitiesOptions] =
 		useState<Array<ReactSelectOption>>()
