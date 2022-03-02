@@ -14,6 +14,8 @@ class GeneralService<T> {
 
 	protected user: User = new User()
 
+	static requestCounter: number = 0
+
 	constructor(endPoint: string) {
 		this.http = axios.create()
 		this.url = `${process.env.REACT_APP_BASE_API_URL}${endPoint}`
@@ -24,6 +26,7 @@ class GeneralService<T> {
 				// Show loading spinner
 
 				document.getElementById("overlay")!.style.display = "unset"
+				GeneralService.requestCounter += 1
 
 				// Add jwtToken to every request
 				const storageItem = localStorage.getItem("user")
@@ -42,7 +45,9 @@ class GeneralService<T> {
 		this.http.interceptors.response.use(
 			response => {
 				// Remove loading spinner
-				document.getElementById("overlay")!.style.display = "none"
+				GeneralService.requestCounter -= 1
+				if (GeneralService.requestCounter <= 0)
+					document.getElementById("overlay")!.style.display = "none"
 				return response
 			},
 			err =>
@@ -52,7 +57,10 @@ class GeneralService<T> {
 						window.location.replace("/login")
 					}
 					// Remove loading spinner
-					document.getElementById("overlay")!.style.display = "none"
+					GeneralService.requestCounter -= 1
+					if (GeneralService.requestCounter <= 0)
+						document.getElementById("overlay")!.style.display =
+							"none"
 					throw err
 				})
 		)

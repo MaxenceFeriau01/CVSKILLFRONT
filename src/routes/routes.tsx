@@ -4,8 +4,9 @@ import CompanyPage from "../containers/companyPage/companyPage"
 import ForbiddenPage from "../containers/forbiddenPage/forbiddenPage"
 import HomePage from "../containers/homePage/homePage"
 import LoginPage from "../containers/loginPage/loginPage"
+import ProfilePage from "../containers/profilePage/profilePage"
 import RegistrationPage from "../containers/registrationPage/registrationPage"
-import { ROLE } from "../utils/rights"
+import Role from "../enums/Role"
 import PrivateRoute from "./privateRoute"
 
 const routes = (
@@ -16,8 +17,16 @@ const routes = (
 		<Route
 			path="/new-company"
 			element={
-				<PrivateRoute roles={[ROLE.ADMIN, ROLE.COMPANY]}>
+				<PrivateRoute roles={[Role.ADMIN, Role.COMPANY]}>
 					<CompanyDetailsPage />
+				</PrivateRoute>
+			}
+		/>
+		<Route
+			path="/my-profile"
+			element={
+				<PrivateRoute>
+					<ProfilePage />
 				</PrivateRoute>
 			}
 		/>

@@ -14,13 +14,13 @@ function UserPopover() {
 		setUser(null)
 	}
 
-	const profil = () => {
-		navigate("/profil")
+	const profile = () => {
+		navigate("/my-profile")
 	}
 
 	return (
 		<div className="popover">
-			<div className="popover--profil" onClick={() => profil()}>
+			<div className="popover--profile" onClick={() => profile()}>
 				Mon profil
 			</div>
 			<p />

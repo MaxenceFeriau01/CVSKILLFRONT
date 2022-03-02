@@ -1,31 +1,25 @@
-.registration {
-	background-color: $color-primary;
+.profile {
 	width: 100%;
-	height: 100vh;
+	height: 100%;
 	display: flex;
 	align-items: center;
 	flex-direction: column;
+	overflow-y: scroll;
 
 	img {
-		width: 80%;
-		margin: 0 auto;
+		width: 200px;
 	}
 
-	.registration-form {
-		@include breakpoint {
-			width: 700px;
-		}
-		max-height: 90%;
-		position: relative;
-		width: 90%;
-		background-color: $background-color;
-		flex-direction: column;
+	.profile-form {
+		width: 80%;
 		display: flex;
-		border-radius: 10px;
-		margin: auto;
-		padding: 10px;
-		border: 1px solid $color-secondary;
+		justify-content: center;
+		flex-wrap: wrap;
+		padding: 0 5px;
 
+		@include breakpoint {
+			justify-content: space-between;
+		}
 		.MuiButton-root {
 			margin: 10px auto;
 			width: 80%;
@@ -42,15 +36,6 @@
 			@include breakpoint {
 				width: 48%;
 			}
-		}
-
-		h4 {
-			color: $color-white;
-			width: 100%;
-			text-align: center;
-			left: 0;
-			top: -50px;
-			position: absolute;
 		}
 
 		img {
@@ -97,30 +82,6 @@
 			@include breakpoint {
 				width: 48%;
 			}
-		}
-
-		.registration-form-registration {
-			font-size: 14px;
-			a {
-				color: $color-primary;
-
-				&:hover {
-					color: $color-secondary;
-				}
-			}
-
-			text-align: center;
-		}
-	}
-	.registration-form--scroll {
-		display: flex;
-		overflow-y: auto;
-		justify-content: center;
-		flex-wrap: wrap;
-		padding: 0 5px;
-
-		@include breakpoint {
-			justify-content: space-between;
 		}
 	}
 }

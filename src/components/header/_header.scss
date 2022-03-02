@@ -5,9 +5,18 @@
 	display: flex;
 	align-items: center;
 
-	.header__svg--home {
+	.header--home {
+		width: 115px;
+		background-color: $color-white;
 		cursor: pointer;
-		padding-left: 10px;
+		border-radius: 10px;
+		padding: 7px;
+		margin-left: 14px;
+
+		&:hover {
+			background-color: $color-secondary;
+			transition: 0.5s ease all;
+		}
 	}
 
 	.header__title {
@@ -23,14 +32,10 @@
 
 	.header__svg--menu {
 		cursor: pointer;
-		padding-left: 26px;
+		padding-left: 10px;
 		z-index: 997;
 	}
 
-	.header__svg--home:hover {
-		fill: $color-secondary;
-		transition: 0.5s ease all;
-	}
 	.header__svg--menu:hover {
 		fill: $color-secondary;
 		transition: 0.5s ease all;
@@ -79,7 +84,7 @@
 			-webkit-user-select: none;
 			-ms-user-select: none;
 			user-select: none;
-			z-index: 2;
+			z-index: 4;
 
 			.popover--disconnect {
 				padding: 16px 14px;
@@ -91,7 +96,7 @@
 					background-color: #f1d6e4;
 				}
 			}
-			.popover--profil {
+			.popover--profile {
 				padding: 16px 14px;
 				border-radius: 20px 20px 0 0;
 				transition: all 0.5s ease;
