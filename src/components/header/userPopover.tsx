@@ -6,7 +6,7 @@ import userContext from "../../contexts/user"
 function UserPopover() {
 	const navigate = useNavigate()
 
-	const { user, setUser } = useContext(userContext)
+	const { setUser } = useContext(userContext)
 
 	const logout = () => {
 		window.localStorage.removeItem("user")

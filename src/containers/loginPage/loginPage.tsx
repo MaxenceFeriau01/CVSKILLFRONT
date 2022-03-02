@@ -11,7 +11,7 @@ import useHideElement from "../../hooks/hideElement"
 import logo from "../../resources/images/logo.svg"
 
 function LoginPage() {
-	useHideElement(["sidebar", "header", "footer"])
+	useHideElement(["header", "footer"])
 	const navigate = useNavigate()
 	const { state } = useLocation()
 

@@ -1,3 +1,4 @@
+import { Button } from "@mui/material"
 import { useRef, useState } from "react"
 import { useInfiniteQuery, useQuery } from "react-query"
 import { Link } from "react-router-dom"
@@ -68,23 +69,26 @@ function CompanyPage() {
 					isSearchable
 					name="select"
 				/>
+				<Button>Rechercher</Button>
 			</header>
 
 			<div onScroll={handleScroll} className="company-container">
-				<HasRight roles={[Role.ADMIN]}>
-					<Link
-						to="/new-company"
-						className="company-tile company-tile--add"
-					>
-						<span>+</span>
-						<b>Créer une entreprise</b>
-					</Link>
-				</HasRight>
-				{companies?.data?.pages?.map(page =>
-					page?.content?.map((c: Company) => (
-						<CompanyTile key={c.id} company={c} />
-					))
-				)}
+				<div className="content company-content">
+					<HasRight roles={[Role.ADMIN]}>
+						<Link
+							to="/new-company"
+							className="company-tile company-tile--add"
+						>
+							<span>+</span>
+							<b>Créer une entreprise</b>
+						</Link>
+					</HasRight>
+					{companies?.data?.pages?.map(page =>
+						page?.content?.map((c: Company) => (
+							<CompanyTile key={c.id} company={c} />
+						))
+					)}
+				</div>
 			</div>
 		</section>
 	)

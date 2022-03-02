@@ -48,7 +48,6 @@ function PreviewModal({ file }: any) {
 
 	const handleOpen = (e: any) => {
 		e.preventDefault()
-		console.log(lFile)
 		if (file.id && !lFile.data) {
 			fileService.getById(file.id).then((res: FileDb) => {
 				setLFile(res)
@@ -68,7 +67,6 @@ function PreviewModal({ file }: any) {
 
 	useEffect(() => {
 		if (file instanceof File) {
-			console.log(file)
 			const blob = new Blob([file])
 			setUrl(URL.createObjectURL(blob))
 		}

@@ -141,7 +141,7 @@ function CompanyDetailsPage() {
 			</Stepper>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="company-details-form"
+				className="content company-details-form"
 			>
 				{activeStep === 0 && <CompanyGeneralDetails form={form} />}
 
@@ -175,7 +175,7 @@ function CompanyDetailsPage() {
 			</form>
 			{/* <form
 				onSubmit={handleSubmit(onSubmit)}
-				className="company-details-form"
+				className="content company-details-form"
 			>
 				<ImagePreview
 					img={{ alt, src }}

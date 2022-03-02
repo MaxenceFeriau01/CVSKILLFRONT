@@ -6,7 +6,7 @@ import internship from "../../resources/images/internship.svg"
 import working from "../../resources/images/working.svg"
 
 function HomePage() {
-	useHideElement(["sidebar", "header", "footer"])
+	useHideElement(["header", "footer"])
 	const navigate = useNavigate()
 
 	function goToInternShip() {

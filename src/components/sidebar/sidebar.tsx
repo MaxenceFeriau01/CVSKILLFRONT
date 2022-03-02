@@ -1,11 +1,12 @@
 import BusinessIcon from "@mui/icons-material/Business"
 
-import { useContext } from "react"
 import SidebarLink from "./sidebarLink"
-import ShowSidebarContext from "../../contexts/showSidebar"
 
-function Sidebar() {
-	const { showSidebar } = useContext(ShowSidebarContext)
+interface SidebarProps {
+	showSidebar: boolean
+}
+
+function Sidebar({ showSidebar }: SidebarProps) {
 	return (
 		<div className={`sidebar ${showSidebar ? "" : "sidebar--closed"}`}>
 			<div className="sidebar-header" />
