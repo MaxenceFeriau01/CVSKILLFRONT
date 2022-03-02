@@ -18,6 +18,9 @@ const theme = createTheme({
 		primary: {
 			main: variables.colorPrimary,
 		},
+		secondary: {
+			main: variables.colorSecondary,
+		},
 	},
 })
 

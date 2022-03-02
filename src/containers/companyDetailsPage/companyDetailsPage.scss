@@ -1,26 +1,46 @@
-.company-details-form {
-	display: flex;
-	flex-direction: column;
-	margin: 15px auto;
-	width: 80%;
-
-	button {
-		margin-top: 1em;
+.company-details-page {
+	overflow-x: hidden;
+	.stepper {
+		margin-top: 3%;
+		transform: scale(1.2);
+		width: 88%;
+		margin-left: auto;
+		margin-right: auto;
 	}
-	.MuiFormGroup-row {
-		justify-content: space-between;
-		width: 100%;
-		.MuiFormControl-root {
-			width: 46%;
+	.MuiStepIcon-text {
+		fill: $color-white;
+	}
+	.MuiStepLabel-alternativeLabel {
+		//font-size: px;
+		.Mui-active {
+			color: $color-secondary !important;
+		}
+		.MuiStepLabel-alternativeLabel {
+			color: unset !important;
 		}
 	}
 
-	.select-activities {
-		margin: 1em auto 0 auto;
-		width: 70%;
-	}
+	.company-details-form {
+		display: flex;
+		flex-direction: column;
+		margin: 15px auto;
+		width: 75%;
 
-	.MuiFormControl-root {
-		margin-top: 10px;
+		.MuiFormGroup-row {
+			justify-content: space-between;
+			width: 100%;
+			.MuiFormControl-root {
+				width: 46%;
+			}
+		}
+
+		.select-activities {
+			margin: 1em auto 0 auto;
+			width: 70%;
+		}
+
+		.MuiFormControl-root {
+			margin-top: 10px;
+		}
 	}
 }

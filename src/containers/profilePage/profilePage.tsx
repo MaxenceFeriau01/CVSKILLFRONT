@@ -150,7 +150,7 @@ function ProfilePage() {
 	}
 
 	return (
-		<section className="profile">
+		<section className="page profile">
 			<img src={profile} alt="profile" />
 			<form onSubmit={handleSubmit(onSubmit)} className="profile-form">
 				<UserControls

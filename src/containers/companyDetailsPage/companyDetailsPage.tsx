@@ -1,8 +1,14 @@
 import {
 	Alert,
+	Box,
 	Button,
 	FormGroup,
 	InputLabel,
+	makeStyles,
+	Step,
+	StepButton,
+	StepLabel,
+	Stepper,
 	TextField,
 	Typography,
 } from "@mui/material"
@@ -21,6 +27,8 @@ import ReactSelectOption from "../../api/models/reactSelectOption"
 import CustomSelect from "../../components/inputs/customSelect"
 import HasRight from "../../components/rights/hasRight"
 import Role from "../../enums/Role"
+import { MAX_STEP_NUMBER, STEPS } from "./constants"
+import CompanyGeneralDetails from "./companyGeneralDetails"
 
 interface PutCompany {
 	companyToUpdate: FormData
@@ -37,27 +45,41 @@ function CompanyDetailsPage() {
 		alt: "logo",
 	})
 
-	const {
-		register,
-		handleSubmit,
-		control,
-		setValue,
-		formState: { errors },
-	} = useForm()
+	const [activeStep, setActiveStep] = useState(0)
+	const [completed, setCompleted] = useState<{
+		[k: number]: boolean
+	}>({})
+
+	const handleNext = () => {
+		const newActiveStep = activeStep + 1
+		setActiveStep(newActiveStep)
+	}
+
+	const handleBack = () => {
+		setActiveStep(prevActiveStep => prevActiveStep - 1)
+	}
+
+	const handleStep = (step: number) => () => {
+		setActiveStep(step)
+	}
+
+	const form = useForm()
 
 	const company = useQuery(
 		"company",
 		() =>
 			companyService.getById(id).then((res: Company) => {
-				setValue("contactFirstName", res.contactFirstName)
-				setValue("contactLastName", res.contactLastName)
-				setValue("contactNum", res.contactNum)
-				setValue("contactMail", res.contactMail)
-				setValue("siret", res.siret)
-				setValue("name", res.name)
-				setValue("description", res.description)
+				form.setValue("contactFirstName", res.contactFirstName)
+				form.setValue("contactLastName", res.contactLastName)
+				form.setValue("contactNum", res.contactNum)
+				form.setValue("contactMail", res.contactMail)
+				form.setValue("siret", res.siret)
+				form.setValue("name", res.name)
+				form.setValue("description", res.description)
 				const activities = res.activities.map((a: Activity) => a.id)
-				setValue("activities", activities, { shouldValidate: true })
+				form.setValue("activities", activities, {
+					shouldValidate: true,
+				})
 				if (res.logo) {
 					setImg({
 						file: null,
@@ -67,16 +89,6 @@ function CompanyDetailsPage() {
 				}
 			}),
 		{ enabled: id !== undefined }
-	)
-
-	useQuery("activities", () =>
-		activityService.getAllWithFilters().then(res => {
-			const activities = res.map((a: Activity) => ({
-				label: a.name,
-				value: a.id,
-			}))
-			setOptions(activities)
-		})
 	)
 
 	const postCompany = useMutation(
@@ -108,10 +120,60 @@ function CompanyDetailsPage() {
 			postCompany.mutate(formData)
 		}
 	}
-
 	return (
-		<section className="page">
+		<section className="page company-details-page">
+			<Stepper
+				className="stepper"
+				activeStep={activeStep}
+				alternativeLabel
+				nonLinear
+			>
+				{STEPS.map((step, index) => (
+					<Step key={step}>
+						<StepButton
+							color="secondary"
+							onClick={handleStep(index)}
+						>
+							{step}
+						</StepButton>
+					</Step>
+				))}
+			</Stepper>
 			<form
+				onSubmit={form.handleSubmit(onSubmit)}
+				className="company-details-form"
+			>
+				{activeStep === 0 && <CompanyGeneralDetails form={form} />}
+
+				<Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+					<Button
+						color="secondary"
+						disabled={activeStep === 0}
+						onClick={handleBack}
+						sx={{ mr: 1 }}
+					>
+						Précédent
+					</Button>
+					<Box sx={{ flex: "1 1 auto" }} />
+
+					<Button
+						color="secondary"
+						disabled={activeStep === MAX_STEP_NUMBER - 1}
+						onClick={handleNext}
+						sx={{ mr: 1 }}
+					>
+						Suivant
+					</Button>
+				</Box>
+				<HasRight roles={[Role.ADMIN]}>
+					<Button type="submit">
+						{id !== undefined
+							? "Mettre à jour"
+							: "Créer une entreprise"}
+					</Button>
+				</HasRight>
+			</form>
+			{/* <form
 				onSubmit={handleSubmit(onSubmit)}
 				className="company-details-form"
 			>
@@ -278,7 +340,7 @@ function CompanyDetailsPage() {
 							: "Créer une entreprise"}
 					</Button>
 				</HasRight>
-			</form>
+						</form> */}
 		</section>
 	)
 }
