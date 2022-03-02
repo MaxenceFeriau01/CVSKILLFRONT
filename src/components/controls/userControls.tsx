@@ -11,6 +11,16 @@ import {
 	STATUS_OPTIONS,
 } from "./constants"
 
+interface UserControlsProps {
+	control: any
+	watch: any
+	errors: any
+	register: any // FileList | FileDb
+	activitiesOptions: Array<ReactSelectOption> | undefined
+	jobsOptions: Array<ReactSelectOption> | undefined
+	isProfile?: boolean
+}
+
 function UserControls({
 	control,
 	watch,
@@ -18,7 +28,8 @@ function UserControls({
 	register,
 	activitiesOptions,
 	jobsOptions,
-}: any) {
+	isProfile = false,
+}: UserControlsProps) {
 	return (
 		<>
 			<Controller
@@ -118,7 +129,7 @@ function UserControls({
 					/>
 				)}
 			/>
-			<div className="select-form-control">
+			<div className="select-form-control" style={{ zIndex: 4 }}>
 				<InputLabel>Civilité</InputLabel>
 				<Controller
 					rules={{
@@ -145,62 +156,68 @@ function UserControls({
 					<Alert severity="error">{errors.civility.message}</Alert>
 				)}
 			</div>
-			<div id="password" className="MuiFormControl-root">
-				<Controller
-					name="password"
-					rules={{
-						minLength: {
-							value: 8,
-							message:
-								"Le mot de passe doit avoir ou moins avoir 8 caractères",
-						},
-					}}
-					control={control}
-					defaultValue=""
-					render={({ field: { onChange, value } }) => (
-						<TextField
-							type="password"
-							required
-							value={value}
-							onChange={onChange}
-							label="Mot de passe"
-							variant="outlined"
-							autoComplete="new-password"
+			{!isProfile && (
+				<>
+					<div className="MuiFormControl-root">
+						<Controller
+							name="password"
+							rules={{
+								minLength: {
+									value: 8,
+									message:
+										"Le mot de passe doit avoir ou moins avoir 8 caractères",
+								},
+							}}
+							control={control}
+							defaultValue=""
+							render={({ field: { onChange, value } }) => (
+								<TextField
+									type="password"
+									required
+									value={value}
+									onChange={onChange}
+									label="Mot de passe"
+									variant="outlined"
+									autoComplete="new-password"
+								/>
+							)}
 						/>
-					)}
-				/>
-				{errors?.password && (
-					<Alert severity="error">{errors.password.message}</Alert>
-				)}
-			</div>
-			<div id="confirmPassword" className="MuiFormControl-root">
-				<Controller
-					name="confirmPassword"
-					control={control}
-					rules={{
-						validate: value =>
-							value === watch("password") ||
-							"Les mot de passe ne correspondent pas",
-					}}
-					defaultValue=""
-					render={({ field: { onChange, value } }) => (
-						<TextField
-							type="password"
-							required
-							value={value}
-							onChange={onChange}
-							label="Confirmation du mot de passe"
-							variant="outlined"
-							autoComplete="new-password"
+						{errors?.password && (
+							<Alert severity="error">
+								{errors.password.message}
+							</Alert>
+						)}
+					</div>
+					<div className="MuiFormControl-root">
+						<Controller
+							name="confirmPassword"
+							control={control}
+							rules={{
+								validate: value =>
+									value === watch("password") ||
+									"Les mot de passe ne correspondent pas",
+							}}
+							defaultValue=""
+							render={({ field: { onChange, value } }) => (
+								<TextField
+									type="password"
+									required
+									value={value}
+									onChange={onChange}
+									label="Confirmation du mot de passe"
+									variant="outlined"
+									autoComplete="new-password"
+								/>
+							)}
 						/>
-					)}
-				/>
-				{errors?.confirmPassword && (
-					<Alert severity="error">
-						{errors.confirmPassword.message}
-					</Alert>
-				)}
-			</div>
+						{errors?.confirmPassword && (
+							<Alert severity="error">
+								{errors.confirmPassword.message}
+							</Alert>
+						)}
+					</div>{" "}
+				</>
+			)}
 			<div className="select-form-control">
 				<InputLabel>Status</InputLabel>
 				<Controller

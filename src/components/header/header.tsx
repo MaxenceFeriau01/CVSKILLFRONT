@@ -13,7 +13,6 @@ function Header() {
 	const [showUserPopover, setShowUserPopover] = useState(false)
 	const { user } = useContext(UserContext)
 	const refPopover: any = useRef()
-
 	const location = useLocation()
 
 	useOutsideClick(refPopover, () => setShowUserPopover(false))

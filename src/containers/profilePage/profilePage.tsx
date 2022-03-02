@@ -1,10 +1,11 @@
 /* eslint-disable react/jsx-no-bind */
 import { Button } from "@mui/material"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useMutation, useQuery } from "react-query"
 import { useNavigate } from "react-router-dom"
 
+import Swal from "sweetalert2"
 import Activity from "../../api/models/activity"
 import Job from "../../api/models/job"
 import ReactSelectOption from "../../api/models/reactSelectOption"
@@ -16,13 +17,14 @@ import userService from "../../api/services/userService"
 import profile from "../../resources/images/profile.svg"
 import UserControls from "../../components/controls/userControls"
 import FileDb from "../../api/models/fileDb"
+import UserContext from "../../contexts/user"
 
 function ProfilePage() {
 	const [activitiesOptions, setActivitiesOptions] =
 		useState<Array<ReactSelectOption>>()
 	const [jobsOptions, setJobsOptions] = useState<Array<ReactSelectOption>>()
 
-	const navigate = useNavigate()
+	const { user, setUser } = useContext(UserContext)
 	const {
 		handleSubmit,
 		control,
@@ -32,11 +34,24 @@ function ProfilePage() {
 		setValue,
 	} = useForm()
 
-	const postRegister = useMutation(
-		(newUser: FormData) => userService.register(newUser),
+	const putUser = useMutation(
+		({ id, user }: any) => userService.put(user, id),
 		{
-			onSuccess: () => {
-				navigate("/login")
+			onSuccess: (data: User) => {
+				const lUser = {
+					...user,
+				}
+				lUser.firstName = data.firstName
+				lUser.name = data.name
+				setUser(lUser)
+				localStorage.setItem("user", JSON.stringify(lUser))
+				Swal.fire({
+					position: "bottom-end",
+					title: "",
+					text: "Votre profil a bien été mis à jour ! ",
+					icon: "success",
+					timer: 1500,
+				})
 			},
 		}
 	)
@@ -106,33 +121,32 @@ function ProfilePage() {
 
 	const onSubmit = (data: any) => {
 		const formData = new FormData()
-
-		const toCreate: User = { ...data }
-		if (toCreate.status === "Collégien") {
-			toCreate.activities = null
-			toCreate.jobs = null
-			toCreate.diploma = null
-			toCreate.internshipPeriod = null
+		console.log(data)
+		const toUpdate: User = { ...data }
+		if (toUpdate.status === "Collégien") {
+			toUpdate.activities = null
+			toUpdate.jobs = null
+			toUpdate.diploma = null
+			toUpdate.internshipPeriod = null
 		}
 
-		if (toCreate.status === "Lycéen") {
-			toCreate.diploma = null
-			toCreate.internshipPeriod = null
+		if (toUpdate.status === "Lycéen") {
+			toUpdate.diploma = null
+			toUpdate.internshipPeriod = null
 		}
 
-		toCreate.activities = data.activities?.map((a: any) => ({ id: a }))
-		toCreate.jobs = data.jobs?.map((j: any) => ({ id: j }))
-		toCreate.cv = null
-		toCreate.coverLetter = null
+		toUpdate.activities = data.activities?.map((a: any) => ({ id: a }))
+		toUpdate.jobs = data.jobs?.map((j: any) => ({ id: j }))
+		toUpdate.cv = null
+		toUpdate.coverLetter = null
 
-		formData.append("user", JSON.stringify(toCreate))
+		formData.append("user", JSON.stringify(toUpdate))
 		formData.append("cv", data.cv?.length > 0 ? data.cv[0] : null)
 		formData.append(
 			"coverLetter",
 			data.coverLetter?.length > 0 ? data.coverLetter[0] : null
 		)
-
-		postRegister.mutate(formData)
+		putUser.mutate({ id: data.id, user: formData })
 	}
 
 	return (
@@ -146,6 +160,7 @@ function ProfilePage() {
 					watch={watch}
 					errors={errors}
 					register={register}
+					isProfile
 				/>
 				<Button type="submit">Mettre à jour</Button>
 			</form>
