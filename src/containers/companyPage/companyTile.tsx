@@ -4,6 +4,7 @@ import Swal from "sweetalert2"
 import { useContext } from "react"
 import UserContext from "../../contexts/user"
 import Company from "../../api/models/company"
+import imageUpload from "../../resources/images/image-upload.svg"
 
 interface CompanyProps {
 	company: Company
@@ -45,7 +46,7 @@ function CompanyTile({ company }: CompanyProps) {
 						src={`data:image/png;base64,${company.logo}`}
 					/>
 				) : (
-					<PhotoIcon />
+					<img src={imageUpload} alt="Default" />
 				)}
 			</div>
 			<h4>{company!.name}</h4>

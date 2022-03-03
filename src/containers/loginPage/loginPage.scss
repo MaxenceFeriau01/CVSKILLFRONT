@@ -11,8 +11,11 @@
 	}
 
 	.login-form {
+		@include breakpoint {
+			min-width: 450px;
+		}
 		position: relative;
-		width: 450px;
+
 		background-color: $color-white;
 		flex-direction: column;
 		display: flex;

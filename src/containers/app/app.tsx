@@ -5,7 +5,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { pdfjs } from "react-pdf"
 import Header from "../../components/header/header"
 import routes from "../../routes/routes"
-import ShowSidebarProvider from "../../contexts/showSidebarProvider"
 import variables from "../../resources/scss/base.module.scss"
 import Footer from "../../components/footer/footer"
 import UserProvider from "../../contexts/UserProvider"
@@ -36,16 +35,14 @@ function App() {
 		<ThemeProvider theme={theme}>
 			<QueryClientProvider client={queryClient}>
 				<UserProvider>
-					<ShowSidebarProvider>
-						<div className="overlay" id="overlay">
-							<div className="spin overlay-spin" />
-						</div>
-						<div className="app">
-							<Header />
-							<main className="app-container">{routes}</main>
-							<Footer />
-						</div>
-					</ShowSidebarProvider>
+					<div className="overlay" id="overlay">
+						<div className="spin overlay-spin" />
+					</div>
+					<div className="app">
+						<Header />
+						<main className="app-container">{routes}</main>
+						<Footer />
+					</div>
 				</UserProvider>
 				<ReactQueryDevtools initialIsOpen={false} />
 			</QueryClientProvider>

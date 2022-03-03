@@ -1,43 +1,25 @@
 import {
 	Alert,
-	Box,
-	Button,
 	FormGroup,
 	InputLabel,
-	makeStyles,
-	Step,
-	StepButton,
-	StepLabel,
-	Stepper,
 	TextField,
 	Typography,
 } from "@mui/material"
 import { useState } from "react"
 import { Controller } from "react-hook-form"
 
-import { useMutation, useQuery } from "react-query"
-import { useNavigate, useParams } from "react-router-dom"
-import Company from "../../api/models/company"
+import { useQuery } from "react-query"
 import activityService from "../../api/services/activityService"
 
-import companyService from "../../api/services/companyService"
 import ImagePreview from "../../components/inputs/imagePreview"
 import Activity from "../../api/models/activity"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 import CustomSelect from "../../components/inputs/customSelect"
-import HasRight from "../../components/rights/hasRight"
-import Role from "../../enums/Role"
-
-interface PutCompany {
-	companyToUpdate: FormData
-	companyId: string
-}
+import { TYPE_COMPANY_OPTIONS } from "./constants"
 
 function CompanyGeneralDetails({ form }: any) {
-	const { id } = useParams()
-	const navigate = useNavigate()
 	const [options, setOptions] = useState<any>()
-	const [{ alt, src, file }, setImg] = useState({
+	const [{ alt, src }, setImg] = useState({
 		file: null,
 		src: "",
 		alt: "logo",
@@ -45,9 +27,7 @@ function CompanyGeneralDetails({ form }: any) {
 
 	const {
 		register,
-		handleSubmit,
 		control,
-		setValue,
 		formState: { errors },
 	} = form
 
@@ -61,42 +41,42 @@ function CompanyGeneralDetails({ form }: any) {
 		})
 	)
 
-	const postCompany = useMutation(
-		(newCompany: any) => companyService.post(newCompany),
-		{
-			onSuccess: () => {
-				navigate("/companies")
-			},
-		}
-	)
-
-	const putCompany = useMutation(
-		({ companyId, companyToUpdate }: PutCompany) =>
-			companyService.put(companyToUpdate, companyId)
-	)
-
-	const onSubmit = (data: any) => {
-		const formData = new FormData()
-		const newCompany = data
-		newCompany.activities = data.activities.map((a: any) => ({ id: a }))
-		newCompany.logo = null
-		if (file) {
-			formData.append("logo", file)
-		}
-
-		formData.append("company", JSON.stringify(newCompany))
-		if (id) putCompany.mutate({ companyId: id, companyToUpdate: formData })
-		else {
-			postCompany.mutate(formData)
-		}
-	}
 	return (
 		<>
-			<ImagePreview
-				img={{ alt, src }}
-				setImg={setImg}
-				register={register}
-			/>
+			<div className="select" style={{ zIndex: 4 }}>
+				<InputLabel>Êtes vous?</InputLabel>
+				<Controller
+					rules={{
+						required: "Le type d'entreprise est requis",
+					}}
+					name="type"
+					control={control}
+					render={({ field: { value, onChange, onBlur } }) => (
+						<CustomSelect
+							isSearchable
+							options={TYPE_COMPANY_OPTIONS}
+							placeholder="Choisissez..."
+							onBlur={onBlur}
+							value={TYPE_COMPANY_OPTIONS.find(
+								(c: ReactSelectOption) => c.value === value
+							)}
+							onChange={(val: ReactSelectOption) =>
+								onChange(val.value)
+							}
+						/>
+					)}
+				/>
+				{errors?.civility && (
+					<Alert severity="error">{errors.civility.message}</Alert>
+				)}
+			</div>
+			<div className="image-control">
+				<ImagePreview
+					img={{ alt, src }}
+					setImg={setImg}
+					register={register}
+				/>
+			</div>
 			<FormGroup row>
 				<Controller
 					name="name"
@@ -113,7 +93,7 @@ function CompanyGeneralDetails({ form }: any) {
 						/>
 					)}
 				/>
-
+				{/* TODO rule on length */}
 				<Controller
 					name="siret"
 					control={control}
@@ -122,6 +102,7 @@ function CompanyGeneralDetails({ form }: any) {
 						<TextField
 							required
 							label="Siret"
+							type="number"
 							variant="outlined"
 							value={value}
 							onChange={onChange}
@@ -142,84 +123,14 @@ function CompanyGeneralDetails({ form }: any) {
 						multiline
 						rows={4}
 						variant="outlined"
+						className="form-control-full"
 					/>
 				)}
 			/>
-			<Typography mt={2} mb={2} variant="h5">
-				Contact
-			</Typography>
-			<FormGroup row>
+
+			<div className="select">
+				<InputLabel>Domaine d'activitées</InputLabel>
 				<Controller
-					name="contactFirstName"
-					control={control}
-					defaultValue=""
-					render={({ field: { onChange, value } }) => (
-						<TextField
-							required
-							value={value}
-							onChange={onChange}
-							label="Prénom"
-							variant="outlined"
-							autoComplete="given-name"
-						/>
-					)}
-				/>
-				<Controller
-					name="contactLastName"
-					control={control}
-					defaultValue=""
-					render={({ field: { onChange, value } }) => (
-						<TextField
-							required
-							value={value}
-							onChange={onChange}
-							label="Nom"
-							variant="outlined"
-							autoComplete="family-name"
-						/>
-					)}
-				/>
-			</FormGroup>
-			<FormGroup row>
-				<Controller
-					name="contactNum"
-					control={control}
-					defaultValue=""
-					render={({ field: { onChange, value } }) => (
-						<TextField
-							required
-							value={value}
-							onChange={onChange}
-							label="Telephone"
-							variant="outlined"
-							type="tel"
-							autoComplete="tel"
-						/>
-					)}
-				/>
-				<Controller
-					name="contactMail"
-					control={control}
-					defaultValue=""
-					render={({ field: { onChange, value } }) => (
-						<TextField
-							required
-							value={value}
-							onChange={onChange}
-							label="Email"
-							variant="outlined"
-							type="email"
-							autoComplete="email"
-						/>
-					)}
-				/>
-			</FormGroup>
-			<div className="select-activities">
-				<InputLabel>Activités</InputLabel>
-				<Controller
-					rules={{
-						required: "Au moins une activité est requise",
-					}}
 					name="activities"
 					control={control}
 					render={({ field: { value, onChange, onBlur } }) => (
@@ -240,9 +151,6 @@ function CompanyGeneralDetails({ form }: any) {
 						/>
 					)}
 				/>
-				{errors?.activities && (
-					<Alert severity="error">{errors.activities.message}</Alert>
-				)}
 			</div>
 		</>
 	)

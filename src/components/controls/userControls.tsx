@@ -126,6 +126,7 @@ function UserControls({
 						type="number"
 						onChange={onChange}
 						value={value}
+						autoComplete="postal-code"
 					/>
 				)}
 			/>

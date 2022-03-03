@@ -13,7 +13,7 @@ function CustomSelect(props: any) {
 		}),
 	}
 
-	return <Select styles={styles} {...props} />
+	return <Select autoComplete="off" styles={styles} {...props} />
 }
 
 export default CustomSelect
