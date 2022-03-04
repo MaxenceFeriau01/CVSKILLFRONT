@@ -1,14 +1,16 @@
 import {
 	Alert,
 	FormGroup,
+	FormHelperText,
 	InputLabel,
 	TextField,
 	Typography,
 } from "@mui/material"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { Controller } from "react-hook-form"
 
 import { useQuery } from "react-query"
+import { ErrorSharp } from "@mui/icons-material"
 import activityService from "../../api/services/activityService"
 
 import ImagePreview from "../../components/inputs/imagePreview"
@@ -40,11 +42,11 @@ function CompanyGeneralDetails({ form }: any) {
 			setOptions(activities)
 		})
 	)
-
+	console.log(errors)
 	return (
 		<>
 			<div className="select" style={{ zIndex: 4 }}>
-				<InputLabel>Êtes vous?</InputLabel>
+				<InputLabel>Êtes vous? *</InputLabel>
 				<Controller
 					rules={{
 						required: "Le type d'entreprise est requis",
@@ -66,8 +68,8 @@ function CompanyGeneralDetails({ form }: any) {
 						/>
 					)}
 				/>
-				{errors?.civility && (
-					<Alert severity="error">{errors.civility.message}</Alert>
+				{errors?.type && (
+					<Alert severity="error">{errors.type.message}</Alert>
 				)}
 			</div>
 			<div className="image-control">
@@ -76,27 +78,38 @@ function CompanyGeneralDetails({ form }: any) {
 					setImg={setImg}
 					register={register}
 				/>
+				<FormHelperText>
+					Attirer l'oeil avec votre logo !
+				</FormHelperText>
 			</div>
 			<FormGroup row>
 				<Controller
 					name="name"
+					rules={{
+						required: "required",
+					}}
 					control={control}
 					defaultValue=""
 					render={({ field: { onChange, value } }) => (
 						<TextField
 							required
-							label="Name"
+							label="Nom de la société"
 							variant="outlined"
 							value={value}
 							onChange={onChange}
-							helperText="Nom de la société"
+							helperText={errors?.name?.message}
+							error={!!errors?.name}
 						/>
 					)}
 				/>
 				{/* TODO rule on length */}
+				{console.log(form.errors?.siret)}
 				<Controller
 					name="siret"
 					control={control}
+					rules={{
+						required: "required",
+					}}
 					defaultValue=""
 					render={({ field: { onChange, value } }) => (
 						<TextField
@@ -106,7 +119,12 @@ function CompanyGeneralDetails({ form }: any) {
 							variant="outlined"
 							value={value}
 							onChange={onChange}
-							helperText="Composé de 14 chiffres"
+							helperText={
+								errors?.siret
+									? errors?.siret?.message
+									: "Composé de 14 chiffres"
+							}
+							error={!!errors?.siret}
 						/>
 					)}
 				/>

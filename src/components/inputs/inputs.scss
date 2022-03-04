@@ -65,6 +65,9 @@
 		top: -11px;
 		background-color: $background-color;
 	}
+	&:focus {
+		border: 1px solid $color-primary;
+	}
 
 	&:hover {
 		border: 1px solid rgba(0, 0, 0, 0.87);

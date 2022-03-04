@@ -1,4 +1,11 @@
-import { Alert, Box, Button, Step, StepButton, Stepper } from "@mui/material"
+import {
+	Box,
+	Button,
+	Step,
+	StepButton,
+	StepLabel,
+	Stepper,
+} from "@mui/material"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
@@ -12,6 +19,7 @@ import Activity from "../../api/models/activity"
 import { MAX_STEP_NUMBER, STEPS } from "./constants"
 import CompanyGeneralDetails from "./companyGeneralDetails"
 import CompanyContactDetails from "./companyContactDetails"
+import CompanySearchDetails from "./companySearchDetails"
 
 interface PutCompany {
 	companyToUpdate: FormData
@@ -38,11 +46,9 @@ function CompanyDetailsPage() {
 		setActiveStep(prevActiveStep => prevActiveStep - 1)
 	}
 
-	const handleStep = (step: number) => () => {
-		setActiveStep(step)
-	}
+	const form = useForm({ mode: "onChange" })
 
-	const form = useForm()
+	const { isValid } = form.formState
 
 	useQuery(
 		"company",
@@ -54,6 +60,8 @@ function CompanyDetailsPage() {
 				form.setValue("contactMail", res.contactMail)
 				form.setValue("siret", res.siret)
 				form.setValue("name", res.name)
+				form.setValue("description", res.description)
+				form.setValue("town", "tst")
 				form.setValue("description", res.description)
 				const activities = res.activities.map((a: Activity) => a.id)
 				form.setValue("activities", activities, {
@@ -109,12 +117,7 @@ function CompanyDetailsPage() {
 			>
 				{STEPS.map((step, index) => (
 					<Step key={step}>
-						<StepButton
-							color="secondary"
-							onClick={handleStep(index)}
-						>
-							{step}
-						</StepButton>
+						<StepLabel>{step}</StepLabel>
 					</Step>
 				))}
 			</Stepper>
@@ -122,15 +125,17 @@ function CompanyDetailsPage() {
 				onSubmit={form.handleSubmit(onSubmit)}
 				className="content company-details-form"
 			>
-				<section className="company-details-form-stepper">
+				<div className="company-details-form-stepper">
 					{activeStep === 0 && <CompanyGeneralDetails form={form} />}
 					{activeStep === 1 && <CompanyContactDetails form={form} />}
-				</section>
+					{activeStep === 2 && <CompanySearchDetails form={form} />}
+				</div>
 				<Box
 					sx={{
 						display: "flex",
 						flexDirection: "row",
 						pt: 2,
+						pb: 2,
 						width: "100%",
 					}}
 				>
@@ -143,18 +148,24 @@ function CompanyDetailsPage() {
 					</Button>
 					<Box sx={{ flex: "1 1 auto" }} />
 
-					<Button
-						disabled={activeStep === MAX_STEP_NUMBER - 1}
-						onClick={handleNext}
-						sx={{ mr: 1 }}
-					>
-						Suivant
-					</Button>
-					<Button type="submit">
-						{id !== undefined
-							? "Mettre à jour"
-							: "Créer une entreprise"}
-					</Button>
+					{activeStep !== 2 && (
+						<Button
+							disabled={
+								activeStep === MAX_STEP_NUMBER - 1 || !isValid
+							}
+							onClick={handleNext}
+							sx={{ mr: 1 }}
+						>
+							Suivant
+						</Button>
+					)}
+					{activeStep === 2 && (
+						<Button type="submit">
+							{id !== undefined
+								? "Mettre à jour"
+								: "Créer une entreprise"}
+						</Button>
+					)}
 				</Box>
 			</form>
 		</section>
