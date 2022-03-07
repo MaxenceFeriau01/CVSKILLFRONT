@@ -66,6 +66,7 @@
 		cursor: pointer;
 
 		.popover {
+			border: 1px solid $color-gray;
 			position: absolute;
 			box-shadow: $box-shadow;
 			border-radius: 20px;

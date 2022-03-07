@@ -1,11 +1,4 @@
-import {
-	Box,
-	Button,
-	Step,
-	StepButton,
-	StepLabel,
-	Stepper,
-} from "@mui/material"
+import { Box, Button, Step, StepLabel, Stepper } from "@mui/material"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
@@ -16,10 +9,18 @@ import Company from "../../api/models/company"
 import companyService from "../../api/services/companyService"
 import Activity from "../../api/models/activity"
 
-import { MAX_STEP_NUMBER, STEPS } from "./constants"
-import CompanyGeneralDetails from "./companyGeneralDetails"
-import CompanyContactDetails from "./companyContactDetails"
-import CompanySearchDetails from "./companySearchDetails"
+import {
+	MAX_STEP_NUMBER,
+	STEPS,
+	VALIDATION_STEP_ONE,
+	VALIDATION_STEP_THREE,
+	VALIDATION_STEP_TWO,
+} from "./constants"
+import GeneralDetails from "./generalDetails"
+import ContactDetails from "./contactDetails"
+import SearchDetails from "./searchDetails"
+import ReactSelectOption from "../../api/models/reactSelectOption"
+import activityService from "../../api/services/activityService"
 
 interface PutCompany {
 	companyToUpdate: FormData
@@ -29,6 +30,8 @@ interface PutCompany {
 function CompanyDetailsPage() {
 	const { id } = useParams()
 	const navigate = useNavigate()
+
+	const [activities, setActivities] = useState<Array<ReactSelectOption>>()
 
 	const [{ alt, src, file }, setImg] = useState({
 		file: null,
@@ -48,25 +51,48 @@ function CompanyDetailsPage() {
 
 	const form = useForm({ mode: "onChange" })
 
-	const { isValid } = form.formState
+	useQuery("activities", () =>
+		activityService.getAllWithFilters().then(res => {
+			setActivities(
+				res.map((a: Activity) => ({
+					label: a.name,
+					value: a.id,
+				}))
+			)
+		})
+	)
 
 	useQuery(
 		"company",
 		() =>
-			companyService.getById(id).then((res: Company) => {
-				form.setValue("contactFirstName", res.contactFirstName)
-				form.setValue("contactLastName", res.contactLastName)
-				form.setValue("contactNum", res.contactNum)
-				form.setValue("contactMail", res.contactMail)
-				form.setValue("siret", res.siret)
-				form.setValue("name", res.name)
-				form.setValue("description", res.description)
-				form.setValue("town", "tst")
-				form.setValue("description", res.description)
-				const activities = res.activities.map((a: Activity) => a.id)
-				form.setValue("activities", activities, {
-					shouldValidate: true,
+			companyService.getById(id).then((res: any) => {
+				Object.keys(res).forEach((key: string) => {
+					switch (key) {
+						case "activities":
+							form.setValue(
+								"activities",
+								res.activities.map((a: Activity) => a.id),
+								{
+									shouldValidate: true,
+								}
+							)
+							break
+						case "logo":
+							if (res.logo) {
+								setImg({
+									file: null,
+									src: `data:image/png;base64,${res.logo}`,
+									alt: "Logo",
+								})
+							}
+							break
+
+						default:
+							form.setValue(key, res[key])
+							break
+					}
 				})
+
 				if (res.logo) {
 					setImg({
 						file: null,
@@ -96,6 +122,7 @@ function CompanyDetailsPage() {
 		const formData = new FormData()
 		const newCompany = data
 		newCompany.activities = data.activities.map((a: any) => ({ id: a }))
+		newCompany.activities = data.activities.map((a: any) => ({ id: a }))
 		newCompany.logo = null
 		if (file) {
 			formData.append("logo", file)
@@ -107,6 +134,22 @@ function CompanyDetailsPage() {
 			postCompany.mutate(formData)
 		}
 	}
+
+	function currentValidationForm(formStep: number): Array<string> {
+		switch (formStep) {
+			case 0:
+				return VALIDATION_STEP_ONE
+
+			case 1:
+				return VALIDATION_STEP_TWO
+
+			case 2:
+				return VALIDATION_STEP_THREE
+
+			default:
+				return []
+		}
+	}
 	return (
 		<section className="page company-details-page">
 			<Stepper
@@ -115,7 +158,7 @@ function CompanyDetailsPage() {
 				alternativeLabel
 				nonLinear
 			>
-				{STEPS.map((step, index) => (
+				{STEPS.map(step => (
 					<Step key={step}>
 						<StepLabel>{step}</StepLabel>
 					</Step>
@@ -126,10 +169,15 @@ function CompanyDetailsPage() {
 				className="content company-details-form"
 			>
 				<div className="company-details-form-stepper">
-					{activeStep === 0 && <CompanyGeneralDetails form={form} />}
-					{activeStep === 1 && <CompanyContactDetails form={form} />}
-					{activeStep === 2 && <CompanySearchDetails form={form} />}
+					{activeStep === 0 && (
+						<GeneralDetails form={form} activities={activities} />
+					)}
+					{activeStep === 1 && <ContactDetails form={form} />}
+					{activeStep === 2 && (
+						<SearchDetails form={form} activities={activities} />
+					)}
 				</div>
+
 				<Box
 					sx={{
 						display: "flex",
@@ -150,10 +198,15 @@ function CompanyDetailsPage() {
 
 					{activeStep !== 2 && (
 						<Button
-							disabled={
-								activeStep === MAX_STEP_NUMBER - 1 || !isValid
-							}
-							onClick={handleNext}
+							disabled={activeStep === MAX_STEP_NUMBER - 1}
+							onClick={async () => {
+								const result = await form.trigger(
+									currentValidationForm(activeStep)
+								)
+								if (result === true) {
+									handleNext()
+								}
+							}}
 							sx={{ mr: 1 }}
 						>
 							Suivant

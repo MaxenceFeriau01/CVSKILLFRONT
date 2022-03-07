@@ -1,4 +1,3 @@
-import PhotoIcon from "@mui/icons-material/Photo"
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import { useContext } from "react"

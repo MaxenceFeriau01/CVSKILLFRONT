@@ -1,8 +1,9 @@
 import { FormGroup, TextField } from "@mui/material"
 import { Controller } from "react-hook-form"
 import contact from "../../resources/images/contact.svg"
+import { VALIDATION_STEP_TWO } from "./constants"
 
-function CompanyContactDetails({ form }: any) {
+function ContactDetails({ form }: any) {
 	const {
 		control,
 		formState: { errors },
@@ -17,10 +18,10 @@ function CompanyContactDetails({ form }: any) {
 			/>
 			<FormGroup row>
 				<Controller
-					name="contactFirstName"
+					name={VALIDATION_STEP_TWO[0]}
 					control={control}
 					rules={{
-						required: "required",
+						required: "Le prénom de contact est requis",
 					}}
 					defaultValue=""
 					render={({ field: { onChange, value } }) => (
@@ -31,16 +32,16 @@ function CompanyContactDetails({ form }: any) {
 							label="Prénom"
 							variant="outlined"
 							autoComplete="given-name"
-							helperText={errors?.contactFirstName?.message}
-							error={!!errors?.contactFirstName}
+							helperText={errors[VALIDATION_STEP_TWO[0]]?.message}
+							error={!!errors[VALIDATION_STEP_TWO[0]]?.message}
 						/>
 					)}
 				/>
 				<Controller
-					name="contactLastName"
+					name={VALIDATION_STEP_TWO[1]}
 					control={control}
 					rules={{
-						required: "required",
+						required: "Le nom de contact est requis",
 					}}
 					defaultValue=""
 					render={({ field: { onChange, value } }) => (
@@ -51,30 +52,31 @@ function CompanyContactDetails({ form }: any) {
 							label="Nom"
 							variant="outlined"
 							autoComplete="family-name"
-							helperText={errors?.contactLastName?.message}
-							error={!!errors?.contactLastName}
+							helperText={errors[VALIDATION_STEP_TWO[1]]?.message}
+							error={!!errors[VALIDATION_STEP_TWO[1]]}
 						/>
 					)}
 				/>
 			</FormGroup>
 			<FormGroup row>
 				<Controller
-					name="contactNum"
+					name={VALIDATION_STEP_TWO[2]}
 					control={control}
 					rules={{
-						required: "required",
+						required:
+							"Le numéro de téléphone de contact est requis",
 					}}
 					render={({ field: { onChange, value } }) => (
 						<TextField
 							required
-							helperText={errors?.contactNum?.message}
-							error={!!errors?.contactNum}
 							value={value}
 							onChange={onChange}
 							label="Telephone"
 							variant="outlined"
 							type="tel"
 							autoComplete="tel"
+							helperText={errors[VALIDATION_STEP_TWO[2]]?.message}
+							error={!!errors[VALIDATION_STEP_TWO[2]]}
 						/>
 					)}
 				/>
@@ -95,32 +97,32 @@ function CompanyContactDetails({ form }: any) {
 				/>
 			</FormGroup>
 			<Controller
-				name="address"
+				name={VALIDATION_STEP_TWO[3]}
 				control={control}
 				rules={{
-					required: "required",
+					required: "L'adresse est requise",
 				}}
 				defaultValue=""
 				render={({ field: { onChange, value } }) => (
 					<TextField
 						required
-						helperText={errors?.address?.message}
-						error={!!errors?.address}
 						label="Adresse"
 						variant="outlined"
 						value={value}
 						onChange={onChange}
 						className="form-control-full"
 						autoComplete="street-address"
+						helperText={errors[VALIDATION_STEP_TWO[3]]?.message}
+						error={!!errors[VALIDATION_STEP_TWO[3]]}
 					/>
 				)}
 			/>
 			<FormGroup row>
 				<Controller
 					rules={{
-						required: "required",
+						required: "La ville est requise",
 					}}
-					name="town"
+					name={VALIDATION_STEP_TWO[4]}
 					control={control}
 					defaultValue=""
 					render={({ field: { onChange, value } }) => (
@@ -136,9 +138,9 @@ function CompanyContactDetails({ form }: any) {
 					)}
 				/>
 				<Controller
-					name="postalCode"
+					name={VALIDATION_STEP_TWO[5]}
 					rules={{
-						required: "required",
+						required: "Le code postal est requis",
 					}}
 					control={control}
 					defaultValue=""
@@ -161,4 +163,4 @@ function CompanyContactDetails({ form }: any) {
 	)
 }
 
-export default CompanyContactDetails
+export default ContactDetails

@@ -1,26 +1,20 @@
+/* eslint-disable dot-notation */
 import {
 	Alert,
 	FormGroup,
 	FormHelperText,
 	InputLabel,
 	TextField,
-	Typography,
 } from "@mui/material"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import { Controller } from "react-hook-form"
 
-import { useQuery } from "react-query"
-import { ErrorSharp } from "@mui/icons-material"
-import activityService from "../../api/services/activityService"
-
 import ImagePreview from "../../components/inputs/imagePreview"
-import Activity from "../../api/models/activity"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 import CustomSelect from "../../components/inputs/customSelect"
-import { TYPE_COMPANY_OPTIONS } from "./constants"
+import { TYPE_COMPANY_OPTIONS, VALIDATION_STEP_ONE } from "./constants"
 
-function CompanyGeneralDetails({ form }: any) {
-	const [options, setOptions] = useState<any>()
+function GeneralDetails({ form, activities }: any) {
 	const [{ alt, src }, setImg] = useState({
 		file: null,
 		src: "",
@@ -33,16 +27,6 @@ function CompanyGeneralDetails({ form }: any) {
 		formState: { errors },
 	} = form
 
-	useQuery("activities", () =>
-		activityService.getAllWithFilters().then(res => {
-			const activities = res.map((a: Activity) => ({
-				label: a.name,
-				value: a.id,
-			}))
-			setOptions(activities)
-		})
-	)
-	console.log(errors)
 	return (
 		<>
 			<div className="select" style={{ zIndex: 4 }}>
@@ -51,7 +35,7 @@ function CompanyGeneralDetails({ form }: any) {
 					rules={{
 						required: "Le type d'entreprise est requis",
 					}}
-					name="type"
+					name={VALIDATION_STEP_ONE[0]}
 					control={control}
 					render={({ field: { value, onChange, onBlur } }) => (
 						<CustomSelect
@@ -68,8 +52,10 @@ function CompanyGeneralDetails({ form }: any) {
 						/>
 					)}
 				/>
-				{errors?.type && (
-					<Alert severity="error">{errors.type.message}</Alert>
+				{errors[VALIDATION_STEP_ONE[0]] && (
+					<Alert severity="error">
+						{errors[VALIDATION_STEP_ONE[0]]?.message}
+					</Alert>
 				)}
 			</div>
 			<div className="image-control">
@@ -84,9 +70,9 @@ function CompanyGeneralDetails({ form }: any) {
 			</div>
 			<FormGroup row>
 				<Controller
-					name="name"
+					name={VALIDATION_STEP_ONE[1]}
 					rules={{
-						required: "required",
+						required: "Le nom de la société est requis",
 					}}
 					control={control}
 					defaultValue=""
@@ -97,18 +83,27 @@ function CompanyGeneralDetails({ form }: any) {
 							variant="outlined"
 							value={value}
 							onChange={onChange}
-							helperText={errors?.name?.message}
-							error={!!errors?.name}
+							helperText={errors[VALIDATION_STEP_ONE[1]]?.message}
+							error={!!errors[VALIDATION_STEP_ONE[1]]}
 						/>
 					)}
 				/>
-				{/* TODO rule on length */}
-				{console.log(form.errors?.siret)}
+
 				<Controller
-					name="siret"
+					name={VALIDATION_STEP_ONE[2]}
 					control={control}
 					rules={{
-						required: "required",
+						required: "Le numéro de siret est requis",
+						minLength: {
+							value: 14,
+							message:
+								"Le numéro de siret est composé de 14 chiffres",
+						},
+						maxLength: {
+							value: 15,
+							message:
+								"Le numéro de siret est composé de 14 chiffres",
+						},
 					}}
 					defaultValue=""
 					render={({ field: { onChange, value } }) => (
@@ -120,15 +115,40 @@ function CompanyGeneralDetails({ form }: any) {
 							value={value}
 							onChange={onChange}
 							helperText={
-								errors?.siret
-									? errors?.siret?.message
+								errors[VALIDATION_STEP_ONE[2]]
+									? errors[VALIDATION_STEP_ONE[2]]?.message
 									: "Composé de 14 chiffres"
 							}
-							error={!!errors?.siret}
+							error={!!errors[VALIDATION_STEP_ONE[2]]}
 						/>
 					)}
 				/>
 			</FormGroup>
+
+			<div className="select">
+				<InputLabel>Domaine d'activitées</InputLabel>
+				<Controller
+					name="activities"
+					control={control}
+					render={({ field: { value, onChange, onBlur } }) => (
+						<CustomSelect
+							options={activities}
+							placeholder="Choisissez..."
+							isMulti
+							onChange={(lOptions: ReactSelectOption[]) =>
+								onChange(lOptions?.map(option => option.value))
+							}
+							onBlur={onBlur}
+							value={activities?.filter((option: any) =>
+								value?.includes(option.value)
+							)}
+							defaultValue={activities?.filter((option: any) =>
+								value?.includes(option.value)
+							)}
+						/>
+					)}
+				/>
+			</div>
 			<Controller
 				name="description"
 				control={control}
@@ -145,33 +165,8 @@ function CompanyGeneralDetails({ form }: any) {
 					/>
 				)}
 			/>
-
-			<div className="select">
-				<InputLabel>Domaine d'activitées</InputLabel>
-				<Controller
-					name="activities"
-					control={control}
-					render={({ field: { value, onChange, onBlur } }) => (
-						<CustomSelect
-							options={options}
-							placeholder="Choisissez..."
-							isMulti
-							onChange={(lOptions: ReactSelectOption[]) =>
-								onChange(lOptions?.map(option => option.value))
-							}
-							onBlur={onBlur}
-							value={options?.filter((option: any) =>
-								value?.includes(option.value)
-							)}
-							defaultValue={options?.filter((option: any) =>
-								value?.includes(option.value)
-							)}
-						/>
-					)}
-				/>
-			</div>
 		</>
 	)
 }
 
-export default CompanyGeneralDetails
+export default GeneralDetails

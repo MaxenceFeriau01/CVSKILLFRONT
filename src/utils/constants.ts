@@ -1,3 +1,8 @@
+// GLOBAL CONSTANTS
+
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings"
+import BusinessIcon from "@mui/icons-material/Business"
+
 import ReactSelectOption from "../api/models/reactSelectOption"
 
 export const PERIOD_OPTIONS: Array<ReactSelectOption> = [
@@ -31,5 +36,24 @@ export const STATUS_OPTIONS: Array<ReactSelectOption> = [
 	{
 		label: "Demandeur d'emploi",
 		value: "Demandeur d'emploi",
+	},
+]
+
+export interface INavLink {
+	text: string
+	Icon: any
+	url: string
+}
+
+export const NAV_LINK_ARRAY: Array<INavLink> = [
+	{
+		url: "/companies",
+		text: "Entreprises",
+		Icon: BusinessIcon,
+	},
+	{
+		url: "/admin",
+		text: "Administration",
+		Icon: AdminPanelSettingsIcon,
 	},
 ]

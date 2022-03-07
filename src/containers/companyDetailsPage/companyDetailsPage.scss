@@ -19,6 +19,10 @@
 		}
 	}
 
+	.internal-status-choice-container {
+		margin-left: 30px;
+	}
+
 	.company-details-form {
 		margin: 15px auto;
 		width: 75%;
@@ -27,13 +31,21 @@
 
 		.company-details-form-stepper {
 			width: 100%;
-			overflow-y: auto;
 			align-items: center;
 			display: flex;
 			flex-direction: column;
 			height: unset;
 			@include breakpoint {
-				height: 86%;
+				min-height: 86%;
+			}
+
+			.company-details-form-stepper--intern-type {
+				width: 80%;
+				z-index: 4;
+
+				@include breakpoint {
+					width: 70%;
+				}
 			}
 		}
 
@@ -64,8 +76,20 @@
 		}
 
 		.select {
-			margin: 10px auto 0 auto;
-			width: 70%;
+			margin-bottom: 10px;
+			width: 80%;
+
+			@include breakpoint {
+				width: 70%;
+			}
+		}
+
+		.under-select {
+			display: flex;
+			align-items: center;
+			span {
+				margin-right: 5px;
+			}
 		}
 
 		.MuiFormControl-root {
