@@ -1,7 +1,20 @@
-import { Button } from "@mui/material"
+import {
+	Button,
+	Checkbox,
+	Select,
+	ListItemText,
+	SelectChangeEvent,
+	MenuItem,
+	FormControl,
+	OutlinedInput,
+	InputLabel,
+	Box,
+	Chip
+} from "@mui/material"
 import { useRef, useState } from "react"
 import { useInfiniteQuery, useQuery } from "react-query"
 import { Link } from "react-router-dom"
+
 import Company from "../../api/models/company"
 
 import ReactSelectOption from "../../api/models/reactSelectOption"
@@ -17,6 +30,13 @@ import { PAGE, SIZE } from "./constants"
 function CompanyPage() {
 	const canFetch = useRef(true)
 	const [filter, setFilter] = useState<number | null | string>(null)
+	const [trainees, setTrainees] = useState<string[]>([]);
+	const traineeType = [
+		{label: "Collégien", value: "Collégien"},
+		{label: "Lycéen", value: "Lycéen"},
+		{label: "Etudiant", value: "Etudiant"},
+		{label: "Demandeur d'emploi", value: "Demandeur d'emploi"}
+	];
 
 	const companies = useInfiniteQuery(
 		["companies", filter],
@@ -42,8 +62,12 @@ function CompanyPage() {
 			.then(res => res.map(r => ({ value: r.id, label: r.name })))
 	)
 
-	function selectHandleChange(option: ReactSelectOption) {
+	function selectHandleActivityChange(option: ReactSelectOption) {
 		setFilter(option === null ? null : option.value)
+	}
+
+	function selectHandleTraineesChange(option: ReactSelectOption) {
+		console.log(option)
 	}
 
 	function handleScroll(e: any) {
@@ -64,10 +88,20 @@ function CompanyPage() {
 					className="company-select--activities"
 					placeholder="Filtre par activité"
 					options={activities.data}
-					onChange={(e: any) => selectHandleChange(e)}
+					onChange={(e: any) => selectHandleActivityChange(e)}
 					isClearable
 					isSearchable
-					name="select"
+					name="selectActivity"
+				/>
+				<CustomSelect
+					className="company-select--activities"
+					placeholder="Filtre par stagiaire"
+					options={traineeType}
+					isMulti
+					onChange={(e: any) => selectHandleTraineesChange(e)}
+					isClearable
+					isSearchable
+					name="selectTrainees"
 				/>
 				<Button>Rechercher</Button>
 			</header>
