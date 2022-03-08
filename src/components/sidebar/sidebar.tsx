@@ -10,7 +10,12 @@ function Sidebar({ showSidebar }: SidebarProps) {
 		<div className={`sidebar ${showSidebar ? "" : "sidebar--closed"}`}>
 			<div className="sidebar-header" />
 			{NAV_LINK_ARRAY.map((nav: INavLink) => (
-				<SidebarLink url={nav.url} text={nav.text} Icon={nav.Icon} />
+				<SidebarLink
+					key={nav.url}
+					url={nav.url}
+					text={nav.text}
+					Icon={nav.Icon}
+				/>
 			))}
 		</div>
 	)

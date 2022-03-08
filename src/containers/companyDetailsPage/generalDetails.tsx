@@ -12,7 +12,7 @@ import { Controller } from "react-hook-form"
 import ImagePreview from "../../components/inputs/imagePreview"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 import CustomSelect from "../../components/inputs/customSelect"
-import { TYPE_COMPANY_OPTIONS, VALIDATION_STEP_ONE } from "./constants"
+import { TYPE_COMPANY_OPTIONS, INPUT_FORM_ONE } from "./constants"
 
 function GeneralDetails({ form, activities }: any) {
 	const [{ alt, src }, setImg] = useState({
@@ -25,8 +25,8 @@ function GeneralDetails({ form, activities }: any) {
 		register,
 		control,
 		formState: { errors },
+		watch,
 	} = form
-
 	return (
 		<>
 			<div className="select" style={{ zIndex: 4 }}>
@@ -35,7 +35,7 @@ function GeneralDetails({ form, activities }: any) {
 					rules={{
 						required: "Le type d'entreprise est requis",
 					}}
-					name={VALIDATION_STEP_ONE[0]}
+					name={INPUT_FORM_ONE[0]}
 					control={control}
 					render={({ field: { value, onChange, onBlur } }) => (
 						<CustomSelect
@@ -52,9 +52,9 @@ function GeneralDetails({ form, activities }: any) {
 						/>
 					)}
 				/>
-				{errors[VALIDATION_STEP_ONE[0]] && (
+				{errors[INPUT_FORM_ONE[0]] && (
 					<Alert severity="error">
-						{errors[VALIDATION_STEP_ONE[0]]?.message}
+						{errors[INPUT_FORM_ONE[0]]?.message}
 					</Alert>
 				)}
 			</div>
@@ -70,7 +70,7 @@ function GeneralDetails({ form, activities }: any) {
 			</div>
 			<FormGroup row>
 				<Controller
-					name={VALIDATION_STEP_ONE[1]}
+					name={INPUT_FORM_ONE[1]}
 					rules={{
 						required: "Le nom de la société est requis",
 					}}
@@ -83,14 +83,14 @@ function GeneralDetails({ form, activities }: any) {
 							variant="outlined"
 							value={value}
 							onChange={onChange}
-							helperText={errors[VALIDATION_STEP_ONE[1]]?.message}
-							error={!!errors[VALIDATION_STEP_ONE[1]]}
+							helperText={errors[INPUT_FORM_ONE[1]]?.message}
+							error={!!errors[INPUT_FORM_ONE[1]]}
 						/>
 					)}
 				/>
 
 				<Controller
-					name={VALIDATION_STEP_ONE[2]}
+					name={INPUT_FORM_ONE[2]}
 					control={control}
 					rules={{
 						required: "Le numéro de siret est requis",
@@ -115,11 +115,11 @@ function GeneralDetails({ form, activities }: any) {
 							value={value}
 							onChange={onChange}
 							helperText={
-								errors[VALIDATION_STEP_ONE[2]]
-									? errors[VALIDATION_STEP_ONE[2]]?.message
+								errors[INPUT_FORM_ONE[2]]
+									? errors[INPUT_FORM_ONE[2]]?.message
 									: "Composé de 14 chiffres"
 							}
-							error={!!errors[VALIDATION_STEP_ONE[2]]}
+							error={!!errors[INPUT_FORM_ONE[2]]}
 						/>
 					)}
 				/>

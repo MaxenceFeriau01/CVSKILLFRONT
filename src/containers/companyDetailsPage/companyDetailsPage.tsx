@@ -12,9 +12,9 @@ import Activity from "../../api/models/activity"
 import {
 	MAX_STEP_NUMBER,
 	STEPS,
-	VALIDATION_STEP_ONE,
-	VALIDATION_STEP_THREE,
-	VALIDATION_STEP_TWO,
+	INPUT_FORM_ONE,
+	INPUT_FORM_THREE,
+	INPUT_FORM_TWO,
 } from "./constants"
 import GeneralDetails from "./generalDetails"
 import ContactDetails from "./contactDetails"
@@ -69,9 +69,11 @@ function CompanyDetailsPage() {
 				Object.keys(res).forEach((key: string) => {
 					switch (key) {
 						case "activities":
+						case "searchedActivities":
+						case "searchedJobs":
 							form.setValue(
-								"activities",
-								res.activities.map((a: Activity) => a.id),
+								key,
+								res[key].map((r: any) => r.id),
 								{
 									shouldValidate: true,
 								}
@@ -92,14 +94,6 @@ function CompanyDetailsPage() {
 							break
 					}
 				})
-
-				if (res.logo) {
-					setImg({
-						file: null,
-						src: `data:image/png;base64,${res.logo}`,
-						alt: "Logo",
-					})
-				}
 			}),
 		{ enabled: id !== undefined }
 	)
@@ -138,13 +132,13 @@ function CompanyDetailsPage() {
 	function currentValidationForm(formStep: number): Array<string> {
 		switch (formStep) {
 			case 0:
-				return VALIDATION_STEP_ONE
+				return INPUT_FORM_ONE
 
 			case 1:
-				return VALIDATION_STEP_TWO
+				return INPUT_FORM_TWO
 
 			case 2:
-				return VALIDATION_STEP_THREE
+				return INPUT_FORM_THREE
 
 			default:
 				return []
@@ -158,8 +152,8 @@ function CompanyDetailsPage() {
 				alternativeLabel
 				nonLinear
 			>
-				{STEPS.map(step => (
-					<Step key={step}>
+				{STEPS.map((step, index) => (
+					<Step key={step} completed={activeStep > index}>
 						<StepLabel>{step}</StepLabel>
 					</Step>
 				))}

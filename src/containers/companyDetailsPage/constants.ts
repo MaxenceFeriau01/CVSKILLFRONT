@@ -6,8 +6,8 @@ export const STEPS: Array<string> = [
 	"Que recherchez-vous?",
 ]
 
-export const VALIDATION_STEP_ONE: Array<string> = ["type", "name", "siret"]
-export const VALIDATION_STEP_TWO: Array<string> = [
+export const INPUT_FORM_ONE: Array<string> = ["type", "name", "siret"]
+export const INPUT_FORM_TWO: Array<string> = [
 	"contactFirstName",
 	"contactLastName",
 	"contactNum",
@@ -15,7 +15,15 @@ export const VALIDATION_STEP_TWO: Array<string> = [
 	"town",
 	"postalCode",
 ]
-export const VALIDATION_STEP_THREE: Array<string> = ["type", "name", "siret"]
+export const INPUT_FORM_THREE: Array<string> = [
+	"searchedInternsStatus",
+	"searchedActivities",
+	"searchedJobs",
+	"paidAndLongTermInternship",
+	"desiredInternsNumber",
+	"studentInternshipPeriod",
+	"jobSeekerInternshipPeriod",
+]
 export const MAX_STEP_NUMBER: number = STEPS.length
 
 export const TYPE_COMPANY_OPTIONS: Array<ReactSelectOption> = [

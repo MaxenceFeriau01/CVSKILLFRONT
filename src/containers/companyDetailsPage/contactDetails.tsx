@@ -1,7 +1,7 @@
 import { FormGroup, TextField } from "@mui/material"
 import { Controller } from "react-hook-form"
 import contact from "../../resources/images/contact.svg"
-import { VALIDATION_STEP_TWO } from "./constants"
+import { INPUT_FORM_TWO } from "./constants"
 
 function ContactDetails({ form }: any) {
 	const {
@@ -18,7 +18,7 @@ function ContactDetails({ form }: any) {
 			/>
 			<FormGroup row>
 				<Controller
-					name={VALIDATION_STEP_TWO[0]}
+					name={INPUT_FORM_TWO[0]}
 					control={control}
 					rules={{
 						required: "Le prénom de contact est requis",
@@ -32,13 +32,13 @@ function ContactDetails({ form }: any) {
 							label="Prénom"
 							variant="outlined"
 							autoComplete="given-name"
-							helperText={errors[VALIDATION_STEP_TWO[0]]?.message}
-							error={!!errors[VALIDATION_STEP_TWO[0]]?.message}
+							helperText={errors[INPUT_FORM_TWO[0]]?.message}
+							error={!!errors[INPUT_FORM_TWO[0]]?.message}
 						/>
 					)}
 				/>
 				<Controller
-					name={VALIDATION_STEP_TWO[1]}
+					name={INPUT_FORM_TWO[1]}
 					control={control}
 					rules={{
 						required: "Le nom de contact est requis",
@@ -52,15 +52,15 @@ function ContactDetails({ form }: any) {
 							label="Nom"
 							variant="outlined"
 							autoComplete="family-name"
-							helperText={errors[VALIDATION_STEP_TWO[1]]?.message}
-							error={!!errors[VALIDATION_STEP_TWO[1]]}
+							helperText={errors[INPUT_FORM_TWO[1]]?.message}
+							error={!!errors[INPUT_FORM_TWO[1]]}
 						/>
 					)}
 				/>
 			</FormGroup>
 			<FormGroup row>
 				<Controller
-					name={VALIDATION_STEP_TWO[2]}
+					name={INPUT_FORM_TWO[2]}
 					control={control}
 					rules={{
 						required:
@@ -75,8 +75,8 @@ function ContactDetails({ form }: any) {
 							variant="outlined"
 							type="tel"
 							autoComplete="tel"
-							helperText={errors[VALIDATION_STEP_TWO[2]]?.message}
-							error={!!errors[VALIDATION_STEP_TWO[2]]}
+							helperText={errors[INPUT_FORM_TWO[2]]?.message}
+							error={!!errors[INPUT_FORM_TWO[2]]}
 						/>
 					)}
 				/>
@@ -97,7 +97,7 @@ function ContactDetails({ form }: any) {
 				/>
 			</FormGroup>
 			<Controller
-				name={VALIDATION_STEP_TWO[3]}
+				name={INPUT_FORM_TWO[3]}
 				control={control}
 				rules={{
 					required: "L'adresse est requise",
@@ -112,8 +112,8 @@ function ContactDetails({ form }: any) {
 						onChange={onChange}
 						className="form-control-full"
 						autoComplete="street-address"
-						helperText={errors[VALIDATION_STEP_TWO[3]]?.message}
-						error={!!errors[VALIDATION_STEP_TWO[3]]}
+						helperText={errors[INPUT_FORM_TWO[3]]?.message}
+						error={!!errors[INPUT_FORM_TWO[3]]}
 					/>
 				)}
 			/>
@@ -122,7 +122,7 @@ function ContactDetails({ form }: any) {
 					rules={{
 						required: "La ville est requise",
 					}}
-					name={VALIDATION_STEP_TWO[4]}
+					name={INPUT_FORM_TWO[4]}
 					control={control}
 					defaultValue=""
 					render={({ field: { onChange, value } }) => (
@@ -138,7 +138,7 @@ function ContactDetails({ form }: any) {
 					)}
 				/>
 				<Controller
-					name={VALIDATION_STEP_TWO[5]}
+					name={INPUT_FORM_TWO[5]}
 					rules={{
 						required: "Le code postal est requis",
 					}}

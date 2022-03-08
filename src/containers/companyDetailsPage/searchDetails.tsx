@@ -13,7 +13,7 @@ import ReactSelectOption from "../../api/models/reactSelectOption"
 import jobService from "../../api/services/jobService"
 import CustomSelect from "../../components/inputs/customSelect"
 import { PERIOD_OPTIONS, STATUS_OPTIONS } from "../../utils/constants"
-import { INTERN_NUMBER_OPTIONS } from "./constants"
+import { INTERN_NUMBER_OPTIONS, INPUT_FORM_THREE } from "./constants"
 
 function SearchDetails({ form, activities }: any) {
 	const {
@@ -43,13 +43,12 @@ function SearchDetails({ form, activities }: any) {
 			)
 		})
 	)
-
 	return (
 		<>
 			<div className="company-details-form-stepper--intern-type">
 				<h4>Quel type de stagiaires acceptez-vous d’accueillir ?</h4>
 				<Controller
-					name="searchInternStatus"
+					name={INPUT_FORM_THREE[0]}
 					control={control}
 					rules={{
 						required: "Le type de stagiaires est requis",
@@ -81,7 +80,7 @@ function SearchDetails({ form, activities }: any) {
 
 									<InternStatusChoice
 										selectedInternStatus={watch(
-											"searchInternStatus"
+											INPUT_FORM_THREE[0]
 										)}
 										internStatus={s.value}
 										form={form}
@@ -91,9 +90,9 @@ function SearchDetails({ form, activities }: any) {
 						</div>
 					)}
 				/>
-				{errors?.searchInternStatus && (
+				{errors[INPUT_FORM_THREE[0]] && (
 					<Alert severity="error">
-						{errors?.searchInternStatus?.message}
+						{errors[INPUT_FORM_THREE[0]].message}
 					</Alert>
 				)}
 			</div>
@@ -103,7 +102,7 @@ function SearchDetails({ form, activities }: any) {
 					accueillir des stagiaires ?
 				</h4>
 				<Controller
-					name="searchActivities"
+					name={INPUT_FORM_THREE[1]}
 					rules={{
 						required: "Le domaine activité est requis",
 					}}
@@ -126,15 +125,15 @@ function SearchDetails({ form, activities }: any) {
 						/>
 					)}
 				/>
-				{errors?.searchActivities && (
+				{errors[INPUT_FORM_THREE[1]] && (
 					<Alert severity="error">
-						{errors?.searchActivities?.message}
+						{errors[INPUT_FORM_THREE[1]].message}
 					</Alert>
 				)}
 			</div>
 			<div className="select" style={{ zIndex: 2 }}>
 				<Controller
-					name="searchJobs"
+					name={INPUT_FORM_THREE[2]}
 					rules={{
 						required: "Le métier de recherche est requis",
 					}}
@@ -157,9 +156,9 @@ function SearchDetails({ form, activities }: any) {
 						/>
 					)}
 				/>
-				{errors?.searchJobs && (
+				{errors[INPUT_FORM_THREE[1]] && (
 					<Alert severity="error">
-						{errors?.searchJobs?.message}
+						{errors[INPUT_FORM_THREE[1]].message}
 					</Alert>
 				)}
 			</div>
@@ -169,21 +168,26 @@ function SearchDetails({ form, activities }: any) {
 					Acceptez-vous de prendre des stagiaires de longues durée,
 					rémunérés ?
 				</h4>
+
 				<Controller
-					name="paidIntern"
+					name={INPUT_FORM_THREE[3]}
 					rules={{
 						required: "Ce champ est requis",
 					}}
 					control={control}
-					render={({ field: { onChange, onBlur } }) => (
-						<RadioGroup onChange={onChange} onBlur={onBlur}>
+					render={({ field: { onChange, onBlur, value } }) => (
+						<RadioGroup
+							value={value}
+							onChange={onChange}
+							onBlur={onBlur}
+						>
 							<FormControlLabel
-								value="true"
+								value
 								control={<Radio />}
 								label="Oui"
 							/>
 							<FormControlLabel
-								value="false"
+								value={false}
 								control={<Radio />}
 								label="Non"
 							/>
@@ -192,14 +196,14 @@ function SearchDetails({ form, activities }: any) {
 				/>
 				{errors?.paidIntern && (
 					<Alert severity="error">
-						{errors?.paidIntern?.message}
+						{errors[INPUT_FORM_THREE[3]].message}
 					</Alert>
 				)}
 			</div>
 			<div className="select">
 				<h4>Combien de stagiaires pouvez-vous accueillir par an ?</h4>
 				<Controller
-					name="internNumber"
+					name={INPUT_FORM_THREE[4]}
 					rules={{
 						required: "Le nombre de stagiaires est requis",
 					}}
@@ -220,7 +224,7 @@ function SearchDetails({ form, activities }: any) {
 				/>
 				{errors?.internNumber && (
 					<Alert severity="error">
-						{errors?.internNumber?.message}
+						{errors[INPUT_FORM_THREE[4]].message}
 					</Alert>
 				)}
 			</div>
@@ -233,6 +237,9 @@ function InternStatusChoice({ selectedInternStatus, internStatus, form }: any) {
 		control,
 		formState: { errors },
 	} = form
+
+	console.log(selectedInternStatus)
+	console.log(internStatus)
 	return (
 		<div className="internal-status-choice-container">
 			{internStatus === STATUS_OPTIONS[0].value &&
@@ -258,7 +265,7 @@ function InternStatusChoice({ selectedInternStatus, internStatus, form }: any) {
 							rules={{
 								required: "La durée du stage est requise",
 							}}
-							name="studentInternshipPeriod"
+							name={INPUT_FORM_THREE[5]}
 							control={control}
 							render={({
 								field: { value, onChange, onBlur },
@@ -279,9 +286,9 @@ function InternStatusChoice({ selectedInternStatus, internStatus, form }: any) {
 								/>
 							)}
 						/>
-						{errors?.studentInternshipPeriod && (
+						{errors[INPUT_FORM_THREE[5]] && (
 							<Alert severity="error">
-								{errors.studentInternshipPeriod.message}
+								{errors[INPUT_FORM_THREE[5]].message}
 							</Alert>
 						)}
 					</div>
@@ -296,7 +303,7 @@ function InternStatusChoice({ selectedInternStatus, internStatus, form }: any) {
 							rules={{
 								required: "La durée du stage est requise",
 							}}
-							name="jobSeekerInternshipPeriod"
+							name={INPUT_FORM_THREE[6]}
 							control={control}
 							render={({
 								field: { value, onChange, onBlur },
@@ -317,9 +324,9 @@ function InternStatusChoice({ selectedInternStatus, internStatus, form }: any) {
 								/>
 							)}
 						/>
-						{errors?.jobSeekerInternshipPeriod && (
+						{errors[INPUT_FORM_THREE[6]] && (
 							<Alert severity="error">
-								{errors.jobSeekerInternshipPeriod.message}
+								{errors[INPUT_FORM_THREE[6]].message}
 							</Alert>
 						)}
 					</div>
