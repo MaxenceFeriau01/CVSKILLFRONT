@@ -1,5 +1,4 @@
-import BusinessIcon from "@mui/icons-material/Business"
-
+import { INavLink, NAV_LINK_ARRAY } from "../../utils/constants"
 import SidebarLink from "./sidebarLink"
 
 interface SidebarProps {
@@ -10,11 +9,14 @@ function Sidebar({ showSidebar }: SidebarProps) {
 	return (
 		<div className={`sidebar ${showSidebar ? "" : "sidebar--closed"}`}>
 			<div className="sidebar-header" />
-			<SidebarLink
-				url="/companies"
-				text="Entreprises"
-				Icon={BusinessIcon}
-			/>
+			{NAV_LINK_ARRAY.map((nav: INavLink) => (
+				<SidebarLink
+					key={nav.url}
+					url={nav.url}
+					text={nav.text}
+					Icon={nav.Icon}
+				/>
+			))}
 		</div>
 	)
 }

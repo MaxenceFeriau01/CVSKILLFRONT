@@ -1,12 +1,7 @@
 import { NavLink } from "react-router-dom"
+import { INavLink } from "../../utils/constants"
 
-interface SidebarLinkProps {
-	text: string
-	Icon: any
-	url: string
-}
-
-function SidebarLink({ text, Icon, url }: SidebarLinkProps) {
+function SidebarLink({ text, Icon, url }: INavLink) {
 	return (
 		<NavLink className="link" to={url}>
 			<Icon />

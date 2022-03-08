@@ -1,15 +1,11 @@
 import { Alert, FormHelperText, InputLabel, TextField } from "@mui/material"
 import { Controller } from "react-hook-form"
 import ReactSelectOption from "../../api/models/reactSelectOption"
+import { PERIOD_OPTIONS, STATUS_OPTIONS } from "../../utils/constants"
 import CustomSelect from "../inputs/customSelect"
 
 import FileUpload from "../inputs/fileUpload"
-import {
-	CIVILITY_OPTIONS,
-	DIPLOMA_OPTIONS,
-	PERIOD_OPTIONS,
-	STATUS_OPTIONS,
-} from "./constants"
+import { CIVILITY_OPTIONS, DIPLOMA_OPTIONS } from "./constants"
 
 interface UserControlsProps {
 	control: any
@@ -126,6 +122,7 @@ function UserControls({
 						type="number"
 						onChange={onChange}
 						value={value}
+						autoComplete="postal-code"
 					/>
 				)}
 			/>
@@ -241,7 +238,7 @@ function UserControls({
 						/>
 					)}
 				/>
-				{errors?.civility && (
+				{errors?.status && (
 					<Alert severity="error">{errors.civility.message}</Alert>
 				)}
 			</div>

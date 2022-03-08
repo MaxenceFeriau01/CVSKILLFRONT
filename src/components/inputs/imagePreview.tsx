@@ -1,4 +1,5 @@
-import InsertPhotoIcon from "@mui/icons-material/InsertPhoto"
+import { InputLabel } from "@mui/material"
+import imageUpload from "../../resources/images/image-upload.svg"
 
 interface Image {
 	src: string
@@ -28,9 +29,9 @@ function ImagePreview({ img, setImg, register }: ImagePreviewProps) {
 			{img!.src ? (
 				<img src={img.src} alt={img.alt} />
 			) : (
-				<InsertPhotoIcon />
+				<img src={imageUpload} alt="Default" />
 			)}
-
+			<InputLabel>Logo</InputLabel>
 			<input
 				{...register("logo")}
 				type="file"

@@ -1,16 +1,14 @@
-import MenuIcon from "@mui/icons-material/Menu"
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings"
-
 import { useContext, useRef, useState } from "react"
-import { Link, useLocation } from "react-router-dom"
+import MenuIcon from "@mui/icons-material/Menu"
+import { Link } from "react-router-dom"
 import LoginIcon from "@mui/icons-material/Login"
-import BusinessIcon from "@mui/icons-material/Business"
 import UserContext from "../../contexts/user"
 import UserPopover from "./userPopover"
 import useOutsideClick from "../../hooks/outsideClick"
-import dkStageLogo from "../../resources/images/dk_stage_logo.png"
+import dkStageLogo from "../../resources/images/dk-stage-logo.png"
 import HeaderLink from "./headerLink"
 import Sidebar from "../sidebar/sidebar"
+import { INavLink, NAV_LINK_ARRAY } from "../../utils/constants"
 
 function Header() {
 	const [showSidebar, setShowSidebar] = useState<boolean>(false)
@@ -41,17 +39,14 @@ function Header() {
 				</Link>
 
 				<div className="header-nav">
-					<HeaderLink
-						url="/companies"
-						text="Entreprises"
-						Icon={BusinessIcon}
-					/>
-
-					<HeaderLink
-						url="/admin"
-						text="Administration"
-						Icon={AdminPanelSettingsIcon}
-					/>
+					{NAV_LINK_ARRAY.map((nav: INavLink) => (
+						<HeaderLink
+							key={nav.url}
+							url={nav.url}
+							text={nav.text}
+							Icon={nav.Icon}
+						/>
+					))}
 				</div>
 				{user ? (
 					<div

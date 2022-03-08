@@ -1,4 +1,5 @@
 import Activity from "./activity"
+import Job from "./job"
 
 class Company {
 	id: number
@@ -17,9 +18,25 @@ class Company {
 
 	description: string
 
+	searchedJobs: Job[]
+
 	activities: Activity[]
 
+	searchedActivities: Activity[]
+
+	desiredInternsNumber!: string
+
+	isPaidAndLongTermInternship!: boolean
+
 	logo!: any
+
+	town!: string
+
+	address!: string
+
+	postalCode!: string
+
+	type!: string
 
 	constructor(
 		id: number,
@@ -31,6 +48,8 @@ class Company {
 		siret: string,
 		description: string,
 		activities: Activity[],
+		searchedJobs: Job[],
+		searchedActivities: Activity[],
 		logo: any
 	) {
 		this.id = id
@@ -43,6 +62,8 @@ class Company {
 		this.description = description
 		this.activities = activities
 		this.logo = logo
+		this.searchedJobs = searchedJobs
+		this.searchedActivities = searchedActivities
 	}
 }
 export default Company

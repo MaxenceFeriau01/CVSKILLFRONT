@@ -53,12 +53,21 @@
 	width: 200px;
 	height: 150px;
 	cursor: pointer;
-	margin-top: 4px;
 	border-radius: 10px;
 	border: 1px solid lightgray;
-	margin: 0 auto;
-	margin-bottom: 1em;
 	background-color: $color-white;
+	position: relative;
+
+	.MuiInputLabel-root {
+		position: absolute;
+		top: 0;
+		left: 13px;
+		top: -11px;
+		background-color: $background-color;
+	}
+	&:focus {
+		border: 1px solid $color-primary;
+	}
 
 	&:hover {
 		border: 1px solid rgba(0, 0, 0, 0.87);

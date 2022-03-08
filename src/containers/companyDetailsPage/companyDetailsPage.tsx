@@ -1,26 +1,26 @@
-import {
-	Alert,
-	Button,
-	FormGroup,
-	InputLabel,
-	TextField,
-	Typography,
-} from "@mui/material"
+import { Box, Button, Step, StepLabel, Stepper } from "@mui/material"
 import { useState } from "react"
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 
 import { useMutation, useQuery } from "react-query"
 import { useNavigate, useParams } from "react-router-dom"
 import Company from "../../api/models/company"
-import activityService from "../../api/services/activityService"
 
 import companyService from "../../api/services/companyService"
-import ImagePreview from "../../components/inputs/imagePreview"
 import Activity from "../../api/models/activity"
+
+import {
+	MAX_STEP_NUMBER,
+	STEPS,
+	INPUT_FORM_ONE,
+	INPUT_FORM_THREE,
+	INPUT_FORM_TWO,
+} from "./constants"
+import GeneralDetails from "./generalDetails"
+import ContactDetails from "./contactDetails"
+import SearchDetails from "./searchDetails"
 import ReactSelectOption from "../../api/models/reactSelectOption"
-import CustomSelect from "../../components/inputs/customSelect"
-import HasRight from "../../components/rights/hasRight"
-import Role from "../../enums/Role"
+import activityService from "../../api/services/activityService"
 
 interface PutCompany {
 	companyToUpdate: FormData
@@ -30,53 +30,72 @@ interface PutCompany {
 function CompanyDetailsPage() {
 	const { id } = useParams()
 	const navigate = useNavigate()
-	const [options, setOptions] = useState<any>()
+
+	const [activities, setActivities] = useState<Array<ReactSelectOption>>()
+
 	const [{ alt, src, file }, setImg] = useState({
 		file: null,
 		src: "",
 		alt: "logo",
 	})
+	const [activeStep, setActiveStep] = useState(0)
 
-	const {
-		register,
-		handleSubmit,
-		control,
-		setValue,
-		formState: { errors },
-	} = useForm()
+	const handleNext = () => {
+		const newActiveStep = activeStep + 1
+		setActiveStep(newActiveStep)
+	}
 
-	const company = useQuery(
-		"company",
-		() =>
-			companyService.getById(id).then((res: Company) => {
-				setValue("contactFirstName", res.contactFirstName)
-				setValue("contactLastName", res.contactLastName)
-				setValue("contactNum", res.contactNum)
-				setValue("contactMail", res.contactMail)
-				setValue("siret", res.siret)
-				setValue("name", res.name)
-				setValue("description", res.description)
-				const activities = res.activities.map((a: Activity) => a.id)
-				setValue("activities", activities, { shouldValidate: true })
-				if (res.logo) {
-					setImg({
-						file: null,
-						src: `data:image/png;base64,${res.logo}`,
-						alt: "Logo",
-					})
-				}
-			}),
-		{ enabled: id !== undefined }
-	)
+	const handleBack = () => {
+		setActiveStep(prevActiveStep => prevActiveStep - 1)
+	}
+
+	const form = useForm({ mode: "onChange" })
 
 	useQuery("activities", () =>
 		activityService.getAllWithFilters().then(res => {
-			const activities = res.map((a: Activity) => ({
-				label: a.name,
-				value: a.id,
-			}))
-			setOptions(activities)
+			setActivities(
+				res.map((a: Activity) => ({
+					label: a.name,
+					value: a.id,
+				}))
+			)
 		})
+	)
+
+	useQuery(
+		"company",
+		() =>
+			companyService.getById(id).then((res: any) => {
+				Object.keys(res).forEach((key: string) => {
+					switch (key) {
+						case "activities":
+						case "searchedActivities":
+						case "searchedJobs":
+							form.setValue(
+								key,
+								res[key].map((r: any) => r.id),
+								{
+									shouldValidate: true,
+								}
+							)
+							break
+						case "logo":
+							if (res.logo) {
+								setImg({
+									file: null,
+									src: `data:image/png;base64,${res.logo}`,
+									alt: "Logo",
+								})
+							}
+							break
+
+						default:
+							form.setValue(key, res[key])
+							break
+					}
+				})
+			}),
+		{ enabled: id !== undefined }
 	)
 
 	const postCompany = useMutation(
@@ -97,6 +116,7 @@ function CompanyDetailsPage() {
 		const formData = new FormData()
 		const newCompany = data
 		newCompany.activities = data.activities.map((a: any) => ({ id: a }))
+		newCompany.activities = data.activities.map((a: any) => ({ id: a }))
 		newCompany.logo = null
 		if (file) {
 			formData.append("logo", file)
@@ -109,175 +129,91 @@ function CompanyDetailsPage() {
 		}
 	}
 
+	function currentValidationForm(formStep: number): Array<string> {
+		switch (formStep) {
+			case 0:
+				return INPUT_FORM_ONE
+
+			case 1:
+				return INPUT_FORM_TWO
+
+			case 2:
+				return INPUT_FORM_THREE
+
+			default:
+				return []
+		}
+	}
 	return (
-		<section className="page">
+		<section className="page company-details-page">
+			<Stepper
+				className="stepper"
+				activeStep={activeStep}
+				alternativeLabel
+				nonLinear
+			>
+				{STEPS.map((step, index) => (
+					<Step key={step} completed={activeStep > index}>
+						<StepLabel>{step}</StepLabel>
+					</Step>
+				))}
+			</Stepper>
 			<form
-				onSubmit={handleSubmit(onSubmit)}
+				onSubmit={form.handleSubmit(onSubmit)}
 				className="content company-details-form"
 			>
-				<ImagePreview
-					img={{ alt, src }}
-					setImg={setImg}
-					register={register}
-				/>
-				<FormGroup row>
-					<Controller
-						name="name"
-						control={control}
-						defaultValue=""
-						render={({ field: { onChange, value } }) => (
-							<TextField
-								required
-								label="Name"
-								variant="outlined"
-								value={value}
-								onChange={onChange}
-								helperText="Nom de la société"
-							/>
-						)}
-					/>
-
-					<Controller
-						name="siret"
-						control={control}
-						defaultValue=""
-						render={({ field: { onChange, value } }) => (
-							<TextField
-								required
-								label="Siret"
-								variant="outlined"
-								value={value}
-								onChange={onChange}
-								helperText="Composé de 14 chiffres"
-							/>
-						)}
-					/>
-				</FormGroup>
-				<Controller
-					name="description"
-					control={control}
-					defaultValue=""
-					render={({ field: { onChange, value } }) => (
-						<TextField
-							value={value}
-							onChange={onChange}
-							label="Description"
-							multiline
-							rows={4}
-							variant="outlined"
-						/>
+				<div className="company-details-form-stepper">
+					{activeStep === 0 && (
+						<GeneralDetails form={form} activities={activities} />
 					)}
-				/>
-				<Typography mt={2} mb={2} variant="h5">
-					Contact
-				</Typography>
-				<FormGroup row>
-					<Controller
-						name="contactFirstName"
-						control={control}
-						defaultValue=""
-						render={({ field: { onChange, value } }) => (
-							<TextField
-								required
-								value={value}
-								onChange={onChange}
-								label="Prénom"
-								variant="outlined"
-								autoComplete="given-name"
-							/>
-						)}
-					/>
-					<Controller
-						name="contactLastName"
-						control={control}
-						defaultValue=""
-						render={({ field: { onChange, value } }) => (
-							<TextField
-								required
-								value={value}
-								onChange={onChange}
-								label="Nom"
-								variant="outlined"
-								autoComplete="family-name"
-							/>
-						)}
-					/>
-				</FormGroup>
-				<FormGroup row>
-					<Controller
-						name="contactNum"
-						control={control}
-						defaultValue=""
-						render={({ field: { onChange, value } }) => (
-							<TextField
-								required
-								value={value}
-								onChange={onChange}
-								label="Telephone"
-								variant="outlined"
-								type="tel"
-								autoComplete="tel"
-							/>
-						)}
-					/>
-					<Controller
-						name="contactMail"
-						control={control}
-						defaultValue=""
-						render={({ field: { onChange, value } }) => (
-							<TextField
-								required
-								value={value}
-								onChange={onChange}
-								label="Email"
-								variant="outlined"
-								type="email"
-								autoComplete="email"
-							/>
-						)}
-					/>
-				</FormGroup>
-				<div className="select-activities">
-					<InputLabel>Activités</InputLabel>
-					<Controller
-						rules={{
-							required: "Au moins une activité est requise",
-						}}
-						name="activities"
-						control={control}
-						render={({ field: { value, onChange, onBlur } }) => (
-							<CustomSelect
-								options={options}
-								placeholder="Choisissez..."
-								isMulti
-								onChange={(lOptions: ReactSelectOption[]) =>
-									onChange(
-										lOptions?.map(option => option.value)
-									)
-								}
-								onBlur={onBlur}
-								value={options?.filter((option: any) =>
-									value?.includes(option.value)
-								)}
-								defaultValue={options?.filter((option: any) =>
-									value?.includes(option.value)
-								)}
-							/>
-						)}
-					/>
-					{errors?.activities && (
-						<Alert severity="error">
-							{errors.activities.message}
-						</Alert>
+					{activeStep === 1 && <ContactDetails form={form} />}
+					{activeStep === 2 && (
+						<SearchDetails form={form} activities={activities} />
 					)}
 				</div>
-				<HasRight roles={[Role.ADMIN]}>
-					<Button type="submit">
-						{id !== undefined
-							? "Mettre à jour"
-							: "Créer une entreprise"}
+
+				<Box
+					sx={{
+						display: "flex",
+						flexDirection: "row",
+						pt: 2,
+						pb: 2,
+						width: "100%",
+					}}
+				>
+					<Button
+						disabled={activeStep === 0}
+						onClick={handleBack}
+						sx={{ mr: 1 }}
+					>
+						Précédent
 					</Button>
-				</HasRight>
+					<Box sx={{ flex: "1 1 auto" }} />
+
+					{activeStep !== 2 && (
+						<Button
+							disabled={activeStep === MAX_STEP_NUMBER - 1}
+							onClick={async () => {
+								const result = await form.trigger(
+									currentValidationForm(activeStep)
+								)
+								if (result === true) {
+									handleNext()
+								}
+							}}
+							sx={{ mr: 1 }}
+						>
+							Suivant
+						</Button>
+					)}
+					{activeStep === 2 && (
+						<Button type="submit">
+							{id !== undefined
+								? "Mettre à jour"
+								: "Créer une entreprise"}
+						</Button>
+					)}
+				</Box>
 			</form>
 		</section>
 	)

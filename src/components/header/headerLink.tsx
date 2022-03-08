@@ -1,12 +1,7 @@
 import { NavLink } from "react-router-dom"
+import { INavLink } from "../../utils/constants"
 
-interface HeaderLinkProps {
-	text: string
-	Icon: any
-	url: string
-}
-
-function HeaderLink({ text, Icon, url }: HeaderLinkProps) {
+function HeaderLink({ text, Icon, url }: INavLink) {
 	return (
 		<NavLink className="header-link" to={url}>
 			<Icon fontSize="inherit" />

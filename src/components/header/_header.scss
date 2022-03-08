@@ -7,17 +7,16 @@
 	border-bottom: 0.0625rem solid $color-gray;
 
 	.header--home {
-		padding-left: 1.5rem;
-		padding-right: 1.5rem;
 		width: 150px;
 		cursor: pointer;
 		border-radius: 10px;
-		padding-top: 0.4rem;
+		padding: 7px;
+		margin-left: 14px;
 	}
 
 	.header__svg--menu {
 		cursor: pointer;
-		padding-left: 10px;
+		margin-left: 10px;
 		z-index: 997;
 		display: unset;
 
@@ -37,6 +36,7 @@
 	}
 	.header-home {
 		z-index: 997;
+		margin-right: 15px;
 	}
 
 	.header__svg--login {
@@ -66,6 +66,7 @@
 		cursor: pointer;
 
 		.popover {
+			border: 1px solid $color-gray;
 			position: absolute;
 			box-shadow: $box-shadow;
 			border-radius: 20px;
@@ -115,7 +116,10 @@
 	}
 
 	.header-nav {
-		display: flex;
+		@include breakpoint {
+			display: flex;
+		}
+		display: none;
 		margin: 0;
 		min-width: 0;
 		border-bottom: 0.125rem solid transparent;
