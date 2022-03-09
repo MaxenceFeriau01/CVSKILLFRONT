@@ -13,7 +13,7 @@ import Company from "../../api/models/company"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 
 import activityService from "../../api/services/activityService"
-import statusesService from "../../api/services/statusesService"
+import internStatusService from "../../api/services/internStatusService"
 import companyService from "../../api/services/companyService"
 import CustomSelect from "../../components/inputs/customSelect"
 import HasRight from "../../components/rights/hasRight"
@@ -54,8 +54,8 @@ function CompanyPage() {
 	)
 
 	const statuses = useQuery("statuses", () =>
-		statusesService.getAllWithFilters()
-			.then(res => res.map(r => ({ value: r.id, label: r.name })))
+		internStatusService.getAllWithFilters()
+			.then(res => res.map(r => (new ReactSelectOption(r.id, r.name))))
 	)
 
 	function selectHandleActivityChange(evt: any[]) {

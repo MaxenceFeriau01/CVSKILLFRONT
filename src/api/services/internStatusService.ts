@@ -6,11 +6,11 @@
  import Activity from "../models/activity"
  import GeneralService from "./generalService"
  
- class StatusesService extends GeneralService<Activity> {
+ class InternStatusService extends GeneralService<Activity> {
      // Variables
  }
  
- const statusesService = new StatusesService("/intern-status")
+ const internStatusService = new InternStatusService("/intern-status")
  
- export default statusesService
+ export default internStatusService
  
