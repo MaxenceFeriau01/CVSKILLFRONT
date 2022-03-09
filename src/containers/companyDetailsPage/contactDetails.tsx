@@ -62,6 +62,7 @@ function ContactDetails({ form }: any) {
 				<Controller
 					name={INPUT_FORM_TWO[2]}
 					control={control}
+					defaultValue=""
 					rules={{
 						required:
 							"Le numéro de téléphone de contact est requis",

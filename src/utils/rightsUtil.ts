@@ -13,10 +13,13 @@ export function hasRoles(
 	if (roles.length === 0) {
 		return true
 	}
-
-	return roles.every(role => userRoles.includes(role))
-
-	// If few roles are required but no token
+	let hasRole = false
+	roles.forEach(role => {
+		if (userRoles.includes(role)) {
+			hasRole = true
+		}
+	})
+	return hasRole
 }
 
 export function isAuth(): boolean {

@@ -212,7 +212,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 						</RadioGroup>
 					)}
 				/>
-				{errors?.paidIntern && (
+				{errors[INPUT_FORM_THREE[3]] && (
 					<Alert severity="error">
 						{errors[INPUT_FORM_THREE[3]].message}
 					</Alert>
@@ -239,7 +239,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 						/>
 					)}
 				/>
-				{errors?.internNumber && (
+				{errors[INPUT_FORM_THREE[4]] && (
 					<Alert severity="error">
 						{errors[INPUT_FORM_THREE[4]].message}
 					</Alert>
