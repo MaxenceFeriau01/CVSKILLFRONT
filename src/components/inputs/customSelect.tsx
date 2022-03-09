@@ -1,6 +1,7 @@
 import Select from "react-select"
 
 function CustomSelect(props: any) {
+	const { disabled, value, required } = props
 	const styles = {
 		control: (base: any) => ({
 			...base,
@@ -12,8 +13,27 @@ function CustomSelect(props: any) {
 			zIndex: 1,
 		}),
 	}
-
-	return <Select autoComplete="off" styles={styles} {...props} />
+	return (
+		<>
+			<Select autoComplete="off" styles={styles} {...props} />
+			{!disabled && required && (
+				<input
+					tabIndex={-1}
+					autoComplete="off"
+					style={{
+						position: "absolute",
+						opacity: 0,
+						height: 0,
+						width: 0,
+						right: "50%",
+					}}
+					value={value}
+					required={required}
+					readOnly
+				/>
+			)}
+		</>
+	)
 }
 
 export default CustomSelect

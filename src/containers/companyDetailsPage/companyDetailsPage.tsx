@@ -21,6 +21,8 @@ import ContactDetails from "./contactDetails"
 import SearchDetails from "./searchDetails"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 import activityService from "../../api/services/activityService"
+import InternStatus from "../../api/models/internStatus"
+import InternType from "../../api/models/internType"
 
 interface PutCompany {
 	companyToUpdate: FormData
@@ -79,6 +81,23 @@ function CompanyDetailsPage() {
 								}
 							)
 							break
+						case "searchedInternsType":
+							form.setValue(
+								key,
+								res[key].map((r: any) => {
+									const internTypeOption = {
+										value: r.internStatus.id,
+										label: r.internStatus.name,
+										period: r.period,
+									}
+
+									return internTypeOption
+								}),
+								{
+									shouldValidate: true,
+								}
+							)
+							break
 						case "logo":
 							if (res.logo) {
 								setImg({
@@ -116,7 +135,20 @@ function CompanyDetailsPage() {
 		const formData = new FormData()
 		const newCompany = data
 		newCompany.activities = data.activities.map((a: any) => ({ id: a }))
-		newCompany.activities = data.activities.map((a: any) => ({ id: a }))
+		newCompany.searchedActivities = data.searchedActivities.map(
+			(a: any) => ({
+				id: a,
+			})
+		)
+		newCompany.searchedJobs = data.searchedJobs.map((j: any) => ({
+			id: j,
+		}))
+
+		newCompany.searchedInternsType = data.searchedInternsType.map(
+			(t: any) =>
+				new InternType(t.period, new InternStatus(t.value, t.label))
+		)
+
 		newCompany.logo = null
 		if (file) {
 			formData.append("logo", file)
@@ -164,7 +196,12 @@ function CompanyDetailsPage() {
 			>
 				<div className="company-details-form-stepper">
 					{activeStep === 0 && (
-						<GeneralDetails form={form} activities={activities} />
+						<GeneralDetails
+							form={form}
+							activities={activities}
+							img={{ alt, src, file }}
+							setImg={setImg}
+						/>
 					)}
 					{activeStep === 1 && <ContactDetails form={form} />}
 					{activeStep === 2 && (

@@ -18,6 +18,7 @@ import profile from "../../resources/images/profile.svg"
 import UserControls from "../../components/controls/userControls"
 import FileDb from "../../api/models/fileDb"
 import UserContext from "../../contexts/user"
+import { STATUS_COLLEGE_STUDENT, STATUS_HIGH_SCHOOL_STUDENT } from "../../utils/constants"
 
 function ProfilePage() {
 	const [activitiesOptions, setActivitiesOptions] =
@@ -122,14 +123,14 @@ function ProfilePage() {
 	const onSubmit = (data: any) => {
 		const formData = new FormData()
 		const toUpdate: User = { ...data }
-		if (toUpdate.status === "Collégien") {
+		if (toUpdate.status === STATUS_COLLEGE_STUDENT) {
 			toUpdate.activities = null
 			toUpdate.jobs = null
 			toUpdate.diploma = null
 			toUpdate.internshipPeriod = null
 		}
 
-		if (toUpdate.status === "Lycéen") {
+		if (toUpdate.status === STATUS_HIGH_SCHOOL_STUDENT) {
 			toUpdate.diploma = null
 			toUpdate.internshipPeriod = null
 		}

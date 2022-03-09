@@ -14,6 +14,7 @@ import userService from "../../api/services/userService"
 import logo from "../../resources/images/logo.svg"
 import useHideElement from "../../hooks/hideElement"
 import UserControls from "../../components/controls/userControls"
+import { STATUS_COLLEGE_STUDENT, STATUS_HIGH_SCHOOL_STUDENT } from "../../utils/constants"
 
 function RegistrationPage() {
 	useHideElement(["header", "footer"])
@@ -66,14 +67,14 @@ function RegistrationPage() {
 		const formData = new FormData()
 
 		const toCreate: User = { ...data }
-		if (toCreate.status === "Collégien") {
+		if (toCreate.status === STATUS_COLLEGE_STUDENT) {
 			toCreate.activities = null
 			toCreate.jobs = null
 			toCreate.diploma = null
 			toCreate.internshipPeriod = null
 		}
 
-		if (toCreate.status === "Lycéen") {
+		if (toCreate.status === STATUS_HIGH_SCHOOL_STUDENT) {
 			toCreate.diploma = null
 			toCreate.internshipPeriod = null
 		}

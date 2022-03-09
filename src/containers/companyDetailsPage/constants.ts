@@ -16,13 +16,11 @@ export const INPUT_FORM_TWO: Array<string> = [
 	"postalCode",
 ]
 export const INPUT_FORM_THREE: Array<string> = [
-	"searchedInternsStatus",
+	"searchedInternsType",
 	"searchedActivities",
 	"searchedJobs",
 	"paidAndLongTermInternship",
 	"desiredInternsNumber",
-	"studentInternshipPeriod",
-	"jobSeekerInternshipPeriod",
 ]
 export const MAX_STEP_NUMBER: number = STEPS.length
 
