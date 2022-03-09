@@ -260,14 +260,13 @@ function InternStatusChoice({
 		const selectedOption = value.find(
 			(element: any) => element.value === val
 		)
-
-		if (selectedOption !== null)
+		if (selectedOption.period)
 			return new ReactSelectOption(
 				selectedOption.period,
 				selectedOption.period
 			)
 
-		return null
+		return ""
 	}
 	const { watch } = form
 	function handleSelectChange(
@@ -301,7 +300,6 @@ function InternStatusChoice({
 				value?.length > 0 &&
 				isStatusChecked(+STATUS_OPTIONS[2].value) && (
 					<div className="select under-select">
-						<span>➔</span>
 						<CustomSelect
 							required
 							className="w-full"
@@ -324,7 +322,6 @@ function InternStatusChoice({
 				value?.length > 0 &&
 				isStatusChecked(+STATUS_OPTIONS[3].value) && (
 					<div className="select under-select">
-						<span>➔</span>
 						<CustomSelect
 							required
 							className="w-full"

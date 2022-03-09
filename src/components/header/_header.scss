@@ -140,11 +140,11 @@
 			min-width: 2.75rem;
 			line-height: 1.3125rem;
 			font-size: 18px;
+			border-bottom: 0.125rem solid transparent;
 
 			&:hover {
-				border-bottom: 0.125rem solid $color-primary;
+				border-color: $color-primary;
 			}
-
 			svg {
 				width: unset;
 				padding-right: 10px;

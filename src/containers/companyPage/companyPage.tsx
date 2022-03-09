@@ -71,25 +71,32 @@ function CompanyPage() {
 				/>
 				<Button>Rechercher</Button>
 			</header>
-
-			<div onScroll={handleScroll} className="company-container">
-				<div className="content company-content">
-					<HasRight roles={[Role.ADMIN]}>
-						<Link
-							to="/new-company"
-							className="company-tile company-tile--add"
-						>
-							<span>+</span>
-							<b>Créer une entreprise</b>
-						</Link>
-					</HasRight>
-					{companies?.data?.pages?.map(page =>
-						page?.content?.map((c: Company) => (
-							<CompanyTile key={c.id} company={c} />
-						))
-					)}
+			<section className="company-container">
+				<div
+					onScroll={handleScroll}
+					className="w-full h-full overflow-auto"
+				>
+					<div className="content company-content">
+						<HasRight roles={[Role.ADMIN]}>
+							<Link
+								to="/new-company"
+								className="company-tile company-tile--add"
+							>
+								<span>+</span>
+								<b>Créer une entreprise</b>
+							</Link>
+						</HasRight>
+						{companies?.data?.pages?.map(page =>
+							page?.content?.map((c: Company) => (
+								<CompanyTile key={c.id} company={c} />
+							))
+						)}
+					</div>
 				</div>
-			</div>
+				<div className="company-details-container">
+					<div className="content" />
+				</div>
+			</section>
 		</section>
 	)
 }

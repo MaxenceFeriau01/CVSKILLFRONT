@@ -15,8 +15,8 @@
 	}
 
 	.company-container {
-		overflow-y: auto;
 		height: calc(100% - 65px);
+		display: flex;
 
 		.company-content {
 			flex-flow: row wrap;
@@ -109,6 +109,10 @@
 				margin: 5px 3px;
 				white-space: nowrap;
 			}
+		}
+
+		.company-details-container {
+			width: 50%;
 		}
 	}
 }

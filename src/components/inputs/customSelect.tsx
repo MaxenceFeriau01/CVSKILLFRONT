@@ -1,3 +1,4 @@
+import { Alert } from "@mui/material"
 import Select from "react-select"
 
 function CustomSelect(props: any) {
@@ -29,9 +30,15 @@ function CustomSelect(props: any) {
 					}}
 					value={value}
 					required={required}
-					readOnly
+					onChange={() => {}}
 				/>
 			)}
+			{required &&
+				(value === null || value === undefined || value === "") && (
+					<Alert className="w-full" severity="error">
+						Ce champ est requis
+					</Alert>
+				)}
 		</>
 	)
 }

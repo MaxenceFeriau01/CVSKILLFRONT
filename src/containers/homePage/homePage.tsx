@@ -27,7 +27,7 @@ function HomePage() {
 			<div className="home__action__container">
 				<div className="action-call-container">
 					<img src={working} alt="Internship" />
-					<h2>Entreprises</h2>
+					<h2 className="text-2xl text-secondary">Entreprises</h2>
 					<p>
 						Je suis une entreprise et je cherche de nouveaux
 						stagiaires motivées !
@@ -38,7 +38,7 @@ function HomePage() {
 				</div>
 				<div className="action-call-container">
 					<img src={internship} alt="Internship" />
-					<h2>Stagiaires</h2>
+					<h2 className="text-2xl text-secondary">Entreprises</h2>
 					<p>
 						Je suis à la recherche d'un stage afin de découvrir de
 						nouvelles compétences !
