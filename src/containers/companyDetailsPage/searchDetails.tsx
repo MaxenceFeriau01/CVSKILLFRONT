@@ -5,6 +5,7 @@ import {
 	Radio,
 	RadioGroup,
 } from "@mui/material"
+
 import { useState } from "react"
 import { Controller } from "react-hook-form"
 import { useQuery } from "react-query"
@@ -12,7 +13,14 @@ import Job from "../../api/models/job"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 import jobService from "../../api/services/jobService"
 import CustomSelect from "../../components/inputs/customSelect"
-import { PERIOD_OPTIONS, STATUS_OPTIONS } from "../../utils/constants"
+import {
+	PERIOD_OPTIONS,
+	STATUS_COLLEGE_STUDENT,
+	STATUS_HIGH_SCHOOL_STUDENT,
+	STATUS_JOB_SEEKER,
+	STATUS_OPTIONS,
+	STATUS_STUDENT,
+} from "../../utils/constants"
 import { INTERN_NUMBER_OPTIONS, INPUT_FORM_THREE } from "./constants"
 
 function SearchDetails({ form, activities }: any) {
@@ -21,15 +29,17 @@ function SearchDetails({ form, activities }: any) {
 		watch,
 		formState: { errors },
 	} = form
-	const [checkedValues, setCheckedValues] = useState<string[]>([])
 	const [jobs, setJobs] = useState<Array<ReactSelectOption>>()
 
 	function handleCheck(value: ReactSelectOption) {
 		const newValues =
-			checkedValues?.filter(e => e === value.value).length > 0
-				? checkedValues?.filter(v => v !== value.value)
-				: [...(checkedValues ?? []), value.value.toString()]
-		setCheckedValues(newValues)
+			watch(INPUT_FORM_THREE[0])?.filter(
+				(e: any) => e?.value === value.value
+			).length > 0
+				? watch(INPUT_FORM_THREE[0])?.filter(
+						(v: any) => v.value !== value.value
+				  )
+				: [...(watch(INPUT_FORM_THREE[0]) ?? []), value]
 		return newValues
 	}
 
@@ -43,6 +53,17 @@ function SearchDetails({ form, activities }: any) {
 			)
 		})
 	)
+	function isStatusChecked(value: number) {
+		let isChecked = false
+
+		watch(INPUT_FORM_THREE[0]).forEach((element: any) => {
+			if (element.value === value) {
+				isChecked = true
+			}
+		})
+		return isChecked
+	}
+
 	return (
 		<>
 			<div className="company-details-form-stepper--intern-type">
@@ -53,7 +74,7 @@ function SearchDetails({ form, activities }: any) {
 					rules={{
 						required: "Le type de stagiaires est requis",
 					}}
-					render={({ field: { onChange } }) => (
+					render={({ field: { onChange, onBlur, value } }) => (
 						<div className="company-details-form__checkbox__group ">
 							{STATUS_OPTIONS?.map((s: ReactSelectOption) => (
 								<div
@@ -69,7 +90,9 @@ function SearchDetails({ form, activities }: any) {
 									<FormControlLabel
 										control={
 											<Checkbox
-												value={s.value}
+												checked={isStatusChecked(
+													+s.value
+												)}
 												onChange={() =>
 													onChange(handleCheck(s))
 												}
@@ -79,11 +102,13 @@ function SearchDetails({ form, activities }: any) {
 									/>
 
 									<InternStatusChoice
-										selectedInternStatus={watch(
-											INPUT_FORM_THREE[0]
-										)}
-										internStatus={s.value}
+										onChange={onChange}
+										onBlur={onBlur}
+										value={value}
+										internTypeLabel={s.label}
 										form={form}
+										// eslint-disable-next-line react/jsx-no-bind
+										isStatusChecked={isStatusChecked}
 									/>
 								</div>
 							))}
@@ -232,103 +257,100 @@ function SearchDetails({ form, activities }: any) {
 	)
 }
 
-function InternStatusChoice({ selectedInternStatus, internStatus, form }: any) {
-	const {
-		control,
-		formState: { errors },
-	} = form
+function InternStatusChoice({
+	internTypeLabel,
+	form,
+	value,
+	onChange,
+	onBlur,
+	isStatusChecked,
+}: any) {
+	function selectedPeriod(val: number) {
+		const selectedOption = value.find(
+			(element: any) => element.value === val
+		)
 
-	console.log(selectedInternStatus)
-	console.log(internStatus)
+		if (selectedOption !== null)
+			return new ReactSelectOption(
+				selectedOption.period,
+				selectedOption.period
+			)
+
+		return null
+	}
+	const { watch } = form
+	function handleSelectChange(
+		selectedInternTypeLabel: string,
+		periodOption: ReactSelectOption
+	) {
+		const arrayOfInternsType = watch(INPUT_FORM_THREE[0])
+		watch(INPUT_FORM_THREE[0]).forEach((element: any) => {
+			if (element.label === selectedInternTypeLabel) {
+				// eslint-disable-next-line no-param-reassign
+				element.period = periodOption.value
+			}
+		})
+		return arrayOfInternsType
+	}
+
 	return (
 		<div className="internal-status-choice-container">
-			{internStatus === STATUS_OPTIONS[0].value &&
-				selectedInternStatus?.length > 0 &&
-				selectedInternStatus.includes(STATUS_OPTIONS[0].value) && (
-					<i> ➔ 3 à 5 jours de découverte </i>
+			{internTypeLabel === STATUS_COLLEGE_STUDENT &&
+				value?.length > 0 &&
+				isStatusChecked(+STATUS_OPTIONS[0].value) && (
+					<i> ➔ {STATUS_OPTIONS[0].period} </i>
 				)}
-			{internStatus === STATUS_OPTIONS[1].value &&
-				selectedInternStatus?.length > 0 &&
-				selectedInternStatus.includes(STATUS_OPTIONS[1].value) && (
-					<i>
-						➔ Bac professionnel/Technique jusqu’à 22 semaines de
-						stages
-					</i>
+			{internTypeLabel === STATUS_HIGH_SCHOOL_STUDENT &&
+				value?.length > 0 &&
+				isStatusChecked(+STATUS_OPTIONS[1].value) && (
+					<i>➔ {STATUS_OPTIONS[1].period}</i>
 				)}
 
-			{internStatus === STATUS_OPTIONS[2].value &&
-				selectedInternStatus?.length > 0 &&
-				selectedInternStatus.includes(STATUS_OPTIONS[2].value) && (
+			{internTypeLabel === STATUS_STUDENT &&
+				value?.length > 0 &&
+				isStatusChecked(+STATUS_OPTIONS[2].value) && (
 					<div className="select under-select">
 						<span>➔</span>
-						<Controller
-							rules={{
-								required: "La durée du stage est requise",
-							}}
-							name={INPUT_FORM_THREE[5]}
-							control={control}
-							render={({
-								field: { value, onChange, onBlur },
-							}) => (
-								<CustomSelect
-									className="w-100"
-									isSearchable
-									options={PERIOD_OPTIONS}
-									placeholder="Choisissez..."
-									onBlur={onBlur}
-									value={PERIOD_OPTIONS.find(
-										(c: ReactSelectOption) =>
-											c.value === value
-									)}
-									onChange={(val: ReactSelectOption) =>
-										onChange(val.value)
-									}
-								/>
-							)}
+						<CustomSelect
+							required
+							className="w-100"
+							options={PERIOD_OPTIONS}
+							placeholder="Choisissez..."
+							onBlur={onBlur}
+							value={selectedPeriod(+STATUS_OPTIONS[2].value)}
+							onChange={(val: ReactSelectOption) =>
+								onChange(
+									handleSelectChange(
+										STATUS_OPTIONS[2].label,
+										val
+									)
+								)
+							}
 						/>
-						{errors[INPUT_FORM_THREE[5]] && (
-							<Alert severity="error">
-								{errors[INPUT_FORM_THREE[5]].message}
-							</Alert>
-						)}
 					</div>
 				)}
 
-			{internStatus === STATUS_OPTIONS[3].value &&
-				selectedInternStatus?.length > 0 &&
-				selectedInternStatus.includes(STATUS_OPTIONS[3].value) && (
+			{internTypeLabel === STATUS_JOB_SEEKER &&
+				value?.length > 0 &&
+				isStatusChecked(+STATUS_OPTIONS[3].value) && (
 					<div className="select under-select">
 						<span>➔</span>
-						<Controller
-							rules={{
-								required: "La durée du stage est requise",
-							}}
-							name={INPUT_FORM_THREE[6]}
-							control={control}
-							render={({
-								field: { value, onChange, onBlur },
-							}) => (
-								<CustomSelect
-									className="w-100"
-									isSearchable
-									options={PERIOD_OPTIONS}
-									placeholder="Choisissez..."
-									onBlur={onBlur}
-									value={PERIOD_OPTIONS.find(
-										(c: ReactSelectOption) =>
-											c.value === value
-									)}
-									onChange={(val: ReactSelectOption) =>
-										onChange(val.value)
-									}
-								/>
-							)}
+						<CustomSelect
+							required
+							className="w-100"
+							options={PERIOD_OPTIONS}
+							placeholder="Choisissez..."
+							onBlur={onBlur}
+							value={selectedPeriod(+STATUS_OPTIONS[3].value)}
+							onChange={(val: ReactSelectOption) =>
+								onChange(
+									handleSelectChange(
+										STATUS_OPTIONS[3].label,
+										val
+									)
+								)
+							}
 						/>
-						{errors[INPUT_FORM_THREE[6]] && (
-							<Alert severity="error">
-								{errors[INPUT_FORM_THREE[6]].message}
-							</Alert>
-						)}
 					</div>
 				)}
 		</div>

@@ -6,7 +6,6 @@ import {
 	InputLabel,
 	TextField,
 } from "@mui/material"
-import { useState } from "react"
 import { Controller } from "react-hook-form"
 
 import ImagePreview from "../../components/inputs/imagePreview"
@@ -14,18 +13,13 @@ import ReactSelectOption from "../../api/models/reactSelectOption"
 import CustomSelect from "../../components/inputs/customSelect"
 import { TYPE_COMPANY_OPTIONS, INPUT_FORM_ONE } from "./constants"
 
-function GeneralDetails({ form, activities }: any) {
-	const [{ alt, src }, setImg] = useState({
-		file: null,
-		src: "",
-		alt: "logo",
-	})
+function GeneralDetails({ form, activities, img, setImg }: any) {
+	const { alt, src } = img
 
 	const {
 		register,
 		control,
 		formState: { errors },
-		watch,
 	} = form
 	return (
 		<>

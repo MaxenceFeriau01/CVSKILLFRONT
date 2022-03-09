@@ -20,22 +20,32 @@ export const PERIOD_OPTIONS: Array<ReactSelectOption> = [
 	},
 ]
 
-export const STATUS_OPTIONS: Array<ReactSelectOption> = [
+export const STATUS_COLLEGE_STUDENT: string = "Collégien"
+
+export const STATUS_HIGH_SCHOOL_STUDENT: string = "Lycéen"
+
+export const STATUS_STUDENT: string = "Etudiant"
+
+export const STATUS_JOB_SEEKER: string = "Demandeur d'emploi"
+
+export const STATUS_OPTIONS: Array<ReactSelectOption | any> = [
 	{
-		label: "Collégien",
-		value: "Collégien",
+		label: STATUS_COLLEGE_STUDENT,
+		value: 1,
+		period: "3 à 5 jours de découverte",
 	},
 	{
-		label: "Lycéen",
-		value: "Lycéen",
+		label: STATUS_HIGH_SCHOOL_STUDENT,
+		value: 2,
+		period: "Bac professionnel/Technique jusqu’à 22 semaines de stages",
 	},
 	{
-		label: "Etudiant",
-		value: "Etudiant",
+		label: STATUS_STUDENT,
+		value: 3,
 	},
 	{
-		label: "Demandeur d'emploi",
-		value: "Demandeur d'emploi",
+		label: STATUS_JOB_SEEKER,
+		value: 4,
 	},
 ]
 

@@ -1,4 +1,5 @@
 import Activity from "./activity"
+import InternType from "./internType"
 import Job from "./job"
 
 class Company {
@@ -23,6 +24,8 @@ class Company {
 	activities: Activity[]
 
 	searchedActivities: Activity[]
+
+	searchedInternstype!: InternType[]
 
 	desiredInternsNumber!: string
 

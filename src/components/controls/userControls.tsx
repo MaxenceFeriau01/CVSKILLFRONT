@@ -1,8 +1,9 @@
 import { Alert, FormHelperText, InputLabel, TextField } from "@mui/material"
 import { Controller } from "react-hook-form"
 import ReactSelectOption from "../../api/models/reactSelectOption"
-import { PERIOD_OPTIONS, STATUS_OPTIONS } from "../../utils/constants"
+import { PERIOD_OPTIONS, STATUS_OPTIONS , STATUS_HIGH_SCHOOL_STUDENT, STATUS_JOB_SEEKER, STATUS_STUDENT } from "../../utils/constants"
 import CustomSelect from "../inputs/customSelect"
+
 
 import FileUpload from "../inputs/fileUpload"
 import { CIVILITY_OPTIONS, DIPLOMA_OPTIONS } from "./constants"
@@ -233,7 +234,7 @@ function UserControls({
 								(c: ReactSelectOption) => c.value === value
 							)}
 							onChange={(val: ReactSelectOption) =>
-								onChange(val.value)
+								onChange(val)
 							}
 						/>
 					)}
@@ -242,9 +243,9 @@ function UserControls({
 					<Alert severity="error">{errors.civility.message}</Alert>
 				)}
 			</div>
-			{(watch("status") === "Etudiant" ||
-				watch("status") === "Lycéen" ||
-				watch("status") === "Demandeur d'emploi") && (
+			{(watch("status")?.label === STATUS_STUDENT ||
+				watch("status")?.label === STATUS_HIGH_SCHOOL_STUDENT ||
+				watch("status")?.label === STATUS_JOB_SEEKER) && (
 				<>
 					<div className="select-form-control--half-first">
 						<InputLabel>Activités</InputLabel>
@@ -328,8 +329,8 @@ function UserControls({
 					</div>
 				</>
 			)}
-			{(watch("status") === "Etudiant" ||
-				watch("status") === "Demandeur d'emploi") && (
+			{(watch("status")?.label === STATUS_STUDENT ||
+				watch("status")?.label === STATUS_JOB_SEEKER) && (
 				<>
 					<div className="select-form-control--half-second">
 						<InputLabel>Durée du stage</InputLabel>
