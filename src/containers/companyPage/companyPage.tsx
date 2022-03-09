@@ -1,17 +1,10 @@
 import {
 	Button,
-	Checkbox,
-	Select,
-	ListItemText,
-	SelectChangeEvent,
-	MenuItem,
-	FormControl,
-	OutlinedInput,
-	InputLabel,
-	Box,
-	Chip
+	FormGroup,
+	FormControlLabel,
+	Checkbox
 } from "@mui/material"
-import { useRef, useState } from "react"
+import { useRef, useState, ChangeEvent } from "react"
 import { useInfiniteQuery, useQuery } from "react-query"
 import { Link } from "react-router-dom"
 
@@ -20,6 +13,7 @@ import Company from "../../api/models/company"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 
 import activityService from "../../api/services/activityService"
+import statusesService from "../../api/services/statusesService"
 import companyService from "../../api/services/companyService"
 import CustomSelect from "../../components/inputs/customSelect"
 import HasRight from "../../components/rights/hasRight"
@@ -29,14 +23,9 @@ import { PAGE, SIZE } from "./constants"
 
 function CompanyPage() {
 	const canFetch = useRef(true)
-	const [filter, setFilter] = useState<number | null | string>(null)
-	const [trainees, setTrainees] = useState<string[]>([]);
-	const traineeType = [
-		{label: "Collégien", value: "Collégien"},
-		{label: "Lycéen", value: "Lycéen"},
-		{label: "Etudiant", value: "Etudiant"},
-		{label: "Demandeur d'emploi", value: "Demandeur d'emploi"}
-	];
+	const [filter, setFilter] = useState<number | null | string>(null);
+	const [status, setStatus] = useState<number | null | string>(null);
+	const [isPaid, setIsPaid] = useState<boolean>(false);
 
 	const companies = useInfiniteQuery(
 		["companies", filter],
@@ -44,7 +33,7 @@ function CompanyPage() {
 			companyService.getAllPaginated({
 				page: pageParam,
 				size: SIZE,
-				activityId: filter,
+				activityId: filter
 			}),
 		{
 			getNextPageParam: data => {
@@ -62,13 +51,22 @@ function CompanyPage() {
 			.then(res => res.map(r => ({ value: r.id, label: r.name })))
 	)
 
+	const statuses = useQuery("statuses", () =>
+		statusesService.getAllWithFilters()
+			.then(res => res.map(r => ({ value: r.id, label: r.name })))
+	)
+
 	function selectHandleActivityChange(option: ReactSelectOption) {
 		setFilter(option === null ? null : option.value)
 	}
 
 	function selectHandleTraineesChange(option: ReactSelectOption) {
-		console.log(option)
+		setStatus(option === null ? null : option.value)
 	}
+
+	const selectIsPaidAndLongTermInternship = (event: ChangeEvent<HTMLInputElement>) => {
+		setIsPaid(event.target.checked);
+	  };
 
 	function handleScroll(e: any) {
 		const bottom =
@@ -96,13 +94,26 @@ function CompanyPage() {
 				<CustomSelect
 					className="company-select--activities"
 					placeholder="Filtre par stagiaire"
-					options={traineeType}
-					isMulti
+					options={statuses.data}
 					onChange={(e: any) => selectHandleTraineesChange(e)}
 					isClearable
 					isSearchable
 					name="selectTrainees"
 				/>
+				<FormGroup>
+					<FormControlLabel 
+						control={
+							<Checkbox
+								checked={isPaid}
+								onChange={selectIsPaidAndLongTermInternship}
+								sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
+								inputProps={{ 'aria-label': 'controlled' }}
+							/>
+						}
+						label="Stage de longue durée, rémunérée"
+						name="selectIsPaidAndLongTermInternship"
+					/>
+				</FormGroup>
 				<Button>Rechercher</Button>
 			</header>
 
