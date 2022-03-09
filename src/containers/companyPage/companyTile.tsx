@@ -38,16 +38,11 @@ function CompanyTile({ company }: CompanyProps) {
 		}
 	}
 
-	let paidInternshipView = <div />;
-	if (company.isPaidAndLongTermInternship) {
-		paidInternshipView = (<div className="company-tile__clock" title="Stage de longue durée, rémunérée">
-			<AccessTimeIcon />	
-		</div>)
-	}
-
 	return (
 		<div onClick={() => onClick()} className="company-tile">
-			{paidInternshipView}
+			{company.paidAndLongTermInternship ? (<div className="company-tile__clock" title="Stage de longue durée, rémunérée">
+				<AccessTimeIcon />	
+			</div>) : ''}
 			<div className="company-tile__image">
 				{company.logo ? (
 					<img
