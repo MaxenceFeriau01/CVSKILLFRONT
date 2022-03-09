@@ -37,11 +37,17 @@ function CompanyTile({ company }: CompanyProps) {
 			})
 		}
 	}
+
+	let paidInternshipView = <div />;
+	if (company.isPaidAndLongTermInternship) {
+		paidInternshipView = (<div className="company-tile__clock" title="Stage de longue durée, rémunérée">
+			<AccessTimeIcon />	
+		</div>)
+	}
+
 	return (
 		<div onClick={() => onClick()} className="company-tile">
-			<div className="company-tile__clock" title="Stage de longue durée, rémunérée">
-				<AccessTimeIcon />	
-			</div>
+			{paidInternshipView}
 			<div className="company-tile__image">
 				{company.logo ? (
 					<img
@@ -63,7 +69,7 @@ function CompanyTile({ company }: CompanyProps) {
 					</span>
 				))}
 			</div>
-			<span className="company-tile__postal"><b>LILLE (59000)</b></span>
+			<span className="company-tile__postal"><b>{company.town} ({company.postalCode})</b></span>
 		</div>
 	)
 }

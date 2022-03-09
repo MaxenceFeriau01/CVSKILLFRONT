@@ -23,17 +23,19 @@ import { PAGE, SIZE } from "./constants"
 
 function CompanyPage() {
 	const canFetch = useRef(true)
-	const [filter, setFilter] = useState<number | null | string>(null);
+	const [filter, setFilter] = useState<number[] | null | string[]>(null);
 	const [status, setStatus] = useState<number | null | string>(null);
 	const [isPaid, setIsPaid] = useState<boolean>(false);
 
 	const companies = useInfiniteQuery(
-		["companies", filter],
+		["companies", filter, status, isPaid],
 		({ pageParam = PAGE }) =>
 			companyService.getAllPaginated({
 				page: pageParam,
 				size: SIZE,
-				activityId: filter
+				activities: filter?.join(','),
+				statusId: status,
+				isPaidAndLongTermInternship: isPaid === false ? null : isPaid
 			}),
 		{
 			getNextPageParam: data => {
@@ -56,8 +58,8 @@ function CompanyPage() {
 			.then(res => res.map(r => ({ value: r.id, label: r.name })))
 	)
 
-	function selectHandleActivityChange(option: ReactSelectOption) {
-		setFilter(option === null ? null : option.value)
+	function selectHandleActivityChange(evt: any[]) {
+		setFilter(evt.length > 0 ? evt.map(x => x.value) : null);
 	}
 
 	function selectHandleTraineesChange(option: ReactSelectOption) {
@@ -86,6 +88,7 @@ function CompanyPage() {
 					className="company-select--activities"
 					placeholder="Filtre par activité"
 					options={activities.data}
+					isMulti
 					onChange={(e: any) => selectHandleActivityChange(e)}
 					isClearable
 					isSearchable
@@ -110,7 +113,7 @@ function CompanyPage() {
 								inputProps={{ 'aria-label': 'controlled' }}
 							/>
 						}
-						label="Stage de longue durée, rémunérée"
+						label="Uniquement les stages de longue durée"
 						name="selectIsPaidAndLongTermInternship"
 					/>
 				</FormGroup>
