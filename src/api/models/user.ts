@@ -1,4 +1,5 @@
 import Activity from "./activity"
+import InternStatus from "./internStatus"
 import Job from "./job"
 
 class User {
@@ -20,7 +21,7 @@ class User {
 
 	dateOfBirth!: Date
 
-	status!: String
+	status!: InternStatus
 
 	internshipPeriod!: String | null
 

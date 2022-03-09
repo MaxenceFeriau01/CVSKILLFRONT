@@ -39,7 +39,7 @@ function CompanyPage() {
 	const activities = useQuery("activities", () =>
 		activityService
 			.getAllWithFilters()
-			.then(res => res.map(r => ({ value: r.id, label: r.name })))
+			.then(res => res.map(r => new ReactSelectOption(r.id, r.name)))
 	)
 
 	function selectHandleChange(option: ReactSelectOption) {

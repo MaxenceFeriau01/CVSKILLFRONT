@@ -14,7 +14,10 @@ import userService from "../../api/services/userService"
 import logo from "../../resources/images/logo.svg"
 import useHideElement from "../../hooks/hideElement"
 import UserControls from "../../components/controls/userControls"
-import { STATUS_COLLEGE_STUDENT, STATUS_HIGH_SCHOOL_STUDENT } from "../../utils/constants"
+import {
+	STATUS_COLLEGE_STUDENT,
+	STATUS_HIGH_SCHOOL_STUDENT,
+} from "../../utils/constants"
 
 function RegistrationPage() {
 	useHideElement(["header", "footer"])
@@ -44,10 +47,7 @@ function RegistrationPage() {
 	useQuery("activities", () =>
 		activityService.getAllWithFilters().then(res => {
 			const activities: Array<ReactSelectOption> = res.map(
-				(a: Activity) => ({
-					label: a.name,
-					value: a.id,
-				})
+				(a: Activity) => new ReactSelectOption(a.id, a.name)
 			)
 			setActivitiesOptions(activities)
 		})
@@ -67,14 +67,14 @@ function RegistrationPage() {
 		const formData = new FormData()
 
 		const toCreate: User = { ...data }
-		if (toCreate.status === STATUS_COLLEGE_STUDENT) {
+		if (toCreate.status.name === STATUS_COLLEGE_STUDENT) {
 			toCreate.activities = null
 			toCreate.jobs = null
 			toCreate.diploma = null
 			toCreate.internshipPeriod = null
 		}
 
-		if (toCreate.status === STATUS_HIGH_SCHOOL_STUDENT) {
+		if (toCreate.status.name === STATUS_HIGH_SCHOOL_STUDENT) {
 			toCreate.diploma = null
 			toCreate.internshipPeriod = null
 		}

@@ -13,7 +13,19 @@ import ReactSelectOption from "../../api/models/reactSelectOption"
 import CustomSelect from "../../components/inputs/customSelect"
 import { TYPE_COMPANY_OPTIONS, INPUT_FORM_ONE } from "./constants"
 
-function GeneralDetails({ form, activities, img, setImg }: any) {
+interface GeneralDetailsProps {
+	form: any
+	activities: ReactSelectOption[] | undefined
+	img: any
+	setImg: any
+}
+
+function GeneralDetails({
+	form,
+	activities,
+	img,
+	setImg,
+}: GeneralDetailsProps) {
 	const { alt, src } = img
 
 	const {

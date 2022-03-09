@@ -23,7 +23,11 @@ import {
 } from "../../utils/constants"
 import { INTERN_NUMBER_OPTIONS, INPUT_FORM_THREE } from "./constants"
 
-function SearchDetails({ form, activities }: any) {
+interface SearchDetailsProps {
+	form: any
+	activities: ReactSelectOption[] | undefined
+}
+function SearchDetails({ form, activities }: SearchDetailsProps) {
 	const {
 		control,
 		watch,
@@ -45,18 +49,14 @@ function SearchDetails({ form, activities }: any) {
 
 	useQuery("jobs", () =>
 		jobService.getAllWithFilters().then(res => {
-			setJobs(
-				res.map((a: Job) => ({
-					label: a.name,
-					value: a.id,
-				}))
-			)
+			setJobs(res.map((a: Job) => new ReactSelectOption(a.id, a.name)))
 		})
 	)
+
 	function isStatusChecked(value: number) {
 		let isChecked = false
 
-		watch(INPUT_FORM_THREE[0]).forEach((element: any) => {
+		watch(INPUT_FORM_THREE[0])?.forEach((element: any) => {
 			if (element.value === value) {
 				isChecked = true
 			}
@@ -67,14 +67,14 @@ function SearchDetails({ form, activities }: any) {
 	return (
 		<>
 			<div className="company-details-form-stepper--intern-type">
-				<h4>Quel type de stagiaires acceptez-vous d’accueillir ?</h4>
+				<h4>Quel type de stagiaires acceptez-vous d’accueillir ? *</h4>
 				<Controller
 					name={INPUT_FORM_THREE[0]}
 					control={control}
 					rules={{
 						required: "Le type de stagiaires est requis",
 					}}
-					render={({ field: { onChange, onBlur, value } }) => (
+					render={({ field: { onChange, value } }) => (
 						<div className="company-details-form__checkbox__group ">
 							{STATUS_OPTIONS?.map((s: ReactSelectOption) => (
 								<div
@@ -103,7 +103,6 @@ function SearchDetails({ form, activities }: any) {
 
 									<InternStatusChoice
 										onChange={onChange}
-										onBlur={onBlur}
 										value={value}
 										internTypeLabel={s.label}
 										form={form}
@@ -124,7 +123,7 @@ function SearchDetails({ form, activities }: any) {
 			<div className="select" style={{ zIndex: 3 }}>
 				<h4>
 					Sur quels domaines d’activités et quels métiers pouvez-vous
-					accueillir des stagiaires ?
+					accueillir des stagiaires ? *
 				</h4>
 				<Controller
 					name={INPUT_FORM_THREE[1]}
@@ -132,7 +131,7 @@ function SearchDetails({ form, activities }: any) {
 						required: "Le domaine activité est requis",
 					}}
 					control={control}
-					render={({ field: { value, onChange, onBlur } }) => (
+					render={({ field: { value, onChange } }) => (
 						<CustomSelect
 							options={activities}
 							placeholder="Choisissez..."
@@ -140,7 +139,6 @@ function SearchDetails({ form, activities }: any) {
 							onChange={(lOptions: ReactSelectOption[]) =>
 								onChange(lOptions?.map(option => option.value))
 							}
-							onBlur={onBlur}
 							value={activities?.filter((option: any) =>
 								value?.includes(option.value)
 							)}
@@ -163,7 +161,7 @@ function SearchDetails({ form, activities }: any) {
 						required: "Le métier de recherche est requis",
 					}}
 					control={control}
-					render={({ field: { value, onChange, onBlur } }) => (
+					render={({ field: { value, onChange } }) => (
 						<CustomSelect
 							options={jobs}
 							placeholder="Choisissez..."
@@ -171,7 +169,6 @@ function SearchDetails({ form, activities }: any) {
 							onChange={(lOptions: ReactSelectOption[]) =>
 								onChange(lOptions?.map(option => option.value))
 							}
-							onBlur={onBlur}
 							value={jobs?.filter((option: any) =>
 								value?.includes(option.value)
 							)}
@@ -181,9 +178,9 @@ function SearchDetails({ form, activities }: any) {
 						/>
 					)}
 				/>
-				{errors[INPUT_FORM_THREE[1]] && (
+				{errors[INPUT_FORM_THREE[2]] && (
 					<Alert severity="error">
-						{errors[INPUT_FORM_THREE[1]].message}
+						{errors[INPUT_FORM_THREE[2]].message}
 					</Alert>
 				)}
 			</div>
@@ -191,7 +188,7 @@ function SearchDetails({ form, activities }: any) {
 			<div className="select">
 				<h4>
 					Acceptez-vous de prendre des stagiaires de longues durée,
-					rémunérés ?
+					rémunérés ? *
 				</h4>
 
 				<Controller
@@ -200,12 +197,8 @@ function SearchDetails({ form, activities }: any) {
 						required: "Ce champ est requis",
 					}}
 					control={control}
-					render={({ field: { onChange, onBlur, value } }) => (
-						<RadioGroup
-							value={value}
-							onChange={onChange}
-							onBlur={onBlur}
-						>
+					render={({ field: { onChange, value } }) => (
+						<RadioGroup value={value} onChange={onChange}>
 							<FormControlLabel
 								value
 								control={<Radio />}
@@ -226,18 +219,17 @@ function SearchDetails({ form, activities }: any) {
 				)}
 			</div>
 			<div className="select">
-				<h4>Combien de stagiaires pouvez-vous accueillir par an ?</h4>
+				<h4>Combien de stagiaires pouvez-vous accueillir par an ? *</h4>
 				<Controller
 					name={INPUT_FORM_THREE[4]}
 					rules={{
 						required: "Le nombre de stagiaires est requis",
 					}}
 					control={control}
-					render={({ field: { value, onChange, onBlur } }) => (
+					render={({ field: { value, onChange } }) => (
 						<CustomSelect
 							options={INTERN_NUMBER_OPTIONS}
 							placeholder="Choisissez..."
-							onBlur={onBlur}
 							value={INTERN_NUMBER_OPTIONS.find(
 								(c: ReactSelectOption) => c.value === value
 							)}
@@ -262,7 +254,6 @@ function InternStatusChoice({
 	form,
 	value,
 	onChange,
-	onBlur,
 	isStatusChecked,
 }: any) {
 	function selectedPeriod(val: number) {
@@ -316,7 +307,6 @@ function InternStatusChoice({
 							className="w-100"
 							options={PERIOD_OPTIONS}
 							placeholder="Choisissez..."
-							onBlur={onBlur}
 							value={selectedPeriod(+STATUS_OPTIONS[2].value)}
 							onChange={(val: ReactSelectOption) =>
 								onChange(
@@ -340,7 +330,6 @@ function InternStatusChoice({
 							className="w-100"
 							options={PERIOD_OPTIONS}
 							placeholder="Choisissez..."
-							onBlur={onBlur}
 							value={selectedPeriod(+STATUS_OPTIONS[3].value)}
 							onChange={(val: ReactSelectOption) =>
 								onChange(

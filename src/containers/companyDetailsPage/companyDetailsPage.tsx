@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 
 import { useMutation, useQuery } from "react-query"
 import { useNavigate, useParams } from "react-router-dom"
-import Company from "../../api/models/company"
+import Swal from "sweetalert2"
 
 import companyService from "../../api/services/companyService"
 import Activity from "../../api/models/activity"
@@ -56,10 +56,7 @@ function CompanyDetailsPage() {
 	useQuery("activities", () =>
 		activityService.getAllWithFilters().then(res => {
 			setActivities(
-				res.map((a: Activity) => ({
-					label: a.name,
-					value: a.id,
-				}))
+				res.map((a: Activity) => new ReactSelectOption(a.id, a.name))
 			)
 		})
 	)
@@ -121,6 +118,13 @@ function CompanyDetailsPage() {
 		(newCompany: any) => companyService.post(newCompany),
 		{
 			onSuccess: () => {
+				Swal.fire({
+					position: "bottom-end",
+					title: "",
+					text: "L'entreprise a bien été créée ! ",
+					icon: "success",
+					timer: 1500,
+				})
 				navigate("/companies")
 			},
 		}
@@ -128,7 +132,18 @@ function CompanyDetailsPage() {
 
 	const putCompany = useMutation(
 		({ companyId, companyToUpdate }: PutCompany) =>
-			companyService.put(companyToUpdate, companyId)
+			companyService.put(companyToUpdate, companyId),
+		{
+			onSuccess: () => {
+				Swal.fire({
+					position: "bottom-end",
+					title: "",
+					text: "L'entreprise a bien été mise à jour ! ",
+					icon: "success",
+					timer: 1500,
+				})
+			},
+		}
 	)
 
 	const onSubmit = (data: any) => {
@@ -198,14 +213,17 @@ function CompanyDetailsPage() {
 					{activeStep === 0 && (
 						<GeneralDetails
 							form={form}
-							activities={activities}
+							activities={activities && activities}
 							img={{ alt, src, file }}
 							setImg={setImg}
 						/>
 					)}
 					{activeStep === 1 && <ContactDetails form={form} />}
 					{activeStep === 2 && (
-						<SearchDetails form={form} activities={activities} />
+						<SearchDetails
+							form={form}
+							activities={activities && activities}
+						/>
 					)}
 				</div>
 
