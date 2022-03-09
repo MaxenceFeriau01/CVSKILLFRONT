@@ -1,7 +1,8 @@
 import { Button } from "@mui/material"
-import { useRef, useState } from "react"
+import { useRef, useState, useContext } from "react"
 import { useInfiniteQuery, useQuery } from "react-query"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import Swal from "sweetalert2"
 import Company from "../../api/models/company"
 
 import ReactSelectOption from "../../api/models/reactSelectOption"
@@ -14,9 +15,15 @@ import Role from "../../enums/Role"
 import CompanyTile from "./companyTile"
 import { PAGE, SIZE } from "./constants"
 
+import UserContext from "../../contexts/user"
+
 function CompanyPage() {
 	const canFetch = useRef(true)
 	const [filter, setFilter] = useState<number | null | string>(null)
+
+	const { user } = useContext(UserContext)
+	const navigate = useNavigate()
+	const [selectedCompany, setSelectedCompany] = useState<Company | null>(null)
 
 	const companies = useInfiniteQuery(
 		["companies", filter],
@@ -57,6 +64,29 @@ function CompanyPage() {
 		}
 	}
 
+	function onClick(company: Company) {
+		if (user && user.token) {
+			console.log(company)
+			setSelectedCompany(company)
+		} else {
+			Swal.fire({
+				title: "<strong>Non <u>connecté(e)</u>?</strong>",
+				icon: "info",
+				html:
+					"Vous devez vous <b>connecter</b>, " +
+					"pour profiter de l'ensemble des fonctionnalités.",
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: "Se connecter !",
+			}).then(result => {
+				/* Read more about isConfirmed, isDenied below */
+				if (result.isConfirmed) {
+					navigate("/login")
+				}
+			})
+		}
+	}
+
 	return (
 		<section className="page company-page">
 			<header className="company-page-header">
@@ -88,7 +118,13 @@ function CompanyPage() {
 						</HasRight>
 						{companies?.data?.pages?.map(page =>
 							page?.content?.map((c: Company) => (
-								<CompanyTile key={c.id} company={c} />
+								<CompanyTile
+									key={c.id}
+									company={c}
+									onClick={(company: Company) =>
+										onClick(company)
+									}
+								/>
 							))
 						)}
 					</div>

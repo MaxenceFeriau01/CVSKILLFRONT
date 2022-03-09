@@ -1,43 +1,13 @@
-import { useNavigate } from "react-router-dom"
-import Swal from "sweetalert2"
-import { useContext } from "react"
-import UserContext from "../../contexts/user"
 import Company from "../../api/models/company"
 import imageUpload from "../../resources/images/image-upload.svg"
 
 interface CompanyProps {
 	company: Company
+	onClick: any
 }
-function CompanyTile({ company }: CompanyProps) {
-	const navigate = useNavigate()
-
-	const { user } = useContext(UserContext)
-
-	function onClick() {
-		if (user && user.token) {
-			navigate(`/company-details/${company.id}`)
-		} else {
-			Swal.fire({
-				title: "<strong>Non <u>connecté(e)</u>?</strong>",
-				icon: "info",
-				html:
-					"Vous devez vous <b>connecter</b>, " +
-					"pour profiter de l'ensemble des fonctionnalités.",
-				showCloseButton: true,
-				focusConfirm: false,
-				confirmButtonText: "Se connecter !",
-			}).then(result => {
-				/* Read more about isConfirmed, isDenied below */
-				if (result.isConfirmed) {
-					navigate("/login", {
-						state: `/company-details/${company.id}`,
-					})
-				}
-			})
-		}
-	}
+function CompanyTile({ company, onClick }: CompanyProps) {
 	return (
-		<div onClick={() => onClick()} className="company-tile">
+		<div onClick={() => onClick(company)} className="company-tile">
 			<div className="company-tile__image">
 				{company.logo ? (
 					<img
