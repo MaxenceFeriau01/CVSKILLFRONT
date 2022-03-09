@@ -38,7 +38,7 @@ function ImagePreview({ img, setImg, register }: ImagePreviewProps) {
 				id="image"
 				name="image"
 				accept="image/png, image/jpeg"
-				className="d-none"
+				className="hidden"
 				onChange={onLogoChange}
 			/>
 		</label>

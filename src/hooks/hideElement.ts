@@ -5,14 +5,14 @@ function useHideElement(references: string[]) {
 		references.forEach(element => {
 			const itemToHide: Element =
 				document.getElementsByClassName(element)[0]
-			itemToHide.classList.add("d-none")
+			itemToHide.classList.add("hidden")
 		})
 
 		return () => {
 			references.forEach(element => {
 				const itemToHide: Element =
 					document.getElementsByClassName(element)[0]
-				itemToHide.classList.remove("d-none")
+				itemToHide.classList.remove("hidden")
 			})
 		}
 	}, [])

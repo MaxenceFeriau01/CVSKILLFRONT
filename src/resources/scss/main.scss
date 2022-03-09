@@ -11,6 +11,10 @@
 @import "../../containers/homePage/homePage";
 @import "../../components/footer/footer";
 @import "../../containers/forbiddenPage/forbiddenPage";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
 	margin: 0;
 	font-family: $font-family !important;
@@ -75,14 +79,6 @@ body {
 	.content {
 		max-width: 1400px;
 		margin: 0 auto;
-	}
-
-	.d-none {
-		display: none;
-	}
-
-	.w-100 {
-		width: 100%;
 	}
 
 	/* Change the white to any color */

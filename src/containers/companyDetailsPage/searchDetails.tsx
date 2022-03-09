@@ -304,7 +304,7 @@ function InternStatusChoice({
 						<span>➔</span>
 						<CustomSelect
 							required
-							className="w-100"
+							className="w-full"
 							options={PERIOD_OPTIONS}
 							placeholder="Choisissez..."
 							value={selectedPeriod(+STATUS_OPTIONS[2].value)}
@@ -327,7 +327,7 @@ function InternStatusChoice({
 						<span>➔</span>
 						<CustomSelect
 							required
-							className="w-100"
+							className="w-full"
 							options={PERIOD_OPTIONS}
 							placeholder="Choisissez..."
 							value={selectedPeriod(+STATUS_OPTIONS[3].value)}
