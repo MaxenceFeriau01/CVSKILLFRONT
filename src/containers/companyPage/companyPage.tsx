@@ -117,7 +117,6 @@ function CompanyPage() {
 						name="selectIsPaidAndLongTermInternship"
 					/>
 				</FormGroup>
-				<Button>Rechercher</Button>
 			</header>
 
 			<div onScroll={handleScroll} className="company-container">

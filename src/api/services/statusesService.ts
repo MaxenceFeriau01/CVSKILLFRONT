@@ -10,7 +10,7 @@
      // Variables
  }
  
- const statusesService = new StatusesService("/internStatus")
+ const statusesService = new StatusesService("/intern-status")
  
  export default statusesService
  
