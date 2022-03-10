@@ -5,10 +5,19 @@ import imageUpload from "../../resources/images/image-upload.svg"
 interface CompanyProps {
 	company: Company
 	onClick: any
+	selectedCompanyId: number | undefined
 }
-function CompanyTile({ company, onClick }: CompanyProps) {
+function CompanyTile({ company, onClick, selectedCompanyId }: CompanyProps) {
 	return (
-		<div onClick={() => onClick(company)} className="company-tile">
+		<div
+			onClick={() => onClick(company)}
+			className={`company-tile ${selectedCompanyId ? "w-11/12" : ""}  ${
+				selectedCompanyId === company?.id
+					? "company-tile--selected"
+					: ""
+			}
+		`}
+		>
 			{company.paidAndLongTermInternship ? (
 				<div
 					className="company-tile__clock"

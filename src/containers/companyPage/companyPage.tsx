@@ -88,7 +88,6 @@ function CompanyPage() {
 
 	function onClick(company: Company) {
 		if (user && user.token) {
-			console.log(company)
 			setSelectedCompany(company)
 		} else {
 			Swal.fire({
@@ -146,36 +145,48 @@ function CompanyPage() {
 					/>
 				</FormGroup>
 			</header>
-			<section className="company-container">
+			<section className="content company-container">
 				<div
+					className={`company-list-content ${
+						selectedCompany ? "w-1/2" : ""
+					}`}
 					onScroll={handleScroll}
-					className="w-full h-full overflow-auto"
 				>
-					<div className="content company-content">
-						<HasRight roles={[Role.ADMIN]}>
-							<Link
-								to="/new-company"
-								className="company-tile company-tile--add"
-							>
-								<span>+</span>
-								<b>Créer une entreprise</b>
-							</Link>
-						</HasRight>
-						{companies?.data?.pages?.map(page =>
-							page?.content?.map((c: Company) => (
-								<CompanyTile
-									key={c.id}
-									company={c}
-									onClick={(company: Company) =>
-										onClick(company)
-									}
-								/>
-							))
-						)}
-					</div>
+					<HasRight roles={[Role.ADMIN]}>
+						<Link
+							to="/new-company"
+							className={`company-tile company-tile--add ${
+								selectedCompany ? "w-11/12" : ""
+							}`}
+						>
+							<span>+</span>
+							<b>Créer une entreprise</b>
+						</Link>
+					</HasRight>
+					{companies?.data?.pages?.map(page =>
+						page?.content?.map((c: Company) => (
+							<CompanyTile
+								selectedCompanyId={selectedCompany?.id}
+								key={c.id}
+								company={c}
+								onClick={(company: Company) => onClick(company)}
+							/>
+						))
+					)}
 				</div>
-				<div className="company-details-container">
-					<div className="content" />
+				<div
+					className={`${
+						selectedCompany
+							? "company-details-container"
+							: "w-0 invisible "
+					}`}
+				>
+					<button
+						type="button"
+						onClick={() => setSelectedCompany(null)}
+					>
+						close
+					</button>
 				</div>
 			</section>
 		</section>
