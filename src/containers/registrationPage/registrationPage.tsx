@@ -27,7 +27,8 @@ function RegistrationPage() {
 	const [activitiesOptions, setActivitiesOptions] =
 		useState<Array<ReactSelectOption>>()
 	const [jobsOptions, setJobsOptions] = useState<Array<ReactSelectOption>>()
-	const [statusesOptions, setStatusesOptions] = useState<Array<ReactSelectOption>>()
+	const [statusesOptions, setStatusesOptions] =
+		useState<Array<ReactSelectOption>>()
 
 	const navigate = useNavigate()
 	const {
@@ -68,10 +69,9 @@ function RegistrationPage() {
 
 	useQuery("statuses", () =>
 		internStatusService.getAllWithFilters().then(res => {
-			const is: Array<ReactSelectOption> = res.map((s: InternStatus) => ({
-				label: s.name,
-				value: s.id,
-			}))
+			const is: Array<ReactSelectOption> = res.map(
+				(s: InternStatus) => new ReactSelectOption(s.id, s.name)
+			)
 			setStatusesOptions(is)
 		})
 	)
@@ -94,7 +94,10 @@ function RegistrationPage() {
 
 		toCreate.activities = data.activities?.map((a: any) => ({ id: a }))
 		toCreate.jobs = data.jobs?.map((j: any) => ({ id: j }))
-		toCreate.status = data.statuses?.map((s: any) => ({ id: s.value, name: s.label }))
+		toCreate.status = data.statuses?.map((s: any) => ({
+			id: s.value,
+			name: s.label,
+		}))
 		toCreate.cv = null
 		toCreate.coverLetter = null
 

@@ -18,6 +18,7 @@ import CompanyTile from "./companyTile"
 import { PAGE, SIZE } from "./constants"
 
 import UserContext from "../../contexts/user"
+import CompanyDetailsView from "./companyDetailsView"
 
 function CompanyPage() {
 	const canFetch = useRef(true)
@@ -62,16 +63,19 @@ function CompanyPage() {
 	)
 
 	function selectHandleActivityChange(evt: any[]) {
+		setSelectedCompany(null)
 		setFilter(evt.length > 0 ? evt.map(x => x.value) : null)
 	}
 
 	function selectHandleTraineesChange(option: ReactSelectOption) {
+		setSelectedCompany(null)
 		setStatus(option === null ? null : option.value)
 	}
 
 	const selectIsPaidAndLongTermInternship = (
 		event: ChangeEvent<HTMLInputElement>
 	) => {
+		setSelectedCompany(null)
 		setIsPaid(event.target.checked)
 	}
 
@@ -156,7 +160,7 @@ function CompanyPage() {
 						<Link
 							to="/new-company"
 							className={`company-tile company-tile--add ${
-								selectedCompany ? "w-11/12" : ""
+								selectedCompany ? "w-full" : ""
 							}`}
 						>
 							<span>+</span>
@@ -174,20 +178,10 @@ function CompanyPage() {
 						))
 					)}
 				</div>
-				<div
-					className={`${
-						selectedCompany
-							? "company-details-container"
-							: "w-0 invisible "
-					}`}
-				>
-					<button
-						type="button"
-						onClick={() => setSelectedCompany(null)}
-					>
-						close
-					</button>
-				</div>
+				<CompanyDetailsView
+					company={selectedCompany}
+					onClose={() => setSelectedCompany(null)}
+				/>
 			</section>
 		</section>
 	)

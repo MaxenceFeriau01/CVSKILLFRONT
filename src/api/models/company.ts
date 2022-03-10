@@ -25,7 +25,7 @@ class Company {
 
 	searchedActivities: Activity[]
 
-	searchedInternstype!: InternType[]
+	searchedInternsType!: InternType[]
 
 	desiredInternsNumber!: string
 

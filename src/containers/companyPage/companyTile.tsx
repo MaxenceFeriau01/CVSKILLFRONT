@@ -11,12 +11,11 @@ function CompanyTile({ company, onClick, selectedCompanyId }: CompanyProps) {
 	return (
 		<div
 			onClick={() => onClick(company)}
-			className={`company-tile ${selectedCompanyId ? "w-11/12" : ""}  ${
+			className={`company-tile ${selectedCompanyId ? "w-full" : ""}${
 				selectedCompanyId === company?.id
-					? "company-tile--selected"
+					? " company-tile--selected"
 					: ""
-			}
-		`}
+			}`}
 		>
 			{company.paidAndLongTermInternship ? (
 				<div

@@ -157,6 +157,12 @@ function GeneralDetails({
 			</div>
 			<Controller
 				name="description"
+				rules={{
+					maxLength: {
+						value: 1024,
+						message: "La description ne peut pas dépasser 1024",
+					},
+				}}
 				control={control}
 				defaultValue=""
 				render={({ field: { onChange, value } }) => (
@@ -168,6 +174,8 @@ function GeneralDetails({
 						rows={4}
 						variant="outlined"
 						className="form-control-full"
+						helperText={errors?.description?.message}
+						error={!!errors?.description}
 					/>
 				)}
 			/>
