@@ -115,20 +115,18 @@ function ProfilePage() {
 
 	useQuery("jobs", () =>
 		jobService.getAllWithFilters().then(res => {
-			const jobs: Array<ReactSelectOption> = res.map((j: Job) => ({
-				label: j.name,
-				value: j.id,
-			}))
+			const jobs: Array<ReactSelectOption> = res.map(
+				(j: Job) => new ReactSelectOption(j.id, j.name)
+			)
 			setJobsOptions(jobs)
 		})
 	)
 
 	useQuery("statuses", () =>
 		internStatusService.getAllWithFilters().then(res => {
-			const is: Array<ReactSelectOption> = res.map((s: InternStatus) => ({
-				label: s.name,
-				value: s.id,
-			}))
+			const is: Array<ReactSelectOption> = res.map(
+				(s: InternStatus) => new ReactSelectOption(s.id, s.name)
+			)
 			setStatusesOptions(is)
 		})
 	)
