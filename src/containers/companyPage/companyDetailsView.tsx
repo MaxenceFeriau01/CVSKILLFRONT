@@ -24,7 +24,6 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 					title: "",
 					text: "Votre demande a été prise en compte, vous allez être contacter par mail sous peu ! ",
 					icon: "success",
-					timer: 1500,
 				})
 			},
 		}

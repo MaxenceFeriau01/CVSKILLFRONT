@@ -127,7 +127,7 @@ class GeneralService<T> {
 		}
 
 		if (response.data) {
-			if (response.data.content) {
+			if (response.data?.content) {
 				return response.data.content
 			}
 			return response.data
@@ -138,10 +138,10 @@ class GeneralService<T> {
 
 	handleError(error: any): void {
 		// Formatted error from backend
-		if (error.response.data.message) {
+		if (error.response?.data?.message) {
 			Swal.fire({
 				position: "bottom-end",
-				title: error.response.data.message,
+				title: error.response.data?.message,
 				icon: "error",
 				showConfirmButton: false,
 				showCloseButton: true,

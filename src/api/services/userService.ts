@@ -25,7 +25,10 @@ class UserService extends GeneralService<User | any> {
 				resolve(this.roles)
 			})
 		}
-		return this.get("/self/roles")
+		return this.get("/self/roles").then(res => {
+			this.roles = res
+			return res
+		})
 	}
 
 	getUser(): Promise<User> {

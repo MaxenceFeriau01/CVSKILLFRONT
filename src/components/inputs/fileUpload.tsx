@@ -22,7 +22,7 @@ interface FileUploadProps {
 function FileUpload({ accept, text, id, register, value }: FileUploadProps) {
 	return (
 		<label className="file-upload" htmlFor={id}>
-			<FileUploadIcon />
+			<FileUploadIcon fontSize="inherit" />
 			{value?.length > 0 ? (
 				<b>{value[0].name}</b>
 			) : value?.name ? (

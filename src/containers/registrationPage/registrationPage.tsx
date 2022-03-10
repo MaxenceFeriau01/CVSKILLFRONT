@@ -94,10 +94,11 @@ function RegistrationPage() {
 
 		toCreate.activities = data.activities?.map((a: any) => ({ id: a }))
 		toCreate.jobs = data.jobs?.map((j: any) => ({ id: j }))
-		toCreate.status = data.statuses?.map((s: any) => ({
-			id: s.value,
-			name: s.label,
-		}))
+		toCreate.status = new InternStatus(
+			data.status?.value,
+			data.status?.label
+		)
+
 		toCreate.cv = null
 		toCreate.coverLetter = null
 

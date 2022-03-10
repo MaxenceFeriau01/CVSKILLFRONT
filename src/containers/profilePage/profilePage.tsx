@@ -29,7 +29,8 @@ function ProfilePage() {
 	const [activitiesOptions, setActivitiesOptions] =
 		useState<Array<ReactSelectOption>>()
 	const [jobsOptions, setJobsOptions] = useState<Array<ReactSelectOption>>()
-	const [statusesOptions, setStatusesOptions] = useState<Array<ReactSelectOption>>()
+	const [statusesOptions, setStatusesOptions] =
+		useState<Array<ReactSelectOption>>()
 
 	const { user, setUser } = useContext(UserContext)
 	const {
@@ -85,6 +86,9 @@ function ProfilePage() {
 							}
 						)
 						break
+					case "status":
+						setValue("status", res.status.id)
+						break
 					case "files":
 						res.files?.forEach((element: FileDb) => {
 							if (element.type === "CV") {
@@ -115,7 +119,7 @@ function ProfilePage() {
 
 	useQuery("jobs", () =>
 		jobService.getAllWithFilters().then(res => {
-			const jobs: Array<ReactSelectOption> = res.map(
+			const jobs: Array<ReactSelectOption> = res?.map(
 				(j: Job) => new ReactSelectOption(j.id, j.name)
 			)
 			setJobsOptions(jobs)
@@ -148,7 +152,10 @@ function ProfilePage() {
 
 		toUpdate.activities = data.activities?.map((a: any) => ({ id: a }))
 		toUpdate.jobs = data.jobs?.map((j: any) => ({ id: j }))
-		toUpdate.status = data.statuses?.map((s: any) => ({ id: s.value, name: s.label }))
+		toUpdate.status = new InternStatus(
+			data.status?.value,
+			data.status?.label
+		)
 		toUpdate.cv = null
 		toUpdate.coverLetter = null
 
