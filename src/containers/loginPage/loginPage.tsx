@@ -13,7 +13,6 @@ import logo from "../../resources/images/logo.svg"
 function LoginPage() {
 	useHideElement(["header", "footer"])
 	const navigate = useNavigate()
-	const { state } = useLocation()
 
 	const { setUser } = useContext(UserContext)
 
@@ -25,8 +24,7 @@ function LoginPage() {
 			onSuccess: (data: User) => {
 				localStorage.setItem("user", JSON.stringify(data))
 				setUser(data)
-				if (state !== null) navigate(state as string)
-				else navigate("/companies")
+				navigate("/companies")
 			},
 		}
 	)

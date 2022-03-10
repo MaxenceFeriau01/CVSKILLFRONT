@@ -15,13 +15,18 @@
 	}
 
 	.company-container {
-		height: calc(100% - 65px);
+		max-height: calc(100% - 65px);
 		display: flex;
+		position: relative;
 
-		.company-content {
+		.company-list-content {
+			width: 100%;
 			flex-flow: row wrap;
 			display: flex;
 			justify-content: center;
+			overflow-y: auto;
+			transition: width 0.4s linear;
+			padding: 0 10px;
 
 			.company-tile,
 			.company-tile {
@@ -38,7 +43,7 @@
 				border: 1px solid $color-gray;
 				height: 280px;
 				margin: 10px;
-				transition: 0.5s ease all;
+
 				min-width: 300px;
 				border-radius: 10px;
 				background-color: $color-white;
@@ -52,6 +57,7 @@
 				text-align: center;
 
 				&:hover {
+					transition: 0.4s ease all;
 					box-shadow: $box-shadow;
 				}
 
@@ -61,12 +67,28 @@
 
 				.company-tile__clock {
 					position: absolute;
-					right: 5px;
+					left: 5px;
 					top: 5px;
 
 					svg,
 					img {
-						fill: #ffc107;
+						fill: $color-secondary;
+					}
+				}
+
+				.company-tile__edit {
+					position: absolute;
+					right: 5px;
+					top: 5px;
+					z-index: 1;
+					transition: 0.5s all;
+					&:hover {
+						transform: scale(1.1);
+					}
+
+					svg,
+					img {
+						fill: $color-warning;
 					}
 				}
 
@@ -104,6 +126,14 @@
 					color: $color-primary;
 				}
 			}
+
+			.company-tile--selected {
+				border: 1.5px solid $color-primary;
+
+				&:hover {
+					box-shadow: none !important;
+				}
+			}
 		}
 		.company-tile__contact {
 			color: $color-white;
@@ -124,6 +154,62 @@
 		}
 
 		.company-details-container {
+			transition: width 0.7s linear;
+
+			background-color: $background-color;
+			width: 100%;
+			position: absolute;
+			margin: unset;
+			height: 100%;
+
+			@include breakpoint {
+				position: unset;
+				width: 50%;
+				height: unset;
+				margin: 10px;
+			}
+
+			.company-details-container-view {
+				border: 1px solid $color-gray;
+				width: 100%;
+				height: 100%;
+				position: relative;
+
+				border-radius: 10px;
+
+				display: flex;
+				flex-direction: column;
+
+				header {
+					padding: 10px;
+					display: flex;
+					width: 100%;
+					flex-direction: column;
+					box-shadow: 0 2px 4px rgb(0 0 0 / 8%);
+					border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+				}
+
+				.company-details-container-view-content {
+					padding: 10px;
+					display: flex;
+					flex-direction: column;
+					overflow-y: auto;
+					width: 100%;
+
+					svg {
+						fill: $color-secondary;
+					}
+				}
+
+				.company-details-container--close {
+					position: absolute;
+					right: 8px;
+					font-size: 27px;
+					text-transform: lowercase;
+					cursor: pointer;
+					z-index: 1;
+				}
+			}
 		}
 	}
 }

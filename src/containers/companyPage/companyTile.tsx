@@ -1,48 +1,45 @@
-import AccessTimeIcon from '@mui/icons-material/AccessTime'
-import { useNavigate } from "react-router-dom"
-import Swal from "sweetalert2"
-import { useContext } from "react"
-import UserContext from "../../contexts/user"
+import AccessTimeIcon from "@mui/icons-material/AccessTime"
+import EditIcon from "@mui/icons-material/Edit"
+import { Link } from "react-router-dom"
 import Company from "../../api/models/company"
+import HasRight from "../../components/rights/hasRight"
+import Role from "../../enums/Role"
 import imageUpload from "../../resources/images/image-upload.svg"
 
 interface CompanyProps {
 	company: Company
+	onClick: any
+	selectedCompanyId: number | undefined
 }
-function CompanyTile({ company }: CompanyProps) {
-	const navigate = useNavigate()
-
-	const { user } = useContext(UserContext)
-
-	function onClick() {
-		if (user && user.token) {
-			navigate(`/company-details/${company.id}`)
-		} else {
-			Swal.fire({
-				title: "<strong>Non <u>connecté(e)</u>?</strong>",
-				icon: "info",
-				html:
-					"Vous devez vous <b>connecter</b>, " +
-					"pour profiter de l'ensemble des fonctionnalités.",
-				showCloseButton: true,
-				focusConfirm: false,
-				confirmButtonText: "Se connecter !",
-			}).then(result => {
-				/* Read more about isConfirmed, isDenied below */
-				if (result.isConfirmed) {
-					navigate("/login", {
-						state: `/company-details/${company.id}`,
-					})
-				}
-			})
-		}
-	}
-
+function CompanyTile({ company, onClick, selectedCompanyId }: CompanyProps) {
 	return (
-		<div onClick={() => onClick()} className="company-tile">
-			{company.paidAndLongTermInternship ? (<div className="company-tile__clock" title="Stage de longue durée, rémunérée">
-				<AccessTimeIcon />	
-			</div>) : ''}
+		<div
+			onClick={() => onClick(company)}
+			className={`company-tile ${selectedCompanyId ? "w-full" : ""}${
+				selectedCompanyId === company?.id
+					? " company-tile--selected"
+					: ""
+			}`}
+		>
+			{company.paidAndLongTermInternship ? (
+				<div
+					className="company-tile__clock"
+					title="Stage de longue durée, rémunérée"
+				>
+					<AccessTimeIcon />
+				</div>
+			) : (
+				""
+			)}
+			<HasRight roles={[Role.ADMIN]}>
+				<Link
+					to={`/company-details/${company.id}`}
+					className="company-tile__edit"
+					title="Editer l'entreprise"
+				>
+					<EditIcon />
+				</Link>
+			</HasRight>
 			<div className="company-tile__image">
 				{company.logo ? (
 					<img
@@ -64,7 +61,11 @@ function CompanyTile({ company }: CompanyProps) {
 					</span>
 				))}
 			</div>
-			<span className="company-tile__postal"><b>{company.town} ({company.postalCode})</b></span>
+			<span className="company-tile__postal">
+				<b>
+					{company.town} ({company.postalCode})
+				</b>
+			</span>
 		</div>
 	)
 }
