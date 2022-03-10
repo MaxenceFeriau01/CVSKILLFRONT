@@ -1,6 +1,6 @@
 // GLOBAL CONSTANTS
 
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings"
+import DomainIcon from "@mui/icons-material/Domain"
 import BusinessIcon from "@mui/icons-material/Business"
 
 import ReactSelectOption from "../api/models/reactSelectOption"
@@ -63,8 +63,8 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 		Icon: BusinessIcon,
 	},
 	{
-		url: "/admin",
-		text: "Administration",
-		Icon: AdminPanelSettingsIcon,
+		url: "/activities",
+		text: "Activités",
+		Icon: DomainIcon,
 	},
 ]

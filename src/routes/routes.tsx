@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom"
+import ActivityPage from "../containers/activityPage/activityPage"
 import CompanyDetailsPage from "../containers/companyDetailsPage/companyDetailsPage"
 import CompanyPage from "../containers/companyPage/companyPage"
 import ForbiddenPage from "../containers/forbiddenPage/forbiddenPage"
@@ -19,6 +20,14 @@ const routes = (
 			element={
 				<PrivateRoute roles={[Role.ADMIN, Role.COMPANY]}>
 					<CompanyDetailsPage />
+				</PrivateRoute>
+			}
+		/>
+		<Route
+			path="/activities"
+			element={
+				<PrivateRoute roles={[Role.ADMIN]}>
+					<ActivityPage />
 				</PrivateRoute>
 			}
 		/>
