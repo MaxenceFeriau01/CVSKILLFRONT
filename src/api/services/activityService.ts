@@ -10,6 +10,6 @@ class ActivityService extends GeneralService<Activity> {
 	// Variables
 }
 
-const activityService = new ActivityService("/activities")
+const activityService = new ActivityService("activities")
 
 export default activityService

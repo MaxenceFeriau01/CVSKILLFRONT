@@ -1,13 +1,15 @@
-import { Button } from "@mui/material"
-import { useRef, useState, useContext } from "react"
+import { FormGroup, FormControlLabel, Checkbox } from "@mui/material"
+import { useRef, useState, useContext, ChangeEvent } from "react"
 import { useInfiniteQuery, useQuery } from "react-query"
 import { Link, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
+
 import Company from "../../api/models/company"
 
 import ReactSelectOption from "../../api/models/reactSelectOption"
 
 import activityService from "../../api/services/activityService"
+import internStatusService from "../../api/services/internStatusService"
 import companyService from "../../api/services/companyService"
 import CustomSelect from "../../components/inputs/customSelect"
 import HasRight from "../../components/rights/hasRight"
@@ -19,19 +21,23 @@ import UserContext from "../../contexts/user"
 
 function CompanyPage() {
 	const canFetch = useRef(true)
-	const [filter, setFilter] = useState<number | null | string>(null)
+	const [filter, setFilter] = useState<number[] | null | string[]>(null)
+	const [status, setStatus] = useState<number | null | string>(null)
+	const [isPaid, setIsPaid] = useState<boolean>(false)
 
 	const { user } = useContext(UserContext)
 	const navigate = useNavigate()
 	const [selectedCompany, setSelectedCompany] = useState<Company | null>(null)
 
 	const companies = useInfiniteQuery(
-		["companies", filter],
+		["companies", filter, status, isPaid],
 		({ pageParam = PAGE }) =>
 			companyService.getAllPaginated({
 				page: pageParam,
 				size: SIZE,
-				activityId: filter,
+				activities: filter?.join(","),
+				statusId: status,
+				isPaidAndLongTermInternship: isPaid === false ? null : isPaid,
 			}),
 		{
 			getNextPageParam: data => {
@@ -49,8 +55,24 @@ function CompanyPage() {
 			.then(res => res.map(r => new ReactSelectOption(r.id, r.name)))
 	)
 
-	function selectHandleChange(option: ReactSelectOption) {
-		setFilter(option === null ? null : option.value)
+	const statuses = useQuery("statuses", () =>
+		internStatusService
+			.getAllWithFilters()
+			.then(res => res.map(r => new ReactSelectOption(r.id, r.name)))
+	)
+
+	function selectHandleActivityChange(evt: any[]) {
+		setFilter(evt.length > 0 ? evt.map(x => x.value) : null)
+	}
+
+	function selectHandleTraineesChange(option: ReactSelectOption) {
+		setStatus(option === null ? null : option.value)
+	}
+
+	const selectIsPaidAndLongTermInternship = (
+		event: ChangeEvent<HTMLInputElement>
+	) => {
+		setIsPaid(event.target.checked)
 	}
 
 	function handleScroll(e: any) {
@@ -94,12 +116,35 @@ function CompanyPage() {
 					className="company-select--activities"
 					placeholder="Filtre par activité"
 					options={activities.data}
-					onChange={(e: any) => selectHandleChange(e)}
+					isMulti
+					onChange={(e: any) => selectHandleActivityChange(e)}
 					isClearable
 					isSearchable
-					name="select"
+					name="selectActivity"
 				/>
-				<Button>Rechercher</Button>
+				<CustomSelect
+					className="company-select--activities"
+					placeholder="Filtre par stagiaire"
+					options={statuses.data}
+					onChange={(e: any) => selectHandleTraineesChange(e)}
+					isClearable
+					isSearchable
+					name="selectTrainees"
+				/>
+				<FormGroup>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={isPaid}
+								onChange={selectIsPaidAndLongTermInternship}
+								sx={{ "& .MuiSvgIcon-root": { fontSize: 28 } }}
+								inputProps={{ "aria-label": "controlled" }}
+							/>
+						}
+						label="Uniquement les stages de longue durée"
+						name="selectIsPaidAndLongTermInternship"
+					/>
+				</FormGroup>
 			</header>
 			<section className="company-container">
 				<div

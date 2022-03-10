@@ -1,3 +1,4 @@
+import AccessTimeIcon from "@mui/icons-material/AccessTime"
 import Company from "../../api/models/company"
 import imageUpload from "../../resources/images/image-upload.svg"
 
@@ -8,6 +9,16 @@ interface CompanyProps {
 function CompanyTile({ company, onClick }: CompanyProps) {
 	return (
 		<div onClick={() => onClick(company)} className="company-tile">
+			{company.paidAndLongTermInternship ? (
+				<div
+					className="company-tile__clock"
+					title="Stage de longue durée, rémunérée"
+				>
+					<AccessTimeIcon />
+				</div>
+			) : (
+				""
+			)}
 			<div className="company-tile__image">
 				{company.logo ? (
 					<img
@@ -29,7 +40,11 @@ function CompanyTile({ company, onClick }: CompanyProps) {
 					</span>
 				))}
 			</div>
-			<span className="company-tile__postal">{company.siret}</span>
+			<span className="company-tile__postal">
+				<b>
+					{company.town} ({company.postalCode})
+				</b>
+			</span>
 		</div>
 	)
 }

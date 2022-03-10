@@ -25,6 +25,7 @@
 
 			.company-tile,
 			.company-tile {
+				position: relative;
 				cursor: pointer;
 				width: 90%;
 				@include breakpoint {
@@ -56,6 +57,17 @@
 
 				p {
 					color: $color-secondary;
+				}
+
+				.company-tile__clock {
+					position: absolute;
+					right: 5px;
+					top: 5px;
+
+					svg,
+					img {
+						fill: #ffc107;
+					}
 				}
 
 				.company-tile__image {
