@@ -18,7 +18,7 @@ class GeneralService<T> {
 
 	constructor(endPoint: string) {
 		this.http = axios.create()
-		this.url = `${process.env.REACT_APP_BASE_API_URL}${endPoint}`
+		this.url = `${process.env.REACT_APP_BASE_API_URL}/${endPoint}`
 		// Intercept every requests
 		this.http.interceptors.request.use(
 			config => {

@@ -10,6 +10,6 @@ class JobService extends GeneralService<Job> {
 	// Variables
 }
 
-const jobService = new JobService("/jobs")
+const jobService = new JobService("jobs")
 
 export default jobService

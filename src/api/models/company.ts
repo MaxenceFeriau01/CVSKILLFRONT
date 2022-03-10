@@ -29,7 +29,7 @@ class Company {
 
 	desiredInternsNumber!: string
 
-	isPaidAndLongTermInternship!: boolean
+	paidAndLongTermInternship!: boolean
 
 	logo!: any
 

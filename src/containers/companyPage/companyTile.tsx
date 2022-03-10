@@ -1,3 +1,4 @@
+import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import { useContext } from "react"
@@ -36,8 +37,12 @@ function CompanyTile({ company }: CompanyProps) {
 			})
 		}
 	}
+
 	return (
 		<div onClick={() => onClick()} className="company-tile">
+			{company.paidAndLongTermInternship ? (<div className="company-tile__clock" title="Stage de longue durée, rémunérée">
+				<AccessTimeIcon />	
+			</div>) : ''}
 			<div className="company-tile__image">
 				{company.logo ? (
 					<img
@@ -59,7 +64,7 @@ function CompanyTile({ company }: CompanyProps) {
 					</span>
 				))}
 			</div>
-			<span className="company-tile__postal">{company.siret}</span>
+			<span className="company-tile__postal"><b>{company.town} ({company.postalCode})</b></span>
 		</div>
 	)
 }
