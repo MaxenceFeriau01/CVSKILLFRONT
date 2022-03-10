@@ -22,11 +22,14 @@ import {
 	STATUS_COLLEGE_STUDENT,
 	STATUS_HIGH_SCHOOL_STUDENT,
 } from "../../utils/constants"
+import InternStatus from "../../api/models/internStatus"
+import internStatusService from "../../api/services/internStatusService"
 
 function ProfilePage() {
 	const [activitiesOptions, setActivitiesOptions] =
 		useState<Array<ReactSelectOption>>()
 	const [jobsOptions, setJobsOptions] = useState<Array<ReactSelectOption>>()
+	const [statusesOptions, setStatusesOptions] = useState<Array<ReactSelectOption>>()
 
 	const { user, setUser } = useContext(UserContext)
 	const {
@@ -120,6 +123,16 @@ function ProfilePage() {
 		})
 	)
 
+	useQuery("statuses", () =>
+		internStatusService.getAllWithFilters().then(res => {
+			const is: Array<ReactSelectOption> = res.map((s: InternStatus) => ({
+				label: s.name,
+				value: s.id,
+			}))
+			setStatusesOptions(is)
+		})
+	)
+
 	const onSubmit = (data: any) => {
 		const formData = new FormData()
 		const toUpdate: User = { ...data }
@@ -137,6 +150,7 @@ function ProfilePage() {
 
 		toUpdate.activities = data.activities?.map((a: any) => ({ id: a }))
 		toUpdate.jobs = data.jobs?.map((j: any) => ({ id: j }))
+		toUpdate.status = data.statuses?.map((s: any) => ({ id: s.value, name: s.label }))
 		toUpdate.cv = null
 		toUpdate.coverLetter = null
 
@@ -159,6 +173,7 @@ function ProfilePage() {
 				<UserControls
 					jobsOptions={jobsOptions}
 					activitiesOptions={activitiesOptions}
+					statusesOptions={statusesOptions}
 					control={control}
 					watch={watch}
 					errors={errors}

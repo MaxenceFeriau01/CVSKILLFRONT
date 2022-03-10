@@ -15,6 +15,7 @@ interface UserControlsProps {
 	register: any // FileList | FileDb
 	activitiesOptions: Array<ReactSelectOption> | undefined
 	jobsOptions: Array<ReactSelectOption> | undefined
+	statusesOptions: Array<ReactSelectOption> | undefined
 	isProfile?: boolean
 }
 
@@ -25,6 +26,7 @@ function UserControls({
 	register,
 	activitiesOptions,
 	jobsOptions,
+	statusesOptions,
 	isProfile = false,
 }: UserControlsProps) {
 	return (
@@ -227,10 +229,10 @@ function UserControls({
 					render={({ field: { value, onChange, onBlur } }) => (
 						<CustomSelect
 							isSearchable
-							options={STATUS_OPTIONS}
+							options={statusesOptions}
 							placeholder="Choisissez..."
 							onBlur={onBlur}
-							value={STATUS_OPTIONS.find(
+							value={statusesOptions?.find(
 								(c: ReactSelectOption) => c.value === value
 							)}
 							onChange={(val: ReactSelectOption) =>
