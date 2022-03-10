@@ -33,6 +33,6 @@ class UserService extends GeneralService<User | any> {
 	}
 }
 
-const userService = new UserService("/users")
+const userService = new UserService("users")
 
 export default userService

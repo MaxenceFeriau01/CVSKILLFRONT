@@ -10,6 +10,6 @@ class FileService extends GeneralService<FileDb> {
 	// Variables
 }
 
-const fileService = new FileService("/files")
+const fileService = new FileService("files")
 
 export default fileService

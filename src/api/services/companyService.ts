@@ -8,6 +8,6 @@ import GeneralService from "./generalService"
 
 class CompanyService extends GeneralService<Company | any> {}
 
-const companyService = new CompanyService("/companies")
+const companyService = new CompanyService("companies")
 
 export default companyService
