@@ -67,12 +67,28 @@
 
 				.company-tile__clock {
 					position: absolute;
-					right: 5px;
+					left: 5px;
 					top: 5px;
 
 					svg,
 					img {
 						fill: $color-secondary;
+					}
+				}
+
+				.company-tile__edit {
+					position: absolute;
+					right: 5px;
+					top: 5px;
+					z-index: 1;
+					transition: 0.5s all;
+					&:hover {
+						transform: scale(1.1);
+					}
+
+					svg,
+					img {
+						fill: $color-warning;
 					}
 				}
 
