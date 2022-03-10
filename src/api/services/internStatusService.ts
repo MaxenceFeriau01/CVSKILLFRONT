@@ -3,10 +3,10 @@
  * It supplies basic functions of CRUD
  */
 
- import Activity from "../models/activity"
+ import InternStatus from "../models/internStatus"
  import GeneralService from "./generalService"
  
- class InternStatusService extends GeneralService<Activity> {
+ class InternStatusService extends GeneralService<InternStatus> {
      // Variables
  }
  
