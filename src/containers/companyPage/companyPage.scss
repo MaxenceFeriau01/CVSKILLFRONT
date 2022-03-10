@@ -153,7 +153,7 @@
 		}
 
 		.company-details-container {
-			transition: width 0.7s linear;
+			transition: width 0.4s linear;
 
 			background-color: $background-color;
 			width: 100%;
@@ -194,6 +194,7 @@
 					flex-direction: column;
 					overflow-y: auto;
 					width: 100%;
+					word-break: break-word;
 
 					svg {
 						fill: $color-secondary;

@@ -12,6 +12,7 @@ function CustomSelect(props: any) {
 			border: "1px solid lightgray", // default border color
 			boxShadow: "none", // no box-shadow
 			zIndex: 1,
+			cursor: "pointer",
 		}),
 	}
 	return (

@@ -24,7 +24,10 @@ function Header() {
 
 	return (
 		<>
-			<Sidebar showSidebar={showSidebar} />
+			<Sidebar
+				showSidebar={showSidebar}
+				setShowSidebar={() => setShowSidebar(false)}
+			/>
 			<div className="header">
 				<MenuIcon
 					onClick={() => toggleSideBar()}

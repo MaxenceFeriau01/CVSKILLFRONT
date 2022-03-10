@@ -53,6 +53,7 @@ export interface INavLink {
 	text: string
 	Icon: any
 	url: string
+	onClick?: any
 }
 
 export const NAV_LINK_ARRAY: Array<INavLink> = [

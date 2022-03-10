@@ -1,4 +1,7 @@
 .sidebar {
+	@include breakpoint {
+		display: none;
+	}
 	.sidebar-header {
 		height: $header-height;
 		border-bottom: 0.0625rem solid $color-gray;
@@ -20,30 +23,41 @@
 
 	.active {
 		color: $color-primary !important;
+
+		svg {
+			fill: $color-primary !important;
+		}
 	}
 
 	.link {
+		padding: 9px 5px;
 		display: flex;
 		cursor: pointer;
 		border-radius: 30px;
 		color: unset;
 		text-decoration: none;
 		transition: 0.5s ease all;
+
+		svg {
+			margin-right: 5px;
+			margin-left: 5px;
+			margin-top: 3px;
+		}
 	}
 	.link:hover {
 		background-color: $color-white;
 		color: $color-secondary;
 		transition: color 100ms ease-out;
+
+		svg {
+			fill: $color-secondary;
+		}
 	}
 
 	.link > h2 {
 		font-weight: 700;
 		font-size: 20px;
 		margin-right: 20px;
-	}
-
-	.link > .MuiSvgIcon-root {
-		padding: 17px;
 	}
 }
 
