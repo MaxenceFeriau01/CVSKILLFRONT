@@ -22,7 +22,7 @@ function ActivityPage() {
             </header>
             <section className="content activity-container">
 				<div className="activity-list-content">
-                    <Link href="/activity/new" className="activity-tile activity-tile--add">
+                    <Link href="/activities/new" className="activity-tile activity-tile--add">
 						<span>+</span>
 						<b>Créer une activité</b>
 					</Link>

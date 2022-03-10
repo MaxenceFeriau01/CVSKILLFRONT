@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom"
+import ActivityEditPage from "../containers/activityPage/activityEditPage"
 import ActivityPage from "../containers/activityPage/activityPage"
 import CompanyDetailsPage from "../containers/companyDetailsPage/companyDetailsPage"
 import CompanyPage from "../containers/companyPage/companyPage"
@@ -28,6 +29,22 @@ const routes = (
 			element={
 				<PrivateRoute roles={[Role.ADMIN]}>
 					<ActivityPage />
+				</PrivateRoute>
+			}
+		/>
+		<Route
+			path="/activities/new"
+			element={
+				<PrivateRoute roles={[Role.ADMIN]}>
+					<ActivityEditPage />
+				</PrivateRoute>
+			}
+		/>
+		<Route
+			path="/activities/edit/:id"
+			element={
+				<PrivateRoute roles={[Role.ADMIN]}>
+					<ActivityEditPage />
 				</PrivateRoute>
 			}
 		/>
