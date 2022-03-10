@@ -5,13 +5,30 @@ import ContactPhoneIcon from "@mui/icons-material/ContactPhone"
 import EuroIcon from "@mui/icons-material/Euro"
 import AccessTimeIcon from "@mui/icons-material/AccessTime"
 import CancelIcon from "@mui/icons-material/Cancel"
+import { useMutation } from "react-query"
+import Swal from "sweetalert2"
 import Company from "../../api/models/company"
+import companyService from "../../api/services/companyService"
 
 interface CompanyDetailsViewProps {
 	company: Company | null
 	onClose: any
 }
 function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
+	const postApply = useMutation(
+		(companyId: number) => companyService.apply(companyId),
+		{
+			onSuccess: () => {
+				Swal.fire({
+					position: "bottom-end",
+					title: "",
+					text: "Votre demande a été prise en compte, vous allez être contacter par mail sous peu ! ",
+					icon: "success",
+					timer: 1500,
+				})
+			},
+		}
+	)
 	return (
 		<section
 			className={`${
@@ -44,7 +61,10 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 							{company.siret}
 						</span>
 
-						<Button className="mt-2 mb-1 w-48" onClick={() => {}}>
+						<Button
+							className="mt-2 mb-1 w-48"
+							onClick={() => postApply.mutate(company.id)}
+						>
 							Demander un stage
 						</Button>
 					</header>

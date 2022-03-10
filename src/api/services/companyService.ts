@@ -6,7 +6,11 @@
 import Company from "../models/company"
 import GeneralService from "./generalService"
 
-class CompanyService extends GeneralService<Company | any> {}
+class CompanyService extends GeneralService<Company | any> {
+	apply(companyId: number): Promise<void> {
+		return this.post(null, `/apply/${companyId}`)
+	}
+}
 
 const companyService = new CompanyService("companies")
 
