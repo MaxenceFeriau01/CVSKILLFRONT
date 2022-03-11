@@ -8,34 +8,37 @@ import activityService from '../../api/services/activityService';
 function ActivityEditPage() {
     const { id } = useParams();
     const isEditMode = !!id;
-    const [activityName, setActivityName] = useState<string>('');
+    const [activity, setActivity] = useState<Activity>({
+        id: -1, name: ''
+    });
     const navigate = useNavigate();
-
-    let activity: Activity;
 
     useEffect(() => {
         if (isEditMode)
             activityService.getById(id)
-                .then(res => (setActivityName(res.name)))
-        else
-            setActivityName('')
+                .then(res => (setActivity(res)))
     }, []);
 
     const onChange = (evt: any) => {
         evt.preventDefault();
 
-        setActivityName(evt.target.value)
+        const act = {
+            id: activity.id,
+            name: evt.target.value
+        }
+
+        setActivity(act)
     }
 
     const onSubmit = (evt: any) => {
         evt.preventDefault()
 
-        const act: Activity = {
-            id: isEditMode ? id : -1,
-            name: activityName
+        const act = {
+            id: activity.id,
+            name: activity.name
         } 
 
-        if (isEditMode)
+        if (!isEditMode)
             activityService.post(act)
                 .then(() => {
                     navigate('/activities')
@@ -52,7 +55,7 @@ function ActivityEditPage() {
             <h4>{isEditMode ? `Modifier l'activité ID=${id}` : 'Ajouter une activité'}</h4>
             <form onSubmit={onSubmit}>
 
-                <TextField id="activityName" label="Nom de l'activité" onChange={onChange} value={activityName} placeholder="Entrez le nom de l'activité" style={{ width: 300 }} />
+                <TextField id="activityName" label="Nom de l'activité" onChange={onChange} value={activity.name} placeholder="Entrez le nom de l'activité" style={{ width: 300 }} />
 
                 <Button type="submit" size="large">Valider</Button>
             </form>
