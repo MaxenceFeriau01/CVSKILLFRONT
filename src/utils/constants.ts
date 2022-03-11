@@ -52,7 +52,8 @@ export const STATUS_OPTIONS: Array<ReactSelectOption | any> = [
 export interface INavLink {
 	text: string
 	Icon: any
-	url: string
+	url: string,
+	role: string
 	onClick?: any
 }
 
@@ -61,10 +62,12 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 		url: "/companies",
 		text: "Entreprises",
 		Icon: BusinessIcon,
+		role: 'ROLE_USER'
 	},
 	{
 		url: "/activities",
 		text: "Activités",
 		Icon: DomainIcon,
+		role: 'ROLE_ADMIN'
 	},
 ]
