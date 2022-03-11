@@ -1,42 +1,86 @@
-import { Link, TextField } from '@mui/material';
-import { useRef } from 'react';
-import { useQuery } from 'react-query';
+import { useState } from 'react';
+import { useInfiniteQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import Activity from '../../api/models/activity';
-import ReactSelectOption from '../../api/models/reactSelectOption';
+import { TextField } from '@mui/material';
+import { DataGrid, GridColDef, frFR } from '@mui/x-data-grid';
 import activityService from '../../api/services/activityService';
-import HasRight from '../../components/rights/hasRight';
-import Role from '../../enums/Role';
-import ActivityTile from './activityTile';
+
+const locale = frFR.components.MuiDataGrid.defaultProps.localeText;
 
 function ActivityPage() {
     const navigate = useNavigate()
+    const [search, setSearch] = useState<string>('')
+    
+    const [pageNumber, setPageNumber] = useState<number>(0)
 
-    const activities = useQuery("activities", () =>
-		activityService
-			.getAllWithFilters()
-	)
+    const columns: GridColDef[] = [
+        {
+            field: 'id',
+            headerName: "Numéro",
+            width: 250,
+            hideable: false
+        },
+        {
+            field: 'name',
+            headerName: "Nom",
+            width: 850,
+            hideable: false
+        }
+    ]
 
-    const onClick = (activity: Activity) => {
-        navigate(`/activities/edit/${activity.id}`)
+    const activities = useInfiniteQuery(
+    ["activities", pageNumber],
+    () => 
+        activityService.getAllPaginated({
+            page: pageNumber,
+            size: 20
+        }),
+        {
+            keepPreviousData: true,
+            getNextPageParam: data => {
+				if (data.number < data.totalPages - 1) {
+					return data.number + 1
+				}
+				return false
+			},
+            getPreviousPageParam: data => {
+				if (data.number > 0) {
+					return data.number - 1
+				}
+				return false
+			}
+        }
+    )
+
+    const onChange = (evt: any) => {
+        evt.preventDefault()
+        setSearch(evt.target.value)
+    }
+
+    console.log(activities?.data?.pages)
+
+    const onPageChange = (page: number) => {
+        if (page > pageNumber) {
+            activities.fetchNextPage()
+            setPageNumber(page)
+        }
+        else if (page < pageNumber) {
+            activities.fetchPreviousPage()
+            setPageNumber(page)
+        }
     }
 
     return (
         <section className="page activity-page">
-			<header className="activity-page-header">
-                <TextField id="searchActivityName" label="Rechercher une activité par nom" style={{ width: 300 }} size="small" />
+            <header className="activity-page-header m-4">
+                <TextField id="searchActivityName" label="Rechercher une activité par nom" style={{ width: '100%' }} value={search} onChange={onChange} />
             </header>
-            <section className="content activity-container">
-				<div className="activity-list-content">
-                    <Link href="/activities/new" className="activity-tile activity-tile--add">
-						<span>+</span>
-						<b>Créer une activité</b>
-					</Link>
-                    {activities?.data?.map((a: Activity) => (<div>
-                        <ActivityTile key={a.id} activity={a} onClick={onClick} />
-                    </div>))}
-                </div>
-            </section>
+
+            <div className="content" style={{ height: 400 }}>
+                {activities?.data?.pages?.map((page) => (
+                    <DataGrid columns={columns} rows={page?.content} rowCount={page?.totalElements} pageSize={page?.size} loading={activities?.isLoading} pagination paginationMode="server" rowsPerPageOptions={[20]} localeText={locale} onPageChange={onPageChange} />
+                ))}
+            </div>
         </section>
     );
 
