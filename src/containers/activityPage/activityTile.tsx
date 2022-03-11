@@ -9,12 +9,13 @@ import imageUpload from "../../resources/images/image-upload.svg"
 
 interface ActivityProps {
     activity: Activity
+	onClick: any
 }
 
-function ActivityTile({ activity }: ActivityProps) {
+function ActivityTile({ activity, onClick }: ActivityProps) {
     
     return (
-        <div className="activity-tile">
+        <div className="activity-tile" onClick={() => onClick(activity)}>
             <HasRight roles={[Role.ADMIN]}>
 				<Link
 					to={`/activities/edit/${activity.id}`}

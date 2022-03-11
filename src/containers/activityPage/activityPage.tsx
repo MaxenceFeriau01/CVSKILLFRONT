@@ -1,6 +1,7 @@
 import { Link, TextField } from '@mui/material';
 import { useRef } from 'react';
 import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import Activity from '../../api/models/activity';
 import ReactSelectOption from '../../api/models/reactSelectOption';
 import activityService from '../../api/services/activityService';
@@ -9,11 +10,16 @@ import Role from '../../enums/Role';
 import ActivityTile from './activityTile';
 
 function ActivityPage() {
+    const navigate = useNavigate()
 
     const activities = useQuery("activities", () =>
 		activityService
 			.getAllWithFilters()
 	)
+
+    const onClick = (activity: Activity) => {
+        navigate(`/activities/edit/${activity.id}`)
+    }
 
     return (
         <section className="page activity-page">
@@ -27,7 +33,7 @@ function ActivityPage() {
 						<b>Créer une activité</b>
 					</Link>
                     {activities?.data?.map((a: Activity) => (<div>
-                        <ActivityTile key={a.id} activity={a} />
+                        <ActivityTile key={a.id} activity={a} onClick={onClick} />
                     </div>))}
                 </div>
             </section>
