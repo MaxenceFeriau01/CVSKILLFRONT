@@ -6,19 +6,20 @@ import {
 	RadioGroup,
 } from "@mui/material"
 
-import { useState } from "react"
 import { Controller } from "react-hook-form"
 import { useQuery } from "react-query"
 import Job from "../../api/models/job"
 import ReactSelectOption from "../../api/models/reactSelectOption"
+import internStatusService from "../../api/services/internStatusService"
 import jobService from "../../api/services/jobService"
 import CustomSelect from "../../components/inputs/customSelect"
 import {
 	PERIOD_OPTIONS,
 	STATUS_COLLEGE_STUDENT,
+	STATUS_COLLEGE_STUDENT_PERIOD,
 	STATUS_HIGH_SCHOOL_STUDENT,
+	STATUS_HIGH_SCHOOL_STUDENT_PERIOD,
 	STATUS_JOB_SEEKER,
-	STATUS_OPTIONS,
 	STATUS_STUDENT,
 } from "../../utils/constants"
 import { INTERN_NUMBER_OPTIONS, INPUT_FORM_THREE } from "./constants"
@@ -33,9 +34,28 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 		watch,
 		formState: { errors },
 	} = form
-	const [jobs, setJobs] = useState<Array<ReactSelectOption>>()
+
+	const apiJobs = useQuery("jobs", () =>
+		jobService
+			.getAllWithFilters()
+			.then(res =>
+				res.map((a: Job) => new ReactSelectOption(a.id, a.name))
+			)
+	)
+
+	const apiStatuses = useQuery("apiStatuses", () =>
+		internStatusService
+			.getAllWithFilters()
+			.then(res => res.map(r => new ReactSelectOption(r.id, r.name)))
+	)
 
 	function handleCheck(value: ReactSelectOption) {
+		if (value.label === STATUS_COLLEGE_STUDENT) {
+			value.period = STATUS_COLLEGE_STUDENT_PERIOD
+		}
+		if (value.label === STATUS_HIGH_SCHOOL_STUDENT) {
+			value.period = STATUS_HIGH_SCHOOL_STUDENT_PERIOD
+		}
 		const newValues =
 			watch(INPUT_FORM_THREE[0])?.filter(
 				(e: any) => e?.value === value.value
@@ -47,17 +67,11 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 		return newValues
 	}
 
-	useQuery("jobs", () =>
-		jobService.getAllWithFilters().then(res => {
-			setJobs(res.map((a: Job) => new ReactSelectOption(a.id, a.name)))
-		})
-	)
-
-	function isStatusChecked(value: number) {
+	function isStatusChecked(label: string) {
 		let isChecked = false
 
 		watch(INPUT_FORM_THREE[0])?.forEach((element: any) => {
-			if (element.value === value) {
+			if (element.label === label) {
 				isChecked = true
 			}
 		})
@@ -76,10 +90,10 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 					}}
 					render={({ field: { onChange, value } }) => (
 						<div className="company-details-form__checkbox__group ">
-							{STATUS_OPTIONS?.map((s: ReactSelectOption) => (
+							{apiStatuses?.data?.map((s: ReactSelectOption) => (
 								<div
 									style={
-										s.value === STATUS_OPTIONS[2].value
+										s.value === apiStatuses?.data[2].value
 											? {
 													zIndex: 2,
 											  }
@@ -91,7 +105,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 										control={
 											<Checkbox
 												checked={isStatusChecked(
-													+s.value
+													s.label
 												)}
 												onChange={() =>
 													onChange(handleCheck(s))
@@ -102,6 +116,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 									/>
 
 									<InternStatusChoice
+										apiStatuses={apiStatuses}
 										onChange={onChange}
 										value={value}
 										internTypeLabel={s.label}
@@ -163,13 +178,13 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 					control={control}
 					render={({ field: { value, onChange } }) => (
 						<CustomSelect
-							options={jobs}
+							options={apiJobs?.data}
 							placeholder="Choisissez..."
 							isMulti
 							onChange={(lOptions: ReactSelectOption[]) =>
 								onChange(lOptions?.map(option => option.value))
 							}
-							value={jobs?.filter((option: any) =>
+							value={apiJobs?.data?.filter((option: any) =>
 								value?.includes(option.value)
 							)}
 							defaultValue={activities?.filter((option: any) =>
@@ -198,7 +213,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 					}}
 					control={control}
 					render={({ field: { onChange, value } }) => (
-						<RadioGroup value={value} onChange={onChange}>
+						<RadioGroup value={value || true} onChange={onChange}>
 							<FormControlLabel
 								value
 								control={<Radio />}
@@ -255,6 +270,7 @@ function InternStatusChoice({
 	value,
 	onChange,
 	isStatusChecked,
+	apiStatuses,
 }: any) {
 	function selectedPeriod(val: number) {
 		const selectedOption = value.find(
@@ -287,29 +303,29 @@ function InternStatusChoice({
 		<div className="internal-status-choice-container">
 			{internTypeLabel === STATUS_COLLEGE_STUDENT &&
 				value?.length > 0 &&
-				isStatusChecked(+STATUS_OPTIONS[0].value) && (
-					<i> ➔ {STATUS_OPTIONS[0].period} </i>
+				isStatusChecked(STATUS_COLLEGE_STUDENT) && (
+					<i> ➔ {STATUS_COLLEGE_STUDENT_PERIOD} </i>
 				)}
 			{internTypeLabel === STATUS_HIGH_SCHOOL_STUDENT &&
 				value?.length > 0 &&
-				isStatusChecked(+STATUS_OPTIONS[1].value) && (
-					<i>➔ {STATUS_OPTIONS[1].period}</i>
+				isStatusChecked(STATUS_HIGH_SCHOOL_STUDENT) && (
+					<i>➔ {STATUS_HIGH_SCHOOL_STUDENT_PERIOD}</i>
 				)}
 
 			{internTypeLabel === STATUS_STUDENT &&
 				value?.length > 0 &&
-				isStatusChecked(+STATUS_OPTIONS[2].value) && (
+				isStatusChecked(STATUS_STUDENT) && (
 					<div className="select under-select">
 						<CustomSelect
 							required
 							className="w-full"
 							options={PERIOD_OPTIONS}
 							placeholder="Choisissez..."
-							value={selectedPeriod(+STATUS_OPTIONS[2].value)}
+							value={selectedPeriod(+apiStatuses?.data[2].value)}
 							onChange={(val: ReactSelectOption) =>
 								onChange(
 									handleSelectChange(
-										STATUS_OPTIONS[2].label,
+										apiStatuses?.data[2].label,
 										val
 									)
 								)
@@ -320,18 +336,18 @@ function InternStatusChoice({
 
 			{internTypeLabel === STATUS_JOB_SEEKER &&
 				value?.length > 0 &&
-				isStatusChecked(+STATUS_OPTIONS[3].value) && (
+				isStatusChecked(STATUS_JOB_SEEKER) && (
 					<div className="select under-select">
 						<CustomSelect
 							required
 							className="w-full"
 							options={PERIOD_OPTIONS}
 							placeholder="Choisissez..."
-							value={selectedPeriod(+STATUS_OPTIONS[3].value)}
+							value={selectedPeriod(+apiStatuses?.data[3].value)}
 							onChange={(val: ReactSelectOption) =>
 								onChange(
 									handleSelectChange(
-										STATUS_OPTIONS[3].label,
+										apiStatuses?.data[3].label,
 										val
 									)
 								)

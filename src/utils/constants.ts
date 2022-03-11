@@ -28,26 +28,10 @@ export const STATUS_STUDENT: string = "Etudiant"
 
 export const STATUS_JOB_SEEKER: string = "Demandeur d'emploi"
 
-export const STATUS_OPTIONS: Array<ReactSelectOption | any> = [
-	{
-		label: STATUS_COLLEGE_STUDENT,
-		value: 1,
-		period: "3 à 5 jours de découverte",
-	},
-	{
-		label: STATUS_HIGH_SCHOOL_STUDENT,
-		value: 2,
-		period: "Bac professionnel/Technique jusqu’à 22 semaines de stages",
-	},
-	{
-		label: STATUS_STUDENT,
-		value: 3,
-	},
-	{
-		label: STATUS_JOB_SEEKER,
-		value: 4,
-	},
-]
+export const STATUS_COLLEGE_STUDENT_PERIOD: string = "3 à 5 jours de découverte"
+
+export const STATUS_HIGH_SCHOOL_STUDENT_PERIOD: string =
+	"Bac professionnel/Technique jusqu’à 22 semaines de stages"
 
 export interface INavLink {
 	text: string
