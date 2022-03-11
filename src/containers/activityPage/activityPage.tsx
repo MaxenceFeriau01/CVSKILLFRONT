@@ -29,11 +29,12 @@ function ActivityPage() {
     ]
 
     const activities = useInfiniteQuery(
-    ["activities", pageNumber],
+    ["activities", pageNumber, search],
     () => 
         activityService.getAllPaginated({
             page: pageNumber,
-            size: 20
+            size: 20,
+            name: search !== '' ? search : null
         }),
         {
             keepPreviousData: true,
@@ -57,8 +58,6 @@ function ActivityPage() {
         setSearch(evt.target.value)
     }
 
-    console.log(activities?.data?.pages)
-
     const onPageChange = (page: number) => {
         if (page > pageNumber) {
             activities.fetchNextPage()
@@ -73,7 +72,7 @@ function ActivityPage() {
     return (
         <section className="page activity-page">
             <header className="activity-page-header m-4">
-                <TextField id="searchActivityName" label="Rechercher une activité par nom" style={{ width: '100%' }} value={search} onChange={onChange} />
+                <TextField id="searchActivityName" label="Rechercher une activité par nom" style={{ width: '75%' }} value={search} onChange={onChange} />
             </header>
 
             <div className="content" style={{ height: 400 }}>
