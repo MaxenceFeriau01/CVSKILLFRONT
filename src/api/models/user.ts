@@ -21,7 +21,7 @@ class User {
 
 	dateOfBirth!: Date
 
-	status!: InternStatus
+	internStatus!: InternStatus
 
 	internshipPeriod!: String | null
 

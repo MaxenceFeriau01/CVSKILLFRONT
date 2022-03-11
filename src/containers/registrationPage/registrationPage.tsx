@@ -80,23 +80,22 @@ function RegistrationPage() {
 		const formData = new FormData()
 
 		const toCreate: User = { ...data }
-		if (toCreate.status.name === STATUS_COLLEGE_STUDENT) {
+
+		if (data.internStatus.label === STATUS_COLLEGE_STUDENT) {
 			toCreate.activities = null
 			toCreate.jobs = null
 			toCreate.diploma = null
 			toCreate.internshipPeriod = null
-		}
-
-		if (toCreate.status.name === STATUS_HIGH_SCHOOL_STUDENT) {
-			toCreate.diploma = null
-			toCreate.internshipPeriod = null
+		} else {
+			toCreate.activities = data.activities?.map((a: any) => ({ id: a }))
+			toCreate.jobs = data.jobs?.map((j: any) => ({ id: j }))
 		}
 
 		toCreate.activities = data.activities?.map((a: any) => ({ id: a }))
 		toCreate.jobs = data.jobs?.map((j: any) => ({ id: j }))
-		toCreate.status = new InternStatus(
-			data.status?.value,
-			data.status?.label
+		toCreate.internStatus = new InternStatus(
+			data.internStatus?.value,
+			data.internStatus?.label
 		)
 
 		toCreate.cv = null

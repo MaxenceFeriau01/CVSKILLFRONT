@@ -3,7 +3,6 @@ import { Controller } from "react-hook-form"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 import {
 	PERIOD_OPTIONS,
-	STATUS_OPTIONS,
 	STATUS_HIGH_SCHOOL_STUDENT,
 	STATUS_JOB_SEEKER,
 	STATUS_STUDENT,
@@ -229,7 +228,7 @@ function UserControls({
 					rules={{
 						required: "Le status est requis",
 					}}
-					name="status"
+					name="internStatus"
 					control={control}
 					render={({ field: { value, onChange, onBlur } }) => (
 						<CustomSelect
@@ -238,19 +237,22 @@ function UserControls({
 							placeholder="Choisissez..."
 							onBlur={onBlur}
 							value={statusesOptions?.find(
-								(c: ReactSelectOption) => c.value === value
+								(c: ReactSelectOption) =>
+									c.value === value?.value
 							)}
 							onChange={(val: ReactSelectOption) => onChange(val)}
 						/>
 					)}
 				/>
-				{errors?.status && (
-					<Alert severity="error">{errors.status?.message}</Alert>
+				{errors?.internStatus && (
+					<Alert severity="error">
+						{errors.internStatus?.message}
+					</Alert>
 				)}
 			</div>
-			{(watch("status")?.label === STATUS_STUDENT ||
-				watch("status")?.label === STATUS_HIGH_SCHOOL_STUDENT ||
-				watch("status")?.label === STATUS_JOB_SEEKER) && (
+			{(watch("internStatus")?.label === STATUS_STUDENT ||
+				watch("internStatus")?.label === STATUS_HIGH_SCHOOL_STUDENT ||
+				watch("internStatus")?.label === STATUS_JOB_SEEKER) && (
 				<>
 					<div className="select-form-control--half-first">
 						<InputLabel>Activités</InputLabel>
@@ -334,8 +336,8 @@ function UserControls({
 					</div>
 				</>
 			)}
-			{(watch("status")?.label === STATUS_STUDENT ||
-				watch("status")?.label === STATUS_JOB_SEEKER) && (
+			{(watch("internStatus")?.label === STATUS_STUDENT ||
+				watch("internStatus")?.label === STATUS_JOB_SEEKER) && (
 				<>
 					<div className="select-form-control--half-second">
 						<InputLabel>Durée du stage</InputLabel>

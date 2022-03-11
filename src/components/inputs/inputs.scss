@@ -104,7 +104,10 @@
 	b {
 		text-overflow: ellipsis;
 		overflow: hidden;
-		margin-left: auto;
+
+		@include breakpoint {
+			margin-left: auto;
+		}
 	}
 	span {
 		text-overflow: ellipsis;

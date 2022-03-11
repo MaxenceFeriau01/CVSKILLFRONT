@@ -117,7 +117,7 @@ function CompanyPage() {
 			<header className="company-page-header">
 				<CustomSelect
 					className="company-select--activities"
-					placeholder="Filtre par activité"
+					placeholder="Par activité"
 					options={activities.data}
 					isMulti
 					onChange={(e: any) => selectHandleActivityChange(e)}
@@ -127,7 +127,7 @@ function CompanyPage() {
 				/>
 				<CustomSelect
 					className="company-select--activities"
-					placeholder="Filtre par stagiaire"
+					placeholder="Par status recherché"
 					options={statuses.data}
 					onChange={(e: any) => selectHandleTraineesChange(e)}
 					isClearable

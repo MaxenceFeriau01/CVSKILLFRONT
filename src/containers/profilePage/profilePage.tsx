@@ -3,7 +3,6 @@ import { Button } from "@mui/material"
 import { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useMutation, useQuery } from "react-query"
-import { useNavigate } from "react-router-dom"
 
 import Swal from "sweetalert2"
 import Activity from "../../api/models/activity"
@@ -86,8 +85,14 @@ function ProfilePage() {
 							}
 						)
 						break
-					case "status":
-						setValue("status", res.status.id)
+					case "internStatus":
+						setValue(
+							"internStatus",
+							new ReactSelectOption(
+								res.internStatus.id,
+								res.internStatus.name
+							)
+						)
 						break
 					case "files":
 						res.files?.forEach((element: FileDb) => {
@@ -138,23 +143,25 @@ function ProfilePage() {
 	const onSubmit = (data: any) => {
 		const formData = new FormData()
 		const toUpdate: User = { ...data }
-		if (toUpdate.status.name === STATUS_COLLEGE_STUDENT) {
+
+		if (data.internStatus.label === STATUS_COLLEGE_STUDENT) {
 			toUpdate.activities = null
 			toUpdate.jobs = null
 			toUpdate.diploma = null
 			toUpdate.internshipPeriod = null
+		} else {
+			toUpdate.activities = data.activities?.map((a: any) => ({ id: a }))
+			toUpdate.jobs = data.jobs?.map((j: any) => ({ id: j }))
 		}
 
-		if (toUpdate.status.name === STATUS_HIGH_SCHOOL_STUDENT) {
+		if (data.internStatus.label === STATUS_HIGH_SCHOOL_STUDENT) {
 			toUpdate.diploma = null
 			toUpdate.internshipPeriod = null
 		}
 
-		toUpdate.activities = data.activities?.map((a: any) => ({ id: a }))
-		toUpdate.jobs = data.jobs?.map((j: any) => ({ id: j }))
-		toUpdate.status = new InternStatus(
-			data.status?.value,
-			data.status?.label
+		toUpdate.internStatus = new InternStatus(
+			data.internStatus?.value,
+			data.internStatus?.label
 		)
 		toUpdate.cv = null
 		toUpdate.coverLetter = null

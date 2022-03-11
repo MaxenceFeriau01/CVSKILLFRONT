@@ -34,6 +34,10 @@ class UserService extends GeneralService<User | any> {
 	getUser(): Promise<User> {
 		return this.get("/self")
 	}
+
+	setRoles(roles: Array<string>): void {
+		this.roles = roles
+	}
 }
 
 const userService = new UserService("users")

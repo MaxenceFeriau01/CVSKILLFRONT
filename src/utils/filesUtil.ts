@@ -12,6 +12,5 @@ export const base64toBlob = (data: string) => {
 	const url = URL.createObjectURL(
 		new Blob([out], { type: "application/pdf" })
 	)
-
 	return url
 }
