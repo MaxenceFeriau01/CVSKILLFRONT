@@ -17,6 +17,7 @@ function Sidebar({ showSidebar, setShowSidebar }: SidebarProps) {
 					url={nav.url}
 					text={nav.text}
 					Icon={nav.Icon}
+					roles={nav.roles}
 				/>
 			))}
 		</div>

@@ -19,6 +19,9 @@ const theme = createTheme({
 		secondary: {
 			main: variables.colorSecondary,
 		},
+		error: {
+			main: variables.colorRed,
+		},
 	},
 })
 

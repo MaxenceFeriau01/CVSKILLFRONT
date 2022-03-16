@@ -14,7 +14,7 @@ $color-red: #b70000;
 $color-red-dark: darken($color-red, 10%);
 $color-error-background: #ffdbd9;
 $color-error: #f44336;
-$color-warning: #757575;
+$color-warning: #ff9966;
 $color-success: #4bb543;
 $background-color: white;
 
@@ -40,4 +40,5 @@ $box-shadow: 1px 0 4px 0 rgb(0 0 0 / 25%);
 :export {
 	colorPrimary: $color-primary;
 	colorSecondary: $color-secondary;
+	colorRed: $color-red;
 }

@@ -48,6 +48,7 @@ function Header() {
 							url={nav.url}
 							text={nav.text}
 							Icon={nav.Icon}
+							roles={nav.roles}
 						/>
 					))}
 				</div>

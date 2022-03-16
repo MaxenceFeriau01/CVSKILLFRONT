@@ -6,7 +6,7 @@
 import Activity from "../models/activity"
 import GeneralService from "./generalService"
 
-class ActivityService extends GeneralService<Activity> {
+class ActivityService extends GeneralService<Activity | any> {
 	// Variables
 }
 

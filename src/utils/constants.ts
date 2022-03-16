@@ -1,9 +1,10 @@
 // GLOBAL CONSTANTS
 
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings"
+import DomainIcon from "@mui/icons-material/Domain"
 import BusinessIcon from "@mui/icons-material/Business"
 
 import ReactSelectOption from "../api/models/reactSelectOption"
+import Role from "../enums/Role"
 
 export const PERIOD_OPTIONS: Array<ReactSelectOption> = [
 	{
@@ -37,6 +38,7 @@ export interface INavLink {
 	text: string
 	Icon: any
 	url: string
+	roles: Array<string>
 	onClick?: any
 }
 
@@ -45,10 +47,12 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 		url: "/companies",
 		text: "Entreprises",
 		Icon: BusinessIcon,
+		roles: [],
 	},
 	{
-		url: "/admin",
-		text: "Administration",
-		Icon: AdminPanelSettingsIcon,
+		url: "/activities",
+		text: "Activités",
+		Icon: DomainIcon,
+		roles: [Role.ADMIN],
 	},
 ]
