@@ -126,4 +126,25 @@ body {
 		margin-right: 0;
 		font-weight: bold;
 	}
+
+	//CUSTOM SWAL CSS
+	.swal2-confirm {
+		background-color: $color-primary !important;
+	}
+
+	.swal2-cancel {
+		background-color: $color-red !important;
+	}
+
+	.swal2-input {
+		&:focus {
+			border-color: $color-primary;
+		}
+	}
+
+	.swal2-warning {
+		border-color: $color-warning !important;
+		color: $color-warning !important;
+	}
+	//END CUSTOM SWAL CSS
 }

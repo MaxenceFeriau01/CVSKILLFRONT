@@ -4,6 +4,7 @@ import DomainIcon from "@mui/icons-material/Domain"
 import BusinessIcon from "@mui/icons-material/Business"
 
 import ReactSelectOption from "../api/models/reactSelectOption"
+import Role from "../enums/Role"
 
 export const PERIOD_OPTIONS: Array<ReactSelectOption> = [
 	{
@@ -52,8 +53,8 @@ export const STATUS_OPTIONS: Array<ReactSelectOption | any> = [
 export interface INavLink {
 	text: string
 	Icon: any
-	url: string,
-	role: string
+	url: string
+	roles: Array<string>
 	onClick?: any
 }
 
@@ -62,12 +63,12 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 		url: "/companies",
 		text: "Entreprises",
 		Icon: BusinessIcon,
-		role: 'ROLE_USER'
+		roles: [],
 	},
 	{
 		url: "/activities",
 		text: "Activités",
 		Icon: DomainIcon,
-		role: 'ROLE_ADMIN'
+		roles: [Role.ADMIN],
 	},
 ]

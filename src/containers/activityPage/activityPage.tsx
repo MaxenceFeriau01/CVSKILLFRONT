@@ -1,198 +1,283 @@
-import { useState } from 'react';
-import { useInfiniteQuery } from 'react-query';
-import { useNavigate } from 'react-router-dom';
-import { Button, TextField } from '@mui/material';
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import { DataGrid, frFR, GridCellEditCommitParams, GridActionsCellItem, GridColumns } from '@mui/x-data-grid';
-import Swal from 'sweetalert2';
-import activityService from '../../api/services/activityService';
+import { useState } from "react"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 
-const locale = frFR.components.MuiDataGrid.defaultProps.localeText;
+import { Button, InputAdornment, TextField } from "@mui/material"
+import DeleteIcon from "@mui/icons-material/Delete"
+import {
+	DataGrid,
+	frFR,
+	GridActionsCellItem,
+	GridColumns,
+	GridRowId,
+} from "@mui/x-data-grid"
+
+import Swal from "sweetalert2"
+import SearchIcon from "@mui/icons-material/Search"
+import activityService from "../../api/services/activityService"
+import Activity from "../../api/models/activity"
+import { PAGE, SIZE } from "./constant"
+
+const locale = frFR.components.MuiDataGrid.defaultProps.localeText
 
 function ActivityPage() {
-    const navigate = useNavigate()
-    const [search, setSearch] = useState<string>('')
-    
-    const [pageNumber, setPageNumber] = useState<number>(0)
+	const [search, setSearch] = useState<string>("")
 
-    const columns: GridColumns = [
-        {
-            field: 'id',
-            headerName: "Numéro",
-            type: 'number',
-            width: 100,
-            hideable: false
-        },
-        {
-            field: 'name',
-            headerName: "Nom",
-            type: 'text',
-            editable: true,
-            width: 950,
-            hideable: false
-        },
-        {
-            field: 'actions',
-            type: 'actions',
-            headerName: "Actions",
-            width: 100,
-            cellClassName: "actions",
-            // eslint-disable-next-line arrow-body-style
-            getActions: ({ id }) => {
-                return [
-                    <GridActionsCellItem icon={<DeleteIcon />} label="Supprimer" onClick={() => handleDeleteClick(id)} color="inherit" />
-                ]
-            }
-        }
-    ]
+	const [pageNumber, setPageNumber] = useState<number>(PAGE)
 
-    const activities = useInfiniteQuery(
-    ["activities", pageNumber, search],
-    () => 
-        activityService.getAllPaginated({
-            page: pageNumber,
-            size: 20,
-            name: search !== '' ? search : null,
-            sort: 'id,asc'
-        }),
-        {
-            keepPreviousData: true,
-            getNextPageParam: data => {
-				if (data.number < data.totalPages - 1) {
-					return data.number + 1
-				}
-				return false
+	const columns: GridColumns = [
+		{
+			field: "id",
+			headerName: "Numéro",
+			type: "string",
+			flex: 0.1,
+		},
+		{
+			field: "name",
+			headerName: "Nom *",
+			type: "string",
+			editable: true,
+			flex: 0.2,
+		},
+		{
+			field: "companyCount",
+			headerName: "Entreprise(s) liée(s)",
+			type: "number",
+			editable: true,
+			flex: 0.2,
+		},
+		{
+			field: "companySearchCount",
+			headerName: "Entreprise(s) qui recherche(nt)",
+			type: "number",
+			editable: true,
+			flex: 0.2,
+		},
+		{
+			field: "userCount",
+			headerName: "Utilisateur(s) qui recherche(nt)",
+			type: "number",
+			editable: true,
+			flex: 0.2,
+		},
+		{
+			field: "actions",
+			type: "actions",
+			headerName: "Action",
+			cellClassName: "actions",
+			flex: 0.1,
+			// eslint-disable-next-line arrow-body-style
+			getActions: activity => {
+				return [
+					<GridActionsCellItem
+						icon={
+							<DeleteIcon
+								color={`${
+									checkIfCanDelete(activity.row)
+										? "error"
+										: "disabled"
+								}`}
+							/>
+						}
+						label="Supprimer"
+						disabled={!checkIfCanDelete(activity.row)}
+						onClick={() => handleDeleteClick(activity.id)}
+						touchrippleref="true"
+					/>,
+				]
 			},
-            getPreviousPageParam: data => {
-				if (data.number > 0) {
-					return data.number - 1
-				}
-				return false
+		},
+	]
+
+	function checkIfCanDelete(activity: any) {
+		return (
+			activity.companyCount === 0 &&
+			activity.companySearchCount === 0 &&
+			activity.userCount === 0
+		)
+	}
+
+	const activities = useQuery(
+		["activities", pageNumber, search],
+		() =>
+			activityService.getAllPaginated({
+				page: pageNumber,
+				size: SIZE,
+				name: search !== "" ? search : null,
+			}),
+		{
+			keepPreviousData: true,
+		}
+	)
+
+	const postActivity = useMutation(
+		(activity: Activity) => activityService.post(activity),
+		{
+			onSuccess: () => {
+				activities.refetch()
+				Swal.fire({
+					title: "Cette activité a bien été sauvegardée.",
+					icon: "success",
+					position: "bottom-end",
+					showConfirmButton: false,
+					timer: 1500,
+					timerProgressBar: true,
+				})
+			},
+
+			onError: () => {
+				Swal.showValidationMessage(
+					"Erreur, veuillez recommencer la saisie."
+				)
+			},
+		}
+	)
+
+	const putActivity = useMutation(
+		(activity: Activity) => activityService.put(activity, activity.id),
+		{
+			onSuccess: () => {
+				activities.refetch()
+				Swal.fire({
+					title: "Cette activité a bien été sauvegardée.",
+					icon: "success",
+					position: "bottom-end",
+					showConfirmButton: false,
+					timer: 1500,
+					timerProgressBar: true,
+				})
+			},
+
+			onError: () => {
+				Swal.fire({
+					title: "Erreur, veuillez recommencer la saisie.",
+					icon: "error",
+					position: "bottom-end",
+					showConfirmButton: false,
+					timer: 1500,
+					timerProgressBar: true,
+				})
+			},
+		}
+	)
+
+	const deleteActivity = useMutation(
+		(id: string) => activityService.delete(id),
+		{
+			onSuccess: () => {
+				activities.refetch()
+				Swal.fire({
+					title: "Cette activité a bien été supprimée.",
+					icon: "success",
+					position: "bottom-end",
+					showConfirmButton: false,
+					timer: 1500,
+					timerProgressBar: true,
+				})
+			},
+
+			onError: () => {
+				Swal.fire({
+					title: "Erreur lors de la suppression.",
+					icon: "error",
+					position: "bottom-end",
+					showConfirmButton: false,
+					timer: 1500,
+					timerProgressBar: true,
+				})
+			},
+		}
+	)
+
+	const onChange = (evt: any) => {
+		evt.preventDefault()
+		setSearch(evt.target.value)
+	}
+
+	const onPageChange = (page: number) => {
+		if (page > pageNumber) {
+			if (!activities.isPreviousData) {
+				setPageNumber(old => old + 1)
 			}
-        }
-    )
+		} else if (page < pageNumber) {
+			setPageNumber(old => Math.max(old - 1, 0))
+		}
+	}
 
-    const onChange = (evt: any) => {
-        evt.preventDefault()
-        setSearch(evt.target.value)
-    }
+	const handleCellEditCommit = async (params: any) => {
+		if (params.value === params.formattedValue) {
+			return
+		}
 
-    const onPageChange = (page: number) => {
-        if (page > pageNumber) {
-            activities.fetchNextPage()
-            setPageNumber(page)
-        }
-        else if (page < pageNumber) {
-            activities.fetchPreviousPage()
-            setPageNumber(page)
-        }
-    }
+		putActivity.mutate(new Activity(params.id, params.value))
+	}
 
-    const handleCellEditCommit = async (params: GridCellEditCommitParams) => {
-        activityService.put({
-            id: params.id,
-            [params.field]: params.value
-        }, params.id)
-            .then((resp) => {
-                activities.refetch()
-                Swal.fire({
-                    title: "Cette activité a bien été sauvegardée.",
-                    icon: "success",
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true
-                })
-            })
-            .catch((reason) => {
-                Swal.fire({
-                    title: "Erreur, veuillez recommencer la saisie.",
-                    icon: "error",
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true
-                })
-            })
-    }
+	const handleDeleteClick = async (id: GridRowId) => {
+		Swal.fire({
+			title: "Êtes-vous sûr?",
+			text: "Vous ne pourrez pas revenir en arrière !",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Oui, supprimer !",
+			cancelButtonText: "Annuler",
+		}).then(result => {
+			if (result.isConfirmed) {
+				deleteActivity.mutate(id.toString())
+			}
+		})
+	}
 
-    const handleDeleteClick = async (id: any) => {
-        activityService.delete(id)
-            .then((resp) => {
-                activities.refetch()
-                Swal.fire({
-                    title: "Cette activité a bien été supprimée.",
-                    icon: "success",
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true
-                })
-            })
-            .catch((reason) => {
-                Swal.fire({
-                    title: "Erreur lors de la suppression.",
-                    icon: "error",
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true
-                })
-            })
-    }
+	const addActivity = () => {
+		Swal.fire({
+			title: "Ajouter une activité",
+			input: "text",
+			showCancelButton: true,
+			confirmButtonText: "Ajouter",
+			showLoaderOnConfirm: true,
+			preConfirm: (name: string) => {
+				postActivity.mutate(new Activity(0, name))
+			},
+		})
+	}
 
-    const addActivity = () => {
-        Swal.fire({
-            title: "Ajouter une activité",
-            input: "text",
-            showCancelButton: true,
-            confirmButtonText: 'Ajouter',
-            showLoaderOnConfirm: true,
-            preConfirm: (name: string) => {
-                activityService.post({ name })
-                    .then(resp => {
-                        activities.refetch()
-                    })
-                    .catch(error => {
-                        Swal.showValidationMessage("Erreur, veuillez recommencer la saisie.")
-                    })
-            },
-            allowOutsideClick: () => !Swal.isLoading()
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Cette activité a bien été sauvegardée.',
-                    icon: 'success',
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true
-                })
-            }
-        })
-    }
+	return (
+		<section className="page">
+			<div className="content activity-content">
+				<header className="activity-page-header">
+					<TextField
+						id="searchActivityName"
+						label="Rechercher par nom"
+						value={search}
+						onChange={onChange}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="start">
+									<SearchIcon />
+								</InputAdornment>
+							),
+						}}
+					/>
+					<Button type="button" onClick={addActivity}>
+						Ajouter une activité
+					</Button>
+				</header>
 
-    return (
-        <section className="page activity-page">
-            <header className="activity-page-header m-4">
-                <TextField id="searchActivityName" label="Rechercher une activité par nom" style={{ width: '75%' }} value={search} onChange={onChange} />
-            </header>
-
-            <div className="content" style={{ height: 400 }}>
-                <Button type="button" className="activity-tile activity-tile--add mb-4" onClick={addActivity}>
-                    <span>
-                        <AddIcon />
-                    </span>
-                    Ajouter une activité
-                </Button>
-                {activities?.data?.pages?.map((page) => (
-                    <DataGrid columns={columns} rows={page?.content} rowCount={page?.totalElements} pageSize={page?.size} loading={activities?.isLoading} pagination paginationMode="server" rowsPerPageOptions={[20]} localeText={locale} onPageChange={onPageChange} onCellEditCommit={handleCellEditCommit} />
-                ))}
-            </div>
-        </section>
-    );
-
+				<DataGrid
+					columns={columns}
+					rows={activities?.data?.content || []}
+					pageSize={activities?.data?.size}
+					loading={activities?.isLoading}
+					rowCount={activities?.data?.totalElements || 0}
+					pagination
+					paginationMode="server"
+					rowsPerPageOptions={[20]}
+					localeText={locale}
+					onPageChange={onPageChange}
+					onCellEditCommit={handleCellEditCommit}
+				/>
+				<i>* Double-clic sur le nom d'une activité pour la modifier</i>
+			</div>
+		</section>
+	)
 }
 
-export default ActivityPage;
+export default ActivityPage
