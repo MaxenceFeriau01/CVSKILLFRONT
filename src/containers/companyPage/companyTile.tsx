@@ -31,15 +31,7 @@ function CompanyTile({ company, onClick, selectedCompanyId }: CompanyProps) {
 			) : (
 				""
 			)}
-			<HasRight roles={[Role.ADMIN]}>
-				<Link
-					to={`/company-details/${company.id}`}
-					className="company-tile__edit"
-					title="Editer l'entreprise"
-				>
-					<EditIcon />
-				</Link>
-			</HasRight>
+
 			<div className="company-tile__image">
 				{company.logo ? (
 					<img

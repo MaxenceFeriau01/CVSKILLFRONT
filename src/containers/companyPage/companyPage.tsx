@@ -156,17 +156,6 @@ function CompanyPage() {
 					}`}
 					onScroll={handleScroll}
 				>
-					<HasRight roles={[Role.ADMIN]}>
-						<Link
-							to="/new-company"
-							className={`company-tile company-tile--add ${
-								selectedCompany ? "w-full" : ""
-							}`}
-						>
-							<span>+</span>
-							<b>Créer une entreprise</b>
-						</Link>
-					</HasRight>
 					{companies?.data?.pages?.map(page =>
 						page?.content?.map((c: Company) => (
 							<CompanyTile

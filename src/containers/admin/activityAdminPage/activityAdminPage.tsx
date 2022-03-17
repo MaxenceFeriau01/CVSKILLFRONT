@@ -15,13 +15,13 @@ import Swal from "sweetalert2"
 import SearchIcon from "@mui/icons-material/Search"
 import activityService from "../../../api/services/activityService"
 import Activity from "../../../api/models/activity"
-import { PAGE, SIZE } from "./constant"
+import { PAGE, ROWS_OPTIONS, SIZE } from "./constant"
 
 const locale = frFR.components.MuiDataGrid.defaultProps.localeText
 
 function ActivityAdminPage() {
 	const [search, setSearch] = useState<string>("")
-
+	const [pageSize, setPageSize] = useState<number>(SIZE)
 	const [pageNumber, setPageNumber] = useState<number>(PAGE)
 
 	const columns: GridColumns = [
@@ -96,11 +96,11 @@ function ActivityAdminPage() {
 	}
 
 	const activities = useQuery(
-		["activities", pageNumber, search],
+		["activities", pageNumber, search, pageSize],
 		() =>
 			activityService.getAllPaginated({
 				page: pageNumber,
-				size: SIZE,
+				size: pageSize,
 				name: search !== "" ? search : null,
 			}),
 		{
@@ -119,7 +119,6 @@ function ActivityAdminPage() {
 					position: "bottom-end",
 					showConfirmButton: false,
 					timer: 1500,
-					timerProgressBar: true,
 				})
 			},
 
@@ -142,7 +141,6 @@ function ActivityAdminPage() {
 					position: "bottom-end",
 					showConfirmButton: false,
 					timer: 1500,
-					timerProgressBar: true,
 				})
 			},
 
@@ -153,7 +151,6 @@ function ActivityAdminPage() {
 					position: "bottom-end",
 					showConfirmButton: false,
 					timer: 1500,
-					timerProgressBar: true,
 				})
 			},
 		}
@@ -170,7 +167,6 @@ function ActivityAdminPage() {
 					position: "bottom-end",
 					showConfirmButton: false,
 					timer: 1500,
-					timerProgressBar: true,
 				})
 			},
 
@@ -181,7 +177,6 @@ function ActivityAdminPage() {
 					position: "bottom-end",
 					showConfirmButton: false,
 					timer: 1500,
-					timerProgressBar: true,
 				})
 			},
 		}
@@ -268,7 +263,8 @@ function ActivityAdminPage() {
 					rowCount={activities?.data?.totalElements || 0}
 					pagination
 					paginationMode="server"
-					rowsPerPageOptions={[20]}
+					onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+					rowsPerPageOptions={ROWS_OPTIONS}
 					localeText={locale}
 					onPageChange={onPageChange}
 					onCellEditCommit={handleCellEditCommit}

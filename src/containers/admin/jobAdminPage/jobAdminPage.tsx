@@ -15,13 +15,13 @@ import Swal from "sweetalert2"
 import SearchIcon from "@mui/icons-material/Search"
 import jobService from "../../../api/services/jobService"
 import Job from "../../../api/models/job"
-import { PAGE, SIZE } from "./constant"
+import { PAGE, ROWS_OPTIONS, SIZE } from "./constant"
 
 const locale = frFR.components.MuiDataGrid.defaultProps.localeText
 
 function JobAdminPage() {
 	const [search, setSearch] = useState<string>("")
-
+	const [pageSize, setPageSize] = useState<number>(SIZE)
 	const [pageNumber, setPageNumber] = useState<number>(PAGE)
 
 	const columns: GridColumns = [
@@ -85,11 +85,11 @@ function JobAdminPage() {
 	}
 
 	const jobs = useQuery(
-		["jobs", pageNumber, search],
+		["jobs", pageNumber, search, pageSize],
 		() =>
 			jobService.getAllPaginated({
 				page: pageNumber,
-				size: SIZE,
+				size: pageSize,
 				name: search !== "" ? search : null,
 			}),
 		{
@@ -106,7 +106,6 @@ function JobAdminPage() {
 				position: "bottom-end",
 				showConfirmButton: false,
 				timer: 1500,
-				timerProgressBar: true,
 			})
 		},
 
@@ -126,7 +125,6 @@ function JobAdminPage() {
 				position: "bottom-end",
 				showConfirmButton: false,
 				timer: 1500,
-				timerProgressBar: true,
 			})
 		},
 
@@ -137,7 +135,6 @@ function JobAdminPage() {
 				position: "bottom-end",
 				showConfirmButton: false,
 				timer: 1500,
-				timerProgressBar: true,
 			})
 		},
 	})
@@ -151,7 +148,6 @@ function JobAdminPage() {
 				position: "bottom-end",
 				showConfirmButton: false,
 				timer: 1500,
-				timerProgressBar: true,
 			})
 		},
 
@@ -162,7 +158,6 @@ function JobAdminPage() {
 				position: "bottom-end",
 				showConfirmButton: false,
 				timer: 1500,
-				timerProgressBar: true,
 			})
 		},
 	})
@@ -248,7 +243,8 @@ function JobAdminPage() {
 					rowCount={jobs?.data?.totalElements || 0}
 					pagination
 					paginationMode="server"
-					rowsPerPageOptions={[20]}
+					onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+					rowsPerPageOptions={ROWS_OPTIONS}
 					localeText={locale}
 					onPageChange={onPageChange}
 					onCellEditCommit={handleCellEditCommit}

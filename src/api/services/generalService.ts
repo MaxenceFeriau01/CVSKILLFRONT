@@ -89,9 +89,9 @@ class GeneralService<T> {
 			.catch(this.handleError)
 	}
 
-	getAllPaginated(filters?: Object): Promise<T> {
+	getAllPaginated(filters?: Object, url: string = ""): Promise<T> {
 		return this.http
-			.get<T[]>(`${this.url}/search`, { params: filters })
+			.get<T[]>(`${this.url + url}/search`, { params: filters })
 			.then((res: any) => res.data)
 			.catch(this.handleError)
 	}

@@ -10,6 +10,10 @@ class CompanyService extends GeneralService<Company | any> {
 	apply(companyId: number): Promise<void> {
 		return this.post(null, `/apply/${companyId}`)
 	}
+
+	getAllSimplePaginated(filters?: Object): Promise<any> {
+		return this.getAllPaginated(filters, `/simple`)
+	}
 }
 
 const companyService = new CompanyService("companies")
