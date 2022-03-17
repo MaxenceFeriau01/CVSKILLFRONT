@@ -213,7 +213,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 					}}
 					control={control}
 					render={({ field: { onChange, value } }) => (
-						<RadioGroup value={value || true} onChange={onChange}>
+						<RadioGroup value={value || false} onChange={onChange}>
 							<FormControlLabel
 								value
 								control={<Radio />}

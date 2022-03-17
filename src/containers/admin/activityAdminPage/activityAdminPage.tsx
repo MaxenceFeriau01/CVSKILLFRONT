@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useMutation, useQuery, useQueryClient } from "react-query"
+import { useMutation, useQuery } from "react-query"
 
 import { Button, InputAdornment, TextField } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -13,13 +13,13 @@ import {
 
 import Swal from "sweetalert2"
 import SearchIcon from "@mui/icons-material/Search"
-import activityService from "../../api/services/activityService"
-import Activity from "../../api/models/activity"
+import activityService from "../../../api/services/activityService"
+import Activity from "../../../api/models/activity"
 import { PAGE, SIZE } from "./constant"
 
 const locale = frFR.components.MuiDataGrid.defaultProps.localeText
 
-function ActivityPage() {
+function ActivityAdminPage() {
 	const [search, setSearch] = useState<string>("")
 
 	const [pageNumber, setPageNumber] = useState<number>(PAGE)
@@ -81,7 +81,6 @@ function ActivityPage() {
 						label="Supprimer"
 						disabled={!checkIfCanDelete(activity.row)}
 						onClick={() => handleDeleteClick(activity.id)}
-						touchrippleref="true"
 					/>,
 				]
 			},
@@ -115,7 +114,7 @@ function ActivityPage() {
 			onSuccess: () => {
 				activities.refetch()
 				Swal.fire({
-					title: "Cette activité a bien été sauvegardée.",
+					title: "Cette activité a bien été créée.",
 					icon: "success",
 					position: "bottom-end",
 					showConfirmButton: false,
@@ -280,4 +279,4 @@ function ActivityPage() {
 	)
 }
 
-export default ActivityPage
+export default ActivityAdminPage

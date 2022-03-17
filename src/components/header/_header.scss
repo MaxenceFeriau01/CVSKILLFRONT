@@ -79,6 +79,11 @@
 			user-select: none;
 			z-index: 4;
 
+			svg {
+				margin-right: 5px;
+				margin-bottom: 3px;
+			}
+
 			.popover--disconnect {
 				padding: 16px 14px;
 				color: $color-red;
@@ -132,6 +137,7 @@
 		}
 
 		.header-link {
+			cursor: pointer;
 			padding-top: 0.8rem;
 			height: 3.8rem;
 			display: inline-flex;
@@ -149,6 +155,16 @@
 				width: unset;
 				padding-right: 10px;
 				margin-bottom: 4px;
+			}
+
+			.header-link-menu {
+				z-index: 2;
+				border-radius: 5px;
+				border: 1px solid $color-gray;
+				svg {
+					font-size: 16px;
+					margin-top: 2px;
+				}
 			}
 		}
 	}

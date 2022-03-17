@@ -20,6 +20,7 @@
 		"axios": "^0.24.0",
 		"breakpoint-sass": "^2.7.1",
 		"react": "^17.0.2",
+		"react-collapse": "^5.1.1",
 		"react-dom": "^17.0.2",
 		"react-hook-form": "^7.24.0",
 		"react-pdf": "^5.7.1",
@@ -58,6 +59,7 @@
 		]
 	},
 	"devDependencies": {
+		"@types/react-collapse": "^5.0.1",
 		"@typescript-eslint/eslint-plugin": "^5.9.1",
 		"@typescript-eslint/parser": "^5.9.1",
 		"autoprefixer": "^10.4.2",

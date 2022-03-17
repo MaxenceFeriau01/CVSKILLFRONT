@@ -1,5 +1,7 @@
 import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
+import AccountCircleIcon from "@mui/icons-material/AccountCircle"
+import LogoutIcon from "@mui/icons-material/Logout"
 import userService from "../../api/services/userService"
 
 import userContext from "../../contexts/user"
@@ -23,10 +25,11 @@ function UserPopover() {
 	return (
 		<div className="popover">
 			<div className="popover--profile" onClick={() => profile()}>
-				Mon profil
+				<AccountCircleIcon /> Mon profil
 			</div>
 			<p />
 			<div className="popover--disconnect" onClick={() => logout()}>
+				<LogoutIcon />
 				Se déconnecter
 			</div>
 		</div>
