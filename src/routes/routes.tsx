@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom"
-import ActivityPage from "../containers/activityPage/activityPage"
+import ActivityAdminPage from "../containers/admin/activityAdminPage/activityAdminPage"
 import CompanyDetailsPage from "../containers/companyDetailsPage/companyDetailsPage"
 import CompanyPage from "../containers/companyPage/companyPage"
 import ForbiddenPage from "../containers/forbiddenPage/forbiddenPage"
 import HomePage from "../containers/homePage/homePage"
-import JobPage from "../containers/jobPage/jobPage"
+import JobAdminPage from "../containers/admin/jobAdminPage/jobAdminPage"
 import LoginPage from "../containers/loginPage/loginPage"
 import ProfilePage from "../containers/profilePage/profilePage"
 import RegistrationPage from "../containers/registrationPage/registrationPage"
@@ -25,18 +25,18 @@ const routes = (
 			}
 		/>
 		<Route
-			path="/activities"
+			path="/admin/activities"
 			element={
 				<PrivateRoute roles={[Role.ADMIN]}>
-					<ActivityPage />
+					<ActivityAdminPage />
 				</PrivateRoute>
 			}
 		/>
 		<Route
-			path="/jobs"
+			path="/admin/jobs"
 			element={
 				<PrivateRoute roles={[Role.ADMIN]}>
-					<JobPage />
+					<JobAdminPage />
 				</PrivateRoute>
 			}
 		/>

@@ -5,8 +5,9 @@
 @import "../../components/inputs/inputs";
 @import "../../containers/app/app";
 @import "../../containers/companyPage/companyPage";
-@import "../../containers/activityPage/activityPage";
-@import "../../containers/jobPage/jobPage";
+@import "../../containers/admin/activityAdminPage/activityAdminPage";
+@import "../../containers/admin/companyAdminPage/companyAdminPage";
+@import "../../containers/admin/jobAdminPage/jobAdminPage";
 @import "../../containers/companyDetailsPage/companyDetailsPage";
 @import "../../containers/loginPage/loginPage";
 @import "../../containers/profilePage/profilePage";
@@ -115,6 +116,10 @@ body {
 		margin-left: 0;
 		margin-right: 0;
 		font-weight: bold;
+	}
+
+	.ReactCollapse--collapse {
+		transition: height 500ms;
 	}
 
 	//SWAL CSS

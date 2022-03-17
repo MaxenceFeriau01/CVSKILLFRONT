@@ -8,7 +8,11 @@ interface SidebarProps {
 
 function Sidebar({ showSidebar, setShowSidebar }: SidebarProps) {
 	return (
-		<div className={`sidebar ${showSidebar ? "" : "sidebar--closed"}`}>
+		<div
+			className={`sidebar ${
+				showSidebar ? "sidebar--active" : "sidebar--closed"
+			}`}
+		>
 			<div className="sidebar-header" />
 			{NAV_LINK_ARRAY.map((nav: INavLink) => (
 				<SidebarLink
@@ -18,6 +22,7 @@ function Sidebar({ showSidebar, setShowSidebar }: SidebarProps) {
 					text={nav.text}
 					Icon={nav.Icon}
 					roles={nav.roles}
+					subMenu={nav.subMenu}
 				/>
 			))}
 		</div>

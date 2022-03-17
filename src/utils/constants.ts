@@ -1,8 +1,11 @@
 // GLOBAL CONSTANTS
 
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings"
+import GroupIcon from "@mui/icons-material/Group"
 import DomainIcon from "@mui/icons-material/Domain"
-import BusinessIcon from "@mui/icons-material/Business"
 
+import ApartmentIcon from "@mui/icons-material/Apartment"
+import WorkIcon from "@mui/icons-material/Work"
 import ReactSelectOption from "../api/models/reactSelectOption"
 import Role from "../enums/Role"
 
@@ -37,22 +40,51 @@ export const STATUS_HIGH_SCHOOL_STUDENT_PERIOD: string =
 export interface INavLink {
 	text: string
 	Icon: any
-	url: string
+	url: string | null
 	roles: Array<string>
 	onClick?: any
+	subMenu?: Array<ISubMenuItem>
+}
+
+export interface ISubMenuItem {
+	text: string
+	url: string | null
+	Icon: any
 }
 
 export const NAV_LINK_ARRAY: Array<INavLink> = [
 	{
 		url: "/companies",
 		text: "Entreprises",
-		Icon: BusinessIcon,
+		Icon: ApartmentIcon,
 		roles: [],
 	},
 	{
-		url: "/activities",
-		text: "Activités",
-		Icon: DomainIcon,
+		url: null,
+		text: "Administration",
+		Icon: AdminPanelSettingsIcon,
 		roles: [Role.ADMIN],
+		subMenu: [
+			{
+				text: "Activitées",
+				url: "/admin/activities",
+				Icon: DomainIcon,
+			},
+			{
+				text: "Métiers",
+				url: "/admin/jobs",
+				Icon: WorkIcon,
+			},
+			{
+				text: "Utilisateurs",
+				url: "/admin/users",
+				Icon: GroupIcon,
+			},
+			{
+				text: "Entreprises",
+				url: "/admin/companies",
+				Icon: ApartmentIcon,
+			},
+		],
 	},
 ]

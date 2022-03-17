@@ -13,13 +13,13 @@ import {
 
 import Swal from "sweetalert2"
 import SearchIcon from "@mui/icons-material/Search"
-import jobService from "../../api/services/jobService"
-import Job from "../../api/models/job"
+import jobService from "../../../api/services/jobService"
+import Job from "../../../api/models/job"
 import { PAGE, SIZE } from "./constant"
 
 const locale = frFR.components.MuiDataGrid.defaultProps.localeText
 
-function JobPage() {
+function JobAdminPage() {
 	const [search, setSearch] = useState<string>("")
 
 	const [pageNumber, setPageNumber] = useState<number>(PAGE)
@@ -74,7 +74,6 @@ function JobPage() {
 						label="Supprimer"
 						disabled={!checkIfCanDelete(job.row)}
 						onClick={() => handleDeleteClick(job.id)}
-						touchrippleref="true"
 					/>,
 				]
 			},
@@ -208,7 +207,7 @@ function JobPage() {
 
 	const addJob = () => {
 		Swal.fire({
-			title: "Ajouter une job",
+			title: "Ajouter un job",
 			input: "text",
 			showCancelButton: true,
 			confirmButtonText: "Ajouter",
@@ -254,10 +253,10 @@ function JobPage() {
 					onPageChange={onPageChange}
 					onCellEditCommit={handleCellEditCommit}
 				/>
-				<i>* Double-clic sur le nom d'une job pour la modifier</i>
+				<i>* Double-clic sur le nom d'un job pour la modifier</i>
 			</div>
 		</section>
 	)
 }
 
-export default JobPage
+export default JobAdminPage
