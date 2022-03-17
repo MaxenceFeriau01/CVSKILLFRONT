@@ -6,6 +6,7 @@
 @import "../../containers/app/app";
 @import "../../containers/companyPage/companyPage";
 @import "../../containers/activityPage/activityPage";
+@import "../../containers/jobPage/jobPage";
 @import "../../containers/companyDetailsPage/companyDetailsPage";
 @import "../../containers/loginPage/loginPage";
 @import "../../containers/profilePage/profilePage";
@@ -57,9 +58,6 @@ body {
 		}
 	}
 
-	.MuiInputBase-formControl {
-		background-color: $color-white;
-	}
 	.title {
 		text-align: center;
 		padding: 10px;
@@ -88,10 +86,6 @@ body {
 		-webkit-box-shadow: 0 0 0 30px $color-white inset !important;
 	}
 
-	.MuiButton-root {
-		border: 1px solid $color-primary-light;
-	}
-
 	::-webkit-scrollbar {
 		width: 6px;
 		height: 6px;
@@ -114,10 +108,6 @@ body {
 		background: $color-secondary-dark;
 	}
 
-	.MuiButton-textSecondary {
-		border: 1px solid $color-secondary !important;
-	}
-
 	h4 {
 		display: block;
 		margin-top: 1.33em;
@@ -127,7 +117,7 @@ body {
 		font-weight: bold;
 	}
 
-	//CUSTOM SWAL CSS
+	//SWAL CSS
 	.swal2-confirm {
 		background-color: $color-primary !important;
 	}
@@ -146,5 +136,25 @@ body {
 		border-color: $color-warning !important;
 		color: $color-warning !important;
 	}
-	//END CUSTOM SWAL CSS
+	//END SWAL CSS
+
+	//MUI CSS
+
+	.MuiDataGrid-root {
+		font-size: 16px;
+	}
+
+	.MuiInputBase-formControl {
+		background-color: $color-white;
+	}
+
+	.MuiButton-root {
+		border: 1px solid $color-primary-light;
+	}
+
+	.MuiButton-textSecondary {
+		border: 1px solid $color-secondary !important;
+	}
+
+	//END MUI CSS
 }

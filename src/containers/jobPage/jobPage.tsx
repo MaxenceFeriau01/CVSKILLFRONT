@@ -13,13 +13,13 @@ import {
 
 import Swal from "sweetalert2"
 import SearchIcon from "@mui/icons-material/Search"
-import activityService from "../../api/services/activityService"
-import Activity from "../../api/models/activity"
+import jobService from "../../api/services/jobService"
+import Job from "../../api/models/job"
 import { PAGE, SIZE } from "./constant"
 
 const locale = frFR.components.MuiDataGrid.defaultProps.localeText
 
-function ActivityPage() {
+function JobPage() {
 	const [search, setSearch] = useState<string>("")
 
 	const [pageNumber, setPageNumber] = useState<number>(PAGE)
@@ -40,13 +40,6 @@ function ActivityPage() {
 		},
 		{
 			field: "companyCount",
-			headerName: "Entreprise(s) liée(s)",
-			type: "number",
-			editable: true,
-			flex: 0.2,
-		},
-		{
-			field: "companySearchCount",
 			headerName: "Entreprise(s) qui recherche(nt)",
 			type: "number",
 			editable: true,
@@ -66,21 +59,21 @@ function ActivityPage() {
 			cellClassName: "actions",
 			flex: 0.1,
 			// eslint-disable-next-line arrow-body-style
-			getActions: activity => {
+			getActions: job => {
 				return [
 					<GridActionsCellItem
 						icon={
 							<DeleteIcon
 								color={`${
-									checkIfCanDelete(activity.row)
+									checkIfCanDelete(job.row)
 										? "error"
 										: "disabled"
 								}`}
 							/>
 						}
 						label="Supprimer"
-						disabled={!checkIfCanDelete(activity.row)}
-						onClick={() => handleDeleteClick(activity.id)}
+						disabled={!checkIfCanDelete(job.row)}
+						onClick={() => handleDeleteClick(job.id)}
 						touchrippleref="true"
 					/>,
 				]
@@ -88,18 +81,14 @@ function ActivityPage() {
 		},
 	]
 
-	function checkIfCanDelete(activity: any) {
-		return (
-			activity.companyCount === 0 &&
-			activity.companySearchCount === 0 &&
-			activity.userCount === 0
-		)
+	function checkIfCanDelete(job: any) {
+		return job.companyCount === 0 && job.userCount === 0
 	}
 
-	const activities = useQuery(
-		["activities", pageNumber, search],
+	const jobs = useQuery(
+		["jobs", pageNumber, search],
 		() =>
-			activityService.getAllPaginated({
+			jobService.getAllPaginated({
 				page: pageNumber,
 				size: SIZE,
 				name: search !== "" ? search : null,
@@ -109,84 +98,75 @@ function ActivityPage() {
 		}
 	)
 
-	const postActivity = useMutation(
-		(activity: Activity) => activityService.post(activity),
-		{
-			onSuccess: () => {
-				activities.refetch()
-				Swal.fire({
-					title: "Cette activité a bien été créée.",
-					icon: "success",
-					position: "bottom-end",
-					showConfirmButton: false,
-					timer: 1500,
-					timerProgressBar: true,
-				})
-			},
+	const postJob = useMutation((job: Job) => jobService.post(job), {
+		onSuccess: () => {
+			jobs.refetch()
+			Swal.fire({
+				title: "Ce métier a bien été créé.",
+				icon: "success",
+				position: "bottom-end",
+				showConfirmButton: false,
+				timer: 1500,
+				timerProgressBar: true,
+			})
+		},
 
-			onError: () => {
-				Swal.showValidationMessage(
-					"Erreur, veuillez recommencer la saisie."
-				)
-			},
-		}
-	)
+		onError: () => {
+			Swal.showValidationMessage(
+				"Erreur, veuillez recommencer la saisie."
+			)
+		},
+	})
 
-	const putActivity = useMutation(
-		(activity: Activity) => activityService.put(activity, activity.id),
-		{
-			onSuccess: () => {
-				activities.refetch()
-				Swal.fire({
-					title: "Cette activité a bien été sauvegardée.",
-					icon: "success",
-					position: "bottom-end",
-					showConfirmButton: false,
-					timer: 1500,
-					timerProgressBar: true,
-				})
-			},
+	const putJob = useMutation((job: Job) => jobService.put(job, job.id), {
+		onSuccess: () => {
+			jobs.refetch()
+			Swal.fire({
+				title: "Ce métier a bien été sauvegardé.",
+				icon: "success",
+				position: "bottom-end",
+				showConfirmButton: false,
+				timer: 1500,
+				timerProgressBar: true,
+			})
+		},
 
-			onError: () => {
-				Swal.fire({
-					title: "Erreur, veuillez recommencer la saisie.",
-					icon: "error",
-					position: "bottom-end",
-					showConfirmButton: false,
-					timer: 1500,
-					timerProgressBar: true,
-				})
-			},
-		}
-	)
+		onError: () => {
+			Swal.fire({
+				title: "Erreur, veuillez recommencer la saisie.",
+				icon: "error",
+				position: "bottom-end",
+				showConfirmButton: false,
+				timer: 1500,
+				timerProgressBar: true,
+			})
+		},
+	})
 
-	const deleteActivity = useMutation(
-		(id: string) => activityService.delete(id),
-		{
-			onSuccess: () => {
-				activities.refetch()
-				Swal.fire({
-					title: "Cette activité a bien été supprimée.",
-					icon: "success",
-					position: "bottom-end",
-					showConfirmButton: false,
-					timer: 1500,
-					timerProgressBar: true,
-				})
-			},
+	const deleteJob = useMutation((id: string) => jobService.delete(id), {
+		onSuccess: () => {
+			jobs.refetch()
+			Swal.fire({
+				title: "Ce job a bien été supprimé.",
+				icon: "success",
+				position: "bottom-end",
+				showConfirmButton: false,
+				timer: 1500,
+				timerProgressBar: true,
+			})
+		},
 
-			onError: () => {
-				Swal.fire({
-					title: "Erreur lors de la suppression.",
-					icon: "error",
-					position: "bottom-end",
-					showConfirmButton: false,
-					timer: 1500,
-					timerProgressBar: true,
-				})
-			},
-		}
-	)
+		onError: () => {
+			Swal.fire({
+				title: "Erreur lors de la suppression.",
+				icon: "error",
+				position: "bottom-end",
+				showConfirmButton: false,
+				timer: 1500,
+				timerProgressBar: true,
+			})
+		},
+	})
 
 	const onChange = (evt: any) => {
 		evt.preventDefault()
@@ -195,7 +175,7 @@ function ActivityPage() {
 
 	const onPageChange = (page: number) => {
 		if (page > pageNumber) {
-			if (!activities.isPreviousData) {
+			if (!jobs.isPreviousData) {
 				setPageNumber(old => old + 1)
 			}
 		} else if (page < pageNumber) {
@@ -208,7 +188,7 @@ function ActivityPage() {
 			return
 		}
 
-		putActivity.mutate(new Activity(params.id, params.value))
+		putJob.mutate(new Job(params.id, params.value))
 	}
 
 	const handleDeleteClick = async (id: GridRowId) => {
@@ -221,30 +201,30 @@ function ActivityPage() {
 			cancelButtonText: "Annuler",
 		}).then(result => {
 			if (result.isConfirmed) {
-				deleteActivity.mutate(id.toString())
+				deleteJob.mutate(id.toString())
 			}
 		})
 	}
 
-	const addActivity = () => {
+	const addJob = () => {
 		Swal.fire({
-			title: "Ajouter une activité",
+			title: "Ajouter une job",
 			input: "text",
 			showCancelButton: true,
 			confirmButtonText: "Ajouter",
 			showLoaderOnConfirm: true,
 			preConfirm: (name: string) => {
-				postActivity.mutate(new Activity(0, name))
+				postJob.mutate(new Job(0, name))
 			},
 		})
 	}
 
 	return (
 		<section className="page">
-			<div className="content activity-content">
-				<header className="activity-page-header">
+			<div className="content job-content">
+				<header className="job-page-header">
 					<TextField
-						id="searchActivityName"
+						id="searchJobName"
 						label="Rechercher par nom"
 						value={search}
 						onChange={onChange}
@@ -256,17 +236,17 @@ function ActivityPage() {
 							),
 						}}
 					/>
-					<Button type="button" onClick={addActivity}>
-						Ajouter une activité
+					<Button type="button" onClick={addJob}>
+						Ajouter un métier
 					</Button>
 				</header>
 
 				<DataGrid
 					columns={columns}
-					rows={activities?.data?.content || []}
-					pageSize={activities?.data?.size}
-					loading={activities?.isLoading}
-					rowCount={activities?.data?.totalElements || 0}
+					rows={jobs?.data?.content || []}
+					pageSize={jobs?.data?.size}
+					loading={jobs?.isLoading}
+					rowCount={jobs?.data?.totalElements || 0}
 					pagination
 					paginationMode="server"
 					rowsPerPageOptions={[20]}
@@ -274,10 +254,10 @@ function ActivityPage() {
 					onPageChange={onPageChange}
 					onCellEditCommit={handleCellEditCommit}
 				/>
-				<i>* Double-clic sur le nom d'une activité pour la modifier</i>
+				<i>* Double-clic sur le nom d'une job pour la modifier</i>
 			</div>
 		</section>
 	)
 }
 
-export default ActivityPage
+export default JobPage
