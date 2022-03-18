@@ -80,6 +80,7 @@ function ActivityAdminPage() {
 							/>
 						}
 						label="Supprimer"
+						titile="Supprimer"
 						disabled={!checkIfCanDelete(activity.row)}
 						onClick={() => handleDeleteClick(activity.id)}
 					/>,

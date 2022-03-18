@@ -16,17 +16,17 @@ import Swal from "sweetalert2"
 import SearchIcon from "@mui/icons-material/Search"
 import { Edit } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
-import companyService from "../../../api/services/companyService"
+import userService from "../../../api/services/userService"
 import { PAGE, ROWS_OPTIONS, SIZE } from "./constant"
 import Activity from "../../../api/models/activity"
-import Company from "../../../api/models/company"
+import User from "../../../api/models/user"
 
 const locale = frFR.components.MuiDataGrid.defaultProps.localeText
 
-function CompanyAdminPage() {
+function UserAdminPage() {
 	const [search, setSearch] = useState<string>("")
 	const [pageSize, setPageSize] = useState<number>(SIZE)
-	const [formattedCompanies, setFormattedCompanies] = useState<any>([])
+	const [formattedUsers, setFormattedUsers] = useState<any>([])
 	const navigate = useNavigate()
 	const queryClient = useQueryClient()
 
@@ -47,29 +47,29 @@ function CompanyAdminPage() {
 			flex: 0.2,
 		},
 		{
-			field: "searchedActivities",
-			headerName: "Domaines recherchés",
+			field: "firstName",
+			headerName: "Prénom",
 			type: "string",
 			flex: 0.2,
 		},
 
 		{
-			field: "town",
-			headerName: "Ville",
+			field: "email",
+			headerName: "Email",
 			type: "string",
 			flex: 0.2,
 		},
 		{
-			field: "postalCode",
-			headerName: "Code postal",
+			field: "internStatus",
+			headerName: "Status",
 			type: "string",
 			flex: 0.2,
 		},
 		{
-			field: "siret",
-			headerName: "Siret",
+			field: "civility",
+			headerName: "Civilité",
 			type: "string",
-			flex: 0.2,
+			flex: 0.1,
 		},
 		{
 			field: "actions",
@@ -78,33 +78,31 @@ function CompanyAdminPage() {
 			cellClassName: "actions",
 			flex: 0.2,
 			// eslint-disable-next-line arrow-body-style
-			getActions: company => {
+			getActions: user => {
 				return [
 					<GridActionsCellItem
 						icon={<Edit color="secondary" />}
 						label="Modifier"
+						onClick={() => navigate(`/user-details/${user.id}`)}
 						title="Modifier"
-						onClick={() =>
-							navigate(`/company-details/${company.id}`)
-						}
 					/>,
-					company.row.activated ? (
+					user.row.activated ? (
 						<GridActionsCellItem
 							icon={<RadioButtonCheckedIcon color="warning" />}
-							label="Désactiver"
 							title="Désactiver"
-							onClick={() => handleDeactivateClick(company.id)}
+							label="Désactiver"
+							onClick={() => handleDeactivateClick(user.id)}
 						/>
 					) : (
 						<GridActionsCellItem
 							icon={
 								<RadioButtonUncheckedIcon className="uncheck" />
 							}
-							label="Activer"
 							title="Activer"
+							label="Activer"
 							onClick={() =>
 								postActive.mutate({
-									companyId: +company.id,
+									userId: +user.id,
 									activated: true,
 								})
 							}
@@ -112,38 +110,30 @@ function CompanyAdminPage() {
 					),
 
 					<GridActionsCellItem
-						title="Supprimer"
 						icon={<DeleteIcon color="error" />}
 						label="Supprimer"
-						onClick={() => handleDeleteClick(company.id)}
+						title="Supprimer"
+						onClick={() => handleDeleteClick(user.id)}
 					/>,
 				]
 			},
 		},
 	]
 
-	const companies = useQuery(
-		["companies", pageNumber, search, pageSize],
+	const users = useQuery(
+		["users", pageNumber, search, pageSize],
 		() =>
-			companyService
-				.getAllSimplePaginated({
+			userService
+				.getAllPaginated({
 					page: pageNumber,
 					size: pageSize,
 					name: search !== "" ? search : null,
 				})
 				.then(res => {
 					res.content.forEach((c: any) => {
-						let activities = ""
-						c.searchedActivities?.forEach(
-							(element: Activity, index: number) => {
-								index !== c.searchedActivities.length - 1
-									? (activities += `${element.name}, `)
-									: (activities += element.name)
-							}
-						)
-						c.searchedActivities = activities
+						c.internStatus = c?.internStatus?.name
 					})
-					setFormattedCompanies(res.content)
+					setFormattedUsers(res.content)
 					return res
 				}),
 		{
@@ -151,14 +141,13 @@ function CompanyAdminPage() {
 		}
 	)
 	const postActive = useMutation(
-		({ activated, companyId }: any) =>
-			companyService.active(activated, companyId),
+		({ activated, userId }: any) => userService.active(activated, userId),
 		{
 			onSuccess: (data, variables) => {
-				let text: string = "L'entreprise a été activée !"
+				let text: string = "L'utilisateur a été activé !"
 				let icon: any = "success"
 				if (variables.activated === false) {
-					text = "L'entreprise a été désactivée !"
+					text = "L'utilisateur a été désactivé !"
 					icon = "warning"
 				}
 				Swal.fire({
@@ -169,16 +158,16 @@ function CompanyAdminPage() {
 					timer: 1500,
 				})
 
-				const lOld = [...formattedCompanies]
+				const lOld = [...formattedUsers]
 
-				lOld.forEach((c: Company) => {
+				lOld.forEach((c: User) => {
 					if (c.id === variables.userId) {
 						c.activated = variables.activated
 					}
 				})
-				setFormattedCompanies(lOld)
+				setFormattedUsers(lOld)
 				queryClient.setQueryData(
-					["companies", pageNumber, search, pageSize],
+					["users", pageNumber, search, pageSize],
 					(old: any) => {
 						const oldOne = Object.assign(old)
 
@@ -191,36 +180,33 @@ function CompanyAdminPage() {
 		}
 	)
 
-	const deleteCompany = useMutation(
-		(id: string) => companyService.delete(id),
-		{
-			onSuccess: () => {
-				companies.refetch()
-				Swal.fire({
-					title: "Cette entreprise a bien été supprimé.",
-					icon: "success",
-					position: "bottom-end",
-					showConfirmButton: false,
-					timer: 1500,
-				})
-			},
+	const deleteUser = useMutation((id: string) => userService.delete(id), {
+		onSuccess: () => {
+			users.refetch()
+			Swal.fire({
+				title: "Cet utilisateur a bien été supprimé.",
+				icon: "success",
+				position: "bottom-end",
+				showConfirmButton: false,
+				timer: 1500,
+			})
+		},
 
-			onError: () => {
-				Swal.fire({
-					title: "Erreur lors de la suppression.",
-					icon: "error",
-					position: "bottom-end",
-					showConfirmButton: false,
-					timer: 1500,
-				})
-			},
-		}
-	)
+		onError: () => {
+			Swal.fire({
+				title: "Erreur lors de la suppression.",
+				icon: "error",
+				position: "bottom-end",
+				showConfirmButton: false,
+				timer: 1500,
+			})
+		},
+	})
 
 	function handleDeactivateClick(id: GridRowId) {
 		Swal.fire({
-			title: "Êtes-vous sûr de la désactiver?",
-			text: "Cette entreprise n'apparaitra plus dans la liste de recherche !",
+			title: "Êtes-vous sûr de le désactiver?",
+			text: "Cet utilisateur ne pourra plus se connecter !",
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonText: "Oui, désactiver !",
@@ -228,7 +214,7 @@ function CompanyAdminPage() {
 		}).then(result => {
 			if (result.isConfirmed) {
 				postActive.mutate({
-					companyId: +id,
+					userId: +id,
 					activated: false,
 				})
 			}
@@ -238,14 +224,14 @@ function CompanyAdminPage() {
 	const handleDeleteClick = async (id: GridRowId) => {
 		Swal.fire({
 			title: "Êtes-vous sûr?",
-			text: "Cette entreprise n'apparaitra plus !",
+			text: "Cet utilisateur n'existera plus !",
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonText: "Oui, supprimer !",
 			cancelButtonText: "Annuler",
 		}).then(result => {
 			if (result.isConfirmed) {
-				deleteCompany.mutate(id.toString())
+				deleteUser.mutate(id.toString())
 			}
 		})
 	}
@@ -257,7 +243,7 @@ function CompanyAdminPage() {
 
 	const onPageChange = (page: number) => {
 		if (page > pageNumber) {
-			if (!companies.isPreviousData) {
+			if (!users.isPreviousData) {
 				setPageNumber(old => old + 1)
 			}
 		} else if (page < pageNumber) {
@@ -267,10 +253,10 @@ function CompanyAdminPage() {
 
 	return (
 		<section className="page">
-			<div className="content company-content">
-				<header className="company-page-header">
+			<div className="content user-content">
+				<header className="user-page-header">
 					<TextField
-						id="searchCompanyName"
+						id="searchUserName"
 						label="Rechercher par nom"
 						value={search}
 						onChange={onChange}
@@ -282,21 +268,15 @@ function CompanyAdminPage() {
 							),
 						}}
 					/>
-					<Button
-						type="button"
-						onClick={() => navigate("/new-company")}
-					>
-						Ajouter une entreprise
-					</Button>
 				</header>
-				{formattedCompanies && formattedCompanies?.length > 0 && (
+				{formattedUsers && formattedUsers?.length > 0 && (
 					<>
 						<DataGrid
 							columns={columns}
-							rows={formattedCompanies || []}
-							pageSize={companies?.data?.size}
-							loading={companies?.isLoading}
-							rowCount={companies?.data?.totalElements || 0}
+							rows={formattedUsers || []}
+							pageSize={users?.data?.size}
+							loading={users?.isLoading}
+							rowCount={users?.data?.totalElements || 0}
 							onPageSizeChange={newPageSize =>
 								setPageSize(newPageSize)
 							}
@@ -314,8 +294,8 @@ function CompanyAdminPage() {
 							}
 						/>
 						<i>
-							* Les entreprises désactivées n'apparaissent plus
-							dans la liste de recherche
+							* Les utilisateurs désactivés ne peuvent plus se
+							connecter
 						</i>
 					</>
 				)}
@@ -324,4 +304,4 @@ function CompanyAdminPage() {
 	)
 }
 
-export default CompanyAdminPage
+export default UserAdminPage

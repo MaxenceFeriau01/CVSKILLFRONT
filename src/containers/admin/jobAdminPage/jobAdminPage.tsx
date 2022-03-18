@@ -73,6 +73,7 @@ function JobAdminPage() {
 							/>
 						}
 						label="Supprimer"
+						title="Supprimer"
 						disabled={!checkIfCanDelete(job.row)}
 						onClick={() => handleDeleteClick(job.id)}
 					/>,

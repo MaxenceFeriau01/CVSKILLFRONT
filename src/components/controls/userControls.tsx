@@ -232,6 +232,7 @@ function UserControls({
 					control={control}
 					render={({ field: { value, onChange, onBlur } }) => (
 						<CustomSelect
+							required
 							isSearchable
 							options={statusesOptions}
 							placeholder="Choisissez..."

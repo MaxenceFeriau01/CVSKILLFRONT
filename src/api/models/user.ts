@@ -38,6 +38,8 @@ class User {
 	cv!: File | null
 
 	coverLetter!: File | null
+
+	activated!: boolean
 }
 
 export default User
