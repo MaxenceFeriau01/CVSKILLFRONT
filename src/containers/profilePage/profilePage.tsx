@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { useMutation, useQuery } from "react-query"
 
 import Swal from "sweetalert2"
+import { useParams } from "react-router-dom"
 import Activity from "../../api/models/activity"
 import Job from "../../api/models/job"
 import ReactSelectOption from "../../api/models/reactSelectOption"
@@ -41,6 +42,8 @@ function ProfilePage() {
 		setValue,
 	} = useForm()
 
+	const { id } = useParams()
+
 	const putUser = useMutation(
 		({ id, user }: any) => userService.put(user, id),
 		{
@@ -55,7 +58,7 @@ function ProfilePage() {
 				Swal.fire({
 					position: "bottom-end",
 					title: "",
-					text: "Votre profil a bien été mis à jour ! ",
+					text: "Le profil a bien été mis à jour ! ",
 					icon: "success",
 					timer: 1500,
 				})
@@ -63,8 +66,12 @@ function ProfilePage() {
 		}
 	)
 
-	useQuery("user", () =>
-		userService.getUser().then((res: any) => {
+	useQuery("user", () => {
+		let endpointToCall = userService.getSelf()
+		if (id) {
+			endpointToCall = userService.getById(id)
+		}
+		return endpointToCall.then((res: any) => {
 			Object.keys(res).forEach((key: any) => {
 				switch (key) {
 					case "activities":
@@ -111,7 +118,7 @@ function ProfilePage() {
 				}
 			})
 		})
-	)
+	})
 
 	useQuery("activities", () =>
 		activityService.getAllWithFilters().then(res => {

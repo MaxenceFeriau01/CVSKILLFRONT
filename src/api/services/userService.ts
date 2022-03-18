@@ -31,8 +31,12 @@ class UserService extends GeneralService<User | any> {
 		})
 	}
 
-	getUser(): Promise<User> {
+	getSelf(): Promise<User> {
 		return this.get("/self")
+	}
+
+	active(activated: boolean, userId: number): Promise<void> {
+		return this.post({ activated }, `/${userId}/active`)
 	}
 
 	setRoles(roles: Array<string>): void {

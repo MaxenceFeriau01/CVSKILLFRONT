@@ -51,7 +51,7 @@ class GeneralService<T> {
 				return response
 			},
 			err =>
-				new Promise((resolve, reject) => {
+				new Promise(() => {
 					if (err.response?.status === 401) {
 						localStorage.removeItem("user")
 						window.location.replace("/login")

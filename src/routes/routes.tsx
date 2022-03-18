@@ -11,12 +11,20 @@ import ProfilePage from "../containers/profilePage/profilePage"
 import RegistrationPage from "../containers/registrationPage/registrationPage"
 import Role from "../enums/Role"
 import PrivateRoute from "./privateRoute"
+import UserAdminPage from "../containers/admin/userAdminPage/userAdminPage"
 
 const routes = (
 	<Routes>
 		<Route path="/" element={<HomePage />} />
 		<Route path="/companies" element={<CompanyPage />} />
-		<Route path="/company-details/:id" element={<CompanyDetailsPage />} />
+		<Route
+			path="/company-details/:id"
+			element={
+				<PrivateRoute roles={[Role.ADMIN, Role.COMPANY]}>
+					<CompanyDetailsPage />
+				</PrivateRoute>
+			}
+		/>
 		<Route
 			path="/new-company"
 			element={
@@ -50,9 +58,26 @@ const routes = (
 			}
 		/>
 		<Route
+			path="/admin/users"
+			element={
+				<PrivateRoute roles={[Role.ADMIN]}>
+					<UserAdminPage />
+				</PrivateRoute>
+			}
+		/>
+		<Route
 			path="/my-profile"
 			element={
 				<PrivateRoute>
+					<ProfilePage />
+				</PrivateRoute>
+			}
+		/>
+
+		<Route
+			path="/user-details/:id"
+			element={
+				<PrivateRoute roles={[Role.ADMIN]}>
 					<ProfilePage />
 				</PrivateRoute>
 			}
