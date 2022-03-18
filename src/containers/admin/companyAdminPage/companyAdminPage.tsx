@@ -1,8 +1,9 @@
 import { useState } from "react"
-import { useMutation, useQuery } from "react-query"
-
+import { useMutation, useQuery, useQueryClient } from "react-query"
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked"
 import { Button, InputAdornment, TextField } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked"
 import {
 	DataGrid,
 	frFR,
@@ -18,6 +19,7 @@ import { useNavigate } from "react-router-dom"
 import companyService from "../../../api/services/companyService"
 import { PAGE, ROWS_OPTIONS, SIZE } from "./constant"
 import Activity from "../../../api/models/activity"
+import Company from "../../../api/models/company"
 
 const locale = frFR.components.MuiDataGrid.defaultProps.localeText
 
@@ -26,14 +28,15 @@ function CompanyAdminPage() {
 	const [pageSize, setPageSize] = useState<number>(SIZE)
 	const [formattedCompanies, setFormattedCompanies] = useState<any>([])
 	const navigate = useNavigate()
+	const queryClient = useQueryClient()
 
 	const [pageNumber, setPageNumber] = useState<number>(PAGE)
 
 	const columns: GridColumns = [
 		{
-			field: "id",
-			headerName: "Numéro",
-			type: "string",
+			field: "activated",
+			headerName: "Activé *",
+			type: "boolean",
 			flex: 0.1,
 		},
 		{
@@ -71,9 +74,9 @@ function CompanyAdminPage() {
 		{
 			field: "actions",
 			type: "actions",
-			headerName: "Action",
+			headerName: "Actions",
 			cellClassName: "actions",
-			flex: 0.1,
+			flex: 0.2,
 			// eslint-disable-next-line arrow-body-style
 			getActions: company => {
 				return [
@@ -84,6 +87,27 @@ function CompanyAdminPage() {
 							navigate(`/company-details/${company.id}`)
 						}
 					/>,
+					company.row.activated ? (
+						<GridActionsCellItem
+							icon={<RadioButtonCheckedIcon color="warning" />}
+							label="Désactivé"
+							onClick={() => handleDeactivateClick(company.id)}
+						/>
+					) : (
+						<GridActionsCellItem
+							icon={
+								<RadioButtonUncheckedIcon className="uncheck" />
+							}
+							label="Activé"
+							onClick={() =>
+								postActive.mutate({
+									companyId: company.id,
+									activated: true,
+								})
+							}
+						/>
+					),
+
 					<GridActionsCellItem
 						icon={<DeleteIcon color="error" />}
 						label="Supprimer"
@@ -122,6 +146,41 @@ function CompanyAdminPage() {
 			keepPreviousData: true,
 		}
 	)
+	const postActive = useMutation(
+		({ activated, companyId }: any) =>
+			companyService.active(activated, companyId),
+		{
+			onSuccess: (data, variables) => {
+				let text: string = "L'entreprise a été activée !"
+				let icon: any = "success"
+				if (variables.activated === false) {
+					text = "L'entreprise a été désactivée !"
+					icon = "warning"
+				}
+				Swal.fire({
+					position: "bottom-end",
+					title: "",
+					text,
+					icon,
+				})
+
+				queryClient.setQueryData(
+					["companies", pageNumber, search, pageSize],
+					(old: any) => {
+						const lOld = Object.assign(old)
+
+						// Update project percentage
+						lOld.content?.forEach((c: Company) => {
+							if (c.id === variables.companyId) {
+								c.activated = variables.activated
+							}
+						})
+						return lOld
+					}
+				)
+			},
+		}
+	)
 
 	const deleteCompany = useMutation(
 		(id: string) => companyService.delete(id),
@@ -149,19 +208,22 @@ function CompanyAdminPage() {
 		}
 	)
 
-	const onChange = (evt: any) => {
-		evt.preventDefault()
-		setSearch(evt.target.value)
-	}
-
-	const onPageChange = (page: number) => {
-		if (page > pageNumber) {
-			if (!companies.isPreviousData) {
-				setPageNumber(old => old + 1)
+	function handleDeactivateClick(id: GridRowId) {
+		Swal.fire({
+			title: "Êtes-vous sûr de la désactiver?",
+			text: "Cette entreprise n'apparaitra plus dans la liste de recherche !",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Oui, désactiver !",
+			cancelButtonText: "Annuler",
+		}).then(result => {
+			if (result.isConfirmed) {
+				postActive.mutate({
+					companyId: +id.toString(),
+					activated: false,
+				})
 			}
-		} else if (page < pageNumber) {
-			setPageNumber(old => Math.max(old - 1, 0))
-		}
+		})
 	}
 
 	const handleDeleteClick = async (id: GridRowId) => {
@@ -177,6 +239,21 @@ function CompanyAdminPage() {
 				deleteCompany.mutate(id.toString())
 			}
 		})
+	}
+
+	const onChange = (evt: any) => {
+		evt.preventDefault()
+		setSearch(evt.target.value)
+	}
+
+	const onPageChange = (page: number) => {
+		if (page > pageNumber) {
+			if (!companies.isPreviousData) {
+				setPageNumber(old => old + 1)
+			}
+		} else if (page < pageNumber) {
+			setPageNumber(old => Math.max(old - 1, 0))
+		}
 	}
 
 	return (
@@ -204,21 +281,34 @@ function CompanyAdminPage() {
 					</Button>
 				</header>
 				{formattedCompanies && formattedCompanies?.length > 0 && (
-					<DataGrid
-						columns={columns}
-						rows={formattedCompanies || []}
-						pageSize={companies?.data?.size}
-						loading={companies?.isLoading}
-						rowCount={companies?.data?.totalElements || 0}
-						onPageSizeChange={newPageSize =>
-							setPageSize(newPageSize)
-						}
-						rowsPerPageOptions={ROWS_OPTIONS}
-						pagination
-						paginationMode="server"
-						localeText={locale}
-						onPageChange={onPageChange}
-					/>
+					<>
+						<DataGrid
+							columns={columns}
+							rows={formattedCompanies || []}
+							pageSize={companies?.data?.size}
+							loading={companies?.isLoading}
+							rowCount={companies?.data?.totalElements || 0}
+							onPageSizeChange={newPageSize =>
+								setPageSize(newPageSize)
+							}
+							rowsPerPageOptions={ROWS_OPTIONS}
+							pagination
+							paginationMode="server"
+							localeText={locale}
+							onPageChange={onPageChange}
+							getRowClassName={params =>
+								`${
+									params.row.activated
+										? ""
+										: "bg-warning text-white"
+								}`
+							}
+						/>
+						<i>
+							* Les entreprises désactivées n'apparaissent plus
+							dans la liste de recherche
+						</i>
+					</>
 				)}
 			</div>
 		</section>

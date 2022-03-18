@@ -8,7 +8,11 @@ import GeneralService from "./generalService"
 
 class CompanyService extends GeneralService<Company | any> {
 	apply(companyId: number): Promise<void> {
-		return this.post(null, `/apply/${companyId}`)
+		return this.post(null, `/${companyId}/apply`)
+	}
+
+	active(activated: boolean, companyId: number): Promise<void> {
+		return this.post({ activated }, `/${companyId}/active`)
 	}
 
 	getAllSimplePaginated(filters?: Object): Promise<any> {

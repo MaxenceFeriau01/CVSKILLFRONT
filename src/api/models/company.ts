@@ -41,6 +41,8 @@ class Company {
 
 	type!: string
 
+	activated!: boolean
+
 	constructor(
 		id: number,
 		name: string,

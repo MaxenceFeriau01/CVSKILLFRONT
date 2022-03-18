@@ -106,7 +106,7 @@ function GeneralDetails({
 								"Le numéro de siret est composé de 14 chiffres",
 						},
 						maxLength: {
-							value: 15,
+							value: 14,
 							message:
 								"Le numéro de siret est composé de 14 chiffres",
 						},
@@ -132,7 +132,7 @@ function GeneralDetails({
 			</FormGroup>
 
 			<div className="select">
-				<InputLabel>Domaine d'activitées</InputLabel>
+				<InputLabel>Domaine d'activités</InputLabel>
 				<Controller
 					name="activities"
 					control={control}

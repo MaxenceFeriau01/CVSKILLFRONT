@@ -89,8 +89,8 @@ function ProfilePage() {
 						setValue(
 							"internStatus",
 							new ReactSelectOption(
-								res.internStatus.id,
-								res.internStatus.name
+								res.internStatus?.id,
+								res.internStatus?.name
 							)
 						)
 						break

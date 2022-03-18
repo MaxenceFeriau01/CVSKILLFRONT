@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-shadow
 enum Role {
 	ADMIN = "ROLE_ADMIN",
 	USER = "ROLE_USER",

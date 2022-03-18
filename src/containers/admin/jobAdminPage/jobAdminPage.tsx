@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useMutation, useQuery } from "react-query"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 
 import { Button, InputAdornment, TextField } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -23,6 +23,7 @@ function JobAdminPage() {
 	const [search, setSearch] = useState<string>("")
 	const [pageSize, setPageSize] = useState<number>(SIZE)
 	const [pageNumber, setPageNumber] = useState<number>(PAGE)
+	const queryClient = useQueryClient()
 
 	const columns: GridColumns = [
 		{
@@ -117,8 +118,21 @@ function JobAdminPage() {
 	})
 
 	const putJob = useMutation((job: Job) => jobService.put(job, job.id), {
-		onSuccess: () => {
-			jobs.refetch()
+		onSuccess: (data: Job) => {
+			queryClient.setQueryData(
+				["jobs", pageNumber, search, pageSize],
+				(old: any) => {
+					const lOld = Object.assign(old)
+
+					// Update project percentage
+					lOld.content?.forEach((a: Job) => {
+						if (a.id === data.id) {
+							a.name = data.name
+						}
+					})
+					return lOld
+				}
+			)
 			Swal.fire({
 				title: "Ce métier a bien été sauvegardé.",
 				icon: "success",

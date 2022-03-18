@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useMutation, useQuery } from "react-query"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 
 import { Button, InputAdornment, TextField } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -23,6 +23,7 @@ function ActivityAdminPage() {
 	const [search, setSearch] = useState<string>("")
 	const [pageSize, setPageSize] = useState<number>(SIZE)
 	const [pageNumber, setPageNumber] = useState<number>(PAGE)
+	const queryClient = useQueryClient()
 
 	const columns: GridColumns = [
 		{
@@ -133,8 +134,21 @@ function ActivityAdminPage() {
 	const putActivity = useMutation(
 		(activity: Activity) => activityService.put(activity, activity.id),
 		{
-			onSuccess: () => {
-				activities.refetch()
+			onSuccess: (data: Activity) => {
+				queryClient.setQueryData(
+					["activities", pageNumber, search, pageSize],
+					(old: any) => {
+						const lOld = Object.assign(old)
+
+						// Update project percentage
+						lOld.content?.forEach((a: Activity) => {
+							if (a.id === data.id) {
+								a.name = data.name
+							}
+						})
+						return lOld
+					}
+				)
 				Swal.fire({
 					title: "Cette activité a bien été sauvegardée.",
 					icon: "success",

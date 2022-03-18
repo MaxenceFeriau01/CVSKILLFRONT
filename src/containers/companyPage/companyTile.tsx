@@ -1,9 +1,5 @@
 import AccessTimeIcon from "@mui/icons-material/AccessTime"
-import EditIcon from "@mui/icons-material/Edit"
-import { Link } from "react-router-dom"
 import Company from "../../api/models/company"
-import HasRight from "../../components/rights/hasRight"
-import Role from "../../enums/Role"
 import imageUpload from "../../resources/images/image-upload.svg"
 
 interface CompanyProps {

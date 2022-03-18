@@ -6,6 +6,7 @@ import { useMutation, useQuery } from "react-query"
 import { useNavigate, useParams } from "react-router-dom"
 import Swal from "sweetalert2"
 
+import WarningIcon from "@mui/icons-material/Warning"
 import companyService from "../../api/services/companyService"
 import Activity from "../../api/models/activity"
 
@@ -61,7 +62,7 @@ function CompanyDetailsPage() {
 		})
 	)
 
-	useQuery(
+	const apiCompany = useQuery(
 		"company",
 		() =>
 			companyService.getById(id).then((res: any) => {
@@ -110,6 +111,7 @@ function CompanyDetailsPage() {
 							break
 					}
 				})
+				return res
 			}),
 		{ enabled: id !== undefined }
 	)
@@ -205,6 +207,12 @@ function CompanyDetailsPage() {
 					</Step>
 				))}
 			</Stepper>
+			{apiCompany?.data?.activated === false && (
+				<b className="company__deactivated">
+					<WarningIcon color="warning" />
+					Attention cette entreprise est désactivée
+				</b>
+			)}
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
 				className="content company-details-form"
