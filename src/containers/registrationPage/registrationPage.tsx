@@ -14,10 +14,7 @@ import userService from "../../api/services/userService"
 import logo from "../../resources/images/logo.svg"
 import useHideElement from "../../hooks/hideElement"
 import UserControls from "../../components/controls/userControls"
-import {
-	STATUS_COLLEGE_STUDENT,
-	STATUS_HIGH_SCHOOL_STUDENT,
-} from "../../utils/constants"
+import { STATUS_COLLEGE_STUDENT } from "../../utils/constants"
 import InternStatus from "../../api/models/internStatus"
 import internStatusService from "../../api/services/internStatusService"
 

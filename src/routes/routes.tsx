@@ -5,6 +5,7 @@ import CompanyPage from "../containers/companyPage/companyPage"
 import ForbiddenPage from "../containers/forbiddenPage/forbiddenPage"
 import HomePage from "../containers/homePage/homePage"
 import JobAdminPage from "../containers/admin/jobAdminPage/jobAdminPage"
+import CompanyAdminPage from "../containers/admin/companyAdminPage/companyAdminPage"
 import LoginPage from "../containers/loginPage/loginPage"
 import ProfilePage from "../containers/profilePage/profilePage"
 import RegistrationPage from "../containers/registrationPage/registrationPage"
@@ -37,6 +38,14 @@ const routes = (
 			element={
 				<PrivateRoute roles={[Role.ADMIN]}>
 					<JobAdminPage />
+				</PrivateRoute>
+			}
+		/>
+		<Route
+			path="/admin/companies"
+			element={
+				<PrivateRoute roles={[Role.ADMIN]}>
+					<CompanyAdminPage />
 				</PrivateRoute>
 			}
 		/>

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useMutation, useQuery } from "react-query"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 
 import { Button, InputAdornment, TextField } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -15,14 +15,15 @@ import Swal from "sweetalert2"
 import SearchIcon from "@mui/icons-material/Search"
 import jobService from "../../../api/services/jobService"
 import Job from "../../../api/models/job"
-import { PAGE, SIZE } from "./constant"
+import { PAGE, ROWS_OPTIONS, SIZE } from "./constant"
 
 const locale = frFR.components.MuiDataGrid.defaultProps.localeText
 
 function JobAdminPage() {
 	const [search, setSearch] = useState<string>("")
-
+	const [pageSize, setPageSize] = useState<number>(SIZE)
 	const [pageNumber, setPageNumber] = useState<number>(PAGE)
+	const queryClient = useQueryClient()
 
 	const columns: GridColumns = [
 		{
@@ -85,11 +86,11 @@ function JobAdminPage() {
 	}
 
 	const jobs = useQuery(
-		["jobs", pageNumber, search],
+		["jobs", pageNumber, search, pageSize],
 		() =>
 			jobService.getAllPaginated({
 				page: pageNumber,
-				size: SIZE,
+				size: pageSize,
 				name: search !== "" ? search : null,
 			}),
 		{
@@ -106,7 +107,6 @@ function JobAdminPage() {
 				position: "bottom-end",
 				showConfirmButton: false,
 				timer: 1500,
-				timerProgressBar: true,
 			})
 		},
 
@@ -118,15 +118,27 @@ function JobAdminPage() {
 	})
 
 	const putJob = useMutation((job: Job) => jobService.put(job, job.id), {
-		onSuccess: () => {
-			jobs.refetch()
+		onSuccess: (data: Job) => {
+			queryClient.setQueryData(
+				["jobs", pageNumber, search, pageSize],
+				(old: any) => {
+					const lOld = Object.assign(old)
+
+					// Update project percentage
+					lOld.content?.forEach((a: Job) => {
+						if (a.id === data.id) {
+							a.name = data.name
+						}
+					})
+					return lOld
+				}
+			)
 			Swal.fire({
 				title: "Ce métier a bien été sauvegardé.",
 				icon: "success",
 				position: "bottom-end",
 				showConfirmButton: false,
 				timer: 1500,
-				timerProgressBar: true,
 			})
 		},
 
@@ -137,7 +149,6 @@ function JobAdminPage() {
 				position: "bottom-end",
 				showConfirmButton: false,
 				timer: 1500,
-				timerProgressBar: true,
 			})
 		},
 	})
@@ -151,7 +162,6 @@ function JobAdminPage() {
 				position: "bottom-end",
 				showConfirmButton: false,
 				timer: 1500,
-				timerProgressBar: true,
 			})
 		},
 
@@ -162,7 +172,6 @@ function JobAdminPage() {
 				position: "bottom-end",
 				showConfirmButton: false,
 				timer: 1500,
-				timerProgressBar: true,
 			})
 		},
 	})
@@ -248,7 +257,8 @@ function JobAdminPage() {
 					rowCount={jobs?.data?.totalElements || 0}
 					pagination
 					paginationMode="server"
-					rowsPerPageOptions={[20]}
+					onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+					rowsPerPageOptions={ROWS_OPTIONS}
 					localeText={locale}
 					onPageChange={onPageChange}
 					onCellEditCommit={handleCellEditCommit}

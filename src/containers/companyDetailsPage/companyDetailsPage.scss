@@ -1,5 +1,17 @@
 .company-details-page {
 	overflow-x: hidden;
+
+	.company__deactivated {
+		display: flex;
+		justify-content: center;
+		margin: 20px 0;
+		color: $color-warning;
+
+		svg {
+			margin-right: 5px;
+			padding-bottom: 4px;
+		}
+	}
 	.stepper {
 		margin-top: 15px;
 		z-index: 1;

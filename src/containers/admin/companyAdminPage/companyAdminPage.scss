@@ -1,4 +1,4 @@
-.job-page-header {
+.company-page-header {
 	height: 70px;
 	display: flex;
 	justify-content: center;
@@ -20,11 +20,15 @@
 	}
 }
 
-.job-content {
+.company-content {
 	padding: 10px;
 	height: calc(100% - 108px);
 
 	i {
 		color: $color-warning;
+	}
+
+	.uncheck {
+		fill: $color-white;
 	}
 }

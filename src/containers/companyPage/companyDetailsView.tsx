@@ -72,7 +72,7 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 
 						{company.activities.length > 0 && (
 							<span>
-								<u>Domaine d'activitées</u> :{" "}
+								<u>Domaine d'activités</u> :{" "}
 								{company.activities.map((activity, index) => (
 									// eslint-disable-next-line react/no-array-index-key
 									<i key={index}>

@@ -66,6 +66,16 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 		roles: [Role.ADMIN],
 		subMenu: [
 			{
+				text: "Entreprises",
+				url: "/admin/companies",
+				Icon: ApartmentIcon,
+			},
+			{
+				text: "Utilisateurs",
+				url: "/admin/users",
+				Icon: GroupIcon,
+			},
+			{
 				text: "Activitées",
 				url: "/admin/activities",
 				Icon: DomainIcon,
@@ -74,16 +84,6 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 				text: "Métiers",
 				url: "/admin/jobs",
 				Icon: WorkIcon,
-			},
-			{
-				text: "Utilisateurs",
-				url: "/admin/users",
-				Icon: GroupIcon,
-			},
-			{
-				text: "Entreprises",
-				url: "/admin/companies",
-				Icon: ApartmentIcon,
 			},
 		],
 	},

@@ -1,7 +1,7 @@
 import { FormGroup, FormControlLabel, Checkbox } from "@mui/material"
 import { useRef, useState, useContext, ChangeEvent } from "react"
 import { useInfiniteQuery, useQuery } from "react-query"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 
 import Company from "../../api/models/company"
@@ -12,8 +12,6 @@ import activityService from "../../api/services/activityService"
 import internStatusService from "../../api/services/internStatusService"
 import companyService from "../../api/services/companyService"
 import CustomSelect from "../../components/inputs/customSelect"
-import HasRight from "../../components/rights/hasRight"
-import Role from "../../enums/Role"
 import CompanyTile from "./companyTile"
 import { PAGE, SIZE } from "./constants"
 
@@ -117,7 +115,7 @@ function CompanyPage() {
 			<header className="company-page-header">
 				<CustomSelect
 					className="company-select--activities"
-					placeholder="Par activité"
+					placeholder="Par domaine(s)"
 					options={activities.data}
 					isMulti
 					onChange={(e: any) => selectHandleActivityChange(e)}
@@ -156,17 +154,6 @@ function CompanyPage() {
 					}`}
 					onScroll={handleScroll}
 				>
-					<HasRight roles={[Role.ADMIN]}>
-						<Link
-							to="/new-company"
-							className={`company-tile company-tile--add ${
-								selectedCompany ? "w-full" : ""
-							}`}
-						>
-							<span>+</span>
-							<b>Créer une entreprise</b>
-						</Link>
-					</HasRight>
 					{companies?.data?.pages?.map(page =>
 						page?.content?.map((c: Company) => (
 							<CompanyTile
