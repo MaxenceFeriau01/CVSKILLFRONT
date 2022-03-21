@@ -36,7 +36,6 @@
 			justify-content: space-around;
 			position: relative;
 			background-color: $color-white;
-			color: $color-primary;
 			flex-direction: column;
 			display: flex;
 			border-radius: 10px;
@@ -47,10 +46,6 @@
 			img {
 				width: 55%;
 				margin: 0 auto;
-			}
-
-			p {
-				color: $color-primary;
 			}
 		}
 	}

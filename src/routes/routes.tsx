@@ -13,6 +13,7 @@ import Role from "../enums/Role"
 import PrivateRoute from "./privateRoute"
 import UserAdminPage from "../containers/admin/userAdminPage/userAdminPage"
 import ForgotPassword from "../containers/forgotPasswordPage/forgotPasswordPage"
+import ResetPassword from "../containers/resetPasswordPage/resetPasswordPage"
 
 const routes = (
 	<Routes>
@@ -85,6 +86,7 @@ const routes = (
 		/>
 		<Route path="/login" element={<LoginPage />} />
 		<Route path="/forgot-password" element={<ForgotPassword />} />
+		<Route path="/:token/reset-password" element={<ResetPassword />} />
 		<Route path="/registration" element={<RegistrationPage />} />
 		<Route path="*" element={<HomePage />} />
 		<Route path="/403" element={<ForbiddenPage />} />

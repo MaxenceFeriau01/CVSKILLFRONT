@@ -43,6 +43,14 @@ class UserService extends GeneralService<User | any> {
 		return this.post({ email }, "/forgot-password")
 	}
 
+	processResetPassword(resetPassword: any): Promise<void> {
+		return this.post(resetPassword, "/reset-password")
+	}
+
+	showResetPassword(token: string): Promise<void> {
+		return this.get(`/${token}/reset-password`)
+	}
+
 	setRoles(roles: Array<string>): void {
 		this.roles = roles
 	}

@@ -199,7 +199,7 @@ function UserControls({
 							rules={{
 								validate: value =>
 									value === watch("password") ||
-									"Les mot de passe ne correspondent pas",
+									"Les mots de passe ne correspondent pas",
 							}}
 							defaultValue=""
 							render={({ field: { onChange, value } }) => (
@@ -219,7 +219,7 @@ function UserControls({
 								{errors.confirmPassword.message}
 							</Alert>
 						)}
-					</div>{" "}
+					</div>
 				</>
 			)}
 			<div className="select-form-control">

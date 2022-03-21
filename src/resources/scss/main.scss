@@ -17,6 +17,7 @@
 @import "../../components/footer/footer";
 @import "../../containers/forbiddenPage/forbiddenPage";
 @import "../../containers/forgotPasswordPage/forgotPasswordPage";
+@import "../../containers/resetPasswordPage/resetPasswordPage";
 
 body {
 	margin: 0;
@@ -156,6 +157,7 @@ body {
 
 	.MuiButton-root {
 		border: 1px solid $color-primary-light;
+		border-color: rgba(0, 0, 0, 0.26);
 	}
 
 	.MuiButton-textSecondary {
