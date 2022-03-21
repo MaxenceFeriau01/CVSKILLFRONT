@@ -172,7 +172,7 @@ function CompanyAdminPage() {
 				const lOld = [...formattedCompanies]
 
 				lOld.forEach((c: Company) => {
-					if (c.id === variables.userId) {
+					if (c.id === variables.companyId) {
 						c.activated = variables.activated
 					}
 				})

@@ -39,6 +39,10 @@ class UserService extends GeneralService<User | any> {
 		return this.post({ activated }, `/${userId}/active`)
 	}
 
+	forgotPassword(email: string): Promise<void> {
+		return this.post({ email }, "/forgot-password")
+	}
+
 	setRoles(roles: Array<string>): void {
 		this.roles = roles
 	}
