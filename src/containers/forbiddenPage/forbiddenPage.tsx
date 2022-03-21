@@ -12,7 +12,7 @@ function ForbiddenPage() {
 				<br />
 				<span>
 					Reprenez votre activité en{" "}
-					<Link className="link-company" to="/company">
+					<Link className="link-company" to="/companies">
 						cliquant ici.
 					</Link>
 				</span>

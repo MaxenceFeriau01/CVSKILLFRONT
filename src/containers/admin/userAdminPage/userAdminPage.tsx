@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked"
-import { Button, InputAdornment, TextField } from "@mui/material"
+import { InputAdornment, TextField } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked"
 import {
@@ -18,7 +18,6 @@ import { Edit } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
 import userService from "../../../api/services/userService"
 import { PAGE, ROWS_OPTIONS, SIZE } from "./constant"
-import Activity from "../../../api/models/activity"
 import User from "../../../api/models/user"
 
 const locale = frFR.components.MuiDataGrid.defaultProps.localeText
