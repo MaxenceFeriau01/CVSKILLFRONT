@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { pdfjs } from "react-pdf"
 import Header from "../../components/header/header"
 import routes from "../../routes/routes"
-import variables from "../../resources/scss/base.module.scss"
+import variables from "../../resources/scss/_base.module.scss"
 import Footer from "../../components/footer/footer"
 import UserProvider from "../../contexts/UserProvider"
 
