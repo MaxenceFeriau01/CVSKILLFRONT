@@ -39,7 +39,7 @@ function CompanyTile({ company, onClick, selectedCompanyId }: CompanyProps) {
 				)}
 			</div>
 			<h4>{company!.name}</h4>
-			<div>
+			<div className="overflow-hidden">
 				{company.activities?.length > 0 && <b>activité(s) : </b>}
 				{company.activities?.map((activity, index) => (
 					// eslint-disable-next-line react/no-array-index-key

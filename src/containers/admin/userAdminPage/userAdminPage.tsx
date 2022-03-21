@@ -18,7 +18,6 @@ import { Edit } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
 import userService from "../../../api/services/userService"
 import { PAGE, ROWS_OPTIONS, SIZE } from "./constant"
-import Activity from "../../../api/models/activity"
 import User from "../../../api/models/user"
 
 const locale = frFR.components.MuiDataGrid.defaultProps.localeText
