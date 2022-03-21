@@ -7,6 +7,18 @@
 		width: 200px;
 	}
 
+	.user__deactivated {
+		display: flex;
+		justify-content: center;
+		margin: 20px 0;
+		color: $color-warning;
+
+		svg {
+			margin-right: 5px;
+			padding-bottom: 4px;
+		}
+	}
+
 	.profile-form {
 		width: 80%;
 		display: flex;

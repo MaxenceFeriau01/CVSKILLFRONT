@@ -6,6 +6,7 @@ import { useMutation, useQuery } from "react-query"
 
 import Swal from "sweetalert2"
 import { useParams } from "react-router-dom"
+import WarningIcon from "@mui/icons-material/Warning"
 import Activity from "../../api/models/activity"
 import Job from "../../api/models/job"
 import ReactSelectOption from "../../api/models/reactSelectOption"
@@ -18,6 +19,7 @@ import profile from "../../resources/images/profile.svg"
 import UserControls from "../../components/controls/userControls"
 import FileDb from "../../api/models/fileDb"
 import UserContext from "../../contexts/user"
+
 import {
 	STATUS_COLLEGE_STUDENT,
 	STATUS_HIGH_SCHOOL_STUDENT,
@@ -66,7 +68,7 @@ function ProfilePage() {
 		}
 	)
 
-	useQuery("user", () => {
+	const apiUser = useQuery("user", () => {
 		let endpointToCall = userService.getSelf()
 		if (id) {
 			endpointToCall = userService.getById(id)
@@ -117,6 +119,7 @@ function ProfilePage() {
 						break
 				}
 			})
+			return res
 		})
 	})
 
@@ -185,6 +188,12 @@ function ProfilePage() {
 	return (
 		<section className="page profile">
 			<img src={profile} alt="profile" />
+			{apiUser?.data?.activated === false && (
+				<b className="user__deactivated">
+					<WarningIcon color="warning" />
+					Attention cet utilisateur est désactivée
+				</b>
+			)}
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className="content profile-form"
