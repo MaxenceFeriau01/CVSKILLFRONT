@@ -17,7 +17,12 @@ function CustomSelect(props: any) {
 	}
 	return (
 		<>
-			<Select autoComplete="off" styles={styles} {...props} />
+			<Select
+				classNamePrefix="react-select"
+				autoComplete="off"
+				styles={styles}
+				{...props}
+			/>
 			{!disabled && required && (
 				<input
 					tabIndex={-1}

@@ -1,5 +1,10 @@
 .company-select--activities {
-	width: 250px;
+	width: 300px;
+	margin-right: 10px;
+}
+
+.company-select--status {
+	width: 241px;
 	margin-right: 10px;
 }
 
@@ -59,10 +64,6 @@
 				&:hover {
 					transition: 0.4s ease all;
 					box-shadow: $box-shadow;
-				}
-
-				p {
-					color: $color-secondary;
 				}
 
 				.company-tile__clock {

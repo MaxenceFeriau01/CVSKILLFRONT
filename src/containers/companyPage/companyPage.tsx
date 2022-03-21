@@ -124,7 +124,7 @@ function CompanyPage() {
 					name="selectActivity"
 				/>
 				<CustomSelect
-					className="company-select--activities"
+					className="company-select--status"
 					placeholder="Par status recherché"
 					options={statuses.data}
 					onChange={(e: any) => selectHandleTraineesChange(e)}

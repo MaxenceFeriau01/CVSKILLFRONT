@@ -129,7 +129,7 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 							</li>
 							{company.searchedInternsType?.map(internType => (
 								<li key={internType.id}>
-									➔ des{" "}
+									➔ Des{" "}
 									<b>{internType?.internStatus?.name}s</b> :{" "}
 									<i>{internType?.period}</i>
 								</li>
