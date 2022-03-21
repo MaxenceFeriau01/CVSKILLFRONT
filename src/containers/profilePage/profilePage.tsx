@@ -191,7 +191,7 @@ function ProfilePage() {
 			{apiUser?.data?.activated === false && (
 				<b className="user__deactivated">
 					<WarningIcon color="warning" />
-					Attention cet utilisateur est désactivée
+					Attention cet utilisateur est désactivé
 				</b>
 			)}
 			<form
