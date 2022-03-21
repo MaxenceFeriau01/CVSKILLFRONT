@@ -8,7 +8,7 @@ trigger:
 
 variables:
   dockerRegistryServiceConnection: 'EntreprendreEnsemble-Mecena-acr'
-  imageRepository: 'entreprendreEnsemble-front'
+  imageRepository: 'entreprendre-ensemble-front'
   containerRegistry: 'EntreprendreEnsembleMecenatasr.azurecr.io'
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
