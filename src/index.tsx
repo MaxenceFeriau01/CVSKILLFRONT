@@ -1,5 +1,4 @@
 import ReactDOM from "react-dom"
-import "./index.scss"
 import { BrowserRouter } from "react-router-dom"
 import App from "./containers/app/app"
 import "./resources/scss/main.scss"
@@ -14,5 +13,3 @@ ReactDOM.render(
 	</BrowserRouter>,
 	document.getElementById("root")
 )
-
-
