@@ -2,7 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 @import "./_base.module.scss";
-
-#root {
-	--color-primary: $color-primary;
-}
