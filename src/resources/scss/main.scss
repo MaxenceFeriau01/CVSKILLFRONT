@@ -16,13 +16,14 @@
 @import "../../containers/homePage/homePage";
 @import "../../components/footer/footer";
 @import "../../containers/forbiddenPage/forbiddenPage";
+@import "../../containers/forgotPasswordPage/forgotPasswordPage";
+@import "../../containers/resetPasswordPage/resetPasswordPage";
 
 body {
 	margin: 0;
 	font-family: $font-family !important;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: $color-white scale;
-	//background-color: #d7e1ec;
 	height: 100vh;
 	overflow: hidden;
 
@@ -156,6 +157,7 @@ body {
 
 	.MuiButton-root {
 		border: 1px solid $color-primary-light;
+		border-color: rgba(0, 0, 0, 0.26);
 	}
 
 	.MuiButton-textSecondary {

@@ -71,6 +71,9 @@ function LoginPage() {
 						/>
 					)}
 				/>
+				<Link className="login-forgot-password" to="/forgot-password">
+					Mot de passe oublié ?
+				</Link>
 				<Button type="submit">Se connecter</Button>
 				<span className="login-form-registration">
 					Pas encore inscrit?{" "}

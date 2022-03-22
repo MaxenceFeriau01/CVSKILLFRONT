@@ -53,7 +53,7 @@ $company-page-header-height: 75px;
 			display: flex;
 			justify-content: center;
 			overflow-y: auto;
-			transition: width 0.4s linear;
+			transition: all 0.4s linear;
 			padding: 0 10px;
 
 			.company-tile,
