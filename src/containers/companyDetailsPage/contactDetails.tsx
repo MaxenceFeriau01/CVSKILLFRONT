@@ -1,10 +1,15 @@
 import { FormGroup, TextField } from "@mui/material"
 import { Controller } from "react-hook-form"
 import contact from "../../resources/images/contact.svg"
-import { INPUT_FORM_TWO } from "./constants"
+import {
+	INPUT_FORM_ONE,
+	INPUT_FORM_TWO,
+	TYPE_COMPANY_OPTIONS,
+} from "./constants"
 
 function ContactDetails({ form }: any) {
 	const {
+		watch,
 		control,
 		formState: { errors },
 	} = form
@@ -160,6 +165,58 @@ function ContactDetails({ form }: any) {
 					)}
 				/>
 			</FormGroup>
+
+			{watch(INPUT_FORM_ONE[0]) === TYPE_COMPANY_OPTIONS[2].value && (
+				<>
+					<Controller
+						name={INPUT_FORM_TWO[6]}
+						control={control}
+						defaultValue=""
+						render={({ field: { onChange, value } }) => (
+							<TextField
+								className="form-control-full"
+								value={value}
+								onChange={onChange}
+								label="Région"
+								variant="outlined"
+								type="text"
+							/>
+						)}
+					/>
+
+					<FormGroup row>
+						<Controller
+							name={INPUT_FORM_TWO[7]}
+							control={control}
+							defaultValue=""
+							render={({ field: { onChange, value } }) => (
+								<TextField
+									required
+									value={value}
+									onChange={onChange}
+									label="Département"
+									variant="outlined"
+									type="text"
+								/>
+							)}
+						/>
+						<Controller
+							name={INPUT_FORM_TWO[8]}
+							control={control}
+							defaultValue=""
+							render={({ field: { onChange, value } }) => (
+								<TextField
+									value={value}
+									onChange={onChange}
+									label="EPCI"
+									variant="outlined"
+									type="text"
+								/>
+							)}
+						/>
+					</FormGroup>
+				</>
+			)}
 		</>
 	)
 }

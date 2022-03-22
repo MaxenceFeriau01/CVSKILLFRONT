@@ -1,7 +1,7 @@
 import { Alert, Button, TextField, Typography } from "@mui/material"
 import { Controller, useForm } from "react-hook-form"
 import { useMutation, useQuery } from "react-query"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import Swal from "sweetalert2"
 import userService from "../../api/services/userService"
 import useHideElement from "../../hooks/hideElement"
@@ -14,7 +14,6 @@ function ResetPassword() {
 		control,
 		formState: { errors },
 		watch,
-		reset,
 	} = useForm()
 
 	const { token } = useParams()

@@ -150,7 +150,7 @@ function CompanyPage() {
 			<section className="content company-container">
 				<div
 					className={`company-list-content ${
-						selectedCompany ? "laptop:w-1/2" : ""
+						selectedCompany ? "tablet:w-1/2" : ""
 					}`}
 					onScroll={handleScroll}
 				>

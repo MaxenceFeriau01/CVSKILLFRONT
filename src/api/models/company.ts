@@ -43,6 +43,12 @@ class Company {
 
 	activated!: boolean
 
+	epci?: string
+
+	region?: string
+
+	department?: string
+
 	constructor(
 		id: number,
 		name: string,

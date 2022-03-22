@@ -9,6 +9,7 @@ import { useMutation } from "react-query"
 import Swal from "sweetalert2"
 import Company from "../../api/models/company"
 import companyService from "../../api/services/companyService"
+import { TYPE_COMPANY_OPTIONS } from "../companyDetailsPage/constants"
 
 interface CompanyDetailsViewProps {
 	company: Company | null
@@ -50,11 +51,24 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 						<span>{company.address}</span>
 						<span>
 							{company.postalCode}, {company.town}
+							{company.type === TYPE_COMPANY_OPTIONS[2].value &&
+								company?.department &&
+								`, ${company?.department}`}
+							{company.type === TYPE_COMPANY_OPTIONS[2].value &&
+								company?.region &&
+								`, ${company?.region}`}
 						</span>
 						<span className="mt-2">
 							<b>Type : </b>
 							{company.type}
 						</span>
+						{company.type === TYPE_COMPANY_OPTIONS[2].value &&
+							company?.epci && (
+								<span>
+									<b>EPCI : </b>
+									{company?.epci}
+								</span>
+							)}
 						<span>
 							<b>Siret : </b>
 							{company.siret}
