@@ -8,11 +8,11 @@ module.exports = {
 			desktop: "1440px",
 		},
 		colors: {
-			primary: "var(--color-primary)",
-			secondary: "var(--color-secondary)",
-			gray: "var(--color-gray)",
-			warning: "var(--color-warning)",
-			white: "var(--color-white)",
+			primary: "#2daf8e",
+			secondary: "#d3d61f",
+			gray: "#e4e2e0",
+			warning: "#ff9966",
+			white: "white",
 		},
 		listStyleType: {
 			none: "none",

@@ -47,7 +47,7 @@ function ProfilePage() {
 	const { id } = useParams()
 
 	const putUser = useMutation(
-		({ id, user }: any) => userService.put(user, id),
+		({ userId, updatedUser }: any) => userService.put(updatedUser, userId),
 		{
 			onSuccess: (data: User) => {
 				const lUser = {
@@ -182,7 +182,7 @@ function ProfilePage() {
 			"coverLetter",
 			data.coverLetter?.length > 0 ? data.coverLetter[0] : null
 		)
-		putUser.mutate({ id: data.id, user: formData })
+		putUser.mutate({ userId: data.id, updatedUser: formData })
 	}
 
 	return (
