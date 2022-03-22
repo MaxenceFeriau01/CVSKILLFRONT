@@ -1,30 +1,53 @@
-.company-select--activities {
-	width: 300px;
-	margin-right: 10px;
-}
-
-.company-select--status {
-	width: 241px;
-	margin-right: 10px;
-}
+$company-page-header-height: 75px;
 
 .company-page {
 	overflow-y: unset !important;
 
 	.company-page-header {
-		height: 65px;
+		@include breakpoint {
+			overflow-y: unset;
+		}
+
+		height: $company-page-header-height;
 		display: flex;
 		justify-content: center;
-		margin: 0 5px;
 		align-items: center;
+		flex-wrap: wrap;
+		overflow-y: auto;
+		margin: 0 auto;
+
+		.company-select--activities {
+			@include breakpoint {
+				width: 300px;
+				margin-right: 10px;
+				margin-bottom: unset;
+			}
+			z-index: 2;
+			width: 90%;
+			margin-bottom: 5px;
+			margin-top: 5px;
+		}
+
+		.company-select--status {
+			z-index: 1;
+			@include breakpoint {
+				width: 241px;
+				margin-right: 10px;
+				margin-bottom: unset;
+			}
+
+			width: 90%;
+			margin-bottom: 5px;
+		}
 	}
 
 	.company-container {
-		max-height: calc(100% - 65px);
+		max-height: calc(100% - ($company-page-header-height));
 		display: flex;
 		position: relative;
 
 		.company-list-content {
+			margin-top: 5px;
 			width: 100%;
 			flex-flow: row wrap;
 			display: flex;
@@ -42,7 +65,7 @@
 					width: 46%;
 				}
 
-				@include breakpoint(desktop) {
+				@include breakpoint(laptop) {
 					width: 29%;
 				}
 				border: 1px solid $color-gray;

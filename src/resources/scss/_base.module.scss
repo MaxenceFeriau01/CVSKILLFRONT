@@ -1,5 +1,6 @@
 @import "breakpoint-sass";
 
+//SCSS variables
 $font-family: "Roboto";
 $color-primary: #2daf8e;
 $color-primary-dark: darken($color-primary, 10%);
@@ -21,12 +22,21 @@ $background-color: white;
 $header-height: 75px;
 $footer-height: 45px;
 $box-shadow: 1px 0 4px 0 rgb(0 0 0 / 25%);
+//END SCSS variables
+
+//CSS Variables used for tailwind
+#root {
+	--color-primary: $color-primary;
+}
+
+// END CSS Variables
+
 @mixin breakpoint($point: tablet) {
-	@if $point == desktop-l {
+	@if $point == desktop {
 		@media only screen and (min-width: 1440px) {
 			@content;
 		}
-	} @else if $point == desktop {
+	} @else if $point == laptop {
 		@media only screen and (min-width: 1024px) {
 			@content;
 		}
