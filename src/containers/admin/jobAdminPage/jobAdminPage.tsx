@@ -264,7 +264,7 @@ function JobAdminPage() {
 					onPageChange={onPageChange}
 					onCellEditCommit={handleCellEditCommit}
 				/>
-				<i>* Double-clic sur le nom d'un job pour la modifier</i>
+				<i>* Double-clic sur le nom d'un métier pour la modifier</i>
 			</div>
 		</section>
 	)

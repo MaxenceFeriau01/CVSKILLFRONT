@@ -31,6 +31,10 @@ class UserService extends GeneralService<User | any> {
 		})
 	}
 
+	getAppliedCompanies(): Promise<number[]> {
+		return this.get("/self/applied-companies").then(res => res)
+	}
+
 	getSelf(): Promise<User> {
 		return this.get("/self")
 	}
