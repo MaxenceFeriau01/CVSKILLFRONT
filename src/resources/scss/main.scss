@@ -157,7 +157,9 @@ body {
 
 	.MuiButton-root {
 		border: 1px solid $color-primary-light;
-		border-color: rgba(0, 0, 0, 0.26);
+		&:disabled {
+			border-color: rgba(0, 0, 0, 0.26);
+		}
 	}
 
 	.MuiButton-textSecondary {

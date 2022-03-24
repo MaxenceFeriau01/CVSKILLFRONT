@@ -13,6 +13,7 @@ module.exports = {
 			gray: "#e4e2e0",
 			warning: "#ff9966",
 			white: "white",
+			info :"#5186f3"
 		},
 		listStyleType: {
 			none: "none",

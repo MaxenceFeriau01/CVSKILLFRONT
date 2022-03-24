@@ -5,30 +5,46 @@ import ContactPhoneIcon from "@mui/icons-material/ContactPhone"
 import EuroIcon from "@mui/icons-material/Euro"
 import AccessTimeIcon from "@mui/icons-material/AccessTime"
 import CancelIcon from "@mui/icons-material/Cancel"
-import { useMutation } from "react-query"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 import Swal from "sweetalert2"
+import { Info } from "@mui/icons-material"
 import Company from "../../api/models/company"
 import companyService from "../../api/services/companyService"
 import { TYPE_COMPANY_OPTIONS } from "../companyDetailsPage/constants"
+import HasRight from "../../components/rights/hasRight"
+import Role from "../../enums/Role"
+import userService from "../../api/services/userService"
 
 interface CompanyDetailsViewProps {
 	company: Company | null
 	onClose: any
 }
 function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
+	const queryClient = useQueryClient()
+
+	const apiAppliedCompanies = useQuery("appliedCompanies", () =>
+		userService.getAppliedCompanies()
+	)
+
 	const postApply = useMutation(
 		(companyId: number) => companyService.apply(companyId),
 		{
-			onSuccess: () => {
+			onSuccess: (data, variables) => {
 				Swal.fire({
 					position: "bottom-end",
 					title: "",
 					text: "Votre demande a été prise en compte, vous allez être contacter par mail sous peu ! ",
 					icon: "success",
-				})
+				}).then(() =>
+					queryClient.setQueryData(
+						["appliedCompanies"],
+						(old: any) => [...old, variables]
+					)
+				)
 			},
 		}
 	)
+
 	return (
 		<section
 			className={`${
@@ -74,12 +90,21 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 							{company.siret}
 						</span>
 
-						<Button
-							className="mt-2 mb-1 w-48"
-							onClick={() => postApply.mutate(company.id)}
-						>
-							Demander un stage
-						</Button>
+						<HasRight roles={[Role.USER]}>
+							{apiAppliedCompanies.data?.includes(company.id) ? (
+								<span className="mt-2 mb-1 text-info  p-1">
+									<Info className="pb-1 mr-1" />
+									Votre demande est prise en compte !
+								</span>
+							) : (
+								<Button
+									className="mt-2 mb-1 w-48"
+									onClick={() => postApply.mutate(company.id)}
+								>
+									Demander un stage
+								</Button>
+							)}
+						</HasRight>
 					</header>
 					<div className="company-details-container-view-content">
 						<p className="mb-2">{company?.description}</p>
