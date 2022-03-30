@@ -1,0 +1,171 @@
+.header {
+	background: $color-white;
+	color: $color-black;
+	height: $header-height;
+	display: flex;
+	align-items: center;
+	border-bottom: 0.0625rem solid $color-gray;
+
+	.header--home {
+		width: 150px;
+		cursor: pointer;
+		border-radius: 10px;
+		padding: 7px;
+		margin-left: 14px;
+	}
+
+	.header__svg--menu {
+		cursor: pointer;
+		margin-left: 10px;
+		z-index: 997;
+		display: unset;
+
+		@include breakpoint {
+			display: none;
+		}
+	}
+
+	.header__svg--menu:hover {
+		fill: $color-secondary;
+		transition: 0.5s ease all;
+	}
+
+	a {
+		color: unset;
+		text-decoration: none;
+	}
+	.header-home {
+		z-index: 997;
+		margin-right: 15px;
+	}
+
+	.header__svg--login {
+		display: flex;
+		align-items: center;
+		margin-left: auto;
+		margin-right: 10px;
+		cursor: pointer;
+
+		svg {
+			margin-right: 5px;
+		}
+	}
+
+	.header__user {
+		height: 40px;
+		width: 40px;
+		min-width: 40px;
+		margin-right: 5px;
+		border-radius: 50%;
+		margin-left: auto;
+		border: 1px solid $color-black;
+		color: $color-black;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+
+		.popover {
+			border: 1px solid $color-gray;
+			position: absolute;
+			box-shadow: $box-shadow;
+			border-radius: 20px;
+			background: $color-white;
+			top: 70px;
+			right: 8px;
+			font-weight: 700;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			z-index: 4;
+
+			svg {
+				margin-right: 5px;
+				margin-bottom: 3px;
+			}
+
+			.popover--disconnect {
+				padding: 16px 14px;
+				color: $color-red;
+				border-radius: 0px 0px 20px 20px;
+				transition: 0.5s ease all;
+
+				&:hover {
+					background-color: #f1d6e4;
+				}
+			}
+			.popover--profile {
+				padding: 16px 14px;
+				border-radius: 20px 20px 0 0;
+				transition: all 0.5s ease;
+				color: $color-black;
+
+				&:hover {
+					background-color: $color-primary;
+					color: $color-white;
+				}
+			}
+
+			p {
+				width: 90%;
+				margin: 0 auto;
+				border-top: 1px solid $color-secondary;
+			}
+		}
+	}
+
+	.header__svg--login:hover {
+		fill: $color-secondary;
+		transition: 0.5s ease all;
+		color: $color-secondary;
+	}
+
+	.header-nav {
+		@include breakpoint {
+			display: flex;
+		}
+		display: none;
+		margin: 0;
+		min-width: 0;
+		border-bottom: 0.125rem solid transparent;
+		height: 100%;
+		align-items: baseline;
+		margin-right: 1.5rem;
+
+		.active {
+			border-bottom: 0.125rem solid $color-primary;
+		}
+
+		.header-link {
+			cursor: pointer;
+			padding-top: 0.8rem;
+			height: 3.8rem;
+			display: inline-flex;
+			align-items: center;
+			margin-right: 20px;
+			min-width: 2.75rem;
+			line-height: 1.3125rem;
+			font-size: 18px;
+			border-bottom: 0.125rem solid transparent;
+
+			&:hover {
+				border-color: $color-primary;
+			}
+			svg {
+				width: unset;
+				padding-right: 10px;
+				margin-bottom: 4px;
+			}
+
+			.header-link-menu {
+				z-index: 5;
+				border-radius: 5px;
+				border: 1px solid $color-gray;
+				svg {
+					font-size: 16px;
+					margin-top: 2px;
+				}
+			}
+		}
+	}
+}

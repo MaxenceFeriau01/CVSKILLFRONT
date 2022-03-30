@@ -1,0 +1,126 @@
+.registration {
+	background-color: $color-primary;
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	img {
+		width: 80%;
+		margin: 0 auto;
+	}
+
+	.registration-form {
+		@include breakpoint {
+			width: 700px;
+		}
+		max-height: 90%;
+		position: relative;
+		width: 90%;
+		background-color: $background-color;
+		flex-direction: column;
+		display: flex;
+		border-radius: 10px;
+		margin: auto;
+		padding: 10px;
+		border: 1px solid $color-secondary;
+
+		.MuiButton-root {
+			margin: 10px auto;
+			width: 80%;
+
+			@include breakpoint {
+				width: 100%;
+			}
+		}
+
+		.file-control {
+			z-index: 0;
+			margin-top: 10px;
+			width: 80%;
+			@include breakpoint {
+				width: 48%;
+			}
+		}
+
+		h4 {
+			color: $color-white;
+			width: 100%;
+			text-align: center;
+			left: 0;
+			top: -50px;
+			position: absolute;
+		}
+
+		img {
+			margin-bottom: 10px;
+		}
+
+		.MuiFormControl-root {
+			z-index: 0;
+			margin: 10px 0;
+			width: 80%;
+			@include breakpoint {
+				width: 48%;
+			}
+
+			.MuiFormControl-root {
+				z-index: 0;
+				width: 100% !important;
+				margin: unset;
+			}
+		}
+
+		.select-form-control {
+			z-index: 3;
+			margin: 10px auto;
+			width: 80%;
+			@include breakpoint {
+				width: 100%;
+			}
+		}
+
+		.select-form-control--half-first {
+			z-index: 2;
+			margin: 10px 0;
+			width: 80%;
+			@include breakpoint {
+				width: 48%;
+			}
+		}
+
+		.select-form-control--half-second {
+			z-index: 1;
+			margin: 10px 0;
+			width: 80%;
+			@include breakpoint {
+				width: 48%;
+			}
+		}
+
+		.registration-form-registration {
+			font-size: 14px;
+			a {
+				color: $color-primary;
+
+				&:hover {
+					color: $color-secondary;
+				}
+			}
+
+			text-align: center;
+		}
+	}
+	.registration-form--scroll {
+		display: flex;
+		overflow-y: auto;
+		justify-content: center;
+		flex-wrap: wrap;
+		padding: 0 5px;
+
+		@include breakpoint {
+			justify-content: space-between;
+		}
+	}
+}

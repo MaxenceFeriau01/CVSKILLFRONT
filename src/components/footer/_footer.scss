@@ -1,0 +1,17 @@
+.footer {
+	background: $color-primary;
+	color: $color-white;
+	height: $footer-height;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1;
+	font-size: 16px;
+
+	p {
+		text-align: center;
+	}
+	a {
+		color: $color-secondary;
+	}
+}

@@ -1,0 +1,52 @@
+.home {
+	background-color: $color-primary;
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+
+	a {
+		color: $color-secondary;
+		margin-top: auto;
+		text-align: center;
+	}
+
+	.home__logo {
+		margin: 3% auto;
+		border-radius: 10px;
+		width: 300px;
+		background-color: $color-white;
+	}
+
+	.home__action__container {
+		display: flex;
+		width: 100%;
+		height: 100%;
+		justify-content: center;
+
+		.action-call-container {
+			@include breakpoint {
+				width: 350px;
+				margin: 0 25px;
+			}
+			width: 45%;
+			margin: 0 5px;
+
+			height: 80%;
+			justify-content: space-around;
+			position: relative;
+			background-color: $color-white;
+			flex-direction: column;
+			display: flex;
+			border-radius: 10px;
+			padding: 15px;
+			overflow-y: auto;
+			text-align: center;
+
+			img {
+				width: 55%;
+				margin: 0 auto;
+			}
+		}
+	}
+}

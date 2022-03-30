@@ -1,0 +1,170 @@
+@import "./_base.module.scss";
+@import "./tailwind.scss";
+@import "../../components/sidebar/sidebar";
+@import "../../components/header/header";
+@import "../../components/inputs/inputs";
+@import "../../containers/app/app";
+@import "../../containers/companyPage/companyPage";
+@import "../../containers/admin/activityAdminPage/activityAdminPage";
+@import "../../containers/admin/companyAdminPage/companyAdminPage";
+@import "../../containers/admin/userAdminPage/userAdminPage";
+@import "../../containers/admin/jobAdminPage/jobAdminPage";
+@import "../../containers/companyDetailsPage/companyDetailsPage";
+@import "../../containers/loginPage/loginPage";
+@import "../../containers/profilePage/profilePage";
+@import "../../containers/registrationPage/registrationPage";
+@import "../../containers/homePage/homePage";
+@import "../../components/footer/footer";
+@import "../../containers/forbiddenPage/forbiddenPage";
+@import "../../containers/forgotPasswordPage/forgotPasswordPage";
+@import "../../containers/resetPasswordPage/resetPasswordPage";
+
+body {
+	margin: 0;
+	font-family: $font-family !important;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: $color-white scale;
+	height: 100vh;
+	overflow: hidden;
+
+	background: $background-color;
+	#root {
+		height: 100vh;
+	}
+
+	.modal {
+		@include breakpoint {
+			width: 70%;
+			height: 80%;
+		}
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 95%;
+		height: 95%;
+		background-color: $color-white;
+		border-radius: 10px;
+		padding: 15px;
+
+		.modal__close {
+			position: absolute;
+			right: 20px;
+			font-size: 27px;
+			text-transform: lowercase;
+			cursor: pointer;
+			z-index: 1;
+		}
+
+		&:focus {
+			outline: thin dotted;
+		}
+	}
+
+	.title {
+		text-align: center;
+		padding: 10px;
+		background-color: $color-primary;
+		color: $color-white;
+		font-size: 30px;
+		border-radius: 5px;
+	}
+
+	.page {
+		width: 100%;
+		overflow-y: auto;
+		height: 100%;
+	}
+
+	.content {
+		max-width: 1400px;
+		margin: 0 auto;
+	}
+
+	/* Change the white to any color */
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	input:-webkit-autofill:active {
+		-webkit-box-shadow: 0 0 0 30px $color-white inset !important;
+	}
+
+	::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+
+	/* Track */
+	::-webkit-scrollbar-track {
+		background: $color-primary;
+		border-radius: 3px;
+	}
+
+	/* Handle */
+	::-webkit-scrollbar-thumb {
+		background: $color-secondary;
+		border-radius: 3px;
+	}
+
+	/* Handle on hover */
+	::-webkit-scrollbar-thumb:hover {
+		background: $color-secondary-dark;
+	}
+
+	h4 {
+		display: block;
+		margin-top: 1.33em;
+		margin-bottom: 1.33em;
+		margin-left: 0;
+		margin-right: 0;
+		font-weight: bold;
+	}
+
+	.ReactCollapse--collapse {
+		transition: height 500ms;
+	}
+
+	//SWAL CSS
+	.swal2-confirm {
+		background-color: $color-primary !important;
+	}
+
+	.swal2-cancel {
+		background-color: $color-red !important;
+	}
+
+	.swal2-input {
+		&:focus {
+			border-color: $color-primary;
+		}
+	}
+
+	.swal2-warning {
+		border-color: $color-warning !important;
+		color: $color-warning !important;
+	}
+	//END SWAL CSS
+
+	//MUI CSS
+
+	.MuiDataGrid-root {
+		font-size: 16px;
+	}
+
+	.MuiInputBase-formControl {
+		background-color: $color-white;
+	}
+
+	.MuiButton-root {
+		border: 1px solid $color-primary-light;
+		&:disabled {
+			border-color: rgba(0, 0, 0, 0.26);
+		}
+	}
+
+	.MuiButton-textSecondary {
+		border: 1px solid $color-secondary !important;
+	}
+
+	//END MUI CSS
+}
