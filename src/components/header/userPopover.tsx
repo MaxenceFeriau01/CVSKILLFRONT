@@ -4,12 +4,12 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import LogoutIcon from "@mui/icons-material/Logout"
 import userService from "../../api/services/userService"
 
-import userContext from "../../contexts/user"
+import UserContext from "../../contexts/user"
 
 function UserPopover() {
 	const navigate = useNavigate()
 
-	const { setUser } = useContext(userContext)
+	const { setUser } = useContext(UserContext)
 
 	const logout = () => {
 		window.localStorage.removeItem("user")

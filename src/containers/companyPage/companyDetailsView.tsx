@@ -8,22 +8,28 @@ import CancelIcon from "@mui/icons-material/Cancel"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import Swal from "sweetalert2"
 import { Info } from "@mui/icons-material"
+import { useContext } from "react"
 import Company from "../../api/models/company"
 import companyService from "../../api/services/companyService"
 import { TYPE_COMPANY_OPTIONS } from "../companyDetailsPage/constants"
 import HasRight from "../../components/rights/hasRight"
 import Role from "../../enums/Role"
 import userService from "../../api/services/userService"
+import UserContext from "../../contexts/user"
 
 interface CompanyDetailsViewProps {
 	company: Company | null
 	onClose: any
 }
 function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
+	const { user } = useContext(UserContext)
+
 	const queryClient = useQueryClient()
 
-	const apiAppliedCompanies = useQuery("appliedCompanies", () =>
-		userService.getAppliedCompanies()
+	const apiAppliedCompanies = useQuery(
+		"appliedCompanies",
+		() => userService.getAppliedCompanies(),
+		{ enabled: user !== null }
 	)
 
 	const postApply = useMutation(

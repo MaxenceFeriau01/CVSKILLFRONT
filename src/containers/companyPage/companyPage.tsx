@@ -147,6 +147,7 @@ function CompanyPage() {
 					/>
 				</FormGroup>
 			</header>
+
 			<section className="content company-container">
 				<div
 					className={`company-list-content ${
@@ -155,14 +156,23 @@ function CompanyPage() {
 					onScroll={handleScroll}
 				>
 					{companies?.data?.pages?.map(page =>
-						page?.content?.map((c: Company) => (
-							<CompanyTile
-								selectedCompanyId={selectedCompany?.id}
-								key={c.id}
-								company={c}
-								onClick={(company: Company) => onClick(company)}
-							/>
-						))
+						page.totalElements > 0 ? (
+							page?.content?.map((c: Company) => (
+								<CompanyTile
+									selectedCompanyId={selectedCompany?.id}
+									key={c.id}
+									company={c}
+									onClick={(company: Company) =>
+										onClick(company)
+									}
+								/>
+							))
+						) : (
+							<p className="text-info text-md mt-10 tablet:text-lg">
+								Il n'y a aucunes entreprises correspondant à
+								votre recherche
+							</p>
+						)
 					)}
 				</div>
 				<CompanyDetailsView

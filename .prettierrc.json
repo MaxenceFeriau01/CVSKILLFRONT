@@ -4,5 +4,6 @@
 	"tabWidth": 4,
 	"semi": false,
 	"jsxSingleQuote": false,
-	"arrowParens": "avoid"
+	"arrowParens": "avoid",
+	"endOfLine": "auto"
 }

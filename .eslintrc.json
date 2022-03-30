@@ -12,7 +12,7 @@
 		"ecmaVersion": 12,
 		"sourceType": "module"
 	},
-	"plugins": ["react", "@typescript-eslint"],
+	"plugins": ["react", "@typescript-eslint", "prettier"],
 	"rules": {
 		"import/extensions": [
 			"error",
@@ -24,6 +24,7 @@
 				"tsx": "never"
 			}
 		],
+		"prettier/prettier": "error",
 		"react/no-unescaped-entities": "off",
 		"no-unused-vars": "off",
 		"react/jsx-indent": [0],
