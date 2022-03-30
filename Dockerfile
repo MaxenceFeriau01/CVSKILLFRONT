@@ -4,7 +4,8 @@ RUN apk add --update libintl && apk add --virtual build_deps gettext && cp /usr/
 
 COPY ./docker-entrypoint.sh /usr/local/bin/
 
-COPY build /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./build /usr/share/nginx/html
 
 
 WORKDIR /usr/local/bin/
