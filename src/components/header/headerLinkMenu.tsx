@@ -6,7 +6,7 @@ import Paper from "@mui/material/Paper"
 import Popper from "@mui/material/Popper"
 import MenuItem from "@mui/material/MenuItem"
 import MenuList from "@mui/material/MenuList"
-import { useNavigate } from "react-router-dom"
+import { NavLink, useLocation, useNavigate } from "react-router-dom"
 import { ISubMenuItem } from "../../utils/constants"
 
 interface HeaderLinkMenuProps {
@@ -23,6 +23,7 @@ function HeaderLinkMenu({
 	subMenu,
 }: HeaderLinkMenuProps) {
 	const navigate = useNavigate()
+	const location = useLocation()
 	const handleClose = (
 		event: Event | React.SyntheticEvent,
 		url: string | null = null
@@ -77,6 +78,7 @@ function HeaderLinkMenu({
 								{subMenu?.map(m => (
 									<MenuItem
 										key={m.text}
+										selected={m.url === location.pathname}
 										onClick={e => handleClose(e, m.url)}
 									>
 										<m.Icon />

@@ -76,7 +76,7 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 				Icon: GroupIcon,
 			},
 			{
-				text: "Activités",
+				text: "Domaines d'activité",
 				url: "/admin/activities",
 				Icon: DomainIcon,
 			},

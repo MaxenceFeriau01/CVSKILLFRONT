@@ -133,7 +133,7 @@
 		margin-right: 1.5rem;
 
 		.active {
-			border-bottom: 0.125rem solid $color-primary;
+			border-bottom: 0.125rem solid $color-primary !important;
 		}
 
 		.header-link {

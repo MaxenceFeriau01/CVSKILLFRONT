@@ -116,7 +116,7 @@ function ActivityAdminPage() {
 			onSuccess: () => {
 				activities.refetch()
 				Swal.fire({
-					title: "Cette activité a bien été créée.",
+					title: "Ce domaine d'activité a bien été créée.",
 					icon: "success",
 					position: "bottom-end",
 					showConfirmButton: false,
@@ -151,7 +151,7 @@ function ActivityAdminPage() {
 					}
 				)
 				Swal.fire({
-					title: "Cette activité a bien été sauvegardée.",
+					title: "Ce domaine d'activité a bien été sauvegardée.",
 					icon: "success",
 					position: "bottom-end",
 					showConfirmButton: false,
@@ -177,7 +177,7 @@ function ActivityAdminPage() {
 			onSuccess: () => {
 				activities.refetch()
 				Swal.fire({
-					title: "Cette activité a bien été supprimée.",
+					title: "Ce domaine d'activité a bien été supprimée.",
 					icon: "success",
 					position: "bottom-end",
 					showConfirmButton: false,
@@ -237,13 +237,23 @@ function ActivityAdminPage() {
 
 	const addActivity = () => {
 		Swal.fire({
-			title: "Ajouter une activité",
+			title: "Ajouter un domaine d'activité",
 			input: "text",
 			showCancelButton: true,
 			confirmButtonText: "Ajouter",
 			showLoaderOnConfirm: true,
 			preConfirm: (name: string) => {
-				postActivity.mutate(new Activity(0, name))
+				if (name !== "") {
+					postActivity.mutate(new Activity(0, name))
+				} else {
+					Swal.fire({
+						title: "Ce champ ne peut pas être vide",
+						icon: "error",
+						position: "bottom-end",
+						showConfirmButton: false,
+						timer: 1500,
+					})
+				}
 			},
 		})
 	}
@@ -266,7 +276,7 @@ function ActivityAdminPage() {
 						}}
 					/>
 					<Button type="button" onClick={addActivity}>
-						Ajouter une activité
+						Ajouter un domaine d'activité
 					</Button>
 				</header>
 

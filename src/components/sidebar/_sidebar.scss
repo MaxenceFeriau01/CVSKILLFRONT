@@ -66,7 +66,6 @@
 		display: flex;
 		flex-direction: column;
 		margin-bottom: 3px;
-		cursor: pointer;
 		overflow: hidden;
 
 		&:hover {
@@ -93,7 +92,8 @@
 
 			a {
 				height: 35px;
-
+				text-overflow: ellipsis;
+				width: 220px;
 				display: flex;
 				align-items: center;
 

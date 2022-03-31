@@ -20,12 +20,13 @@ function SidebarLink({ text, Icon, url, roles, onClick, subMenu }: INavLink) {
 					<h2>{text}</h2>
 				</NavLink>
 			) : (
-				<div onClick={handleToggle} className="link-collapse">
+				<div className="link-collapse">
 					<div className="flex">
 						<Icon fontSize="inherit" />
 						<span>{text}</span>
 						<ExpandMoreIcon
-							className={`link-collapse__expand mt-1 ${
+							onClick={handleToggle}
+							className={`cursor-pointer mt-1 ${
 								open ? "rotate-180" : ""
 							}`}
 						/>

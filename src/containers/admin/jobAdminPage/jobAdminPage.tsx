@@ -217,13 +217,23 @@ function JobAdminPage() {
 
 	const addJob = () => {
 		Swal.fire({
-			title: "Ajouter un job",
+			title: "Ajouter un métier",
 			input: "text",
 			showCancelButton: true,
 			confirmButtonText: "Ajouter",
 			showLoaderOnConfirm: true,
 			preConfirm: (name: string) => {
-				postJob.mutate(new Job(0, name))
+				if (name !== "") {
+					postJob.mutate(new Job(0, name))
+				} else {
+					Swal.fire({
+						title: "Ce champ ne peut pas être vide",
+						icon: "error",
+						position: "bottom-end",
+						showConfirmButton: false,
+						timer: 1500,
+					})
+				}
 			},
 		})
 	}
