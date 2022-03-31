@@ -9,11 +9,17 @@ module.exports = {
 		},
 		colors: {
 			primary: "#2daf8e",
+			primaryDark: "#23866d",
+			primaryLight: "#41ceaa",
 			secondary: "#d3d61f",
+			secondaryDark: "#a7a919",
+			secondaryLight: "#e1e444",
 			gray: "#e4e2e0",
 			warning: "#ff9966",
 			white: "white",
-			info :"#5186f3"
+			black: "#2d2d2d",
+			info: "#5186f3",
+			red: "#b70000",
 		},
 		listStyleType: {
 			none: "none",
