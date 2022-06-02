@@ -25,7 +25,6 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 	const { user } = useContext(UserContext)
 
 	const queryClient = useQueryClient()
-
 	const apiAppliedCompanies = useQuery(
 		"appliedCompanies",
 		() => userService.getAppliedCompanies(),

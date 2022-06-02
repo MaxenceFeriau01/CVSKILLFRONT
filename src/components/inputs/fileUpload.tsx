@@ -61,8 +61,8 @@ function PreviewModal({ file }: any) {
 		setOpen(false)
 	}
 
-	function onDocumentLoadSuccess({ numPage }: any) {
-		setNumPages(numPage)
+	function onDocumentLoadSuccess(data: any) {
+		setNumPages(data.numPages)
 	}
 
 	useEffect(() => {
