@@ -1,28 +1,26 @@
-.company-page-header {
-	height: 70px;
-	display: flex;
-	justify-content: center;
-
-	align-items: center;
-
-	justify-content: space-between;
-	width: 100%;
-
-	.MuiInputAdornment-root {
-		display: none;
-		@include breakpoint {
-			display: inherit;
-		}
-	}
-
-	.MuiButton-root {
-		max-height: 56px;
-	}
-}
-
 .company-content {
 	padding: 10px;
 	height: calc(100% - 108px);
+
+	.company-page-header {
+		height: 70px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+	
+		.MuiInputAdornment-root {
+			display: none;
+			@include breakpoint {
+				display: inherit;
+			}
+		}
+	
+		.MuiButton-root {
+			max-height: 56px;
+		}
+	}
 
 	i {
 		color: $color-info;
@@ -30,5 +28,14 @@
 
 	.uncheck {
 		fill: $color-white;
+	}
+
+	.actions {
+		max-width: fit-content !important;
+	}
+
+	[data-field="actions"] {
+		max-width: fit-content !important;
+		width: unset !important;
 	}
 }

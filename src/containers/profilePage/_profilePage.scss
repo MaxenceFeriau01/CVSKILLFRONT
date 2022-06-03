@@ -20,7 +20,7 @@
 	}
 
 	.profile-form {
-		width: 80%;
+		width : 100%;
 		display: flex;
 		justify-content: center;
 		flex-wrap: wrap;
@@ -28,6 +28,7 @@
 
 		@include breakpoint {
 			justify-content: space-between;
+			width: 80%;
 		}
 		.MuiButton-root {
 			margin: 10px auto;

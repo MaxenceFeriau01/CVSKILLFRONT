@@ -49,7 +49,7 @@ function UserAdminPage() {
 			field: "firstName",
 			headerName: "Prénom",
 			type: "string",
-			flex: 0.2,
+			flex: 0.1,
 		},
 
 		{
@@ -62,7 +62,7 @@ function UserAdminPage() {
 			field: "internStatus",
 			headerName: "Status",
 			type: "string",
-			flex: 0.2,
+			flex: 0.1,
 		},
 		{
 			field: "civility",

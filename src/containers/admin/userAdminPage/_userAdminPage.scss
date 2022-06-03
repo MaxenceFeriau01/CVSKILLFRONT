@@ -31,4 +31,13 @@
 	.uncheck {
 		fill: $color-white;
 	}
+
+	.actions {
+		max-width: fit-content !important;
+	}
+
+	[data-field="actions"] {
+		max-width: fit-content !important;
+		width: unset !important;
+	}
 }

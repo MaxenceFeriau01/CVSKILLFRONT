@@ -38,7 +38,11 @@
 
 	.company-details-form {
 		margin: 15px auto;
-		width: 75%;
+		width: 100%;
+
+		@include breakpoint {
+			width: 80%;
+		}
 
 		height: calc(100% - 105px);
 
