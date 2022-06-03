@@ -1,19 +1,19 @@
-$company-page-header-height: 75px;
+$company-page-header-height-desktop: 75px;
+$company-page-header-height-mobile: 137px;
 
 .company-page {
 	overflow-y: unset !important;
 
 	.company-page-header {
 		@include breakpoint {
-			overflow-y: unset;
+			height: $company-page-header-height-desktop;
 		}
 
-		height: $company-page-header-height;
+		height: $company-page-header-height-mobile;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		flex-wrap: wrap;
-		overflow-y: auto;
 		margin: 0 auto;
 
 		.company-select--activities {
@@ -42,7 +42,11 @@ $company-page-header-height: 75px;
 	}
 
 	.company-container {
-		max-height: calc(100% - ($company-page-header-height));
+		@include breakpoint {
+			max-height: calc(100% - ($company-page-header-height-desktop));
+		}
+
+		max-height: calc(100% - ($company-page-header-height-mobile));
 		display: flex;
 		position: relative;
 
@@ -93,6 +97,8 @@ $company-page-header-height: 75px;
 					position: absolute;
 					right: 5px;
 					top: 5px;
+					border-radius: 50%;
+					background-color: inherit;
 
 					svg,
 					img {
