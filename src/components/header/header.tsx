@@ -14,21 +14,25 @@ import UserPopover from "./userPopover"
 
 function Header() {
 	const [showSidebar, setShowSidebar] = useState<boolean>(false)
-	const [showUserPopover, setShowUserPopover] = useState(false)
+	const [showUserPopover, setShowUserPopover] = useState<boolean>(false)
 	const { user } = useContext(UserContext)
 	const refPopover: any = useRef()
+	const refSidebar: any = useRef()
 
 	useOutsideClick(refPopover, () => setShowUserPopover(false))
+	useOutsideClick(refSidebar, () => setShowSidebar(false))
 
 	function toggleSideBar() {
 		setShowSidebar(!showSidebar)
 	}
 
+	console.log(showSidebar)
 	return (
 		<>
 			<Sidebar
 				showSidebar={showSidebar}
 				setShowSidebar={() => setShowSidebar(false)}
+				refSidebar={refSidebar}
 			/>
 			<div className="header">
 				<HasRight roles={[Role.ADMIN, Role.USER]}>

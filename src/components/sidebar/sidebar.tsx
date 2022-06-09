@@ -4,14 +4,16 @@ import SidebarLink from "./sidebarLink"
 interface SidebarProps {
 	showSidebar: boolean
 	setShowSidebar: any
+	refSidebar: any
 }
 
-function Sidebar({ showSidebar, setShowSidebar }: SidebarProps) {
+function Sidebar({ showSidebar, setShowSidebar, refSidebar }: SidebarProps) {
 	return (
 		<div
 			className={`sidebar ${
 				showSidebar ? "sidebar--active" : "sidebar--closed"
 			}`}
+			ref={refSidebar}
 		>
 			<div className="sidebar-header" />
 			{NAV_LINK_ARRAY.map((nav: INavLink) => (
