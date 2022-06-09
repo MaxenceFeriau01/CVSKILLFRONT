@@ -26,7 +26,6 @@ function Header() {
 		setShowSidebar(!showSidebar)
 	}
 
-	console.log(showSidebar)
 	return (
 		<>
 			<Sidebar
