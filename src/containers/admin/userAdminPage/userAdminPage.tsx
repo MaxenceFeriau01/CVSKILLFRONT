@@ -34,8 +34,9 @@ function UserAdminPage() {
 	const columns: GridColumns = [
 		{
 			field: "activated",
-			headerName: "Activé *",
+			headerName: "Activé ",
 			type: "boolean",
+			headerClassName: "info-cell",
 			flex: 0.1,
 		},
 		{

@@ -40,4 +40,11 @@
 		max-width: fit-content !important;
 		width: unset !important;
 	}
+
+	.info-cell {
+		.MuiDataGrid-columnHeaderTitle:after {
+			content: "*";
+			color: $color-info;
+		}
+	}
 }

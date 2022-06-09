@@ -34,30 +34,28 @@ function ActivityAdminPage() {
 		},
 		{
 			field: "name",
-			headerName: "Nom *",
+			headerName: "Nom ",
 			type: "string",
 			editable: true,
+			headerClassName: "info-cell",
 			flex: 0.2,
 		},
 		{
 			field: "companyCount",
 			headerName: "Entreprise(s) liée(s)",
 			type: "number",
-			editable: true,
 			flex: 0.2,
 		},
 		{
 			field: "companySearchCount",
 			headerName: "Entreprise(s) qui recherche(nt)",
 			type: "number",
-			editable: true,
 			flex: 0.2,
 		},
 		{
 			field: "userCount",
 			headerName: "Utilisateur(s) qui recherche(nt)",
 			type: "number",
-			editable: true,
 			flex: 0.2,
 		},
 		{

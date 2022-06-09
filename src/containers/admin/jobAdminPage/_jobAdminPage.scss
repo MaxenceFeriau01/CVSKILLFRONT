@@ -27,4 +27,11 @@
 	i {
 		color: $color-info;
 	}
+
+	.info-cell {
+		.MuiDataGrid-columnHeaderTitle:after {
+			content: "*";
+			color: $color-info;
+		}
+	}
 }

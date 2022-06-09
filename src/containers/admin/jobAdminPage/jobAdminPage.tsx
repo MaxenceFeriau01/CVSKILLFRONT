@@ -30,27 +30,29 @@ function JobAdminPage() {
 			field: "id",
 			headerName: "Numéro",
 			type: "string",
+			editable: false,
 			flex: 0.1,
 		},
 		{
 			field: "name",
-			headerName: "Nom *",
+			headerName: "Nom ",
 			type: "string",
 			editable: true,
 			flex: 0.2,
+			headerClassName: "info-cell",
 		},
 		{
 			field: "companyCount",
 			headerName: "Entreprise(s) qui recherche(nt)",
 			type: "number",
-			editable: true,
+			editable: false,
 			flex: 0.2,
 		},
 		{
 			field: "userCount",
 			headerName: "Utilisateur(s) qui recherche(nt)",
 			type: "number",
-			editable: true,
+			editable: false,
 			flex: 0.2,
 		},
 		{
@@ -274,7 +276,7 @@ function JobAdminPage() {
 					onPageChange={onPageChange}
 					onCellEditCommit={handleCellEditCommit}
 				/>
-				<i>* Double-clic sur le nom d'un métier pour la modifier</i>
+				<i>* Double-clic sur le nom d'un métier pour le modifier</i>
 			</div>
 		</section>
 	)
