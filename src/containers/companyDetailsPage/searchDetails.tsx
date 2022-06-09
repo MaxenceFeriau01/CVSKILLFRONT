@@ -1,11 +1,11 @@
 import {
 	Alert,
-	FormControlLabel,
 	Checkbox,
+	FormControlLabel,
+	InputLabel,
 	Radio,
 	RadioGroup,
 } from "@mui/material"
-
 import { Controller } from "react-hook-form"
 import { useQuery } from "react-query"
 import Job from "../../api/models/job"
@@ -22,7 +22,7 @@ import {
 	STATUS_JOB_SEEKER,
 	STATUS_STUDENT,
 } from "../../utils/constants"
-import { INTERN_NUMBER_OPTIONS, INPUT_FORM_THREE } from "./constants"
+import { INPUT_FORM_THREE, INTERN_NUMBER_OPTIONS } from "./constants"
 
 interface SearchDetailsProps {
 	form: any
@@ -140,6 +140,9 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 					Sur quels domaines d’activités et quels métiers pouvez-vous
 					accueillir des stagiaires ? *
 				</h4>
+				<InputLabel>
+					Le(s) secteur(s) d'activité recherché(s)
+				</InputLabel>
 				<Controller
 					name={INPUT_FORM_THREE[1]}
 					rules={{
@@ -170,6 +173,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 				)}
 			</div>
 			<div className="select" style={{ zIndex: 2 }}>
+				<InputLabel>Le(s) métier(s) recherché(s)</InputLabel>
 				<Controller
 					name={INPUT_FORM_THREE[2]}
 					rules={{
@@ -316,6 +320,7 @@ function InternStatusChoice({
 				value?.length > 0 &&
 				isStatusChecked(STATUS_STUDENT) && (
 					<div className="select under-select">
+						<InputLabel>La durée du stage</InputLabel>
 						<CustomSelect
 							required
 							className="w-full"
@@ -338,6 +343,7 @@ function InternStatusChoice({
 				value?.length > 0 &&
 				isStatusChecked(STATUS_JOB_SEEKER) && (
 					<div className="select under-select">
+						<InputLabel>La durée du stage</InputLabel>
 						<CustomSelect
 							required
 							className="w-full"

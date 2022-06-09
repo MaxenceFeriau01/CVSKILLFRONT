@@ -1,22 +1,26 @@
-import { useContext, useRef, useState } from "react"
-import MenuIcon from "@mui/icons-material/Menu"
-import { Link } from "react-router-dom"
 import LoginIcon from "@mui/icons-material/Login"
+import MenuIcon from "@mui/icons-material/Menu"
+import { useContext, useRef, useState } from "react"
+import { Link } from "react-router-dom"
 import UserContext from "../../contexts/user"
-import UserPopover from "./userPopover"
+import Role from "../../enums/Role"
 import useOutsideClick from "../../hooks/outsideClick"
 import dkStageLogo from "../../resources/images/dk-stage-logo.png"
-import HeaderLink from "./headerLink"
-import Sidebar from "../sidebar/sidebar"
 import { INavLink, NAV_LINK_ARRAY } from "../../utils/constants"
+import HasRight from "../rights/hasRight"
+import Sidebar from "../sidebar/sidebar"
+import HeaderLink from "./headerLink"
+import UserPopover from "./userPopover"
 
 function Header() {
 	const [showSidebar, setShowSidebar] = useState<boolean>(false)
-	const [showUserPopover, setShowUserPopover] = useState(false)
+	const [showUserPopover, setShowUserPopover] = useState<boolean>(false)
 	const { user } = useContext(UserContext)
 	const refPopover: any = useRef()
+	const refSidebar: any = useRef()
 
 	useOutsideClick(refPopover, () => setShowUserPopover(false))
+	useOutsideClick(refSidebar, () => setShowSidebar(false))
 
 	function toggleSideBar() {
 		setShowSidebar(!showSidebar)
@@ -27,12 +31,15 @@ function Header() {
 			<Sidebar
 				showSidebar={showSidebar}
 				setShowSidebar={() => setShowSidebar(false)}
+				refSidebar={refSidebar}
 			/>
 			<div className="header">
-				<MenuIcon
-					onClick={() => toggleSideBar()}
-					className="header__svg--menu"
-				/>
+				<HasRight roles={[Role.ADMIN, Role.USER]}>
+					<MenuIcon
+						onClick={() => toggleSideBar()}
+						className="header__svg--menu"
+					/>
+				</HasRight>
 				<Link className="header-home" to="/companies">
 					<img
 						className="header--home"

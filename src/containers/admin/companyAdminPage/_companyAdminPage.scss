@@ -9,14 +9,14 @@
 		align-items: center;
 		justify-content: space-between;
 		width: 100%;
-	
+
 		.MuiInputAdornment-root {
 			display: none;
 			@include breakpoint {
 				display: inherit;
 			}
 		}
-	
+
 		.MuiButton-root {
 			max-height: 56px;
 		}
@@ -37,5 +37,12 @@
 	[data-field="actions"] {
 		max-width: fit-content !important;
 		width: unset !important;
+	}
+
+	.info-cell {
+		.MuiDataGrid-columnHeaderTitle:after {
+			content: "*";
+			color: $color-info;
+		}
 	}
 }
