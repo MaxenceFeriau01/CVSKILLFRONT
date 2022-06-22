@@ -20,6 +20,7 @@ module.exports = {
 			black: "#2d2d2d",
 			info: "#5186f3",
 			red: "#b70000",
+			background:"#f7fafb"
 		},
 		listStyleType: {
 			none: "none",

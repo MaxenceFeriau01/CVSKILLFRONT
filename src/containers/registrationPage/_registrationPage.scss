@@ -15,10 +15,10 @@
 		@include breakpoint {
 			width: 700px;
 		}
-		max-height: 90%;
+		max-height: 85%;
 		position: relative;
 		width: 90%;
-		background-color: $background-color;
+		background-color: $color-white;
 		flex-direction: column;
 		display: flex;
 		border-radius: 10px;
