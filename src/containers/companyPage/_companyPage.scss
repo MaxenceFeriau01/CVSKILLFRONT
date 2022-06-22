@@ -95,7 +95,7 @@ $company-page-header-height-mobile: 137px;
 
 				.company-tile__clock {
 					position: absolute;
-					
+
 					right: 5px;
 					top: 5px;
 					border-radius: 50%;
@@ -160,7 +160,7 @@ $company-page-header-height-mobile: 137px;
 		.company-details-container {
 			transition: width 0.4s linear;
 
-			background-color: $background-color;
+			background-color: $color-white;
 			width: 100%;
 			position: absolute;
 			margin: unset;

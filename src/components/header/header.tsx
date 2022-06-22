@@ -36,6 +36,7 @@ function Header() {
 			<div className="header">
 				<HasRight roles={[Role.ADMIN, Role.USER]}>
 					<MenuIcon
+						ref={refSidebar}
 						onClick={() => toggleSideBar()}
 						className="header__svg--menu"
 					/>
