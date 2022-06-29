@@ -99,12 +99,17 @@ function CompanyPage() {
 					"Vous devez vous <b>connecter</b>, " +
 					"pour profiter de l'ensemble des fonctionnalités.",
 				showCloseButton: true,
+				showDenyButton: true,
 				focusConfirm: false,
-				confirmButtonText: "Se connecter !",
+				confirmButtonText: "Connexion",
+				denyButtonText: "Inscription",
+				denyButtonColor: "#2daf8e",
 			}).then(result => {
 				/* Read more about isConfirmed, isDenied below */
 				if (result.isConfirmed) {
 					navigate("/login")
+				} else if (result.isDenied) {
+					navigate("/registration")
 				}
 			})
 		}
