@@ -99,12 +99,17 @@ function CompanyPage() {
 					"Vous devez vous <b>connecter</b>, " +
 					"pour profiter de l'ensemble des fonctionnalités.",
 				showCloseButton: true,
+				showDenyButton: true,
 				focusConfirm: false,
-				confirmButtonText: "Se connecter !",
+				confirmButtonText: "Connexion",
+				denyButtonText: "Inscription",
+				denyButtonColor: "#2daf8e",
 			}).then(result => {
 				/* Read more about isConfirmed, isDenied below */
 				if (result.isConfirmed) {
 					navigate("/login")
+				} else if (result.isDenied) {
+					navigate("/registration")
 				}
 			})
 		}
@@ -112,41 +117,47 @@ function CompanyPage() {
 
 	return (
 		<section className="page company-page">
-			<header className="company-page-header">
-				<CustomSelect
-					className="company-select--activities"
-					placeholder="Par domaine(s)"
-					options={activities.data}
-					isMulti
-					onChange={(e: any) => selectHandleActivityChange(e)}
-					isClearable
-					isSearchable
-					name="selectActivity"
-				/>
-				<CustomSelect
-					className="company-select--status"
-					placeholder="Par status recherché"
-					options={statuses.data}
-					onChange={(e: any) => selectHandleTraineesChange(e)}
-					isClearable
-					isSearchable
-					name="selectTrainees"
-				/>
-				<FormGroup>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={isPaid}
-								onChange={selectIsPaidAndLongTermInternship}
-								sx={{ "& .MuiSvgIcon-root": { fontSize: 28 } }}
-								inputProps={{ "aria-label": "controlled" }}
-							/>
-						}
-						label="Uniquement les stages de longue durée"
-						name="selectIsPaidAndLongTermInternship"
+			{user && user.token ? (
+				<header className="company-page-header">
+					<CustomSelect
+						className="company-select--activities"
+						placeholder="Par domaine(s)"
+						options={activities.data}
+						isMulti
+						onChange={(e: any) => selectHandleActivityChange(e)}
+						isClearable
+						isSearchable
+						name="selectActivity"
 					/>
-				</FormGroup>
-			</header>
+					<CustomSelect
+						className="company-select--status"
+						placeholder="Par status recherché"
+						options={statuses.data}
+						onChange={(e: any) => selectHandleTraineesChange(e)}
+						isClearable
+						isSearchable
+						name="selectTrainees"
+					/>
+					<FormGroup>
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={isPaid}
+									onChange={selectIsPaidAndLongTermInternship}
+									sx={{
+										"& .MuiSvgIcon-root": { fontSize: 28 },
+									}}
+									inputProps={{ "aria-label": "controlled" }}
+								/>
+							}
+							label="Uniquement les stages de longue durée"
+							name="selectIsPaidAndLongTermInternship"
+						/>
+					</FormGroup>
+				</header>
+			) : (
+				""
+			)}
 
 			<section className="content company-container">
 				<div
