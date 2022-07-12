@@ -128,14 +128,6 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 								))}
 							</span>
 						)}
-						<span className="pl-1 flex items-center">
-							<EuroIcon className="pr-2" />
-							Rémunéré
-						</span>
-						<span className="pl-1 items-center">
-							<AccessTimeIcon className="pr-2" />
-							Longue durée
-						</span>
 						<b className="text-lg mt-4">Recherche :</b>
 						<ul className="pl-2">
 							<li>
