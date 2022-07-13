@@ -68,7 +68,6 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 						<span className="text-xl mb-1 text-primary font-bold">
 							{company.name}
 						</span>
-
 						<span>{company.address}</span>
 						<span>
 							{company.postalCode}, {company.town}
@@ -94,7 +93,18 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 							<b>Siret : </b>
 							{company.siret}
 						</span>
-
+						{company.websiteUrl && (
+							<span>
+								<b>Site web : </b>
+								<a
+									href={company.websiteUrl}
+									target="_blank"
+									rel="noreferrer"
+								>
+									{company.websiteUrl}
+								</a>
+							</span>
+						)}
 						<HasRight roles={[Role.USER]}>
 							{apiAppliedCompanies.data?.includes(company.id) ? (
 								<span className="mt-2 mb-1 text-info  p-1">
@@ -193,6 +203,12 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 							<ContactPhoneIcon className="pr-2" />
 							{company.contactNum}
 						</span>
+						{company.fixContactNum && (
+							<span className="pl-1  flex items-center">
+								<ContactPhoneIcon className="pr-2" />
+								{company.fixContactNum}
+							</span>
+						)}
 					</div>
 				</div>
 			)}

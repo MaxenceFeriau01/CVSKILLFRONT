@@ -10,14 +10,6 @@
 		width: 100%;
 	}
 
-	a {
-		color: $color-primary;
-
-		&:hover {
-			color: $color-primary-light;
-		}
-	}
-
 	.login-forgot-password {
 		font-size: 14px;
 		text-align: right;
