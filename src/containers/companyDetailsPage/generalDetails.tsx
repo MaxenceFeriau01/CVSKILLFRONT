@@ -35,6 +35,7 @@ function GeneralDetails({
 	} = form
 	return (
 		<>
+			<h3>Qui êtes-vous?</h3>
 			<div className="select" style={{ zIndex: 4 }}>
 				<InputLabel>Êtes vous? *</InputLabel>
 				<Controller

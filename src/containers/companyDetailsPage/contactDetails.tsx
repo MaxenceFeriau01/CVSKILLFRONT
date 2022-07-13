@@ -1,6 +1,5 @@
 import { FormGroup, TextField } from "@mui/material"
 import { Controller } from "react-hook-form"
-import contact from "../../resources/images/contact.svg"
 import {
 	INPUT_FORM_ONE,
 	INPUT_FORM_TWO,
@@ -16,11 +15,7 @@ function ContactDetails({ form }: any) {
 
 	return (
 		<>
-			<img
-				className="company-details-form__img"
-				src={contact}
-				alt="Contact"
-			/>
+			<h3>Où vous contacter?</h3>
 			<FormGroup row>
 				<Controller
 					name={INPUT_FORM_TWO[0]}
