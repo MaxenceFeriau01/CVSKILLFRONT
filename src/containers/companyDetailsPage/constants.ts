@@ -17,6 +17,7 @@ export const INPUT_FORM_TWO: Array<string> = [
 	"region",
 	"department",
 	"epci",
+	"fixContactNum",
 ]
 export const INPUT_FORM_THREE: Array<string> = [
 	"searchedInternsType",

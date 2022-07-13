@@ -58,21 +58,36 @@ function ContactDetails({ form }: any) {
 					)}
 				/>
 			</FormGroup>
+			<Controller
+				name="contactMail"
+				control={control}
+				defaultValue=""
+				render={({ field: { onChange, value } }) => (
+					<TextField
+						className="w-full"
+						value={value}
+						onChange={onChange}
+						label="Email"
+						variant="outlined"
+						type="email"
+						autoComplete="email"
+					/>
+				)}
+			/>
 			<FormGroup row>
 				<Controller
 					name={INPUT_FORM_TWO[2]}
 					control={control}
 					defaultValue=""
 					rules={{
-						required:
-							"Le numéro de téléphone de contact est requis",
+						required: "Le numéro de téléphone mobile est requis",
 					}}
 					render={({ field: { onChange, value } }) => (
 						<TextField
 							required
 							value={value}
 							onChange={onChange}
-							label="Telephone"
+							label="Telephone mobile"
 							variant="outlined"
 							type="tel"
 							autoComplete="tel"
@@ -82,17 +97,23 @@ function ContactDetails({ form }: any) {
 					)}
 				/>
 				<Controller
-					name="contactMail"
+					name={INPUT_FORM_TWO[9]}
 					control={control}
 					defaultValue=""
+					rules={{
+						required: "Le numéro de téléphone fixe est requis",
+					}}
 					render={({ field: { onChange, value } }) => (
 						<TextField
+							required
 							value={value}
 							onChange={onChange}
-							label="Email"
+							label="Telephone fixe"
 							variant="outlined"
-							type="email"
-							autoComplete="email"
+							type="tel"
+							autoComplete="tel"
+							helperText={errors[INPUT_FORM_TWO[9]]?.message}
+							error={!!errors[INPUT_FORM_TWO[9]]}
 						/>
 					)}
 				/>

@@ -131,7 +131,6 @@ function GeneralDetails({
 					)}
 				/>
 			</FormGroup>
-
 			<div className="select">
 				<InputLabel>Domaine d'activités</InputLabel>
 				<Controller
@@ -156,6 +155,35 @@ function GeneralDetails({
 					)}
 				/>
 			</div>
+
+			<Controller
+				name="websiteUrl"
+				rules={{
+					pattern: {
+						// eslint-disable-next-line prefer-regex-literals
+						value: new RegExp(
+							"^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]",
+							"i"
+						),
+						message:
+							"L'url saisie n'est pas valide. Ex: https://www.dkstage.eedk.fr",
+					},
+				}}
+				control={control}
+				defaultValue=""
+				render={({ field: { onChange, value } }) => (
+					<TextField
+						className="tablet:w-full"
+						placeholder="https://www.dkstage.eedk.fr"
+						label="Site web"
+						variant="outlined"
+						value={value}
+						onChange={onChange}
+						helperText={errors.websiteUrl?.message}
+						error={!!errors.websiteUrl}
+					/>
+				)}
+			/>
 			<Controller
 				name="description"
 				rules={{
