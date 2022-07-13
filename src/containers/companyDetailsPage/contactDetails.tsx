@@ -1,6 +1,5 @@
 import { FormGroup, TextField } from "@mui/material"
 import { Controller } from "react-hook-form"
-import contact from "../../resources/images/contact.svg"
 import {
 	INPUT_FORM_ONE,
 	INPUT_FORM_TWO,
@@ -16,11 +15,7 @@ function ContactDetails({ form }: any) {
 
 	return (
 		<>
-			<img
-				className="company-details-form__img"
-				src={contact}
-				alt="Contact"
-			/>
+			<h3>Où vous contacter?</h3>
 			<FormGroup row>
 				<Controller
 					name={INPUT_FORM_TWO[0]}
@@ -63,21 +58,36 @@ function ContactDetails({ form }: any) {
 					)}
 				/>
 			</FormGroup>
+			<Controller
+				name="contactMail"
+				control={control}
+				defaultValue=""
+				render={({ field: { onChange, value } }) => (
+					<TextField
+						className="tablet:w-full"
+						value={value}
+						onChange={onChange}
+						label="Email"
+						variant="outlined"
+						type="email"
+						autoComplete="email"
+					/>
+				)}
+			/>
 			<FormGroup row>
 				<Controller
 					name={INPUT_FORM_TWO[2]}
 					control={control}
 					defaultValue=""
 					rules={{
-						required:
-							"Le numéro de téléphone de contact est requis",
+						required: "Le numéro de téléphone mobile est requis",
 					}}
 					render={({ field: { onChange, value } }) => (
 						<TextField
 							required
 							value={value}
 							onChange={onChange}
-							label="Telephone"
+							label="Telephone mobile"
 							variant="outlined"
 							type="tel"
 							autoComplete="tel"
@@ -87,17 +97,23 @@ function ContactDetails({ form }: any) {
 					)}
 				/>
 				<Controller
-					name="contactMail"
+					name={INPUT_FORM_TWO[9]}
 					control={control}
 					defaultValue=""
+					rules={{
+						required: "Le numéro de téléphone fixe est requis",
+					}}
 					render={({ field: { onChange, value } }) => (
 						<TextField
+							required
 							value={value}
 							onChange={onChange}
-							label="Email"
+							label="Telephone fixe"
 							variant="outlined"
-							type="email"
-							autoComplete="email"
+							type="tel"
+							autoComplete="tel"
+							helperText={errors[INPUT_FORM_TWO[9]]?.message}
+							error={!!errors[INPUT_FORM_TWO[9]]}
 						/>
 					)}
 				/>

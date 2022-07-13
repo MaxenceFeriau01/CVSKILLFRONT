@@ -1,4 +1,4 @@
-import { Box, Button, Step, StepLabel, Stepper } from "@mui/material"
+import { Box, Button } from "@mui/material"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
@@ -7,23 +7,16 @@ import { useNavigate, useParams } from "react-router-dom"
 import Swal from "sweetalert2"
 
 import WarningIcon from "@mui/icons-material/Warning"
-import companyService from "../../api/services/companyService"
 import Activity from "../../api/models/activity"
+import companyService from "../../api/services/companyService"
 
-import {
-	MAX_STEP_NUMBER,
-	STEPS,
-	INPUT_FORM_ONE,
-	INPUT_FORM_THREE,
-	INPUT_FORM_TWO,
-} from "./constants"
-import GeneralDetails from "./generalDetails"
-import ContactDetails from "./contactDetails"
-import SearchDetails from "./searchDetails"
-import ReactSelectOption from "../../api/models/reactSelectOption"
-import activityService from "../../api/services/activityService"
 import InternStatus from "../../api/models/internStatus"
 import InternType from "../../api/models/internType"
+import ReactSelectOption from "../../api/models/reactSelectOption"
+import activityService from "../../api/services/activityService"
+import ContactDetails from "./contactDetails"
+import GeneralDetails from "./generalDetails"
+import SearchDetails from "./searchDetails"
 
 interface PutCompany {
 	companyToUpdate: FormData
@@ -41,16 +34,6 @@ function CompanyDetailsPage() {
 		src: "",
 		alt: "logo",
 	})
-	const [activeStep, setActiveStep] = useState(0)
-
-	const handleNext = () => {
-		const newActiveStep = activeStep + 1
-		setActiveStep(newActiveStep)
-	}
-
-	const handleBack = () => {
-		setActiveStep(prevActiveStep => prevActiveStep - 1)
-	}
 
 	const form = useForm({ mode: "onChange" })
 
@@ -82,13 +65,12 @@ function CompanyDetailsPage() {
 						case "searchedInternsType":
 							form.setValue(
 								key,
-								res[key].map((r: any) => {
+								res[key].map((r: InternType) => {
 									const internTypeOption = {
 										value: r.internStatus.id,
 										label: r.internStatus.name,
-										period: r.period,
+										periods: r.periods,
 									}
-
 									return internTypeOption
 								}),
 								{
@@ -115,7 +97,6 @@ function CompanyDetailsPage() {
 			}),
 		{ enabled: id !== undefined }
 	)
-
 	const postCompany = useMutation(
 		(newCompany: any) => companyService.post(newCompany),
 		{
@@ -163,7 +144,7 @@ function CompanyDetailsPage() {
 
 		newCompany.searchedInternsType = data.searchedInternsType.map(
 			(t: any) =>
-				new InternType(t.period, new InternStatus(t.value, t.label))
+				new InternType(t.periods, new InternStatus(t.value, t.label))
 		)
 
 		newCompany.logo = null
@@ -178,35 +159,8 @@ function CompanyDetailsPage() {
 		}
 	}
 
-	function currentValidationForm(formStep: number): Array<string> {
-		switch (formStep) {
-			case 0:
-				return INPUT_FORM_ONE
-
-			case 1:
-				return INPUT_FORM_TWO
-
-			case 2:
-				return INPUT_FORM_THREE
-
-			default:
-				return []
-		}
-	}
 	return (
 		<section className="page company-details-page">
-			<Stepper
-				className="stepper"
-				activeStep={activeStep}
-				alternativeLabel
-				nonLinear
-			>
-				{STEPS.map((step, index) => (
-					<Step key={step} completed={activeStep > index}>
-						<StepLabel>{step}</StepLabel>
-					</Step>
-				))}
-			</Stepper>
 			{apiCompany?.data?.activated === false && (
 				<b className="company__deactivated">
 					<WarningIcon color="warning" />
@@ -218,21 +172,17 @@ function CompanyDetailsPage() {
 				className="content company-details-form"
 			>
 				<div className="company-details-form-stepper">
-					{activeStep === 0 && (
-						<GeneralDetails
-							form={form}
-							activities={activities && activities}
-							img={{ alt, src, file }}
-							setImg={setImg}
-						/>
-					)}
-					{activeStep === 1 && <ContactDetails form={form} />}
-					{activeStep === 2 && (
-						<SearchDetails
-							form={form}
-							activities={activities && activities}
-						/>
-					)}
+					<GeneralDetails
+						form={form}
+						activities={activities && activities}
+						img={{ alt, src, file }}
+						setImg={setImg}
+					/>
+					<ContactDetails form={form} />
+					<SearchDetails
+						form={form}
+						activities={activities && activities}
+					/>
 				</div>
 
 				<Box
@@ -244,38 +194,13 @@ function CompanyDetailsPage() {
 						width: "100%",
 					}}
 				>
-					<Button
-						disabled={activeStep === 0}
-						onClick={handleBack}
-						sx={{ mr: 1 }}
-					>
-						Précédent
-					</Button>
 					<Box sx={{ flex: "1 1 auto" }} />
 
-					{activeStep !== 2 && (
-						<Button
-							disabled={activeStep === MAX_STEP_NUMBER - 1}
-							onClick={async () => {
-								const result = await form.trigger(
-									currentValidationForm(activeStep)
-								)
-								if (result === true) {
-									handleNext()
-								}
-							}}
-							sx={{ mr: 1 }}
-						>
-							Suivant
-						</Button>
-					)}
-					{activeStep === 2 && (
-						<Button type="submit">
-							{id !== undefined
-								? "Mettre à jour"
-								: "Créer une entreprise"}
-						</Button>
-					)}
+					<Button type="submit">
+						{id !== undefined
+							? "Mettre à jour"
+							: "Créer une entreprise"}
+					</Button>
 				</Box>
 			</form>
 		</section>
