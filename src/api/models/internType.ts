@@ -3,12 +3,12 @@ import InternStatus from "./internStatus"
 class InternType {
 	id!: number
 
-	period!: string
+	periods!: string[]
 
 	internStatus!: InternStatus
 
-	constructor(period: string, internStatus: InternStatus) {
-		this.period = period
+	constructor(periods: string[], internStatus: InternStatus) {
+		this.periods = periods
 		this.internStatus = internStatus
 	}
 }

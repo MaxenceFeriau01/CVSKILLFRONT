@@ -2,7 +2,7 @@ import { Alert, FormHelperText, InputLabel, TextField } from "@mui/material"
 import { Controller } from "react-hook-form"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 import {
-	PERIOD_OPTIONS,
+	STUDENT_PERIOD_OPTIONS,
 	STATUS_HIGH_SCHOOL_STUDENT,
 	STATUS_JOB_SEEKER,
 	STATUS_STUDENT,
@@ -353,10 +353,10 @@ function UserControls({
 							}) => (
 								<CustomSelect
 									isSearchable
-									options={PERIOD_OPTIONS}
+									options={STUDENT_PERIOD_OPTIONS}
 									placeholder="Choisissez..."
 									onBlur={onBlur}
-									value={PERIOD_OPTIONS.find(
+									value={STUDENT_PERIOD_OPTIONS.find(
 										(c: ReactSelectOption) =>
 											c.value === value
 									)}

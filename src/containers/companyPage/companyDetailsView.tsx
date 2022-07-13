@@ -185,7 +185,7 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 								<li key={internType.id}>
 									➔ Des{" "}
 									<b>{internType?.internStatus?.name}s</b> :{" "}
-									<i>{internType?.period}</i>
+									<i>{internType?.periods}</i>
 								</li>
 							))}
 						</ul>

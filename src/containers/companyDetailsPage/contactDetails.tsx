@@ -64,7 +64,7 @@ function ContactDetails({ form }: any) {
 				defaultValue=""
 				render={({ field: { onChange, value } }) => (
 					<TextField
-						className="w-full"
+						className="tablet:w-full"
 						value={value}
 						onChange={onChange}
 						label="Email"

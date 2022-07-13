@@ -65,13 +65,12 @@ function CompanyDetailsPage() {
 						case "searchedInternsType":
 							form.setValue(
 								key,
-								res[key].map((r: any) => {
+								res[key].map((r: InternType) => {
 									const internTypeOption = {
 										value: r.internStatus.id,
 										label: r.internStatus.name,
-										period: r.period,
+										periods: r.periods,
 									}
-
 									return internTypeOption
 								}),
 								{
@@ -145,7 +144,7 @@ function CompanyDetailsPage() {
 
 		newCompany.searchedInternsType = data.searchedInternsType.map(
 			(t: any) =>
-				new InternType(t.period, new InternStatus(t.value, t.label))
+				new InternType(t.periods, new InternStatus(t.value, t.label))
 		)
 
 		newCompany.logo = null

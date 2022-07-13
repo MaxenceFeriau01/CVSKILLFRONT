@@ -14,13 +14,14 @@ import internStatusService from "../../api/services/internStatusService"
 import jobService from "../../api/services/jobService"
 import CustomSelect from "../../components/inputs/customSelect"
 import {
-	PERIOD_OPTIONS,
+	STUDENT_PERIOD_OPTIONS,
 	STATUS_COLLEGE_STUDENT,
 	STATUS_COLLEGE_STUDENT_PERIOD,
 	STATUS_HIGH_SCHOOL_STUDENT,
 	STATUS_HIGH_SCHOOL_STUDENT_PERIOD,
 	STATUS_JOB_SEEKER,
 	STATUS_STUDENT,
+	JOB_SEEKER_PERIOD_OPTIONS,
 } from "../../utils/constants"
 import { INPUT_FORM_THREE, INTERN_NUMBER_OPTIONS } from "./constants"
 
@@ -51,10 +52,10 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 
 	function handleCheck(value: ReactSelectOption) {
 		if (value.label === STATUS_COLLEGE_STUDENT) {
-			value.period = STATUS_COLLEGE_STUDENT_PERIOD
+			value.periods = [...[], STATUS_COLLEGE_STUDENT_PERIOD]
 		}
 		if (value.label === STATUS_HIGH_SCHOOL_STUDENT) {
-			value.period = STATUS_HIGH_SCHOOL_STUDENT_PERIOD
+			value.periods = [...[], STATUS_HIGH_SCHOOL_STUDENT_PERIOD]
 		}
 		const newValues =
 			watch(INPUT_FORM_THREE[0])?.filter(
@@ -192,7 +193,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 							value={apiJobs?.data?.filter((option: any) =>
 								value?.includes(option.value)
 							)}
-							defaultValue={activities?.filter((option: any) =>
+							defaultValue={apiJobs?.data?.filter((option: any) =>
 								value?.includes(option.value)
 							)}
 						/>
@@ -280,28 +281,40 @@ function InternStatusChoice({
 	isStatusChecked,
 	apiStatuses,
 }: any) {
-	function selectedPeriod(val: number) {
-		const selectedOption = value.find(
-			(element: any) => element.value === val
-		)
-		if (selectedOption.period)
-			return new ReactSelectOption(
-				selectedOption.period,
-				selectedOption.period
-			)
-
-		return ""
+	function isPeriodChecked(
+		selectedInternTypeLabel: string,
+		label: string
+	): boolean {
+		let isChecked: boolean = false
+		watch(INPUT_FORM_THREE[0]).forEach((element: ReactSelectOption) => {
+			if (element.label === selectedInternTypeLabel) {
+				element.periods?.forEach(el => {
+					if (el === label) {
+						isChecked = true
+					}
+				})
+			}
+		})
+		return isChecked
 	}
 	const { watch } = form
 	function handleSelectChange(
-		selectedInternTypeLabel: string,
+		selectedInternType: ReactSelectOption,
 		periodOption: ReactSelectOption
 	) {
 		const arrayOfInternsType = watch(INPUT_FORM_THREE[0])
-		watch(INPUT_FORM_THREE[0]).forEach((element: any) => {
-			if (element.label === selectedInternTypeLabel) {
-				// eslint-disable-next-line no-param-reassign
-				element.period = periodOption.value
+		watch(INPUT_FORM_THREE[0]).forEach((element: ReactSelectOption) => {
+			if (element.label === selectedInternType.label) {
+				if (element?.periods) {
+					const newValues =
+						element.periods.filter(e => e === periodOption.label)
+							.length > 0
+							? element.periods.filter(
+									v => v !== periodOption.label
+							  )
+							: [...(element.periods ?? []), periodOption.label]
+					element.periods = newValues
+				}
 			}
 		})
 		return arrayOfInternsType
@@ -323,46 +336,66 @@ function InternStatusChoice({
 			{internTypeLabel === STATUS_STUDENT &&
 				value?.length > 0 &&
 				isStatusChecked(STATUS_STUDENT) && (
-					<div className="select under-select">
-						<InputLabel>La durée du stage</InputLabel>
-						<CustomSelect
-							required
-							className="w-full"
-							options={PERIOD_OPTIONS}
-							placeholder="Choisissez..."
-							value={selectedPeriod(+apiStatuses?.data[2].value)}
-							onChange={(val: ReactSelectOption) =>
-								onChange(
-									handleSelectChange(
-										apiStatuses?.data[2].label,
-										val
-									)
-								)
-							}
-						/>
+					<div className="flex flex-col">
+						{STUDENT_PERIOD_OPTIONS?.map((s: ReactSelectOption) => (
+							<div key={s.value}>
+								<FormControlLabel
+									control={
+										<Checkbox
+											checked={isPeriodChecked(
+												apiStatuses?.data[2].label,
+												s.label
+											)}
+											onChange={() =>
+												onChange(
+													handleSelectChange(
+														apiStatuses?.data[2],
+
+														s
+													)
+												)
+											}
+											color="secondary"
+										/>
+									}
+									label={s.label}
+								/>
+							</div>
+						))}
 					</div>
 				)}
-
 			{internTypeLabel === STATUS_JOB_SEEKER &&
 				value?.length > 0 &&
 				isStatusChecked(STATUS_JOB_SEEKER) && (
-					<div className="select under-select">
-						<InputLabel>La durée du stage</InputLabel>
-						<CustomSelect
-							required
-							className="w-full"
-							options={PERIOD_OPTIONS}
-							placeholder="Choisissez..."
-							value={selectedPeriod(+apiStatuses?.data[3].value)}
-							onChange={(val: ReactSelectOption) =>
-								onChange(
-									handleSelectChange(
-										apiStatuses?.data[3].label,
-										val
-									)
-								)
-							}
-						/>
+					<div className="flex flex-col">
+						{JOB_SEEKER_PERIOD_OPTIONS?.map(
+							(s: ReactSelectOption) => (
+								<div key={s.value}>
+									<FormControlLabel
+										control={
+											<Checkbox
+												checked={isPeriodChecked(
+													apiStatuses?.data[3].label,
+													s.label
+												)}
+												onChange={() =>
+													onChange(
+														handleSelectChange(
+															apiStatuses
+																?.data[3],
+
+															s
+														)
+													)
+												}
+												color="secondary"
+											/>
+										}
+										label={s.label}
+									/>
+								</div>
+							)
+						)}
 					</div>
 				)}
 		</div>
