@@ -160,7 +160,7 @@ function ContactDetails({ form }: any) {
 							variant="outlined"
 							value={value}
 							onChange={onChange}
-							autoComplete="postal-code"
+							autoComplete="new-password"
 						/>
 					)}
 				/>
