@@ -1,21 +1,20 @@
-import { Button } from "@mui/material"
-import ContactMailIcon from "@mui/icons-material/ContactMail"
-import PersonIcon from "@mui/icons-material/Person"
-import ContactPhoneIcon from "@mui/icons-material/ContactPhone"
-import EuroIcon from "@mui/icons-material/Euro"
-import AccessTimeIcon from "@mui/icons-material/AccessTime"
+import { Info } from "@mui/icons-material"
 import CancelIcon from "@mui/icons-material/Cancel"
+import ContactMailIcon from "@mui/icons-material/ContactMail"
+import ContactPhoneIcon from "@mui/icons-material/ContactPhone"
+import PersonIcon from "@mui/icons-material/Person"
+import { Button } from "@mui/material"
+import { useContext } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import Swal from "sweetalert2"
-import { Info } from "@mui/icons-material"
-import { useContext } from "react"
 import Company from "../../api/models/company"
 import companyService from "../../api/services/companyService"
-import { TYPE_COMPANY_OPTIONS } from "../companyDetailsPage/constants"
-import HasRight from "../../components/rights/hasRight"
-import Role from "../../enums/Role"
 import userService from "../../api/services/userService"
+import HasRight from "../../components/rights/hasRight"
 import UserContext from "../../contexts/user"
+import Role from "../../enums/Role"
+import { TYPE_COMPANY_OPTIONS } from "../companyDetailsPage/constants"
+import { hasRoles } from "../../utils/rightsUtil"
 
 interface CompanyDetailsViewProps {
 	company: Company | null
@@ -28,7 +27,11 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 	const apiAppliedCompanies = useQuery(
 		"appliedCompanies",
 		() => userService.getAppliedCompanies(),
-		{ enabled: user !== null }
+		{
+			enabled:
+				user !== null &&
+				!hasRoles([Role.ADMIN], userService.getRoles()),
+		}
 	)
 
 	const postApply = useMutation(
@@ -180,7 +183,13 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 								<li key={internType.id}>
 									➔ Des{" "}
 									<b>{internType?.internStatus?.name}s</b> :{" "}
-									<i>{internType?.periods}</i>
+									<ul className="list-disc pl-8">
+										{internType.periods.map(period => (
+											<li key={period}>
+												<i>{period}</i>
+											</li>
+										))}
+									</ul>
 								</li>
 							))}
 						</ul>

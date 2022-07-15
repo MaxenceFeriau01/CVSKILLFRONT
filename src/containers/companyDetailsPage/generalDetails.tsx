@@ -170,14 +170,13 @@ function GeneralDetails({
 					},
 				}}
 				control={control}
-				defaultValue=""
 				render={({ field: { onChange, value } }) => (
 					<TextField
 						className="tablet:w-full"
 						placeholder="https://www.dkstage.eedk.fr"
 						label="Site web"
 						variant="outlined"
-						value={value}
+						value={value ?? ""}
 						onChange={onChange}
 						helperText={errors.websiteUrl?.message}
 						error={!!errors.websiteUrl}

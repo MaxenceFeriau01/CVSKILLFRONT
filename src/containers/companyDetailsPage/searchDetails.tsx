@@ -343,13 +343,25 @@ function InternStatusChoice({
 									control={
 										<Checkbox
 											checked={isPeriodChecked(
-												apiStatuses?.data[2].label,
+												apiStatuses?.data?.find(
+													(
+														status: ReactSelectOption
+													) =>
+														status.label ===
+														STATUS_STUDENT
+												)?.label,
 												s.label
 											)}
 											onChange={() =>
 												onChange(
 													handleSelectChange(
-														apiStatuses?.data[2],
+														apiStatuses?.data?.find(
+															(
+																status: ReactSelectOption
+															) =>
+																status.label ===
+																STATUS_STUDENT
+														),
 
 														s
 													)
@@ -375,14 +387,25 @@ function InternStatusChoice({
 										control={
 											<Checkbox
 												checked={isPeriodChecked(
-													apiStatuses?.data[3].label,
+													apiStatuses?.data?.find(
+														(
+															status: ReactSelectOption
+														) =>
+															status.label ===
+															STATUS_JOB_SEEKER
+													)?.label,
 													s.label
 												)}
 												onChange={() =>
 													onChange(
 														handleSelectChange(
-															apiStatuses
-																?.data[3],
+															apiStatuses?.data?.find(
+																(
+																	status: ReactSelectOption
+																) =>
+																	status.label ===
+																	STATUS_JOB_SEEKER
+															),
 
 															s
 														)
