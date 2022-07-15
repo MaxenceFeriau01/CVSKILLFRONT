@@ -36,6 +36,11 @@ body {
 		height: 100vh;
 	}
 
+	input[type="number"]::-webkit-inner-spin-button,
+	input[type="number"]::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
 	h1 {
 		font-size: 33px;
 		font-weight: 700;

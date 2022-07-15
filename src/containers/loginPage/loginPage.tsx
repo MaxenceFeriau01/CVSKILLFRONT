@@ -1,5 +1,5 @@
 import { Button, TextField, Typography } from "@mui/material"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useMutation } from "react-query"
 import { Link, useNavigate } from "react-router-dom"
@@ -14,7 +14,7 @@ function LoginPage() {
 	useHideElement(["header", "footer"])
 	const navigate = useNavigate()
 
-	const { setUser } = useContext(UserContext)
+	const { user, setUser } = useContext(UserContext)
 
 	const { handleSubmit, control } = useForm()
 
@@ -28,6 +28,11 @@ function LoginPage() {
 			},
 		}
 	)
+	useEffect(() => {
+		if (user) {
+			navigate("/companies")
+		}
+	}, [])
 
 	const onSubmit = (data: any) => {
 		postAuthenticate.mutate(data)

@@ -99,14 +99,12 @@ function ContactDetails({ form }: any) {
 				<Controller
 					name={INPUT_FORM_TWO[9]}
 					control={control}
-					defaultValue=""
 					rules={{
 						required: "Le numéro de téléphone fixe est requis",
 					}}
 					render={({ field: { onChange, value } }) => (
 						<TextField
-							required
-							value={value}
+							value={value ?? ""}
 							onChange={onChange}
 							label="Telephone fixe"
 							variant="outlined"
@@ -176,7 +174,7 @@ function ContactDetails({ form }: any) {
 							variant="outlined"
 							value={value}
 							onChange={onChange}
-							autoComplete="postal-code"
+							autoComplete="new-password"
 						/>
 					)}
 				/>

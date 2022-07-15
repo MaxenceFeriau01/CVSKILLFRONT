@@ -65,7 +65,7 @@ function RegistrationPage() {
 	)
 
 	useQuery("statuses", () =>
-		internStatusService.getAllWithFilters().then(res => {
+		internStatusService.getStatusesForApplicant().then(res => {
 			const is: Array<ReactSelectOption> = res.map(
 				(s: InternStatus) => new ReactSelectOption(s.id, s.name)
 			)

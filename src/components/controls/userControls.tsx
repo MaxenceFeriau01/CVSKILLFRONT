@@ -4,7 +4,6 @@ import ReactSelectOption from "../../api/models/reactSelectOption"
 import {
 	STUDENT_PERIOD_OPTIONS,
 	STATUS_HIGH_SCHOOL_STUDENT,
-	STATUS_JOB_SEEKER,
 	STATUS_STUDENT,
 } from "../../utils/constants"
 import CustomSelect from "../inputs/customSelect"
@@ -252,8 +251,8 @@ function UserControls({
 				)}
 			</div>
 			{(watch("internStatus")?.label === STATUS_STUDENT ||
-				watch("internStatus")?.label === STATUS_HIGH_SCHOOL_STUDENT ||
-				watch("internStatus")?.label === STATUS_JOB_SEEKER) && (
+				watch("internStatus")?.label ===
+					STATUS_HIGH_SCHOOL_STUDENT) && (
 				<>
 					<div className="select-form-control--half-first">
 						<InputLabel>Activités</InputLabel>
@@ -337,8 +336,7 @@ function UserControls({
 					</div>
 				</>
 			)}
-			{(watch("internStatus")?.label === STATUS_STUDENT ||
-				watch("internStatus")?.label === STATUS_JOB_SEEKER) && (
+			{watch("internStatus")?.label === STATUS_STUDENT && (
 				<>
 					<div className="select-form-control--half-second">
 						<InputLabel>Durée du stage</InputLabel>
