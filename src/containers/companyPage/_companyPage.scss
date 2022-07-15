@@ -18,7 +18,7 @@ $company-page-header-height-mobile: 90px;
 
 		.company-select--activities {
 			@include breakpoint {
-				width: 300px;
+				width: 40%;
 				margin-right: 10px;
 				margin-bottom: unset;
 			}
@@ -30,7 +30,7 @@ $company-page-header-height-mobile: 90px;
 		.company-select--status {
 			z-index: 1;
 			@include breakpoint {
-				width: 241px;
+				width: 40%;
 				margin-right: 10px;
 				margin-bottom: unset;
 			}
