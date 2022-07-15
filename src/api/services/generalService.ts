@@ -80,18 +80,21 @@ class GeneralService<T> {
 			.catch(this.handleError)
 	}
 
-	getAllWithFilters(filters?: Object): Promise<T[]> {
+	getAllWithFilters(
+		filters: Object | null = null,
+		path: string = ""
+	): Promise<T[]> {
 		// ajout des filtres
 
 		return this.http
-			.get<T[]>(this.url, { params: filters })
+			.get<T[]>(this.url + path, { params: filters })
 			.then(this.handleResponse)
 			.catch(this.handleError)
 	}
 
-	getAllPaginated(filters?: Object, url: string = ""): Promise<T> {
+	getAllPaginated(filters?: Object, path: string = ""): Promise<T> {
 		return this.http
-			.get<T[]>(`${this.url + url}/search`, { params: filters })
+			.get<T[]>(`${this.url + path}/search`, { params: filters })
 			.then((res: any) => res.data)
 			.catch(this.handleError)
 	}
