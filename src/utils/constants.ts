@@ -9,11 +9,7 @@ import WorkIcon from "@mui/icons-material/Work"
 import ReactSelectOption from "../api/models/reactSelectOption"
 import Role from "../enums/Role"
 
-export const PERIOD_OPTIONS: Array<ReactSelectOption> = [
-	{
-		label: "Inférieur à 15 jours",
-		value: "Inférieur à 15 jours",
-	},
+export const STUDENT_PERIOD_OPTIONS: Array<ReactSelectOption> = [
 	{
 		label: "15 jours à 2 mois",
 		value: "15 jours à 2 mois",
@@ -21,6 +17,21 @@ export const PERIOD_OPTIONS: Array<ReactSelectOption> = [
 	{
 		label: "2 à 6 mois",
 		value: "2 à 6 mois",
+	},
+]
+
+export const JOB_SEEKER_PERIOD_OPTIONS: Array<ReactSelectOption> = [
+	{
+		label: "3 à 5 jours découverte",
+		value: "3 à 5 jours découverte",
+	},
+	{
+		label: "10 à 15 jours pour confirmation de projet",
+		value: "10 à 15 jours pour confirmation de projet",
+	},
+	{
+		label: "Durée variable Stage formation professionnelle continue",
+		value: "Durée variable Stage formation professionnelle continue",
 	},
 ]
 
@@ -35,7 +46,7 @@ export const STATUS_JOB_SEEKER: string = "Demandeur d'emploi"
 export const STATUS_COLLEGE_STUDENT_PERIOD: string = "3 à 5 jours de découverte"
 
 export const STATUS_HIGH_SCHOOL_STUDENT_PERIOD: string =
-	"Bac professionnel/Technique jusqu’à 22 semaines de stages"
+	"Bac professionnel/Technique jusqu’à 8 semaines de stages"
 
 export interface INavLink {
 	text: string

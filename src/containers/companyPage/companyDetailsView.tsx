@@ -19,7 +19,7 @@ import UserContext from "../../contexts/user"
 
 interface CompanyDetailsViewProps {
 	company: Company | null
-	onClose: any
+	onClose?: any
 }
 function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 	const { user } = useContext(UserContext)
@@ -58,17 +58,19 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 		>
 			{company && (
 				<div className="company-details-container-view">
-					<span
-						className="company-details-container--close"
-						onClick={onClose}
-					>
-						<CancelIcon fontSize="inherit" />
-					</span>
+					{onClose && (
+						<span
+							className="company-details-container--close"
+							onClick={onClose}
+						>
+							<CancelIcon fontSize="inherit" />
+						</span>
+					)}
+
 					<header>
 						<span className="text-xl mb-1 text-primary font-bold">
 							{company.name}
 						</span>
-
 						<span>{company.address}</span>
 						<span>
 							{company.postalCode}, {company.town}
@@ -94,7 +96,18 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 							<b>Siret : </b>
 							{company.siret}
 						</span>
-
+						{company.websiteUrl && (
+							<span>
+								<b>Site web : </b>
+								<a
+									href={company.websiteUrl}
+									target="_blank"
+									rel="noreferrer"
+								>
+									{company.websiteUrl}
+								</a>
+							</span>
+						)}
 						<HasRight roles={[Role.USER]}>
 							{apiAppliedCompanies.data?.includes(company.id) ? (
 								<span className="mt-2 mb-1 text-info  p-1">
@@ -128,14 +141,6 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 								))}
 							</span>
 						)}
-						<span className="pl-1 flex items-center">
-							<EuroIcon className="pr-2" />
-							Rémunéré
-						</span>
-						<span className="pl-1 items-center">
-							<AccessTimeIcon className="pr-2" />
-							Longue durée
-						</span>
 						<b className="text-lg mt-4">Recherche :</b>
 						<ul className="pl-2">
 							<li>
@@ -175,7 +180,7 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 								<li key={internType.id}>
 									➔ Des{" "}
 									<b>{internType?.internStatus?.name}s</b> :{" "}
-									<i>{internType?.period}</i>
+									<i>{internType?.periods}</i>
 								</li>
 							))}
 						</ul>
@@ -193,6 +198,12 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 							<ContactPhoneIcon className="pr-2" />
 							{company.contactNum}
 						</span>
+						{company.fixContactNum && (
+							<span className="pl-1  flex items-center">
+								<ContactPhoneIcon className="pr-2" />
+								{company.fixContactNum}
+							</span>
+						)}
 					</div>
 				</div>
 			)}

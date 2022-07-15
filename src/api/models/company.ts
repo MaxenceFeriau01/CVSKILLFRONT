@@ -15,6 +15,8 @@ class Company {
 
 	contactNum: string
 
+	fixContactNum?: string
+
 	siret: string
 
 	description: string
@@ -48,6 +50,8 @@ class Company {
 	region?: string
 
 	department?: string
+
+	websiteUrl?: string
 
 	constructor(
 		id: number,

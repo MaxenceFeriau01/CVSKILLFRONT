@@ -47,6 +47,14 @@
 		height: calc(100% - 105px);
 
 		.company-details-form-stepper {
+			h3 {
+				width: 80%;
+				padding: 15px 0;
+				@include breakpoint {
+					width: 100%;
+				}
+			}
+
 			width: 100%;
 			align-items: center;
 			display: flex;
@@ -61,7 +69,7 @@
 				z-index: 4;
 
 				@include breakpoint {
-					width: 70%;
+					width: 100%;
 				}
 			}
 		}
@@ -120,10 +128,6 @@
 			@include breakpoint {
 				justify-content: space-between;
 			}
-		}
-
-		.company-details-form__img {
-			width: 200px;
 		}
 
 		.company-details-form__checkbox__group {

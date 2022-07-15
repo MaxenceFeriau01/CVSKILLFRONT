@@ -14,12 +14,13 @@ import {
 
 import Swal from "sweetalert2"
 import SearchIcon from "@mui/icons-material/Search"
-import { Edit } from "@mui/icons-material"
+import { Edit, Visibility } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
 import companyService from "../../../api/services/companyService"
 import { PAGE, ROWS_OPTIONS, SIZE } from "./constant"
 import Activity from "../../../api/models/activity"
 import Company from "../../../api/models/company"
+import CompanyViewPreview from "./companyViewPreview"
 
 const locale = frFR.components.MuiDataGrid.defaultProps.localeText
 
@@ -27,6 +28,9 @@ function CompanyAdminPage() {
 	const [search, setSearch] = useState<string>("")
 	const [pageSize, setPageSize] = useState<number>(SIZE)
 	const [formattedCompanies, setFormattedCompanies] = useState<any>([])
+	const [openPreviewModal, setOpenPreviewModal] = useState<boolean>(false)
+	const [companyIdPreview, setCompanyIdPreview] = useState<GridRowId>(0)
+
 	const navigate = useNavigate()
 	const queryClient = useQueryClient()
 
@@ -82,6 +86,12 @@ function CompanyAdminPage() {
 			getActions: company => {
 				return [
 					<GridActionsCellItem
+						icon={<Visibility color="info" />}
+						label="Prévisualiser"
+						title="Prévisualiser"
+						onClick={() => onOpenPreviewModal(company.id)}
+					/>,
+					<GridActionsCellItem
 						icon={<Edit color="secondary" />}
 						label="Modifier"
 						title="Modifier"
@@ -122,6 +132,11 @@ function CompanyAdminPage() {
 			},
 		},
 	]
+
+	const onOpenPreviewModal = (companyId: GridRowId) => {
+		setOpenPreviewModal(true)
+		setCompanyIdPreview(companyId)
+	}
 
 	const companies = useQuery(
 		["companies", pageNumber, search, pageSize],
@@ -321,6 +336,11 @@ function CompanyAdminPage() {
 					</>
 				)}
 			</div>
+			<CompanyViewPreview
+				openModal={openPreviewModal}
+				setOpenModal={setOpenPreviewModal}
+				companyId={companyIdPreview}
+			/>
 		</section>
 	)
 }

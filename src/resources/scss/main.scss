@@ -41,6 +41,39 @@ body {
 		-webkit-appearance: none;
 		margin: 0;
 	}
+	h1 {
+		font-size: 33px;
+		font-weight: 700;
+		line-height: 1.2;
+		color: $color-primary-dark;
+	}
+
+	h2 {
+		font-size: 28px;
+		font-weight: 700;
+		line-height: 1.2;
+		color: $color-primary-dark;
+	}
+
+	h3 {
+		font-size: 23px;
+		font-weight: 700;
+		line-height: 1.2;
+		color: $color-primary-dark;
+	}
+
+	h4 {
+		font-size: 17px;
+	}
+
+	a {
+		color: $color-primary;
+		text-decoration: underline;
+
+		&:hover {
+			color: $color-primary-light;
+		}
+	}
 
 	.modal {
 		@include breakpoint {

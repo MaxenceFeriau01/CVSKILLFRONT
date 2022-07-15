@@ -3,7 +3,7 @@ class ReactSelectOption {
 
 	label!: string
 
-	period?: string
+	periods?: string[] = []
 
 	constructor(value: number | string, label: string) {
 		this.value = value
