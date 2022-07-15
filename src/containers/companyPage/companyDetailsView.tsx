@@ -115,7 +115,7 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 							{apiAppliedCompanies.data?.includes(company.id) ? (
 								<span className="mt-2 mb-1 text-info  p-1">
 									<Info className="pb-1 mr-1" />
-									Votre demande est prise en compte !
+									Votre demande est enregistrée !
 								</span>
 							) : (
 								<Button
