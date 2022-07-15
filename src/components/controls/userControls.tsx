@@ -133,7 +133,7 @@ function UserControls({
 				)}
 			/>
 			<div className="select-form-control" style={{ zIndex: 4 }}>
-				<InputLabel>Civilité</InputLabel>
+				<InputLabel>Civilité *</InputLabel>
 				<Controller
 					rules={{
 						required: "La civilité est requise",
@@ -222,16 +222,15 @@ function UserControls({
 				</>
 			)}
 			<div className="select-form-control">
-				<InputLabel>Status</InputLabel>
+				<InputLabel>Statut *</InputLabel>
 				<Controller
 					rules={{
-						required: "Le status est requis",
+						required: "Le statut est requis",
 					}}
 					name="internStatus"
 					control={control}
 					render={({ field: { value, onChange, onBlur } }) => (
 						<CustomSelect
-							required
 							isSearchable
 							options={statusesOptions}
 							placeholder="Choisissez..."

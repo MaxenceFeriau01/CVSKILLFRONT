@@ -39,12 +39,6 @@ function CustomSelect(props: any) {
 					onChange={() => {}}
 				/>
 			)}
-			{required &&
-				(value === null || value === undefined || value === "") && (
-					<Alert className="w-full" severity="error">
-						Ce champ est requis
-					</Alert>
-				)}
 		</>
 	)
 }
