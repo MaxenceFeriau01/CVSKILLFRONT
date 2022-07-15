@@ -44,6 +44,10 @@ export const TYPE_COMPANY_OPTIONS: Array<ReactSelectOption> = [
 		label: "EPLE",
 		value: "EPLE",
 	},
+	{
+		label: "Etablissement public national scientifique, culturel et professionnel (EPSCP)",
+		value: "Etablissement public national scientifique, culturel et professionnel (EPSCP)",
+	},
 ]
 
 export const INTERN_NUMBER_OPTIONS: Array<ReactSelectOption> = [
