@@ -99,9 +99,6 @@ function ContactDetails({ form }: any) {
 				<Controller
 					name={INPUT_FORM_TWO[9]}
 					control={control}
-					rules={{
-						required: "Le numéro de téléphone fixe est requis",
-					}}
 					render={({ field: { onChange, value } }) => (
 						<TextField
 							value={value ?? ""}
@@ -111,7 +108,6 @@ function ContactDetails({ form }: any) {
 							type="tel"
 							autoComplete="tel"
 							helperText={errors[INPUT_FORM_TWO[9]]?.message}
-							error={!!errors[INPUT_FORM_TWO[9]]}
 						/>
 					)}
 				/>
