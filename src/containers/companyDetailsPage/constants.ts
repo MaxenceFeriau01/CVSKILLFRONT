@@ -44,10 +44,6 @@ export const TYPE_COMPANY_OPTIONS: Array<ReactSelectOption> = [
 		label: "EPLE",
 		value: "EPLE",
 	},
-	{
-		label: "Etablissement privé",
-		value: "Etablissement privé",
-	},
 ]
 
 export const INTERN_NUMBER_OPTIONS: Array<ReactSelectOption> = [
