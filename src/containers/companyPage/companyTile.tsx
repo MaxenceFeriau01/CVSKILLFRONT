@@ -1,4 +1,3 @@
-import AccessTimeIcon from "@mui/icons-material/AccessTime"
 import Company from "../../api/models/company"
 import imageUpload from "../../resources/images/image-upload.svg"
 
@@ -17,17 +16,6 @@ function CompanyTile({ company, onClick, selectedCompanyId }: CompanyProps) {
 					: ""
 			}`}
 		>
-			{company.paidAndLongTermInternship ? (
-				<div
-					className="company-tile__clock"
-					title="Stage de longue durée, rémunérée"
-				>
-					<AccessTimeIcon />
-				</div>
-			) : (
-				""
-			)}
-
 			<div className="company-tile__image">
 				{company.logo ? (
 					<img

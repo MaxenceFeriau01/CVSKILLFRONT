@@ -75,6 +75,14 @@ body {
 		}
 	}
 
+	//remove datePicker styles
+	[type="date"]::-webkit-inner-spin-button {
+		display: none;
+	}
+	[type="date"]::-webkit-calendar-picker-indicator {
+		display: none;
+	}
+
 	.modal {
 		@include breakpoint {
 			width: 70%;

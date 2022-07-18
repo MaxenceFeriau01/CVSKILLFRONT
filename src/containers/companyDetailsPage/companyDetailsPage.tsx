@@ -185,23 +185,15 @@ function CompanyDetailsPage() {
 					/>
 				</div>
 
-				<Box
-					sx={{
-						display: "flex",
-						flexDirection: "row",
-						pt: 2,
-						pb: 2,
-						width: "100%",
-					}}
-				>
+				<div className="company-details-form-actions">
 					<Box sx={{ flex: "1 1 auto" }} />
 
-					<Button type="submit">
+					<Button type="submit" className="mr-1 tablet:mr-0">
 						{id !== undefined
 							? "Mettre à jour"
 							: "Créer une entreprise"}
 					</Button>
-				</Box>
+				</div>
 			</form>
 		</section>
 	)

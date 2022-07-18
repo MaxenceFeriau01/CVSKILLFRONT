@@ -136,4 +136,15 @@
 			width: 100%;
 		}
 	}
+
+	.company-details-form-actions {
+		display: flex;
+		width: 80%;
+		margin: 0 auto;
+		padding: 10px 0;
+
+		@include breakpoint {
+			width: 100%;
+		}
+	}
 }

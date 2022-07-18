@@ -140,16 +140,7 @@
 
 // CSS REACT SELECT
 .react-select__control {
-	height: 38px;
-	overflow: hidden;
-
-	.react-select__indicators {
-		height: 100%;
-	}
-
-	.react-select__value-container {
-		height: 100%;
-		overflow-y: auto;
-	}
+	max-height: 68px;
+	overflow-y: auto;
 }
 // END CSS REACT SELECT

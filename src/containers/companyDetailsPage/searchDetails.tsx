@@ -205,7 +205,6 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 					</Alert>
 				)}
 			</div>
-
 			<div className="select tablet:w-full">
 				<h4>
 					Acceptez-vous de prendre des stagiaires de longues durée,
@@ -214,15 +213,10 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 
 				<Controller
 					name={INPUT_FORM_THREE[3]}
-					rules={{
-						required: "Ce champ est requis",
-					}}
 					control={control}
+					defaultValue={false}
 					render={({ field: { onChange, value } }) => (
-						<RadioGroup
-							value={value ?? "default"}
-							onChange={onChange}
-						>
+						<RadioGroup value={value} onChange={onChange}>
 							<FormControlLabel
 								value
 								control={<Radio />}
@@ -298,6 +292,20 @@ function InternStatusChoice({
 		return isChecked
 	}
 	const { watch } = form
+
+	function checkIfOnceIsChecked(statusChecked: string) {
+		return (
+			watch(INPUT_FORM_THREE[0])?.find(
+				(internType: ReactSelectOption) =>
+					internType.label === statusChecked
+			)?.periods?.length === 0 && (
+				<Alert severity="error">
+					Au moins un champ doit être selectionné
+				</Alert>
+			)
+		)
+	}
+
 	function handleSelectChange(
 		selectedInternType: ReactSelectOption,
 		periodOption: ReactSelectOption
@@ -374,6 +382,7 @@ function InternStatusChoice({
 								/>
 							</div>
 						))}
+						{checkIfOnceIsChecked(STATUS_STUDENT)}
 					</div>
 				)}
 			{internTypeLabel === STATUS_JOB_SEEKER &&
@@ -419,6 +428,8 @@ function InternStatusChoice({
 								</div>
 							)
 						)}
+
+						{checkIfOnceIsChecked(STATUS_JOB_SEEKER)}
 					</div>
 				)}
 		</div>

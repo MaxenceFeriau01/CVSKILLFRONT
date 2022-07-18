@@ -32,7 +32,7 @@ function HomePage() {
 					</h2>
 					<p>
 						Je suis une entreprise et je cherche de nouveaux
-						stagiaires motivées !
+						stagiaires motivés !
 					</p>
 					<Button onClick={() => goToCompanies()}>
 						C'est parti !

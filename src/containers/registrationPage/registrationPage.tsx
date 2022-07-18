@@ -24,8 +24,6 @@ function RegistrationPage() {
 	const [activitiesOptions, setActivitiesOptions] =
 		useState<Array<ReactSelectOption>>()
 	const [jobsOptions, setJobsOptions] = useState<Array<ReactSelectOption>>()
-	const [statusesOptions, setStatusesOptions] =
-		useState<Array<ReactSelectOption>>()
 
 	const navigate = useNavigate()
 	const {
@@ -64,13 +62,14 @@ function RegistrationPage() {
 		})
 	)
 
-	useQuery("statuses", () =>
-		internStatusService.getStatusesForApplicant().then(res => {
-			const is: Array<ReactSelectOption> = res.map(
-				(s: InternStatus) => new ReactSelectOption(s.id, s.name)
+	const getStatuses = useQuery("statuses", () =>
+		internStatusService
+			.getStatusesForApplicant()
+			.then(res =>
+				res.map(
+					(s: InternStatus) => new ReactSelectOption(s.id, s.name)
+				)
 			)
-			setStatusesOptions(is)
-		})
 	)
 
 	const onSubmit = (data: any) => {
@@ -122,7 +121,7 @@ function RegistrationPage() {
 					<UserControls
 						jobsOptions={jobsOptions}
 						activitiesOptions={activitiesOptions}
-						statusesOptions={statusesOptions}
+						statusesOptions={getStatuses?.data && getStatuses.data}
 						control={control}
 						watch={watch}
 						errors={errors}

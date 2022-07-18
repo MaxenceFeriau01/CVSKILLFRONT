@@ -34,6 +34,33 @@ function UserControls({
 }: UserControlsProps) {
 	return (
 		<>
+			<div className="select-form-control" style={{ zIndex: 4 }}>
+				<InputLabel>Civilité *</InputLabel>
+				<Controller
+					rules={{
+						required: "La civilité est requise",
+					}}
+					name="civility"
+					control={control}
+					render={({ field: { value, onChange, onBlur } }) => (
+						<CustomSelect
+							isSearchable
+							options={CIVILITY_OPTIONS}
+							placeholder="Choisissez..."
+							onBlur={onBlur}
+							value={CIVILITY_OPTIONS.find(
+								(c: ReactSelectOption) => c.value === value
+							)}
+							onChange={(val: ReactSelectOption) =>
+								onChange(val.value)
+							}
+						/>
+					)}
+				/>
+				{errors?.civility && (
+					<Alert severity="error">{errors.civility?.message}</Alert>
+				)}
+			</div>
 			<Controller
 				name="name"
 				control={control}
@@ -99,7 +126,6 @@ function UserControls({
 			<div className="MuiFormControl-root">
 				<Controller
 					name="dateOfBirth"
-					defaultValue=""
 					control={control}
 					rules={{
 						required: "La date de naissance est requise",
@@ -108,8 +134,12 @@ function UserControls({
 						<TextField
 							label="Date de naissance"
 							type="date"
+							inputProps={{
+								pattern: "[0-9]{4}-[0-9]{2}-[0-9]{2}",
+								max: "2100-01-01",
+							}}
 							onChange={onChange}
-							value={value || "2000-01-01"}
+							value={value || new Date("0000-00-00")}
 							required
 						/>
 					)}
@@ -132,33 +162,7 @@ function UserControls({
 					/>
 				)}
 			/>
-			<div className="select-form-control" style={{ zIndex: 4 }}>
-				<InputLabel>Civilité</InputLabel>
-				<Controller
-					rules={{
-						required: "La civilité est requise",
-					}}
-					name="civility"
-					control={control}
-					render={({ field: { value, onChange, onBlur } }) => (
-						<CustomSelect
-							isSearchable
-							options={CIVILITY_OPTIONS}
-							placeholder="Choisissez..."
-							onBlur={onBlur}
-							value={CIVILITY_OPTIONS.find(
-								(c: ReactSelectOption) => c.value === value
-							)}
-							onChange={(val: ReactSelectOption) =>
-								onChange(val.value)
-							}
-						/>
-					)}
-				/>
-				{errors?.civility && (
-					<Alert severity="error">{errors.civility?.message}</Alert>
-				)}
-			</div>
+
 			{!isProfile && (
 				<>
 					<div className="MuiFormControl-root">
@@ -221,17 +225,72 @@ function UserControls({
 					</div>
 				</>
 			)}
+			<div className="MuiFormControl-root">
+				<Controller
+					name="internshipStartDate"
+					control={control}
+					rules={{
+						required: "La date de début de stage est requise",
+					}}
+					render={({ field: { onChange, value } }) => (
+						<TextField
+							label="Date de début de stage"
+							type="date"
+							inputProps={{
+								pattern: "[0-9]{4}-[0-9]{2}-[0-9]{2}",
+								max: "2100-01-01",
+							}}
+							onChange={onChange}
+							value={value || new Date("00-00-0000")}
+							required
+							helperText="Date préférée"
+						/>
+					)}
+				/>
+				{errors?.internshipStartDate && (
+					<Alert severity="error">
+						{errors.internshipStartDate.message}
+					</Alert>
+				)}
+			</div>
+			<div className="MuiFormControl-root">
+				<Controller
+					name="internshipEndDate"
+					control={control}
+					rules={{
+						required: "La date de fin de stage est requise",
+					}}
+					render={({ field: { onChange, value } }) => (
+						<TextField
+							label="Date de fin de stage"
+							type="date"
+							inputProps={{
+								pattern: "[0-9]{4}-[0-9]{2}-[0-9]{2}",
+								max: "2100-01-01",
+							}}
+							onChange={onChange}
+							value={value || new Date("0000-00-00")}
+							required
+							helperText="Date préférée"
+						/>
+					)}
+				/>
+				{errors?.internshipEndDate && (
+					<Alert severity="error">
+						{errors.internshipEndDate.message}
+					</Alert>
+				)}
+			</div>
 			<div className="select-form-control">
-				<InputLabel>Status</InputLabel>
+				<InputLabel>Statut *</InputLabel>
 				<Controller
 					rules={{
-						required: "Le status est requis",
+						required: "Le statut est requis",
 					}}
 					name="internStatus"
 					control={control}
 					render={({ field: { value, onChange, onBlur } }) => (
 						<CustomSelect
-							required
 							isSearchable
 							options={statusesOptions}
 							placeholder="Choisissez..."
