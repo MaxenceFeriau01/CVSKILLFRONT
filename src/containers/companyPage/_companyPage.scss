@@ -110,7 +110,7 @@ $company-page-header-height-mobile: 90px;
 				.company-tile__image {
 					margin: auto;
 					max-width: 100%;
-					max-height: 140px;
+					max-height: 120px;
 
 					img {
 						fill: $color-primary;
@@ -124,7 +124,6 @@ $company-page-header-height-mobile: 90px;
 					width: 100%;
 					background-color: $color-primary;
 					color: $color-white;
-					margin-top: 10px;
 					padding-top: 8px;
 					padding-bottom: 8px;
 					border-radius: 0 0 10px 10px;

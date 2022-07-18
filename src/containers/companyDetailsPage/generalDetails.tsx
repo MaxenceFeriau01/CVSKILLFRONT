@@ -135,9 +135,6 @@ function GeneralDetails({
 				<Controller
 					name="activities"
 					control={control}
-					rules={{
-						required: "Le domaine activité est requis",
-					}}
 					render={({ field: { value, onChange, onBlur } }) => (
 						<CustomSelect
 							options={activities}
@@ -156,9 +153,6 @@ function GeneralDetails({
 						/>
 					)}
 				/>
-				{errors.activities && (
-					<Alert severity="error">{errors.activities.message}</Alert>
-				)}
 			</div>
 
 			<Controller
