@@ -77,16 +77,15 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 		>
 			{company && (
 				<div className="company-details-container-view">
-					{onClose && (
-						<span
-							className="company-details-container--close"
-							onClick={onClose}
-						>
-							<CancelIcon fontSize="inherit" />
-						</span>
-					)}
-
 					<header>
+						{onClose && (
+							<span
+								className="company-details-container--close"
+								onClick={onClose}
+							>
+								<CancelIcon fontSize="inherit" />
+							</span>
+						)}
 						<span className="text-xl mb-1 text-primary font-bold">
 							{company.name}
 						</span>

@@ -3,6 +3,7 @@ module.exports = {
 	content: ["./src/**/*.{js,jsx,ts,tsx}"],
 	theme: {
 		screens: {
+			mobile: "375px",
 			tablet: "768px",
 			laptop: "1024px",
 			desktop: "1440px",
@@ -20,7 +21,7 @@ module.exports = {
 			black: "#2d2d2d",
 			info: "#5186f3",
 			red: "#b70000",
-			background:"#f7fafb"
+			background: "#f7fafb",
 		},
 		listStyleType: {
 			none: "none",

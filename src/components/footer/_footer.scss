@@ -6,7 +6,10 @@
 	align-items: center;
 	justify-content: center;
 	z-index: 1;
-	font-size: 16px;
+	font-size: 14px;
+	@include breakpoint {
+		font-size: 16px;
+	}
 
 	p {
 		text-align: center;
