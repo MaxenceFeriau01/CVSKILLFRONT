@@ -3,8 +3,8 @@ import CancelIcon from "@mui/icons-material/Cancel"
 import ContactMailIcon from "@mui/icons-material/ContactMail"
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone"
 import PersonIcon from "@mui/icons-material/Person"
-import { Button } from "@mui/material"
-import { useContext } from "react"
+import { Button, Modal } from "@mui/material"
+import { useContext, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import Swal from "sweetalert2"
 import Company from "../../api/models/company"
@@ -39,9 +39,25 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 		{
 			onSuccess: (data, variables) => {
 				Swal.fire({
-					position: "bottom-end",
-					title: "",
-					text: "Votre demande a été prise en compte, vous allez être contacter par mail sous peu ! ",
+					position: "center",
+					title: "Comment faire ma demande?",
+					width: "w-[38em]",
+					html:
+						`Pour présenter votre demande de stage à <b class="text-primary">${company?.name}</b>, envoyez votre CV et lettre de motivation :` +
+						`
+						<ul class="text-left ml-8 pt-1 pb-1"> 
+							<li> <i>➔ Par mail</i> : ${company?.contactMail}</li> 
+							<li>
+								<i>➔ Par courrier</i> : ${company?.address},
+								${company?.postalCode}  ${company?.town}
+							</li>
+							<li>
+								<i>➔ Sur place</i> :  ${company?.address},
+								${company?.postalCode}  ${company?.town}
+							</li> 
+						</ul>` +
+						`<span class="text-sm">Ps : Ces informations vous seront envoyées par mail. Vérifiez vos spams ou courriers indésirables. </span>`,
+
 					icon: "success",
 				}).then(() =>
 					queryClient.setQueryData(
@@ -76,7 +92,7 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 						</span>
 						<span>{company.address}</span>
 						<span>
-							{company.postalCode}, {company.town}
+							{company.postalCode} {company.town}
 							{company.type === TYPE_COMPANY_OPTIONS[2].value &&
 								company?.department &&
 								`, ${company?.department}`}
@@ -119,10 +135,10 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 								</span>
 							) : (
 								<Button
-									className="mt-2 mb-1 w-48"
+									className="mt-2 mb-1 w-64"
 									onClick={() => postApply.mutate(company.id)}
 								>
-									Demander un stage
+									Comment faire ma demande
 								</Button>
 							)}
 						</HasRight>
