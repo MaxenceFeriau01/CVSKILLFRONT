@@ -197,10 +197,8 @@ function CompanyAdminPage() {
 					["companies", pageNumber, search, pageSize],
 					(old: any) => {
 						const oldOne = Object.assign(old)
-
-						// Update project percentage
 						oldOne.content = lOld
-						return lOld
+						return oldOne
 					}
 				)
 			},

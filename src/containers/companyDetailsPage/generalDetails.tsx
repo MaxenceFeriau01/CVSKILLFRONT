@@ -100,7 +100,6 @@ function GeneralDetails({
 					name={INPUT_FORM_ONE[2]}
 					control={control}
 					rules={{
-						required: "Le numéro de siret est requis",
 						minLength: {
 							value: 14,
 							message:
@@ -136,6 +135,9 @@ function GeneralDetails({
 				<Controller
 					name="activities"
 					control={control}
+					rules={{
+						required: "Le domaine activité est requis",
+					}}
 					render={({ field: { value, onChange, onBlur } }) => (
 						<CustomSelect
 							options={activities}
@@ -154,6 +156,9 @@ function GeneralDetails({
 						/>
 					)}
 				/>
+				{errors.activities && (
+					<Alert severity="error">{errors.activities.message}</Alert>
+				)}
 			</div>
 
 			<Controller

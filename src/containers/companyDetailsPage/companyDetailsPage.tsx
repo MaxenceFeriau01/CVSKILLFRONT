@@ -132,7 +132,7 @@ function CompanyDetailsPage() {
 	const onSubmit = (data: any) => {
 		const formData = new FormData()
 		const newCompany = data
-		newCompany.activities = data.activities.map((a: any) => ({ id: a }))
+		newCompany.activities = data?.activities.map((a: any) => ({ id: a }))
 		newCompany.searchedActivities = data.searchedActivities.map(
 			(a: any) => ({
 				id: a,

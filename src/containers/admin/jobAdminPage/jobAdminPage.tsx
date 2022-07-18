@@ -127,7 +127,6 @@ function JobAdminPage() {
 				(old: any) => {
 					const lOld = Object.assign(old)
 
-					// Update project percentage
 					lOld.content?.forEach((a: Job) => {
 						if (a.id === data.id) {
 							a.name = data.name

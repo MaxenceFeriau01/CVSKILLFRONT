@@ -139,7 +139,6 @@ function ActivityAdminPage() {
 					(old: any) => {
 						const lOld = Object.assign(old)
 
-						// Update project percentage
 						lOld.content?.forEach((a: Activity) => {
 							if (a.id === data.id) {
 								a.name = data.name

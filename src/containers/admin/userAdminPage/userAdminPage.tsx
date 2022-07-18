@@ -171,7 +171,6 @@ function UserAdminPage() {
 					(old: any) => {
 						const oldOne = Object.assign(old)
 
-						// Update project percentage
 						oldOne.content = lOld
 						return lOld
 					}
