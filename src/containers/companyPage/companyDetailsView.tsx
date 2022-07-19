@@ -1,4 +1,4 @@
-import { Info } from "@mui/icons-material"
+import { Info, Warning } from "@mui/icons-material"
 import CancelIcon from "@mui/icons-material/Cancel"
 import ContactMailIcon from "@mui/icons-material/ContactMail"
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone"
@@ -164,6 +164,17 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 							<li>
 								➔ <b>{company.desiredInternsNumber} </b>
 								stagiaires par an
+							</li>
+							<li>
+								{!company.minorAccepted && (
+									<>
+										➔
+										<Warning className="pr-1 pb-1" />
+										<span>
+											Seulement des personnes majeurs
+										</span>{" "}
+									</>
+								)}
 							</li>
 							<li>
 								➔ Dans le(s) domaine(s) suivant(s) :{" "}
