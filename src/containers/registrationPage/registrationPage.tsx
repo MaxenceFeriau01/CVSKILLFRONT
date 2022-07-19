@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material"
+import { Alert, Button, Typography } from "@mui/material"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useMutation, useQuery } from "react-query"
@@ -129,6 +129,11 @@ function RegistrationPage() {
 					/>
 				</div>
 				<Button type="submit">S'inscrire</Button>
+				{Object.keys(errors).length !== 0 && (
+					<Alert severity="error" className="m-auto">
+						Il y a des informations manquantes
+					</Alert>
+				)}
 				<span className="registration-form-registration">
 					Déja inscrit? <Link to="/login">Se connecter</Link>
 				</span>
