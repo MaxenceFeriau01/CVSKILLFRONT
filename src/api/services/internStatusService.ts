@@ -6,12 +6,7 @@
 import InternStatus from "../models/internStatus"
 import GeneralService from "./generalService"
 
-class InternStatusService extends GeneralService<InternStatus> {
-	getStatusesForApplicant(): Promise<InternStatus[]> {
-		return this.getAllWithFilters(null, "/for-applicant")
-	}
-	// Variables
-}
+class InternStatusService extends GeneralService<InternStatus> {}
 
 const internStatusService = new InternStatusService("intern-status")
 

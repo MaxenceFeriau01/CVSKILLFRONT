@@ -20,28 +20,11 @@ export const STUDENT_PERIOD_OPTIONS: Array<ReactSelectOption> = [
 	},
 ]
 
-export const JOB_SEEKER_PERIOD_OPTIONS: Array<ReactSelectOption> = [
-	{
-		label: "3 à 5 jours découverte",
-		value: "3 à 5 jours découverte",
-	},
-	{
-		label: "10 à 15 jours pour confirmation de projet",
-		value: "10 à 15 jours pour confirmation de projet",
-	},
-	{
-		label: "Durée variable Stage formation professionnelle continue",
-		value: "Durée variable Stage formation professionnelle continue",
-	},
-]
-
 export const STATUS_COLLEGE_STUDENT: string = "Collégien"
 
 export const STATUS_HIGH_SCHOOL_STUDENT: string = "Lycéen"
 
 export const STATUS_STUDENT: string = "Etudiant"
-
-export const STATUS_JOB_SEEKER: string = "Demandeur d'emploi"
 
 export const STATUS_COLLEGE_STUDENT_PERIOD: string = "3 à 5 jours de découverte"
 

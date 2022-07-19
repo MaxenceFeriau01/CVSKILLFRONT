@@ -19,9 +19,7 @@ import {
 	STATUS_COLLEGE_STUDENT_PERIOD,
 	STATUS_HIGH_SCHOOL_STUDENT,
 	STATUS_HIGH_SCHOOL_STUDENT_PERIOD,
-	STATUS_JOB_SEEKER,
 	STATUS_STUDENT,
-	JOB_SEEKER_PERIOD_OPTIONS,
 } from "../../utils/constants"
 import { INPUT_FORM_THREE, INTERN_NUMBER_OPTIONS } from "./constants"
 
@@ -404,53 +402,6 @@ function InternStatusChoice({
 							</div>
 						))}
 						{checkIfOnceIsChecked(STATUS_STUDENT)}
-					</div>
-				)}
-			{internTypeLabel === STATUS_JOB_SEEKER &&
-				value?.length > 0 &&
-				isStatusChecked(STATUS_JOB_SEEKER) && (
-					<div className="flex flex-col">
-						{JOB_SEEKER_PERIOD_OPTIONS?.map(
-							(s: ReactSelectOption) => (
-								<div key={s.value}>
-									<FormControlLabel
-										control={
-											<Checkbox
-												checked={isPeriodChecked(
-													apiStatuses?.data?.find(
-														(
-															status: ReactSelectOption
-														) =>
-															status.label ===
-															STATUS_JOB_SEEKER
-													)?.label,
-													s.label
-												)}
-												onChange={() =>
-													onChange(
-														handleSelectChange(
-															apiStatuses?.data?.find(
-																(
-																	status: ReactSelectOption
-																) =>
-																	status.label ===
-																	STATUS_JOB_SEEKER
-															),
-
-															s
-														)
-													)
-												}
-												color="secondary"
-											/>
-										}
-										label={s.label}
-									/>
-								</div>
-							)
-						)}
-
-						{checkIfOnceIsChecked(STATUS_JOB_SEEKER)}
 					</div>
 				)}
 		</div>
