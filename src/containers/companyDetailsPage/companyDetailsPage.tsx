@@ -148,6 +148,9 @@ function CompanyDetailsPage() {
 			(t: any) =>
 				new InternType(t.periods, new InternStatus(t.value, t.label))
 		)
+		if (newCompany.siret === "") {
+			newCompany.siret = null
+		}
 
 		newCompany.logo = null
 		if (file) {

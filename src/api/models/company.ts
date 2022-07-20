@@ -7,17 +7,17 @@ class Company {
 
 	name: string
 
-	contactFirstName: string
+	contactFirstName?: string
 
-	contactLastName: string
+	contactLastName?: string
 
-	contactMail: string
+	contactMail?: string
 
-	contactNum: string
+	contactNum?: string
 
 	fixContactNum?: string
 
-	siret: string
+	siret?: string
 
 	description: string
 

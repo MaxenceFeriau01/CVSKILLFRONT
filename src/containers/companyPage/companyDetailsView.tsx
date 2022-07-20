@@ -110,10 +110,12 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 									{company?.epci}
 								</span>
 							)}
-						<span>
-							<b>Siret : </b>
-							{company.siret}
-						</span>
+						{company.siret && (
+							<span>
+								<b>Siret : </b>
+								{company.siret}
+							</span>
+						)}
 						{company.websiteUrl && (
 							<span>
 								<b>Site web : </b>
@@ -219,20 +221,33 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 								</li>
 							))}
 						</ul>
-						<b className="text-lg mt-4">Contact :</b>
-						<span className="pl-1 flex items-center">
-							<PersonIcon className="pr-2" />
-							{company.contactLastName.toLocaleUpperCase()}{" "}
-							{company.contactFirstName}
-						</span>
-						<span className="pl-1  flex items-center">
-							<ContactMailIcon className="pr-2" />
-							{company.contactMail}
-						</span>
-						<span className="pl-1  flex items-center">
-							<ContactPhoneIcon className="pr-2" />
-							{company.contactNum}
-						</span>
+						{(company.contactLastName ||
+							company.contactFirstName ||
+							company.contactMail ||
+							company.contactNum ||
+							company.fixContactNum) && (
+							<b className="text-lg mt-4">Contact :</b>
+						)}
+						{(company.contactLastName ||
+							company.contactFirstName) && (
+							<span className="pl-1 flex items-center">
+								<PersonIcon className="pr-2" />
+								{company.contactLastName?.toLocaleUpperCase()}{" "}
+								{company.contactFirstName}
+							</span>
+						)}
+						{company.contactMail && (
+							<span className="pl-1  flex items-center">
+								<ContactMailIcon className="pr-2" />
+								{company.contactMail}
+							</span>
+						)}
+						{company.contactNum && (
+							<span className="pl-1  flex items-center">
+								<ContactPhoneIcon className="pr-2" />
+								{company.contactNum}
+							</span>
+						)}
 						{company.fixContactNum && (
 							<span className="pl-1  flex items-center">
 								<ContactPhoneIcon className="pr-2" />
