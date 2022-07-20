@@ -114,7 +114,6 @@ function GeneralDetails({
 					defaultValue=""
 					render={({ field: { onChange, value } }) => (
 						<TextField
-							required
 							label="Siret"
 							type="number"
 							variant="outlined"

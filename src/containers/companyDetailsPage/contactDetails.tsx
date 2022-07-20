@@ -20,13 +20,9 @@ function ContactDetails({ form }: any) {
 				<Controller
 					name={INPUT_FORM_TWO[0]}
 					control={control}
-					rules={{
-						required: "Le prénom de contact est requis",
-					}}
 					defaultValue=""
 					render={({ field: { onChange, value } }) => (
 						<TextField
-							required
 							value={value}
 							onChange={onChange}
 							label="Prénom"
@@ -40,13 +36,9 @@ function ContactDetails({ form }: any) {
 				<Controller
 					name={INPUT_FORM_TWO[1]}
 					control={control}
-					rules={{
-						required: "Le nom de contact est requis",
-					}}
 					defaultValue=""
 					render={({ field: { onChange, value } }) => (
 						<TextField
-							required
 							value={value}
 							onChange={onChange}
 							label="Nom"
@@ -79,12 +71,8 @@ function ContactDetails({ form }: any) {
 					name={INPUT_FORM_TWO[2]}
 					control={control}
 					defaultValue=""
-					rules={{
-						required: "Le numéro de téléphone mobile est requis",
-					}}
 					render={({ field: { onChange, value } }) => (
 						<TextField
-							required
 							value={value}
 							onChange={onChange}
 							label="Telephone mobile"
@@ -135,25 +123,6 @@ function ContactDetails({ form }: any) {
 			/>
 			<FormGroup row>
 				<Controller
-					rules={{
-						required: "La ville est requise",
-					}}
-					name={INPUT_FORM_TWO[4]}
-					control={control}
-					defaultValue=""
-					render={({ field: { onChange, value } }) => (
-						<TextField
-							required
-							helperText={errors?.town?.message}
-							error={!!errors?.town}
-							label="Ville"
-							variant="outlined"
-							value={value}
-							onChange={onChange}
-						/>
-					)}
-				/>
-				<Controller
 					name={INPUT_FORM_TWO[5]}
 					rules={{
 						required: "Le code postal est requis",
@@ -171,6 +140,25 @@ function ContactDetails({ form }: any) {
 							value={value}
 							onChange={onChange}
 							autoComplete="new-password"
+						/>
+					)}
+				/>
+				<Controller
+					rules={{
+						required: "La ville est requise",
+					}}
+					name={INPUT_FORM_TWO[4]}
+					control={control}
+					defaultValue=""
+					render={({ field: { onChange, value } }) => (
+						<TextField
+							required
+							helperText={errors?.town?.message}
+							error={!!errors?.town}
+							label="Ville"
+							variant="outlined"
+							value={value}
+							onChange={onChange}
 						/>
 					)}
 				/>
