@@ -83,6 +83,32 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 		<>
 			<h3>Que recherchez-vous?</h3>
 			<div className="company-details-form-stepper--intern-type">
+				<div className="select tablet:w-full">
+					<h4>
+						Acceptez-vous de prendre des stagiaires de moins de 18
+						ans ? *
+					</h4>
+
+					<Controller
+						name={INPUT_FORM_THREE[5]}
+						control={control}
+						defaultValue={false}
+						render={({ field: { onChange, value } }) => (
+							<RadioGroup value={value} onChange={onChange}>
+								<FormControlLabel
+									value
+									control={<Radio />}
+									label="Oui"
+								/>
+								<FormControlLabel
+									value={false}
+									control={<Radio />}
+									label="Non"
+								/>
+							</RadioGroup>
+						)}
+					/>
+				</div>
 				<h4>Quel type de stagiaires acceptez-vous d’accueillir ? *</h4>
 				<Controller
 					name={INPUT_FORM_THREE[0]}
@@ -230,11 +256,6 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 						</RadioGroup>
 					)}
 				/>
-				{errors[INPUT_FORM_THREE[3]] && (
-					<Alert severity="error">
-						{errors[INPUT_FORM_THREE[3]].message}
-					</Alert>
-				)}
 			</div>
 			<div className="select tablet:w-full">
 				<h4>Combien de stagiaires pouvez-vous accueillir par an ? *</h4>

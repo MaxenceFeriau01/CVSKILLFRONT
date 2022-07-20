@@ -33,6 +33,8 @@ class Company {
 
 	paidAndLongTermInternship!: boolean
 
+	minorAccepted!: boolean
+
 	logo!: any
 
 	town!: string

@@ -187,7 +187,8 @@ function GeneralDetails({
 				rules={{
 					maxLength: {
 						value: 1024,
-						message: "La description ne peut pas dépasser 1024",
+						message:
+							"La description ne peut pas dépasser 1024 charactères",
 					},
 				}}
 				control={control}

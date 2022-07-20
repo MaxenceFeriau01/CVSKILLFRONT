@@ -25,6 +25,7 @@ export const INPUT_FORM_THREE: Array<string> = [
 	"searchedJobs",
 	"paidAndLongTermInternship",
 	"desiredInternsNumber",
+	"minorAccepted",
 ]
 export const MAX_STEP_NUMBER: number = STEPS.length
 

@@ -141,7 +141,9 @@ function CompanyDetailsPage() {
 		newCompany.searchedJobs = data.searchedJobs.map((j: any) => ({
 			id: j,
 		}))
-
+		if (newCompany.websiteUrl === "") {
+			newCompany.websiteUrl = null
+		}
 		newCompany.searchedInternsType = data.searchedInternsType.map(
 			(t: any) =>
 				new InternType(t.periods, new InternStatus(t.value, t.label))
