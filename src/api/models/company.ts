@@ -1,4 +1,5 @@
 import Activity from "./activity"
+import City from "./city"
 import InternType from "./internType"
 import Job from "./job"
 
@@ -37,11 +38,7 @@ class Company {
 
 	logo!: any
 
-	town!: string
-
 	address!: string
-
-	postalCode!: string
 
 	type!: string
 
@@ -54,6 +51,8 @@ class Company {
 	department?: string
 
 	websiteUrl?: string
+
+	city?: City
 
 	constructor(
 		id: number,

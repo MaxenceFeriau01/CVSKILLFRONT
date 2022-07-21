@@ -26,7 +26,7 @@ function CompanyTile({ company, onClick, selectedCompanyId }: CompanyProps) {
 					<img src={imageUpload} alt="Default" />
 				)}
 			</div>
-			<h4>{company!.name}</h4>
+			<h4>{company.name}</h4>
 			<div className="overflow-hidden w-5/6">
 				{company.activities?.length > 0 && <b>activité(s) : </b>}
 				{company.activities?.map((activity, index) => (
@@ -38,9 +38,11 @@ function CompanyTile({ company, onClick, selectedCompanyId }: CompanyProps) {
 				))}
 			</div>
 			<span className="company-tile__postal">
-				<b>
-					{company.town} ({company.postalCode})
-				</b>
+				{company.city && (
+					<b>
+						{company.city.postalCode}, {company.city.name}
+					</b>
+				)}
 			</span>
 		</div>
 	)

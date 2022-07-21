@@ -111,13 +111,12 @@ function GeneralDetails({
 								"Le numéro de siret est composé de 14 chiffres",
 						},
 					}}
-					defaultValue=""
 					render={({ field: { onChange, value } }) => (
 						<TextField
 							label="Siret"
 							type="number"
 							variant="outlined"
-							value={value}
+							value={value ?? ""}
 							onChange={onChange}
 							helperText={
 								errors[INPUT_FORM_ONE[2]]

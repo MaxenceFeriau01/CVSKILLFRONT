@@ -81,7 +81,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 		<>
 			<h3>Que recherchez-vous?</h3>
 			<div className="company-details-form-stepper--intern-type">
-				<div className="select tablet:w-full">
+				<div className="select">
 					<h4>
 						Acceptez-vous de prendre des stagiaires de moins de 18
 						ans ? *
@@ -161,7 +161,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 					</Alert>
 				)}
 			</div>
-			<div className="select tablet:w-full" style={{ zIndex: 3 }}>
+			<div className="select" style={{ zIndex: 3 }}>
 				<h4>
 					Sur quels domaines d’activités et quels métiers pouvez-vous
 					accueillir des stagiaires ? *
@@ -198,7 +198,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 					</Alert>
 				)}
 			</div>
-			<div className="select tablet:w-full" style={{ zIndex: 2 }}>
+			<div className="select" style={{ zIndex: 2 }}>
 				<InputLabel>Le(s) métier(s) recherché(s)</InputLabel>
 				<Controller
 					name={INPUT_FORM_THREE[2]}
@@ -229,7 +229,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 					</Alert>
 				)}
 			</div>
-			<div className="select tablet:w-full">
+			<div className="select">
 				<h4>
 					Acceptez-vous de prendre des stagiaires de longues durée,
 					rémunérés ? *
@@ -255,7 +255,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 					)}
 				/>
 			</div>
-			<div className="select tablet:w-full">
+			<div className="select">
 				<h4>Combien de stagiaires pouvez-vous accueillir par an ? *</h4>
 				<Controller
 					name={INPUT_FORM_THREE[4]}

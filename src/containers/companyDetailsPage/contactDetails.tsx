@@ -1,12 +1,15 @@
-import { FormGroup, TextField } from "@mui/material"
-import { Controller } from "react-hook-form"
-import {
-	INPUT_FORM_ONE,
-	INPUT_FORM_TWO,
-	TYPE_COMPANY_OPTIONS,
-} from "./constants"
+import { Alert, FormGroup, InputLabel, TextField } from "@mui/material"
+import { Controller, FieldValues, UseFormReturn } from "react-hook-form"
+import ReactSelectOption from "../../api/models/reactSelectOption"
+import CustomSelect from "../../components/inputs/customSelect"
+import { INPUT_FORM_ONE, TYPE_COMPANY_OPTIONS } from "./constants"
 
-function ContactDetails({ form }: any) {
+interface ContactDetailsProps {
+	form: UseFormReturn<FieldValues, object>
+	cities?: ReactSelectOption[]
+}
+
+function ContactDetails({ form, cities }: ContactDetailsProps) {
 	const {
 		watch,
 		control,
@@ -18,7 +21,7 @@ function ContactDetails({ form }: any) {
 			<h3>Où vous contacter?</h3>
 			<FormGroup row>
 				<Controller
-					name={INPUT_FORM_TWO[0]}
+					name="contactFirstName"
 					control={control}
 					defaultValue=""
 					render={({ field: { onChange, value } }) => (
@@ -28,13 +31,11 @@ function ContactDetails({ form }: any) {
 							label="Prénom"
 							variant="outlined"
 							autoComplete="given-name"
-							helperText={errors[INPUT_FORM_TWO[0]]?.message}
-							error={!!errors[INPUT_FORM_TWO[0]]?.message}
 						/>
 					)}
 				/>
 				<Controller
-					name={INPUT_FORM_TWO[1]}
+					name="contactLastName"
 					control={control}
 					defaultValue=""
 					render={({ field: { onChange, value } }) => (
@@ -44,8 +45,6 @@ function ContactDetails({ form }: any) {
 							label="Nom"
 							variant="outlined"
 							autoComplete="family-name"
-							helperText={errors[INPUT_FORM_TWO[1]]?.message}
-							error={!!errors[INPUT_FORM_TWO[1]]}
 						/>
 					)}
 				/>
@@ -68,7 +67,7 @@ function ContactDetails({ form }: any) {
 			/>
 			<FormGroup row>
 				<Controller
-					name={INPUT_FORM_TWO[2]}
+					name="contactNum"
 					control={control}
 					defaultValue=""
 					render={({ field: { onChange, value } }) => (
@@ -79,13 +78,11 @@ function ContactDetails({ form }: any) {
 							variant="outlined"
 							type="tel"
 							autoComplete="tel"
-							helperText={errors[INPUT_FORM_TWO[2]]?.message}
-							error={!!errors[INPUT_FORM_TWO[2]]}
 						/>
 					)}
 				/>
 				<Controller
-					name={INPUT_FORM_TWO[9]}
+					name="fixContactNum"
 					control={control}
 					render={({ field: { onChange, value } }) => (
 						<TextField
@@ -95,13 +92,12 @@ function ContactDetails({ form }: any) {
 							variant="outlined"
 							type="tel"
 							autoComplete="tel"
-							helperText={errors[INPUT_FORM_TWO[9]]?.message}
 						/>
 					)}
 				/>
 			</FormGroup>
 			<Controller
-				name={INPUT_FORM_TWO[3]}
+				name="address"
 				control={control}
 				rules={{
 					required: "L'adresse est requise",
@@ -116,58 +112,44 @@ function ContactDetails({ form }: any) {
 						onChange={onChange}
 						className="form-control-full"
 						autoComplete="street-address"
-						helperText={errors[INPUT_FORM_TWO[3]]?.message}
-						error={!!errors[INPUT_FORM_TWO[3]]}
+						helperText={errors.address?.message}
+						error={!!errors.address?.error}
 					/>
 				)}
 			/>
-			<FormGroup row>
+
+			<div className="select z-10">
+				<InputLabel>Ville et code postal *</InputLabel>
 				<Controller
-					name={INPUT_FORM_TWO[5]}
 					rules={{
-						required: "Le code postal est requis",
+						required: "Ce champ est requis",
 					}}
+					name="city"
 					control={control}
-					defaultValue=""
-					render={({ field: { onChange, value } }) => (
-						<TextField
-							required
-							type="number"
-							helperText={errors?.postalCode?.message}
-							error={!!errors?.postalCode}
-							label="Code postal"
-							variant="outlined"
-							value={value}
-							onChange={onChange}
-							autoComplete="new-password"
+					render={({ field: { value, onChange, onBlur } }) => (
+						<CustomSelect
+							isSearchable
+							options={cities}
+							placeholder="Tapez la ville ou le code postal..."
+							onBlur={onBlur}
+							value={cities?.find(
+								(c: ReactSelectOption) => c.value === value
+							)}
+							onChange={(val: ReactSelectOption) =>
+								onChange(val.value)
+							}
 						/>
 					)}
 				/>
-				<Controller
-					rules={{
-						required: "La ville est requise",
-					}}
-					name={INPUT_FORM_TWO[4]}
-					control={control}
-					defaultValue=""
-					render={({ field: { onChange, value } }) => (
-						<TextField
-							required
-							helperText={errors?.town?.message}
-							error={!!errors?.town}
-							label="Ville"
-							variant="outlined"
-							value={value}
-							onChange={onChange}
-						/>
-					)}
-				/>
-			</FormGroup>
+				{errors?.city && (
+					<Alert severity="error">{errors.city.message}</Alert>
+				)}
+			</div>
 
 			{watch(INPUT_FORM_ONE[0]) === TYPE_COMPANY_OPTIONS[2].value && (
 				<>
 					<Controller
-						name={INPUT_FORM_TWO[6]}
+						name="region"
 						control={control}
 						defaultValue=""
 						render={({ field: { onChange, value } }) => (
@@ -184,7 +166,7 @@ function ContactDetails({ form }: any) {
 
 					<FormGroup row>
 						<Controller
-							name={INPUT_FORM_TWO[7]}
+							name="department"
 							control={control}
 							defaultValue=""
 							render={({ field: { onChange, value } }) => (
@@ -199,7 +181,7 @@ function ContactDetails({ form }: any) {
 							)}
 						/>
 						<Controller
-							name={INPUT_FORM_TWO[8]}
+							name="epci"
 							control={control}
 							defaultValue=""
 							render={({ field: { onChange, value } }) => (

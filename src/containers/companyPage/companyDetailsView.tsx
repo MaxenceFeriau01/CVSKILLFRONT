@@ -49,11 +49,11 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 							<li> <i>➔ Par mail</i> : ${company?.contactMail}</li> 
 							<li>
 								<i>➔ Par courrier</i> : ${company?.address},
-								${company?.postalCode}  ${company?.town}
+								${company?.city?.postalCode}  ${company?.city?.name}
 							</li>
 							<li>
 								<i>➔ Sur place</i> :  ${company?.address},
-								${company?.postalCode}  ${company?.town}
+							${company?.city?.postalCode}  ${company?.city?.name}
 							</li> 
 						</ul>` +
 						`<span class="text-sm">Ps : Ces informations vous seront envoyées par mail. Vérifiez vos spams ou courriers indésirables. </span>`,
@@ -91,7 +91,7 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 						</span>
 						<span>{company.address}</span>
 						<span>
-							{company.postalCode} {company.town}
+							{company.city?.postalCode} {company.city?.name}
 							{company.type === TYPE_COMPANY_OPTIONS[2].value &&
 								company?.department &&
 								`, ${company?.department}`}

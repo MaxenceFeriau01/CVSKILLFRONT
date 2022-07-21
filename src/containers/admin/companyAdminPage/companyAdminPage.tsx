@@ -59,20 +59,16 @@ function CompanyAdminPage() {
 		},
 
 		{
-			field: "town",
+			field: "city",
 			headerName: "Ville",
 			type: "string",
 			flex: 0.2,
+			valueGetter: params => params.row?.city?.name,
 		},
+
 		{
-			field: "postalCode",
-			headerName: "Code postal",
-			type: "string",
-			flex: 0.2,
-		},
-		{
-			field: "siret",
-			headerName: "Siret",
+			field: "type",
+			headerName: "Type",
 			type: "string",
 			flex: 0.2,
 		},

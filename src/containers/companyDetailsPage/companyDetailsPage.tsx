@@ -17,6 +17,8 @@ import activityService from "../../api/services/activityService"
 import ContactDetails from "./contactDetails"
 import GeneralDetails from "./generalDetails"
 import SearchDetails from "./searchDetails"
+import City from "../../api/models/city"
+import cityService from "../../api/services/cityService"
 
 interface PutCompany {
 	companyToUpdate: FormData
@@ -27,8 +29,6 @@ function CompanyDetailsPage() {
 	const { id } = useParams()
 	const navigate = useNavigate()
 
-	const [activities, setActivities] = useState<Array<ReactSelectOption>>()
-
 	const [{ alt, src, file }, setImg] = useState({
 		file: null,
 		src: "",
@@ -37,12 +37,26 @@ function CompanyDetailsPage() {
 
 	const form = useForm({ mode: "onChange" })
 
-	useQuery("activities", () =>
-		activityService.getAllWithFilters().then(res => {
-			setActivities(
+	const activitiesApi = useQuery("activities", () =>
+		activityService
+			.getAllWithFilters()
+			.then(res =>
 				res.map((a: Activity) => new ReactSelectOption(a.id, a.name))
 			)
-		})
+	)
+
+	const citiesApi = useQuery("cities", () =>
+		cityService
+			.getAllWithFilters()
+			.then(res =>
+				res.map(
+					(c: City) =>
+						new ReactSelectOption(
+							c.id,
+							`${c.postalCode}, ${c.name}`
+						)
+				)
+			)
 	)
 
 	const apiCompany = useQuery(
@@ -61,6 +75,9 @@ function CompanyDetailsPage() {
 									shouldValidate: true,
 								}
 							)
+							break
+						case "city":
+							form.setValue(key, res[key]?.id)
 							break
 						case "searchedInternsType":
 							form.setValue(
@@ -138,6 +155,7 @@ function CompanyDetailsPage() {
 				id: a,
 			})
 		)
+		newCompany.city = new City(data.city)
 		newCompany.searchedJobs = data.searchedJobs.map((j: any) => ({
 			id: j,
 		}))
@@ -179,14 +197,17 @@ function CompanyDetailsPage() {
 				<div className="company-details-form-stepper">
 					<GeneralDetails
 						form={form}
-						activities={activities && activities}
+						activities={activitiesApi?.data}
 						img={{ alt, src, file }}
 						setImg={setImg}
 					/>
-					<ContactDetails form={form} />
+					<ContactDetails
+						form={form}
+						cities={citiesApi?.data && citiesApi.data}
+					/>
 					<SearchDetails
 						form={form}
-						activities={activities && activities}
+						activities={activitiesApi?.data}
 					/>
 				</div>
 

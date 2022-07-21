@@ -7,18 +7,7 @@ export const STEPS: Array<string> = [
 ]
 
 export const INPUT_FORM_ONE: Array<string> = ["type", "name", "siret"]
-export const INPUT_FORM_TWO: Array<string> = [
-	"contactFirstName",
-	"contactLastName",
-	"contactNum",
-	"address",
-	"town",
-	"postalCode",
-	"region",
-	"department",
-	"epci",
-	"fixContactNum",
-]
+
 export const INPUT_FORM_THREE: Array<string> = [
 	"searchedInternsType",
 	"searchedActivities",
