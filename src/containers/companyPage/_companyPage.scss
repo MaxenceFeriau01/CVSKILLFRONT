@@ -192,7 +192,8 @@ $company-page-header-height-mobile: 90px;
 			box-shadow: 0 2px 4px rgb(0 0 0 / 8%);
 			border-bottom: 2px solid rgba(0, 0, 0, 0.08);
 			overflow-y: auto;
-			max-height: 50%;
+            min-height: 45%;
+			max-height: 90%;
 
 			@include breakpoint(mobile) {
 				overflow-y: unset;
