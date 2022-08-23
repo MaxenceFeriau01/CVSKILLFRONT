@@ -66,9 +66,11 @@ function RegistrationPage() {
 		internStatusService
 			.getAllWithFilters()
 			.then(res =>
-				res.map(
-					(s: InternStatus) => new ReactSelectOption(s.id, s.name)
-				)
+				res
+					.sort((a, b) => a.id - b.id)
+					.map(
+						(s: InternStatus) => new ReactSelectOption(s.id, s.name)
+					)
 			)
 	)
 
