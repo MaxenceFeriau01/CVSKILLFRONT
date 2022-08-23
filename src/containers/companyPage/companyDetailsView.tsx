@@ -99,35 +99,6 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 								company?.region &&
 								`, ${company?.region}`}
 						</span>
-						<span className="mt-2">
-							<b>Type : </b>
-							{company.type}
-						</span>
-						{company.type === TYPE_COMPANY_OPTIONS[2].value &&
-							company?.epci && (
-								<span>
-									<b>EPCI : </b>
-									{company?.epci}
-								</span>
-							)}
-						{company.siret && (
-							<span>
-								<b>Siret : </b>
-								{company.siret}
-							</span>
-						)}
-						{company.websiteUrl && (
-							<span>
-								<b>Site web : </b>
-								<a
-									href={company.websiteUrl}
-									target="_blank"
-									rel="noreferrer"
-								>
-									{company.websiteUrl}
-								</a>
-							</span>
-						)}
 						<HasRight roles={[Role.USER]}>
 							{apiAppliedCompanies.data?.includes(company.id) ? (
 								<span className="mt-2 mb-1 text-info  p-1">
@@ -143,6 +114,29 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 								</Button>
 							)}
 						</HasRight>
+						<span className="mt-2">
+							<b>Type : </b>
+							{company.type}
+						</span>
+						{company.type === TYPE_COMPANY_OPTIONS[2].value &&
+							company?.epci && (
+								<span>
+									<b>EPCI : </b>
+									{company?.epci}
+								</span>
+							)}
+						{company.websiteUrl && (
+							<span>
+								<b>Site web : </b>
+								<a
+									href={company.websiteUrl}
+									target="_blank"
+									rel="noreferrer"
+								>
+									{company.websiteUrl}
+								</a>
+							</span>
+						)}
 					</header>
 					<div className="company-details-container-view-content">
 						<p className="mb-2">{company?.description}</p>
