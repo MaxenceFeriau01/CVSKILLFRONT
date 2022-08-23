@@ -119,7 +119,7 @@ function ContactDetails({ form, cities }: ContactDetailsProps) {
 			/>
 
 			<div className="select z-10">
-				<InputLabel>Ville et code postal *</InputLabel>
+				<InputLabel>Code postal, Ville *</InputLabel>
 				<Controller
 					rules={{
 						required: "Ce champ est requis",

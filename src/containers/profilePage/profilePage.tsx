@@ -143,9 +143,9 @@ function ProfilePage() {
 
 	useQuery("statuses", () =>
 		internStatusService.getAllWithFilters().then(res => {
-			const is: Array<ReactSelectOption> = res.map(
-				(s: InternStatus) => new ReactSelectOption(s.id, s.name)
-			)
+			const is: Array<ReactSelectOption> = res
+				.sort((a, b) => a.id - b.id)
+				.map((s: InternStatus) => new ReactSelectOption(s.id, s.name))
 			setStatusesOptions(is)
 		})
 	)

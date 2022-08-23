@@ -54,7 +54,11 @@ function CompanyPage() {
 	const statuses = useQuery("statuses", () =>
 		internStatusService
 			.getAllWithFilters()
-			.then(res => res.map(r => new ReactSelectOption(r.id, r.name)))
+			.then(res =>
+				res
+					.sort((a, b) => a.id - b.id)
+					.map(r => new ReactSelectOption(r.id, r.name))
+			)
 	)
 
 	function selectHandleActivityChange(evt: any[]) {

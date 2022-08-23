@@ -45,7 +45,11 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 	const apiStatuses = useQuery("apiStatuses", () =>
 		internStatusService
 			.getAllWithFilters()
-			.then(res => res.map(r => new ReactSelectOption(r.id, r.name)))
+			.then(res =>
+				res
+					.sort((a, b) => a.id - b.id)
+					.map(r => new ReactSelectOption(r.id, r.name))
+			)
 	)
 
 	function handleCheck(value: ReactSelectOption) {
