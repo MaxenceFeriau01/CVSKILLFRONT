@@ -215,38 +215,44 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 								</li>
 							))}
 						</ul>
-						{(company.contactLastName ||
-							company.contactFirstName ||
-							company.contactMail ||
-							company.contactNum ||
-							company.fixContactNum) && (
-							<b className="text-lg mt-4">Contact :</b>
-						)}
-						{(company.contactLastName ||
-							company.contactFirstName) && (
-							<span className="pl-1 flex items-center">
-								<PersonIcon className="pr-2" />
-								{company.contactLastName?.toLocaleUpperCase()}{" "}
-								{company.contactFirstName}
-							</span>
-						)}
-						{company.contactMail && (
-							<span className="pl-1  flex items-center">
-								<ContactMailIcon className="pr-2" />
-								{company.contactMail}
-							</span>
-						)}
-						{company.contactNum && (
-							<span className="pl-1  flex items-center">
-								<ContactPhoneIcon className="pr-2" />
-								{company.contactNum}
-							</span>
-						)}
-						{company.fixContactNum && (
-							<span className="pl-1  flex items-center">
-								<ContactPhoneIcon className="pr-2" />
-								{company.fixContactNum}
-							</span>
+						{apiAppliedCompanies.data?.includes(company.id) ? (
+							<>
+								{(company.contactLastName ||
+									company.contactFirstName ||
+									company.contactMail ||
+									company.contactNum ||
+									company.fixContactNum) && (
+									<b className="text-lg mt-4">Contact :</b>
+								)}
+								{(company.contactLastName ||
+									company.contactFirstName) && (
+									<span className="pl-1 flex items-center">
+										<PersonIcon className="pr-2" />
+										{company.contactLastName?.toLocaleUpperCase()}{" "}
+										{company.contactFirstName}
+									</span>
+								)}
+								{company.contactMail && (
+									<span className="pl-1  flex items-center">
+										<ContactMailIcon className="pr-2" />
+										{company.contactMail}
+									</span>
+								)}
+								{company.contactNum && (
+									<span className="pl-1  flex items-center">
+										<ContactPhoneIcon className="pr-2" />
+										{company.contactNum}
+									</span>
+								)}
+								{company.fixContactNum && (
+									<span className="pl-1  flex items-center">
+										<ContactPhoneIcon className="pr-2" />
+										{company.fixContactNum}
+									</span>
+								)}
+							</>
+						) : (
+							""
 						)}
 					</div>
 				</div>
