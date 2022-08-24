@@ -118,7 +118,7 @@ function RegistrationPage() {
 				<Typography variant="h4" mb={2}>
 					Inscription
 				</Typography>
-				<img src={logo} alt="logo" />
+				<img src={logo} alt="logo" width="300" height="90" />
 				<div className="registration-form--scroll">
 					<UserControls
 						jobsOptions={jobsOptions}

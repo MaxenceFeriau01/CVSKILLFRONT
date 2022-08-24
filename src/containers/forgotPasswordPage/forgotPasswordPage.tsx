@@ -26,7 +26,7 @@ function ForgotPassword() {
 				<Typography variant="h4" mb={2}>
 					Mot de passe oublié
 				</Typography>
-				<img src={logo} alt="logo" />
+				<img src={logo} alt="logo" width="300" height="90" />
 
 				{postForgotPassword.isSuccess ? (
 					<>

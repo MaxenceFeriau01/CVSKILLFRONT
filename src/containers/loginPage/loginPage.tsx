@@ -43,7 +43,7 @@ function LoginPage() {
 				<Typography variant="h4" mb={2}>
 					Authentification
 				</Typography>
-				<img src={logo} alt="logo" />
+				<img src={logo} alt="logo" width="300" height="90" />
 				<Controller
 					name="email"
 					control={control}

@@ -21,6 +21,8 @@ function CompanyTile({ company, onClick, selectedCompanyId }: CompanyProps) {
 					<img
 						alt="Logo"
 						src={`data:image/png;base64,${company.logo}`}
+						width="300"
+						height="140"
 					/>
 				) : (
 					<img src={imageUpload} alt="Default" />

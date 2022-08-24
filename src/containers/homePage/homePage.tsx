@@ -23,10 +23,17 @@ function HomePage() {
 				className="home__logo"
 				src={logo}
 				alt="Entreprendre ensemble"
+				width="300"
+				height="90"
 			/>
 			<div className="home__action__container">
 				<div className="action-call-container">
-					<img src={working} alt="Internship" />
+					<img
+						src={working}
+						alt="Internship"
+						width="72"
+						height="72"
+					/>
 					<h2 className="text-2xl text-secondary font-bold">
 						Entreprises
 					</h2>
@@ -39,7 +46,12 @@ function HomePage() {
 					</Button>
 				</div>
 				<div className="action-call-container">
-					<img src={internship} alt="Internship" />
+					<img
+						src={internship}
+						alt="Internship"
+						width="72"
+						height="72"
+					/>
 					<h2 className="text-2xl text-secondary font-bold">
 						Stagiaires
 					</h2>
