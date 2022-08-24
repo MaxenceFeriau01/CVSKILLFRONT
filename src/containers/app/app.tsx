@@ -9,7 +9,7 @@ import variables from "../../resources/scss/_base.module.scss"
 import Footer from "../../components/footer/footer"
 import UserProvider from "../../contexts/UserProvider"
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
 
 const theme = createTheme({
 	palette: {

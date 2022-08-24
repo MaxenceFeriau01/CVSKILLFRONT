@@ -58,7 +58,7 @@ function ResetPassword() {
 				<Typography variant="h4" mb={2}>
 					Réinitialisation
 				</Typography>
-				<img src={logo} alt="logo" />
+				<img src={logo} alt="logo" width="300" height="90" />
 
 				<Controller
 					name="password"

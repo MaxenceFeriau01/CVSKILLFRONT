@@ -46,6 +46,8 @@ function Header() {
 						className="header--home"
 						src={dkStageLogo}
 						alt="logo"
+						width="136"
+						height="38"
 					/>
 				</Link>
 
