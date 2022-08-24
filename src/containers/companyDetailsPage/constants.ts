@@ -32,8 +32,8 @@ export const TYPE_COMPANY_OPTIONS: Array<ReactSelectOption> = [
 		value: "Collectivité",
 	},
 	{
-		label: "EPLE",
-		value: "EPLE",
+		label: "Etablissement public local d'enseignement (EPLE)",
+		value: "Etablissement public local d'enseignement (EPLE)",
 	},
 	{
 		label: "Etablissement public national scientifique, culturel et professionnel (EPSCP)",
