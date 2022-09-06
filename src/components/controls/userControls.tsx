@@ -139,6 +139,7 @@ function UserControls({
 								max: "2100-01-01",
 							}}
 							onChange={onChange}
+							onClick={evt => evt.preventDefault()}
 							value={value || new Date("0000-00-00")}
 							required
 						/>
@@ -241,6 +242,7 @@ function UserControls({
 								max: "2100-01-01",
 							}}
 							onChange={onChange}
+							onClick={evt => evt.preventDefault()}
 							value={value || new Date("00-00-0000")}
 							required
 							helperText="Date préférée"
@@ -269,6 +271,7 @@ function UserControls({
 								max: "2100-01-01",
 							}}
 							onChange={onChange}
+							onClick={evt => evt.preventDefault()}
 							value={value || new Date("0000-00-00")}
 							required
 							helperText="Date préférée"
