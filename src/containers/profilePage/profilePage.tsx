@@ -26,6 +26,7 @@ import {
 } from "../../utils/constants"
 import InternStatus from "../../api/models/internStatus"
 import internStatusService from "../../api/services/internStatusService"
+import { exportItem } from "../../utils/exportUtil"
 
 function ProfilePage() {
 	const [activitiesOptions, setActivitiesOptions] =
@@ -185,9 +186,16 @@ function ProfilePage() {
 		putUser.mutate({ userId: data.id, updatedUser: formData })
 	}
 
+	const exportData = () => {
+		exportItem(apiUser.data, `export_${apiUser.data.email}_${Date.now()}`)
+	}
+
 	return (
 		<section className="page profile">
 			<img src={profile} alt="profile" />
+			<Button type="button" onClick={() => exportData()}>
+				Télécharger les données
+			</Button>
 			{apiUser?.data?.activated === false && (
 				<b className="user__deactivated">
 					<WarningIcon color="warning" />

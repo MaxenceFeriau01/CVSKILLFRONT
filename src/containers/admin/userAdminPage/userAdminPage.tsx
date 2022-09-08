@@ -3,6 +3,8 @@ import { useMutation, useQuery, useQueryClient } from "react-query"
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked"
 import { InputAdornment, TextField } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
+import FileDownload from "@mui/icons-material/FileDownload"
+import { Edit } from "@mui/icons-material"
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked"
 import {
 	DataGrid,
@@ -14,11 +16,12 @@ import {
 
 import Swal from "sweetalert2"
 import SearchIcon from "@mui/icons-material/Search"
-import { Edit } from "@mui/icons-material"
+
 import { useNavigate } from "react-router-dom"
 import userService from "../../../api/services/userService"
 import { PAGE, ROWS_OPTIONS, SIZE } from "./constant"
 import User from "../../../api/models/user"
+import { exportItem } from "../../../utils/exportUtil"
 
 const locale = frFR.components.MuiDataGrid.defaultProps.localeText
 
@@ -81,6 +84,12 @@ function UserAdminPage() {
 			getActions: user => {
 				return [
 					<GridActionsCellItem
+						icon={<FileDownload color="primary" />}
+						label="Exporter"
+						onClick={() => getUserInfo.mutate(user.id)}
+						title="Exporter"
+					/>,
+					<GridActionsCellItem
 						icon={<Edit color="secondary" />}
 						label="Modifier"
 						onClick={() => navigate(`/user-details/${user.id}`)}
@@ -140,6 +149,11 @@ function UserAdminPage() {
 			keepPreviousData: true,
 		}
 	)
+	const getUserInfo = useMutation((id: any) => userService.getById(id), {
+		onSuccess: (data: User) => {
+			exportItem(data, `export_${data.email}_${Date.now()}`)
+		},
+	})
 	const postActive = useMutation(
 		({ activated, userId }: any) => userService.active(activated, userId),
 		{
