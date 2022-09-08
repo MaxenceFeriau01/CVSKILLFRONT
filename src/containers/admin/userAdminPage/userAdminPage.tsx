@@ -29,6 +29,7 @@ function UserAdminPage() {
 	const [search, setSearch] = useState<string>("")
 	const [pageSize, setPageSize] = useState<number>(SIZE)
 	const [formattedUsers, setFormattedUsers] = useState<any>([])
+	const [exportUser, setExportUser] = useState<number>(0)
 	const navigate = useNavigate()
 	const queryClient = useQueryClient()
 
@@ -86,7 +87,7 @@ function UserAdminPage() {
 					<GridActionsCellItem
 						icon={<FileDownload color="primary" />}
 						label="Exporter"
-						onClick={() => getUserInfo.mutate(user.id)}
+						onClick={() => setExportUser(Number(user.id))}
 						title="Exporter"
 					/>,
 					<GridActionsCellItem
@@ -149,7 +150,13 @@ function UserAdminPage() {
 			keepPreviousData: true,
 		}
 	)
-	const getUserInfo = useMutation((id: any) => userService.getById(id), {
+	// const getUserInfo = useMutation((id: any) => userService.getById(id), {
+	// 	onSuccess: (data: User) => {
+	// 		exportItem(data, `export_${data.email}_${Date.now()}`)
+	// 	},
+	// })
+	useQuery(["rgpd-user", exportUser], () => userService.getById(exportUser), {
+		enabled: exportUser > 0,
 		onSuccess: (data: User) => {
 			exportItem(data, `export_${data.email}_${Date.now()}`)
 		},
