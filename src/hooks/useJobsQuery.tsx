@@ -10,11 +10,7 @@ function useJobsQuery(): useJobsQueryType {
 	const jobs = useQuery<ReactSelectOption[]>("jobs", () =>
 		jobService
 			.getAllWithFilters()
-			.then(res =>
-				res
-					.sort((a, b) => a.id - b.id)
-					.map(r => new ReactSelectOption(r.id, r.name))
-			)
+			.then(res => res.map(r => new ReactSelectOption(r.id, r.name)))
 	)
 
 	return { jobs }

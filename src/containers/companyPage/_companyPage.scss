@@ -8,7 +8,7 @@ $company-page-header-height-mobile: 120px;
 		@include breakpoint {
 			height: $company-page-header-height-desktop;
 		}
-
+		max-width: 1400px;
 		height: $company-page-header-height-mobile;
 		display: flex;
 		justify-content: space-evenly;
