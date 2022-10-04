@@ -10,14 +10,14 @@ import CompanyTile from "./companyTile"
 import UserContext from "../../contexts/user"
 import useActivitiesQuery from "../../hooks/useActivitiesQuery"
 import useJobsQuery from "../../hooks/useJobsQuery"
-import useStatutesQuery from "../../hooks/useStatutesQuery"
+import useStatusesQuery from "../../hooks/useStatusesQuery"
 import CompanyDetailsView from "./companyDetailsView"
-import useCompaniesInfiniteQuery from "./hooks/useCompagniesInfiniteQuery"
+import useCompaniesInfiniteQuery from "./hooks/useCompaniesInfiniteQuery"
 import useSelectedCompany from "./hooks/useSelectedCompany"
 
 function CompanyPage() {
 	const { user } = useContext(UserContext)
-	const { statuses } = useStatutesQuery()
+	const { statuses } = useStatusesQuery()
 	const { activities } = useActivitiesQuery()
 	const { jobs } = useJobsQuery()
 
