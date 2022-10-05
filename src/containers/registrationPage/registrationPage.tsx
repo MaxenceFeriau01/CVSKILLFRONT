@@ -11,12 +11,12 @@ import activityService from "../../api/services/activityService"
 import jobService from "../../api/services/jobService"
 import userService from "../../api/services/userService"
 
-import logo from "../../resources/images/logo.svg"
-import useHideElement from "../../hooks/hideElement"
-import UserControls from "../../components/controls/userControls"
-import { STATUS_COLLEGE_STUDENT } from "../../utils/constants"
 import InternStatus from "../../api/models/internStatus"
-import internStatusService from "../../api/services/internStatusService"
+import UserControls from "../../components/controls/userControls"
+import useHideElement from "../../hooks/hideElement"
+import useStatusesQuery from "../../hooks/useStatusesQuery"
+import logo from "../../resources/images/logo.svg"
+import { STATUS_COLLEGE_STUDENT } from "../../utils/constants"
 
 function RegistrationPage() {
 	useHideElement(["header", "footer"])
@@ -62,17 +62,7 @@ function RegistrationPage() {
 		})
 	)
 
-	const getStatuses = useQuery("statuses", () =>
-		internStatusService
-			.getAllWithFilters()
-			.then(res =>
-				res
-					.sort((a, b) => a.id - b.id)
-					.map(
-						(s: InternStatus) => new ReactSelectOption(s.id, s.name)
-					)
-			)
-	)
+	const { statuses } = useStatusesQuery()
 
 	const onSubmit = (data: any) => {
 		const formData = new FormData()
@@ -123,7 +113,7 @@ function RegistrationPage() {
 					<UserControls
 						jobsOptions={jobsOptions}
 						activitiesOptions={activitiesOptions}
-						statusesOptions={getStatuses?.data && getStatuses.data}
+						statusesOptions={statuses?.data && statuses.data}
 						control={control}
 						watch={watch}
 						errors={errors}

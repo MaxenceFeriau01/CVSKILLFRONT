@@ -1,5 +1,5 @@
 $company-page-header-height-desktop: 75px;
-$company-page-header-height-mobile: 90px;
+$company-page-header-height-mobile: 120px;
 
 .company-page {
 	overflow-y: unset !important;
@@ -8,10 +8,10 @@ $company-page-header-height-mobile: 90px;
 		@include breakpoint {
 			height: $company-page-header-height-desktop;
 		}
-
+		max-width: 1400px;
 		height: $company-page-header-height-mobile;
 		display: flex;
-		justify-content: center;
+		justify-content: space-evenly;
 		align-items: center;
 		flex-wrap: wrap;
 		margin: 0 auto;
@@ -192,8 +192,8 @@ $company-page-header-height-mobile: 90px;
 			box-shadow: 0 2px 4px rgb(0 0 0 / 8%);
 			border-bottom: 2px solid rgba(0, 0, 0, 0.08);
 			overflow-y: auto;
-            min-height: 40%;
-            max-height: 60%;
+			min-height: 40%;
+			max-height: 60%;
 
 			@include breakpoint(mobile) {
 				overflow-y: unset;
