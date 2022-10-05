@@ -16,19 +16,21 @@ interface useCompaniesInfiniteQueryType {
 function useCompaniesInfiniteQuery(setSelectedCompany: {
 	(company: Company | null): void
 }): useCompaniesInfiniteQueryType {
-	const [filter, setFilter] = useState<number[] | null | string[]>(null)
+	const [activities, setActivities] = useState<number[] | null | string[]>(
+		null
+	)
 	const [status, setStatus] = useState<number | null | string>(null)
 	const [jobs, setJobs] = useState<number[] | null | string[]>(null)
 	const canFetch = useRef(true)
 
 	const companiesInfiniteQuery = useInfiniteQuery(
-		["companies", filter, status, jobs],
+		["companies", activities, status, jobs],
 		({ pageParam = PAGE }) =>
 			companyService.getAllPaginated({
 				page: pageParam,
 				size: SIZE,
-				activities: filter?.join(","),
-				jobs: filter?.join(","),
+				activities: activities?.join(","),
+				jobs: jobs?.join(","),
 				statusId: status,
 			}),
 		{
@@ -55,7 +57,7 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 
 	function setActivityFilter(evt: ReactSelectOption[]) {
 		setSelectedCompany(null)
-		setFilter(evt.length > 0 ? evt.map(x => x.value.toString()) : null)
+		setActivities(evt.length > 0 ? evt.map(x => x.value.toString()) : null)
 	}
 
 	function setStatusFilter(option: ReactSelectOption) {

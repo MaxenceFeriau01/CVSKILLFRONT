@@ -10,16 +10,16 @@ import { Controller } from "react-hook-form"
 import { useQuery } from "react-query"
 import Job from "../../api/models/job"
 import ReactSelectOption from "../../api/models/reactSelectOption"
-import internStatusService from "../../api/services/internStatusService"
 import jobService from "../../api/services/jobService"
 import CustomSelect from "../../components/inputs/customSelect"
+import useStatusesQuery from "../../hooks/useStatusesQuery"
 import {
-	STUDENT_PERIOD_OPTIONS,
 	STATUS_COLLEGE_STUDENT,
 	STATUS_COLLEGE_STUDENT_PERIOD,
 	STATUS_HIGH_SCHOOL_STUDENT,
 	STATUS_HIGH_SCHOOL_STUDENT_PERIOD,
 	STATUS_STUDENT,
+	STUDENT_PERIOD_OPTIONS,
 } from "../../utils/constants"
 import { INPUT_FORM_THREE, INTERN_NUMBER_OPTIONS } from "./constants"
 
@@ -42,15 +42,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 			)
 	)
 
-	const apiStatuses = useQuery("apiStatuses", () =>
-		internStatusService
-			.getAllWithFilters()
-			.then(res =>
-				res
-					.sort((a, b) => a.id - b.id)
-					.map(r => new ReactSelectOption(r.id, r.name))
-			)
-	)
+	const { statuses } = useStatusesQuery()
 
 	function handleCheck(value: ReactSelectOption) {
 		if (value.label === STATUS_COLLEGE_STUDENT) {
@@ -120,10 +112,10 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 					}}
 					render={({ field: { onChange, value } }) => (
 						<div className="company-details-form__checkbox__group ">
-							{apiStatuses?.data?.map((s: ReactSelectOption) => (
+							{statuses?.data?.map((s: ReactSelectOption) => (
 								<div
 									style={
-										s.value === apiStatuses?.data[2].value
+										s.value === statuses?.data[2].value
 											? {
 													zIndex: 2,
 											  }
@@ -146,7 +138,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 									/>
 
 									<InternStatusChoice
-										apiStatuses={apiStatuses}
+										apiStatuses={statuses}
 										onChange={onChange}
 										value={value}
 										internTypeLabel={s.label}

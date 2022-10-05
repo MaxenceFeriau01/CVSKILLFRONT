@@ -4,9 +4,9 @@ import { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useMutation, useQuery } from "react-query"
 
-import Swal from "sweetalert2"
-import { useParams } from "react-router-dom"
 import WarningIcon from "@mui/icons-material/Warning"
+import { useParams } from "react-router-dom"
+import Swal from "sweetalert2"
 import Activity from "../../api/models/activity"
 import Job from "../../api/models/job"
 import ReactSelectOption from "../../api/models/reactSelectOption"
@@ -15,25 +15,24 @@ import activityService from "../../api/services/activityService"
 import jobService from "../../api/services/jobService"
 import userService from "../../api/services/userService"
 
-import profile from "../../resources/images/profile.svg"
-import UserControls from "../../components/controls/userControls"
 import FileDb from "../../api/models/fileDb"
+import UserControls from "../../components/controls/userControls"
 import UserContext from "../../contexts/user"
+import profile from "../../resources/images/profile.svg"
 
+import InternStatus from "../../api/models/internStatus"
+import useStatusesQuery from "../../hooks/useStatusesQuery"
 import {
 	STATUS_COLLEGE_STUDENT,
 	STATUS_HIGH_SCHOOL_STUDENT,
 } from "../../utils/constants"
-import InternStatus from "../../api/models/internStatus"
-import internStatusService from "../../api/services/internStatusService"
 import { exportItem } from "../../utils/exportUtil"
 
 function ProfilePage() {
 	const [activitiesOptions, setActivitiesOptions] =
 		useState<Array<ReactSelectOption>>()
 	const [jobsOptions, setJobsOptions] = useState<Array<ReactSelectOption>>()
-	const [statusesOptions, setStatusesOptions] =
-		useState<Array<ReactSelectOption>>()
+	useState<Array<ReactSelectOption>>()
 
 	const { user, setUser } = useContext(UserContext)
 	const {
@@ -142,14 +141,7 @@ function ProfilePage() {
 		})
 	)
 
-	useQuery("statuses", () =>
-		internStatusService.getAllWithFilters().then(res => {
-			const is: Array<ReactSelectOption> = res
-				.sort((a, b) => a.id - b.id)
-				.map((s: InternStatus) => new ReactSelectOption(s.id, s.name))
-			setStatusesOptions(is)
-		})
-	)
+	const { statuses } = useStatusesQuery()
 
 	const onSubmit = (data: any) => {
 		const formData = new FormData()
@@ -209,7 +201,7 @@ function ProfilePage() {
 				<UserControls
 					jobsOptions={jobsOptions}
 					activitiesOptions={activitiesOptions}
-					statusesOptions={statusesOptions}
+					statusesOptions={statuses?.data}
 					control={control}
 					watch={watch}
 					errors={errors}
