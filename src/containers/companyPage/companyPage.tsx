@@ -30,6 +30,7 @@ function CompanyPage() {
 		setActivityFilter,
 		setStatusFilter,
 		setJobsFilter,
+		selectedStatusFilter,
 	} = useCompaniesInfiniteQuery(setSelectedCompany)
 
 	return (
@@ -58,10 +59,15 @@ function CompanyPage() {
 						isSearchable
 						name="selectJob"
 					/>
+
 					<CustomSelect
 						className="w-10/12 pt-1 tablet:w-[30%]"
 						placeholder="Par status recherché"
-						options={statuses.data}
+						options={statuses?.data}
+						value={statuses?.data?.find(
+							(c: ReactSelectOption) =>
+								c.value === selectedStatusFilter
+						)}
 						onChange={(e: ReactSelectOption) => setStatusFilter(e)}
 						isClearable
 						isSearchable

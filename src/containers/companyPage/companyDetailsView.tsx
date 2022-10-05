@@ -30,6 +30,7 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 		{
 			enabled:
 				user !== null &&
+				userService.getRoles().length > 0 &&
 				!hasRoles([Role.ADMIN], userService.getRoles()),
 		}
 	)
