@@ -32,6 +32,7 @@ function UserProvider({ children }: UserProviderProps) {
 				user,
 				userRoles,
 				setUser,
+				setUserRoles,
 			}}
 		>
 			{children}

@@ -27,15 +27,15 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 	)
 	const [selectedStatusFilter, setSelectedStatusFilter] = useState<
 		number | null | string
-	>(user?.internStatus?.id)
+	>(isNotAdmin() ? user?.internStatus?.id : null)
 
 	useEffect(() => {
-		if (
-			user &&
-			userRoles.length > 0 &&
-			!hasRoles([Role.ADMIN], userRoles)
-		) {
+		if (isNotAdmin()) {
 			setSelectedStatusFilter(user.internStatus.id)
+		}
+
+		return () => {
+			setSelectedStatusFilter(null)
 		}
 	}, [user, userRoles])
 
@@ -60,6 +60,12 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 			},
 		}
 	)
+
+	function isNotAdmin() {
+		return (
+			user && userRoles.length > 0 && !hasRoles([Role.ADMIN], userRoles)
+		)
+	}
 
 	function handleScroll(e: React.UIEvent<HTMLDivElement, UIEvent>) {
 		const bottom =
