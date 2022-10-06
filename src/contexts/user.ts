@@ -2,7 +2,9 @@ import React from "react"
 
 export const defaultState = {
 	user: null,
+	userRoles: [],
 	setUser: () => {},
+	setUserRoles: () => {},
 }
 
 const UserContext = React.createContext<any>(defaultState)

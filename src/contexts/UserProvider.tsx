@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import userService from "../api/services/userService"
 import UserContext, { defaultState } from "./user"
 
 interface UserProviderProps {
@@ -6,6 +7,9 @@ interface UserProviderProps {
 }
 
 function UserProvider({ children }: UserProviderProps) {
+	const [user, setUser] = useState(defaultState.user)
+	const [userRoles, setUserRoles] = useState<string[]>([])
+
 	useEffect(() => {
 		// get user with jwt token from local storage
 		const storageItem = localStorage.getItem("user")
@@ -16,13 +20,19 @@ function UserProvider({ children }: UserProviderProps) {
 			setUser(lUser)
 		}
 	}, [])
-	const [user, setUser] = useState(defaultState.user)
+
+	useEffect(() => {
+		if (user != null)
+			userService.getUserRoles().then(res => setUserRoles(res))
+	}, [user])
 
 	return (
 		<UserContext.Provider
 			value={{
 				user,
+				userRoles,
 				setUser,
+				setUserRoles,
 			}}
 		>
 			{children}

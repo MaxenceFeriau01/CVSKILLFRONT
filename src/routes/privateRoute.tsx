@@ -12,9 +12,9 @@ function PrivateRoute({
 	children,
 	roles,
 }: PrivateRouteProps): ReactElement<any, any> | null {
-	const [usersRoles, setUsersRoles] = useState<null | Array<string>>(null)
+	const [userRoles, setUserRoles] = useState<null | Array<string>>(null)
 	useEffect(() => {
-		userService.getUserRoles().then(res => setUsersRoles(res))
+		userService.getUserRoles().then(res => setUserRoles(res))
 	}, [])
 	const location = useLocation()
 
@@ -22,8 +22,8 @@ function PrivateRoute({
 		return <Navigate to="/login" state={{ from: location }} />
 	}
 
-	if (usersRoles != null) {
-		if (!hasRoles(roles || [], usersRoles)) {
+	if (userRoles != null) {
+		if (!hasRoles(roles || [], userRoles)) {
 			return <Navigate to="/403" />
 		}
 		return children

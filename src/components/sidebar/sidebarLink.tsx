@@ -1,7 +1,7 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { useState } from "react"
 import { Collapse } from "react-collapse"
 import { NavLink } from "react-router-dom"
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { INavLink } from "../../utils/constants"
 import HasRight from "../rights/hasRight"
 
@@ -17,7 +17,7 @@ function SidebarLink({ text, Icon, url, roles, onClick, subMenu }: INavLink) {
 			{url !== null ? (
 				<NavLink className="link" to={url} onClick={onClick}>
 					<Icon />
-					<h2>{text}</h2>
+					<span>{text}</span>
 				</NavLink>
 			) : (
 				<div className="link-collapse">

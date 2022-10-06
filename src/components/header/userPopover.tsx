@@ -9,13 +9,14 @@ import UserContext from "../../contexts/user"
 function UserPopover() {
 	const navigate = useNavigate()
 
-	const { setUser } = useContext(UserContext)
+	const { setUser, setUserRoles } = useContext(UserContext)
 
 	const logout = () => {
 		window.localStorage.removeItem("user")
 		navigate("/login")
 		userService.setRoles([])
 		setUser(null)
+		setUserRoles([])
 	}
 
 	const profile = () => {
