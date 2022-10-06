@@ -1,7 +1,7 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { useState } from "react"
 import { Collapse } from "react-collapse"
-import { NavLink, useNavigate } from "react-router-dom"
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import { NavLink } from "react-router-dom"
 import { INavLink } from "../../utils/constants"
 import HasRight from "../rights/hasRight"
 
