@@ -1,5 +1,5 @@
-import { ReactElement, useEffect, useState } from "react"
-import userService from "../../api/services/userService"
+import { ReactElement, useContext, useEffect } from "react"
+import UserContext from "../../contexts/user"
 import { hasRoles, isAuth } from "../../utils/rightsUtil"
 
 /**
@@ -13,12 +13,9 @@ interface HasRightProps {
 
 function HasRight({ children, roles }: HasRightProps) {
 	if (isAuth()) {
-		const [usersRoles, setUsersRoles] = useState<null | Array<string>>(null)
-		useEffect(() => {
-			userService.getUserRoles().then(res => setUsersRoles(res))
-		}, [])
+		const { userRoles } = useContext(UserContext)
 
-		if (usersRoles && hasRoles(roles || [], usersRoles)) {
+		if (userRoles && hasRoles(roles || [], userRoles)) {
 			return children
 		}
 	}

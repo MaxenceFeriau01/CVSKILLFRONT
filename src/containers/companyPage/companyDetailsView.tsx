@@ -21,7 +21,7 @@ interface CompanyDetailsViewProps {
 	onClose?: any
 }
 function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
-	const { user } = useContext(UserContext)
+	const { user, userRoles } = useContext(UserContext)
 
 	const queryClient = useQueryClient()
 	const apiAppliedCompanies = useQuery(
@@ -30,8 +30,8 @@ function CompanyDetailsView({ company, onClose }: CompanyDetailsViewProps) {
 		{
 			enabled:
 				user !== null &&
-				userService.getRoles().length > 0 &&
-				!hasRoles([Role.ADMIN], userService.getRoles()),
+				userRoles.length > 0 &&
+				!hasRoles([Role.ADMIN], userRoles),
 		}
 	)
 

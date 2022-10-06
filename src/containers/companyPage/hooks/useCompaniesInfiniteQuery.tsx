@@ -3,7 +3,6 @@ import { useInfiniteQuery, UseInfiniteQueryResult } from "react-query"
 import Company from "../../../api/models/company"
 import ReactSelectOption from "../../../api/models/reactSelectOption"
 import companyService from "../../../api/services/companyService"
-import userService from "../../../api/services/userService"
 import UserContext from "../../../contexts/user"
 import Role from "../../../enums/Role"
 import { hasRoles } from "../../../utils/rightsUtil"
@@ -21,7 +20,7 @@ interface useCompaniesInfiniteQueryType {
 function useCompaniesInfiniteQuery(setSelectedCompany: {
 	(company: Company | null): void
 }): useCompaniesInfiniteQueryType {
-	const { user } = useContext(UserContext)
+	const { user, userRoles } = useContext(UserContext)
 
 	const [activities, setActivities] = useState<number[] | null | string[]>(
 		null
@@ -33,12 +32,12 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 	useEffect(() => {
 		if (
 			user &&
-			userService.getRoles().length > 0 &&
-			!hasRoles([Role.ADMIN], userService.getRoles())
+			userRoles.length > 0 &&
+			!hasRoles([Role.ADMIN], userRoles)
 		) {
 			setSelectedStatusFilter(user.internStatus.id)
 		}
-	}, [user, userService.getRoles()])
+	}, [user, userRoles])
 
 	const [jobs, setJobs] = useState<number[] | null | string[]>(null)
 	const canFetch = useRef(true)
