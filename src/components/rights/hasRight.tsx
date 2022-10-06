@@ -1,4 +1,4 @@
-import { ReactElement, useContext, useEffect } from "react"
+import { ReactElement, useContext } from "react"
 import UserContext from "../../contexts/user"
 import { hasRoles, isAuth } from "../../utils/rightsUtil"
 

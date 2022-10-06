@@ -17,10 +17,8 @@ function Header() {
 	const [showUserPopover, setShowUserPopover] = useState<boolean>(false)
 	const { user } = useContext(UserContext)
 	const refPopover: any = useRef()
-	const refSidebar: any = useRef()
 
 	useOutsideClick(refPopover, () => setShowUserPopover(false))
-	useOutsideClick(refSidebar, () => setShowSidebar(false))
 
 	function toggleSideBar() {
 		setShowSidebar(!showSidebar)
@@ -31,12 +29,10 @@ function Header() {
 			<Sidebar
 				showSidebar={showSidebar}
 				setShowSidebar={() => setShowSidebar(false)}
-				refSidebar={refSidebar}
 			/>
 			<div className="header">
 				<HasRight roles={[Role.ADMIN, Role.USER]}>
 					<MenuIcon
-						ref={refSidebar}
 						onClick={() => toggleSideBar()}
 						className="header__svg--menu"
 					/>

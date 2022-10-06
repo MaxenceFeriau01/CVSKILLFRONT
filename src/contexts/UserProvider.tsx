@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useQuery } from "react-query"
 import userService from "../api/services/userService"
 import UserContext, { defaultState } from "./user"
 

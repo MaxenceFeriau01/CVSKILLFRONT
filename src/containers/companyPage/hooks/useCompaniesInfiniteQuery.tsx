@@ -27,7 +27,7 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 	)
 	const [selectedStatusFilter, setSelectedStatusFilter] = useState<
 		number | null | string
-	>(null)
+	>(user?.internStatus?.id)
 
 	useEffect(() => {
 		if (
