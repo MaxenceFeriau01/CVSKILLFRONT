@@ -55,6 +55,9 @@ function ProfilePage() {
 				}
 				lUser.firstName = data.firstName
 				lUser.name = data.name
+				lUser.activities = data.activities
+				lUser.jobs = data.jobs
+				lUser.internStatus = data.internStatus
 				setUser(lUser)
 				localStorage.setItem("user", JSON.stringify(lUser))
 				Swal.fire({

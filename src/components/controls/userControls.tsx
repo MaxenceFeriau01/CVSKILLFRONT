@@ -34,7 +34,7 @@ function UserControls({
 }: UserControlsProps) {
 	return (
 		<>
-			<div className="select-form-control" style={{ zIndex: 4 }}>
+			<div className="select-form-control z-60">
 				<InputLabel>Civilité *</InputLabel>
 				<Controller
 					rules={{
@@ -284,7 +284,7 @@ function UserControls({
 					</Alert>
 				)}
 			</div>
-			<div className="select-form-control">
+			<div className="select-form-control z-50">
 				<InputLabel>Statut *</InputLabel>
 				<Controller
 					rules={{
@@ -316,7 +316,7 @@ function UserControls({
 				watch("internStatus")?.label ===
 					STATUS_HIGH_SCHOOL_STUDENT) && (
 				<>
-					<div className="select-form-control--half-first">
+					<div className="select-form-control--half-first z-40">
 						<InputLabel>Activités</InputLabel>
 						<Controller
 							rules={{
@@ -357,7 +357,7 @@ function UserControls({
 							</Alert>
 						)}
 					</div>
-					<div className="select-form-control--half-first">
+					<div className="select-form-control--half-first z-30">
 						<InputLabel>Métiers</InputLabel>
 						<Controller
 							rules={{
@@ -400,7 +400,7 @@ function UserControls({
 			)}
 			{watch("internStatus")?.label === STATUS_STUDENT && (
 				<>
-					<div className="select-form-control--half-second">
+					<div className="select-form-control--half-second z-20">
 						<InputLabel>Durée du stage</InputLabel>
 						<Controller
 							rules={{
@@ -432,7 +432,7 @@ function UserControls({
 							</Alert>
 						)}
 					</div>
-					<div className="select-form-control--half-second">
+					<div className="select-form-control--half-second z-10">
 						<InputLabel>Diplome</InputLabel>
 						<Controller
 							rules={{
