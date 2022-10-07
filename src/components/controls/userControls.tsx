@@ -404,7 +404,7 @@ function UserControls({
 						<InputLabel>Durée du stage</InputLabel>
 						<Controller
 							rules={{
-								required: "La durée du stage est requis",
+								required: "La durée du stage est requise",
 							}}
 							name="internshipPeriod"
 							control={control}
