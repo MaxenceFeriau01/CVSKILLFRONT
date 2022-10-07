@@ -63,8 +63,11 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 			companyService.getAllPaginated({
 				page: pageParam,
 				size: SIZE,
-				activities: selectedActivities?.join(","),
-				jobs: selectedJobs?.join(","),
+				activities:
+					selectedActivities?.length > 0
+						? selectedActivities.join(",")
+						: null,
+				jobs: selectedJobs?.length > 0 ? selectedJobs.join(",") : null,
 				statusId: selectedStatusFilter,
 			}),
 		{
