@@ -209,6 +209,29 @@ function ProfilePage() {
 					isProfile
 				/>
 				<Button type="submit">Mettre à jour</Button>
+				<div className="w-[80%]  tablet:w-full">
+					<p>
+						Conformément à l’article <b>17</b> du{" "}
+						<b>
+							Règlement Général sur la Protection des Données
+							Personnelles (RGPD)
+						</b>{" "}
+						relative au droit à l’oubli, pour toute demande de
+						suppression de compte utilisateur du site dkstage, merci
+						de nous envoyer un mail à{" "}
+						<a href="mailto:dkstages@eedk.fr">dkstages@eedk.fr</a> :
+					</p>
+					<div className="pt-2 text-sm">
+						➔ [ <b>Objet du mail</b>: Demande suppression compte
+						utilisateur Dkstage ]
+					</div>
+					<div className="text-sm">
+						➔ | <b>Corps du mail</b> : Pouvez-vous supprimer mon
+						compte utilisateur, voici mon <i>nom</i>: XXX ,{" "}
+						<i>mon prénom</i> : ZZZ et mon <i>adresse mail</i> :
+						123@---.fr |
+					</div>
+				</div>
 			</form>
 		</section>
 	)
