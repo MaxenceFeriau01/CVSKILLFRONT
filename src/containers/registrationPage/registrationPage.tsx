@@ -1,29 +1,21 @@
 import { Alert, Button, Typography } from "@mui/material"
-import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { useMutation, useQuery } from "react-query"
+import { useMutation } from "react-query"
 import { Link, useNavigate } from "react-router-dom"
-import Activity from "../../api/models/activity"
-import Job from "../../api/models/job"
-import ReactSelectOption from "../../api/models/reactSelectOption"
 import User from "../../api/models/user"
-import activityService from "../../api/services/activityService"
-import jobService from "../../api/services/jobService"
 import userService from "../../api/services/userService"
 
 import InternStatus from "../../api/models/internStatus"
 import UserControls from "../../components/controls/userControls"
 import useHideElement from "../../hooks/hideElement"
+import useActivitiesQuery from "../../hooks/useActivitiesQuery"
+import useJobsQuery from "../../hooks/useJobsQuery"
 import useStatusesQuery from "../../hooks/useStatusesQuery"
 import logo from "../../resources/images/logo.svg"
 import { STATUS_COLLEGE_STUDENT } from "../../utils/constants"
 
 function RegistrationPage() {
 	useHideElement(["header", "footer"])
-
-	const [activitiesOptions, setActivitiesOptions] =
-		useState<Array<ReactSelectOption>>()
-	const [jobsOptions, setJobsOptions] = useState<Array<ReactSelectOption>>()
 
 	const navigate = useNavigate()
 	const {
@@ -42,25 +34,9 @@ function RegistrationPage() {
 			},
 		}
 	)
+	const { activities } = useActivitiesQuery()
 
-	useQuery("activities", () =>
-		activityService.getAllWithFilters().then(res => {
-			const activities: Array<ReactSelectOption> = res.map(
-				(a: Activity) => new ReactSelectOption(a.id, a.name)
-			)
-			setActivitiesOptions(activities)
-		})
-	)
-
-	useQuery("jobs", () =>
-		jobService.getAllWithFilters().then(res => {
-			const jobs: Array<ReactSelectOption> = res.map((j: Job) => ({
-				label: j.name,
-				value: j.id,
-			}))
-			setJobsOptions(jobs)
-		})
-	)
+	const { jobs } = useJobsQuery()
 
 	const { statuses } = useStatusesQuery()
 
@@ -111,8 +87,8 @@ function RegistrationPage() {
 				<img src={logo} alt="logo" width="300" height="90" />
 				<div className="registration-form--scroll">
 					<UserControls
-						jobsOptions={jobsOptions}
-						activitiesOptions={activitiesOptions}
+						jobsOptions={jobs?.data}
+						activitiesOptions={activities?.data}
 						statusesOptions={statuses?.data && statuses.data}
 						control={control}
 						watch={watch}
