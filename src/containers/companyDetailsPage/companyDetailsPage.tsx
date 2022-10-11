@@ -7,18 +7,17 @@ import { useNavigate, useParams } from "react-router-dom"
 import Swal from "sweetalert2"
 
 import WarningIcon from "@mui/icons-material/Warning"
-import Activity from "../../api/models/activity"
 import companyService from "../../api/services/companyService"
 
+import City from "../../api/models/city"
 import InternStatus from "../../api/models/internStatus"
 import InternType from "../../api/models/internType"
 import ReactSelectOption from "../../api/models/reactSelectOption"
-import activityService from "../../api/services/activityService"
+import cityService from "../../api/services/cityService"
+import useActivitiesQuery from "../../hooks/useActivitiesQuery"
 import ContactDetails from "./contactDetails"
 import GeneralDetails from "./generalDetails"
 import SearchDetails from "./searchDetails"
-import City from "../../api/models/city"
-import cityService from "../../api/services/cityService"
 
 interface PutCompany {
 	companyToUpdate: FormData
@@ -37,13 +36,7 @@ function CompanyDetailsPage() {
 
 	const form = useForm({ mode: "onChange" })
 
-	const activitiesApi = useQuery("activities", () =>
-		activityService
-			.getAllWithFilters()
-			.then(res =>
-				res.map((a: Activity) => new ReactSelectOption(a.id, a.name))
-			)
-	)
+	const { activities } = useActivitiesQuery()
 
 	const citiesApi = useQuery("cities", () =>
 		cityService
@@ -197,7 +190,7 @@ function CompanyDetailsPage() {
 				<div className="company-details-form-stepper">
 					<GeneralDetails
 						form={form}
-						activities={activitiesApi?.data}
+						activities={activities?.data}
 						img={{ alt, src, file }}
 						setImg={setImg}
 					/>
@@ -205,10 +198,7 @@ function CompanyDetailsPage() {
 						form={form}
 						cities={citiesApi?.data && citiesApi.data}
 					/>
-					<SearchDetails
-						form={form}
-						activities={activitiesApi?.data}
-					/>
+					<SearchDetails form={form} activities={activities?.data} />
 				</div>
 
 				<div className="company-details-form-actions">

@@ -7,11 +7,9 @@ import {
 	RadioGroup,
 } from "@mui/material"
 import { Controller } from "react-hook-form"
-import { useQuery } from "react-query"
-import Job from "../../api/models/job"
 import ReactSelectOption from "../../api/models/reactSelectOption"
-import jobService from "../../api/services/jobService"
 import CustomSelect from "../../components/inputs/customSelect"
+import useJobsQuery from "../../hooks/useJobsQuery"
 import useStatusesQuery from "../../hooks/useStatusesQuery"
 import {
 	STATUS_COLLEGE_STUDENT,
@@ -34,13 +32,7 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 		formState: { errors },
 	} = form
 
-	const apiJobs = useQuery("jobs", () =>
-		jobService
-			.getAllWithFilters()
-			.then(res =>
-				res.map((a: Job) => new ReactSelectOption(a.id, a.name))
-			)
-	)
+	const { jobs } = useJobsQuery()
 
 	const { statuses } = useStatusesQuery()
 
@@ -204,16 +196,16 @@ function SearchDetails({ form, activities }: SearchDetailsProps) {
 					control={control}
 					render={({ field: { value, onChange } }) => (
 						<CustomSelect
-							options={apiJobs?.data}
+							options={jobs?.data}
 							placeholder="Choisissez..."
 							isMulti
 							onChange={(lOptions: ReactSelectOption[]) =>
 								onChange(lOptions?.map(option => option.value))
 							}
-							value={apiJobs?.data?.filter((option: any) =>
+							value={jobs?.data?.filter((option: any) =>
 								value?.includes(option.value)
 							)}
-							defaultValue={apiJobs?.data?.filter((option: any) =>
+							defaultValue={jobs?.data?.filter((option: any) =>
 								value?.includes(option.value)
 							)}
 						/>

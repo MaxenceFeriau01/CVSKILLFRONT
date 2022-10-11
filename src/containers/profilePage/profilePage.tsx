@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import { Button } from "@mui/material"
-import { useContext, useState } from "react"
+import { useContext } from "react"
 import { useForm } from "react-hook-form"
 import { useMutation, useQuery } from "react-query"
 
@@ -11,8 +11,6 @@ import Activity from "../../api/models/activity"
 import Job from "../../api/models/job"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 import User from "../../api/models/user"
-import activityService from "../../api/services/activityService"
-import jobService from "../../api/services/jobService"
 import userService from "../../api/services/userService"
 
 import FileDb from "../../api/models/fileDb"
@@ -27,13 +25,10 @@ import {
 	STATUS_HIGH_SCHOOL_STUDENT,
 } from "../../utils/constants"
 import { exportItem } from "../../utils/exportUtil"
+import useActivitiesQuery from "../../hooks/useActivitiesQuery"
+import useJobsQuery from "../../hooks/useJobsQuery"
 
 function ProfilePage() {
-	const [activitiesOptions, setActivitiesOptions] =
-		useState<Array<ReactSelectOption>>()
-	const [jobsOptions, setJobsOptions] = useState<Array<ReactSelectOption>>()
-	useState<Array<ReactSelectOption>>()
-
 	const { user, setUser } = useContext(UserContext)
 	const {
 		handleSubmit,
@@ -126,23 +121,9 @@ function ProfilePage() {
 		})
 	})
 
-	useQuery("activities", () =>
-		activityService.getAllWithFilters().then(res => {
-			const activities: Array<ReactSelectOption> = res.map(
-				(a: Activity) => new ReactSelectOption(a.id, a.name)
-			)
-			setActivitiesOptions(activities)
-		})
-	)
+	const { activities } = useActivitiesQuery()
 
-	useQuery("jobs", () =>
-		jobService.getAllWithFilters().then(res => {
-			const jobs: Array<ReactSelectOption> = res?.map(
-				(j: Job) => new ReactSelectOption(j.id, j.name)
-			)
-			setJobsOptions(jobs)
-		})
-	)
+	const { jobs } = useJobsQuery()
 
 	const { statuses } = useStatusesQuery()
 
@@ -202,8 +183,8 @@ function ProfilePage() {
 				className="content profile-form"
 			>
 				<UserControls
-					jobsOptions={jobsOptions}
-					activitiesOptions={activitiesOptions}
+					jobsOptions={jobs?.data}
+					activitiesOptions={activities?.data}
 					statusesOptions={statuses?.data}
 					control={control}
 					watch={watch}
