@@ -65,7 +65,7 @@ function UserAdminPage() {
 		},
 		{
 			field: "internStatus",
-			headerName: "Status",
+			headerName: "Statut",
 			type: "string",
 			flex: 0.1,
 		},

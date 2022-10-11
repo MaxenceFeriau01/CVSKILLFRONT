@@ -2,17 +2,16 @@ import { Alert, Button, Typography } from "@mui/material"
 import { useForm } from "react-hook-form"
 import { useMutation } from "react-query"
 import { Link, useNavigate } from "react-router-dom"
-import User from "../../api/models/user"
+import Swal from "sweetalert2"
 import userService from "../../api/services/userService"
 
-import InternStatus from "../../api/models/internStatus"
 import UserControls from "../../components/controls/userControls"
 import useHideElement from "../../hooks/hideElement"
 import useActivitiesQuery from "../../hooks/useActivitiesQuery"
 import useJobsQuery from "../../hooks/useJobsQuery"
 import useStatusesQuery from "../../hooks/useStatusesQuery"
 import logo from "../../resources/images/logo.svg"
-import { STATUS_COLLEGE_STUDENT } from "../../utils/constants"
+import convertFormToApiData from "./utils"
 
 function RegistrationPage() {
 	useHideElement(["header", "footer"])
@@ -41,38 +40,26 @@ function RegistrationPage() {
 	const { statuses } = useStatusesQuery()
 
 	const onSubmit = (data: any) => {
-		const formData = new FormData()
-
-		const toCreate: User = { ...data }
-
-		if (data.internStatus.label === STATUS_COLLEGE_STUDENT) {
-			toCreate.activities = null
-			toCreate.jobs = null
-			toCreate.diploma = null
-			toCreate.internshipPeriod = null
+		if (data.cv?.length > 0 && data.coverLetter?.length > 0) {
+			const formData = convertFormToApiData(data)
+			postRegister.mutate(formData)
 		} else {
-			toCreate.activities = data.activities?.map((a: any) => ({ id: a }))
-			toCreate.jobs = data.jobs?.map((j: any) => ({ id: j }))
+			Swal.fire({
+				title: "<strong><u>CV et lettre de motivation</u>?</strong>",
+				icon: "info",
+				html: "Il est conseillé de rajouter un <b>CV</b> et une <b>lettre de motivation</b> pour une meilleure recherche.",
+				showCloseButton: true,
+				showDenyButton: true,
+				focusConfirm: false,
+				confirmButtonText: "Remplir ces informations",
+				denyButtonText: "S'inscrire tout de même",
+			}).then(result => {
+				if (result.isDenied) {
+					const formData = convertFormToApiData(data)
+					postRegister.mutate(formData)
+				}
+			})
 		}
-
-		toCreate.activities = data.activities?.map((a: any) => ({ id: a }))
-		toCreate.jobs = data.jobs?.map((j: any) => ({ id: j }))
-		toCreate.internStatus = new InternStatus(
-			data.internStatus?.value,
-			data.internStatus?.label
-		)
-
-		toCreate.cv = null
-		toCreate.coverLetter = null
-
-		formData.append("user", JSON.stringify(toCreate))
-		formData.append("cv", data.cv?.length > 0 ? data.cv[0] : null)
-		formData.append(
-			"coverLetter",
-			data.coverLetter?.length > 0 ? data.coverLetter[0] : null
-		)
-
-		postRegister.mutate(formData)
 	}
 
 	return (
