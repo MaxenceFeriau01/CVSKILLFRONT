@@ -31,29 +31,37 @@ function CompanyPage() {
 		setStatusFilter,
 		setJobsFilter,
 		selectedStatusFilter,
+		selectedActivities,
+		selectedJobs,
 	} = useCompaniesInfiniteQuery(setSelectedCompany)
-
 	return (
 		<section className="page company-page">
 			{user && user.token && (
 				<header className="company-page-header">
 					<CustomSelect
-						className="w-10/12 pt-1 tablet:w-[30%]"
+						className="w-10/12 pt-1 tablet:w-[30%] z-30"
 						placeholder="Par domaine(s)"
 						options={activities.data}
 						isMulti
 						onChange={(e: ReactSelectOption[]) =>
 							setActivityFilter(e)
 						}
+						value={activities?.data?.filter(
+							(option: ReactSelectOption) =>
+								selectedActivities?.includes(+option.value)
+						)}
 						isClearable
 						isSearchable
 						name="selectActivity"
 					/>
 					<CustomSelect
-						className="w-10/12 pt-1 tablet:w-[30%]"
+						className="w-10/12 pt-1 tablet:w-[30%] z-20"
 						placeholder="Par métier(s)"
 						options={jobs.data}
 						isMulti
+						value={jobs?.data?.filter((option: ReactSelectOption) =>
+							selectedJobs?.includes(+option.value)
+						)}
 						onChange={(e: ReactSelectOption[]) => setJobsFilter(e)}
 						isClearable
 						isSearchable
@@ -61,7 +69,7 @@ function CompanyPage() {
 					/>
 
 					<CustomSelect
-						className="w-10/12 pt-1 tablet:w-[30%]"
+						className="w-10/12 pt-1 tablet:w-[30%] z-10"
 						placeholder="Par status recherché"
 						options={statuses?.data}
 						value={statuses?.data?.find(

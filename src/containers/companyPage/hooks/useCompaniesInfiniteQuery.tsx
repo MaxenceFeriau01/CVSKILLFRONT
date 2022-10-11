@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { useInfiniteQuery, UseInfiniteQueryResult } from "react-query"
+import Activity from "../../../api/models/activity"
 import Company from "../../../api/models/company"
+import Job from "../../../api/models/job"
 import ReactSelectOption from "../../../api/models/reactSelectOption"
 import companyService from "../../../api/services/companyService"
 import UserContext from "../../../contexts/user"
@@ -15,6 +17,8 @@ interface useCompaniesInfiniteQueryType {
 	setActivityFilter(options: ReactSelectOption[]): void
 	setJobsFilter(options: ReactSelectOption[]): void
 	selectedStatusFilter: number | string | null
+	selectedActivities: number[]
+	selectedJobs: number[]
 }
 
 function useCompaniesInfiniteQuery(setSelectedCompany: {
@@ -22,8 +26,15 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 }): useCompaniesInfiniteQueryType {
 	const { user, userRoles } = useContext(UserContext)
 
-	const [activities, setActivities] = useState<number[] | null | string[]>(
-		null
+	const [selectedActivities, setSelectedActivitiesFilter] = useState<
+		number[]
+	>(
+		isNotAdmin()
+			? user.activities?.map((activity: Activity) => activity.id)
+			: []
+	)
+	const [selectedJobs, setSelectedJobsFilter] = useState<number[]>(
+		isNotAdmin() ? user.jobs?.map((job: Job) => job.id) : []
 	)
 	const [selectedStatusFilter, setSelectedStatusFilter] = useState<
 		number | null | string
@@ -32,23 +43,31 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 	useEffect(() => {
 		if (isNotAdmin()) {
 			setSelectedStatusFilter(user.internStatus.id)
+			setSelectedActivitiesFilter(
+				user.activities?.map((activity: Activity) => activity.id)
+			)
+			setSelectedJobsFilter(user.jobs?.map((job: Job) => job.id))
 		}
 
 		return () => {
 			setSelectedStatusFilter(null)
+			setSelectedJobsFilter([])
+			setSelectedActivitiesFilter([])
 		}
 	}, [user, userRoles])
 
-	const [jobs, setJobs] = useState<number[] | null | string[]>(null)
 	const canFetch = useRef(true)
 	const companiesInfiniteQuery = useInfiniteQuery(
-		["companies", activities, selectedStatusFilter, jobs],
+		["companies", selectedActivities, selectedStatusFilter, selectedJobs],
 		({ pageParam = PAGE }) =>
 			companyService.getAllPaginated({
 				page: pageParam,
 				size: SIZE,
-				activities: activities?.join(","),
-				jobs: jobs?.join(","),
+				activities:
+					selectedActivities?.length > 0
+						? selectedActivities.join(",")
+						: null,
+				jobs: selectedJobs?.length > 0 ? selectedJobs.join(",") : null,
 				statusId: selectedStatusFilter,
 			}),
 		{
@@ -81,7 +100,9 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 
 	function setActivityFilter(evt: ReactSelectOption[]) {
 		setSelectedCompany(null)
-		setActivities(evt.length > 0 ? evt.map(x => x.value.toString()) : null)
+		setSelectedActivitiesFilter(
+			evt.length > 0 ? evt.map(x => +x.value) : []
+		)
 	}
 
 	function setStatusFilter(option: ReactSelectOption) {
@@ -91,7 +112,7 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 
 	function setJobsFilter(evt: ReactSelectOption[]) {
 		setSelectedCompany(null)
-		setJobs(evt.length > 0 ? evt.map(x => x.value.toString()) : null)
+		setSelectedJobsFilter(evt.length > 0 ? evt.map(x => +x.value) : [])
 	}
 
 	return {
@@ -101,6 +122,8 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 		setStatusFilter,
 		setJobsFilter,
 		selectedStatusFilter,
+		selectedActivities,
+		selectedJobs,
 	}
 }
 
