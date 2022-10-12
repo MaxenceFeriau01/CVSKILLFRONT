@@ -30,11 +30,11 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 		number[]
 	>(
 		isNotAdmin()
-			? user.activities?.map((activity: Activity) => activity.id)
+			? user.activities?.map((activity: Activity) => activity?.id)
 			: []
 	)
 	const [selectedJobs, setSelectedJobsFilter] = useState<number[]>(
-		isNotAdmin() ? user.jobs?.map((job: Job) => job.id) : []
+		isNotAdmin() ? user.jobs?.map((job: Job) => job?.id) : []
 	)
 	const [selectedStatusFilter, setSelectedStatusFilter] = useState<
 		number | null | string
@@ -42,11 +42,11 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 
 	useEffect(() => {
 		if (isNotAdmin()) {
-			setSelectedStatusFilter(user.internStatus.id)
+			setSelectedStatusFilter(user.internStatus?.id)
 			setSelectedActivitiesFilter(
-				user.activities?.map((activity: Activity) => activity.id)
+				user.activities?.map((activity: Activity) => activity?.id)
 			)
-			setSelectedJobsFilter(user.jobs?.map((job: Job) => job.id))
+			setSelectedJobsFilter(user.jobs?.map((job: Job) => job?.id))
 		}
 
 		return () => {
