@@ -32,6 +32,7 @@ class GeneralService<T> {
 				const storageItem = localStorage.getItem("user")
 
 				if (storageItem !== null) this.user = JSON.parse(storageItem)
+				else this.user.token = ""
 
 				if (this.user && this.user.token) {
 					newConfig!.headers!.Authorization = `Bearer ${this.user.token}`
