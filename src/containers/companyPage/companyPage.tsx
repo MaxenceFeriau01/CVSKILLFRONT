@@ -70,7 +70,7 @@ function CompanyPage() {
 
 					<CustomSelect
 						className="w-10/12 pt-1 tablet:w-[30%] z-10"
-						placeholder="Par status recherché"
+						placeholder="Par statut recherché"
 						options={statuses?.data}
 						value={statuses?.data?.find(
 							(c: ReactSelectOption) =>
