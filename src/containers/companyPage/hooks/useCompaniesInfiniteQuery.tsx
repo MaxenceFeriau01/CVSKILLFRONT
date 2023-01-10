@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { useInfiniteQuery, UseInfiniteQueryResult } from "react-query"
-import Activity from "../../../api/models/activity"
 import Company from "../../../api/models/company"
 import Job from "../../../api/models/job"
 import ReactSelectOption from "../../../api/models/reactSelectOption"
@@ -28,11 +27,7 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 
 	const [selectedActivities, setSelectedActivitiesFilter] = useState<
 		number[]
-	>(
-		isNotAdmin()
-			? user.activities?.map((activity: Activity) => activity?.id)
-			: []
-	)
+	>([])
 	const [selectedJobs, setSelectedJobsFilter] = useState<number[]>(
 		isNotAdmin() ? user.jobs?.map((job: Job) => job?.id) : []
 	)
@@ -43,16 +38,12 @@ function useCompaniesInfiniteQuery(setSelectedCompany: {
 	useEffect(() => {
 		if (isNotAdmin()) {
 			setSelectedStatusFilter(user.internStatus?.id)
-			setSelectedActivitiesFilter(
-				user.activities?.map((activity: Activity) => activity?.id)
-			)
 			setSelectedJobsFilter(user.jobs?.map((job: Job) => job?.id))
 		}
 
 		return () => {
 			setSelectedStatusFilter(null)
 			setSelectedJobsFilter([])
-			setSelectedActivitiesFilter([])
 		}
 	}, [user, userRoles])
 

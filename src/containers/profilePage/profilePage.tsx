@@ -19,14 +19,13 @@ import UserContext from "../../contexts/user"
 import profile from "../../resources/images/profile.svg"
 
 import InternStatus from "../../api/models/internStatus"
+import useJobsQuery from "../../hooks/useJobsQuery"
 import useStatusesQuery from "../../hooks/useStatusesQuery"
 import {
 	STATUS_COLLEGE_STUDENT,
 	STATUS_HIGH_SCHOOL_STUDENT,
 } from "../../utils/constants"
 import { exportItem } from "../../utils/exportUtil"
-import useActivitiesQuery from "../../hooks/useActivitiesQuery"
-import useJobsQuery from "../../hooks/useJobsQuery"
 
 function ProfilePage() {
 	const { user, setUser } = useContext(UserContext)
@@ -50,7 +49,6 @@ function ProfilePage() {
 				}
 				lUser.firstName = data.firstName
 				lUser.name = data.name
-				lUser.activities = data.activities
 				lUser.jobs = data.jobs
 				lUser.internStatus = data.internStatus
 				setUser(lUser)
@@ -121,8 +119,6 @@ function ProfilePage() {
 		})
 	})
 
-	const { activities } = useActivitiesQuery()
-
 	const { jobs } = useJobsQuery()
 
 	const { statuses } = useStatusesQuery()
@@ -132,12 +128,10 @@ function ProfilePage() {
 		const toUpdate: User = { ...data }
 
 		if (data.internStatus.label === STATUS_COLLEGE_STUDENT) {
-			toUpdate.activities = null
 			toUpdate.jobs = null
 			toUpdate.diploma = null
 			toUpdate.internshipPeriod = null
 		} else {
-			toUpdate.activities = data.activities?.map((a: any) => ({ id: a }))
 			toUpdate.jobs = data.jobs?.map((j: any) => ({ id: j }))
 		}
 
@@ -184,7 +178,6 @@ function ProfilePage() {
 			>
 				<UserControls
 					jobsOptions={jobs?.data}
-					activitiesOptions={activities?.data}
 					statusesOptions={statuses?.data}
 					control={control}
 					watch={watch}

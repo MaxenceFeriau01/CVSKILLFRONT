@@ -1,4 +1,3 @@
-import Activity from "./activity"
 import InternStatus from "./internStatus"
 import Job from "./job"
 
@@ -28,8 +27,6 @@ class User {
 	civility!: String
 
 	diploma!: String | null
-
-	activities!: Array<Activity> | null
 
 	jobs!: Array<Job> | null
 

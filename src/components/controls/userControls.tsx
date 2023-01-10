@@ -16,7 +16,6 @@ interface UserControlsProps {
 	watch: any
 	errors: any
 	register: any // FileList | FileDb
-	activitiesOptions: Array<ReactSelectOption> | undefined
 	jobsOptions: Array<ReactSelectOption> | undefined
 	statusesOptions: Array<ReactSelectOption> | undefined
 	isProfile?: boolean
@@ -27,7 +26,6 @@ function UserControls({
 	watch,
 	errors,
 	register,
-	activitiesOptions,
 	jobsOptions,
 	statusesOptions,
 	isProfile = false,
@@ -315,88 +313,39 @@ function UserControls({
 			{(watch("internStatus")?.label === STATUS_STUDENT ||
 				watch("internStatus")?.label ===
 					STATUS_HIGH_SCHOOL_STUDENT) && (
-				<>
-					<div className="select-form-control--half-first z-40">
-						<InputLabel>Activités</InputLabel>
-						<Controller
-							rules={{
-								required: "Au moins une activité est requise",
-							}}
-							name="activities"
-							control={control}
-							render={({
-								field: { value, onChange, onBlur },
-							}) => (
-								<CustomSelect
-									disable
-									options={activitiesOptions}
-									placeholder="Choisissez..."
-									isMulti
-									onChange={(lOptions: ReactSelectOption[]) =>
-										onChange(
-											lOptions?.map(
-												option => option.value
-											)
-										)
-									}
-									onBlur={onBlur}
-									value={activitiesOptions?.filter(
-										(option: any) =>
-											value?.includes(option.value)
-									)}
-									defaultValue={activitiesOptions?.filter(
-										(option: any) =>
-											value?.includes(option.value)
-									)}
-								/>
-							)}
-						/>
-						{errors?.activities && (
-							<Alert severity="error">
-								{errors.activities.message}
-							</Alert>
-						)}
-					</div>
-					<div className="select-form-control--half-first z-30">
-						<InputLabel>Métiers</InputLabel>
-						<Controller
-							rules={{
-								required: "Au moins un métier est requis",
-							}}
-							name="jobs"
-							control={control}
-							render={({
-								field: { value, onChange, onBlur },
-							}) => (
-								<CustomSelect
-									options={jobsOptions}
-									placeholder="Choisissez..."
-									isMulti
-									onChange={(lOptions: ReactSelectOption[]) =>
-										onChange(
-											lOptions?.map(
-												option => option.value
-											)
-										)
-									}
-									onBlur={onBlur}
-									value={jobsOptions?.filter((option: any) =>
+				<div className="select-form-control z-30">
+					<InputLabel>Métiers</InputLabel>
+					<Controller
+						rules={{
+							required: "Au moins un métier est requis",
+						}}
+						name="jobs"
+						control={control}
+						render={({ field: { value, onChange, onBlur } }) => (
+							<CustomSelect
+								options={jobsOptions}
+								placeholder="Choisissez..."
+								isMulti
+								onChange={(lOptions: ReactSelectOption[]) =>
+									onChange(
+										lOptions?.map(option => option.value)
+									)
+								}
+								onBlur={onBlur}
+								value={jobsOptions?.filter((option: any) =>
+									value?.includes(option.value)
+								)}
+								defaultValue={jobsOptions?.filter(
+									(option: any) =>
 										value?.includes(option.value)
-									)}
-									defaultValue={jobsOptions?.filter(
-										(option: any) =>
-											value?.includes(option.value)
-									)}
-								/>
-							)}
-						/>
-						{errors?.jobs && (
-							<Alert severity="error">
-								{errors.jobs.message}
-							</Alert>
+								)}
+							/>
 						)}
-					</div>
-				</>
+					/>
+					{errors?.jobs && (
+						<Alert severity="error">{errors.jobs.message}</Alert>
+					)}
+				</div>
 			)}
 			{watch("internStatus")?.label === STATUS_STUDENT && (
 				<>

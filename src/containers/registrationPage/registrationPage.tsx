@@ -7,7 +7,6 @@ import userService from "../../api/services/userService"
 
 import UserControls from "../../components/controls/userControls"
 import useHideElement from "../../hooks/hideElement"
-import useActivitiesQuery from "../../hooks/useActivitiesQuery"
 import useJobsQuery from "../../hooks/useJobsQuery"
 import useStatusesQuery from "../../hooks/useStatusesQuery"
 import logo from "../../resources/images/logo.svg"
@@ -33,7 +32,6 @@ function RegistrationPage() {
 			},
 		}
 	)
-	const { activities } = useActivitiesQuery()
 
 	const { jobs } = useJobsQuery()
 
@@ -75,7 +73,6 @@ function RegistrationPage() {
 				<div className="registration-form--scroll">
 					<UserControls
 						jobsOptions={jobs?.data}
-						activitiesOptions={activities?.data}
 						statusesOptions={statuses?.data && statuses.data}
 						control={control}
 						watch={watch}
