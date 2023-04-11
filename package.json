@@ -19,6 +19,7 @@
 		"@types/react-pdf": "^5.0.9",
 		"axios": "^0.24.0",
 		"breakpoint-sass": "^2.7.1",
+		"env-cmd": "^10.1.0",
 		"eslint-plugin-prettier": "^4.0.0",
 		"react": "^17.0.2",
 		"react-collapse": "^5.1.1",
@@ -39,7 +40,9 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"test:ci": "npm test -- --coverage --ci --reporters=jest-junit --watchAll=false",
+		"build:prod": "env-cmd -f prod.env npm run build",
+		"build:pprod": "env-cmd -f pprod.env npm run build"
 	},
 	"eslintConfig": {
 		"extends": [

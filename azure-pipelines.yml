@@ -29,7 +29,7 @@ stages:
 
     - script: |
         npm install
-        npm run build 
+        npm run build:prod
       displayName: 'npm install and build EntreprendreEnsemble-front'
 
     - task: PublishPipelineArtifact@1
