@@ -84,7 +84,11 @@ function CompanyPage() {
 				</header>
 			)}
 
-			<section className="content company-container">
+			<section
+				className={`content company-container ${
+					user && user.token ? "" : "!max-h-full"
+				}`}
+			>
 				<div
 					className={`company-list-content ${
 						selectedCompany ? "tablet:w-1/2" : ""
