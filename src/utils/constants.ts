@@ -6,6 +6,9 @@ import DomainIcon from "@mui/icons-material/Domain"
 
 import ApartmentIcon from "@mui/icons-material/Apartment"
 import WorkIcon from "@mui/icons-material/Work"
+import BarChartIcon from "@mui/icons-material/BarChart"
+import PieChartIcon from "@mui/icons-material/PieChart"
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts"
 import ReactSelectOption from "../api/models/reactSelectOption"
 import Role from "../enums/Role"
 
@@ -77,6 +80,29 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 			{
 				text: "Métiers",
 				url: "/admin/jobs",
+				Icon: WorkIcon,
+			},
+		],
+	},
+	{
+		url: null,
+		text: "Statistiques",
+		Icon: BarChartIcon,
+		roles: [Role.ADMIN],
+		subMenu: [
+			{
+				text: "Général",
+				url: "/statistics/general",
+				Icon: PieChartIcon,
+			},
+			{
+				text: "Individuel",
+				url: "/statistics/individual",
+				Icon: ManageAccountsIcon,
+			},
+			{
+				text: "Métier",
+				url: "/statistics/job",
 				Icon: WorkIcon,
 			},
 		],

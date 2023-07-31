@@ -14,6 +14,9 @@ import PrivateRoute from "./privateRoute"
 import UserAdminPage from "../containers/admin/userAdminPage/userAdminPage"
 import ForgotPassword from "../containers/forgotPasswordPage/forgotPasswordPage"
 import ResetPassword from "../containers/resetPasswordPage/resetPasswordPage"
+import StatisticsGeneralPage from "../containers/statistics/statisticsGeneralPage/statisticsGeneralPage"
+import StatisticsIndividualPage from "../containers/statistics/statisticsIndividualPage/statisticsIndividualPage"
+import StatisticsJobPage from "../containers/statistics/statisticsJobPage/statisticsJobPage"
 
 const routes = (
 	<Routes>
@@ -64,6 +67,30 @@ const routes = (
 			element={
 				<PrivateRoute roles={[Role.ADMIN]}>
 					<UserAdminPage />
+				</PrivateRoute>
+			}
+		/>
+		<Route
+			path="/statistics/general"
+			element={
+				<PrivateRoute roles={[Role.ADMIN]}>
+					<StatisticsGeneralPage />
+				</PrivateRoute>
+			}
+		/>
+		<Route
+			path="/statistics/individual"
+			element={
+				<PrivateRoute roles={[Role.ADMIN]}>
+					<StatisticsIndividualPage />
+				</PrivateRoute>
+			}
+		/>
+		<Route
+			path="/statistics/job"
+			element={
+				<PrivateRoute roles={[Role.ADMIN]}>
+					<StatisticsJobPage />
 				</PrivateRoute>
 			}
 		/>
