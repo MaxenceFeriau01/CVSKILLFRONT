@@ -1,0 +1,56 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+- develop
+
+pool:
+  name: ModisAgentV3
+
+variables:
+  branchname: ${{ replace(variables['Build.SourceBranch'], 'refs/heads/', '') }}
+
+steps:
+- script: |
+    echo $branchname
+    if [ "$branchname" == "develop" ]; then
+      buildcommand="develop"
+    elif [ "$branchname" == "main" ]; then
+      buildcommand="prod"
+    else
+      buildcommand="develop"
+    fi
+    echo "Build command: $buildcommand"
+  displayName: 'define env file'
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.x'
+  displayName: 'Install Node.js'
+
+- script: |
+      npm install -g @angular/cli
+      npm install
+      npm run build -- --configuration $buildcommand
+  displayName: 'Build Angular app'
+
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: 'Sonar - EEDK'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: 'EntreprendreEnsemble-front'
+    cliProjectName: 'EntreprendreEnsemble-front'
+    cliSources: '.'
+
+- task: SonarQubeAnalyze@5
+
+- task: SonarQubePublish@5
+  inputs:
+    pollingTimeoutSec: '300'
+
+- task: sonar-buildbreaker@8
+  inputs:
+    SonarQube: 'Sonar - EEDK'
