@@ -53,12 +53,6 @@ function ActivityAdminPage() {
 			flex: 0.2,
 		},
 		{
-			field: "userCount",
-			headerName: "Utilisateur(s) qui recherche(nt)",
-			type: "number",
-			flex: 0.2,
-		},
-		{
 			field: "actions",
 			type: "actions",
 			headerName: "Action",
@@ -88,11 +82,7 @@ function ActivityAdminPage() {
 	]
 
 	function checkIfCanDelete(activity: any) {
-		return (
-			activity.companyCount === 0 &&
-			activity.companySearchCount === 0 &&
-			activity.userCount === 0
-		)
+		return activity.companyCount === 0 && activity.companySearchCount === 0
 	}
 
 	const activities = useQuery(
