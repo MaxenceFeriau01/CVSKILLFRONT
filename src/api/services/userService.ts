@@ -58,6 +58,10 @@ class UserService extends GeneralService<User | any> {
 	setRoles(roles: Array<string>): void {
 		this.roles = roles
 	}
+
+	getUserStats(): Promise<any[]> {
+		return this.getAllWithFilters(null, "/stats")
+	}
 }
 
 const userService = new UserService("users")

@@ -15,7 +15,7 @@ import UserAdminPage from "../containers/admin/userAdminPage/userAdminPage"
 import ForgotPassword from "../containers/forgotPasswordPage/forgotPasswordPage"
 import ResetPassword from "../containers/resetPasswordPage/resetPasswordPage"
 import StatisticsGeneralPage from "../containers/statistics/statisticsGeneralPage/statisticsGeneralPage"
-import StatisticsIndividualPage from "../containers/statistics/statisticsIndividualPage/statisticsIndividualPage"
+import StatisticsIndividualPage from "../containers/statistics/statisticsIndividualPage/statisticsIndividualPage.component"
 import StatisticsJobPage from "../containers/statistics/statisticsJobPage/statisticsJobPage"
 
 const routes = (
