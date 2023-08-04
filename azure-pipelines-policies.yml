@@ -1,0 +1,23 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+stages:
+- stage: Packaging
+  displayName: front packaging
+  jobs:  
+  - job: Packaging
+    displayName: Front packaging
+    pool:
+      vmImage: "ubuntu-latest"
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '16.13.2'
+      displayName: 'Install Node.js'
+
+    - script: |
+        npm install
+        npm run build:pprod
+      displayName: 'npm install and build EntreprendreEnsemble-front'
