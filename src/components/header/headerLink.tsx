@@ -12,7 +12,7 @@ function HeaderLink({ text, Icon, url, roles, subMenu }: INavLink) {
 		setOpen(prevOpen => !prevOpen)
 	}
 	return (
-		<HasRight roles={roles}>
+		<HasRight key={url} roles={roles}>
 			{url !== null ? (
 				<NavLink className="header-link" to={url}>
 					<Icon fontSize="inherit" />

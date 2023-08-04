@@ -50,7 +50,7 @@ function Header() {
 				<div className="header-nav">
 					{NAV_LINK_ARRAY.map((nav: INavLink) => (
 						<HeaderLink
-							key={nav.url}
+							key={nav.text}
 							url={nav.url}
 							text={nav.text}
 							Icon={nav.Icon}
