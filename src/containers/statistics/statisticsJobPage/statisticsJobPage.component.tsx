@@ -14,6 +14,7 @@ function StatisticsJobPage() {
 		<section className="page">
 			<div className="content h-full p-3">
 				<DataGrid
+					getRowId={row => row.name}
 					columns={TABLE_COLUMNS}
 					rows={jobsStatsQuery?.data || []}
 					pageSize={pageSize}

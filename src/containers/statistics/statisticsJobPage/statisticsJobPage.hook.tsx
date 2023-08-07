@@ -5,8 +5,9 @@ import usePagination from "../../../hooks/usePagination.hook"
 
 function useStatisticsJobPage() {
 	const { pageSize, onChangePageSize } = usePagination(PAGE_SIZE_DEFAULT)
-	const jobsStatsQuery = useQuery(["jobs-stats"], () =>
-		jobService.getAllWithFilters()
+
+	const jobsStatsQuery = useQuery(["job-stats"], () =>
+		jobService.getJobStats()
 	)
 
 	return {
