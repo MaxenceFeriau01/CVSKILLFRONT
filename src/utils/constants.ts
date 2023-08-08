@@ -91,17 +91,17 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 		roles: [Role.ADMIN],
 		subMenu: [
 			{
-				text: "Général",
+				text: "Générales",
 				url: "/statistics/general",
 				Icon: PieChartIcon,
 			},
 			{
-				text: "Individuel",
+				text: "Individuelles",
 				url: "/statistics/individual",
 				Icon: ManageAccountsIcon,
 			},
 			{
-				text: "Métier",
+				text: "Métiers",
 				url: "/statistics/job",
 				Icon: WorkIcon,
 			},

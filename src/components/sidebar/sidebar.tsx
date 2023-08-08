@@ -17,7 +17,7 @@ function Sidebar({ showSidebar, setShowSidebar }: SidebarProps) {
 			{NAV_LINK_ARRAY.map((nav: INavLink) => (
 				<SidebarLink
 					onClick={setShowSidebar}
-					key={nav.url}
+					key={nav.text}
 					url={nav.url}
 					text={nav.text}
 					Icon={nav.Icon}
