@@ -1,4 +1,5 @@
 import { GridColumns, frFR } from "@mui/x-data-grid"
+import { useState } from "react"
 
 export const PAGE_SIZE_DEFAULT: number = 20
 export const PAGE_SIZE_OPTIONS: Array<number> = [PAGE_SIZE_DEFAULT, 50, 100]
@@ -104,3 +105,8 @@ export const TABLE_COLUMNS: GridColumns = [
 		headerAlign: "left",
 	},
 ]
+export const [search, setSearch] = useState<string>("")
+export const onChange = (evt: any) => {
+	evt.preventDefault()
+	setSearch(evt.target.value)
+}
