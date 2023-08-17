@@ -32,8 +32,6 @@ function StatisticsIndividualPage() {
 	const onChangeStatus = (evt: any) => {
 		evt.preventDefault()
 		setSearchStatus(evt.target.value)
-		console.log("Search status:", evt.target.value)
-		console.log(filteredRows)
 	}
 
 	let filteredRows: any = individualStatsQuery?.data
