@@ -20,7 +20,7 @@ function StatisticsIndividualPage() {
 	const [searchFirstName, setSearchFirstName] = useState<string>("")
 	const [searchPostalCode, setSearchPostalCode] = useState<any>("")
 	const [searchStatus, setSearchStatus] = useState<any>("")
-	const [currentPage, setCurrentPage] = useState(1)
+	const [currentPage, setCurrentPage] = useState(0)
 	const [pageSize, setPageSize] = useState<number>(PAGE_SIZE_DEFAULT)
 	const { individualStatsQuery, fetchIndividualStats } =
 		useStatisticsIndividualPage(currentPage, pageSize)
@@ -43,11 +43,8 @@ function StatisticsIndividualPage() {
 
 	let filteredRows: any = individualStatsQuery?.data?.content
 
-	console.log("filteredRows")
-	console.log(individualStatsQuery)
-
 	if (searchFirstName) {
-		filteredRows = individualStatsQuery?.data.filter(
+		filteredRows = individualStatsQuery?.data?.content.filter(
 			(row: { firstName: string }) =>
 				row.firstName
 					.toLowerCase()
@@ -55,20 +52,20 @@ function StatisticsIndividualPage() {
 		)
 	}
 	if (searchName) {
-		filteredRows = individualStatsQuery?.data.filter(
+		filteredRows = individualStatsQuery?.data?.content.filter(
 			(row: { name: string }) =>
 				row.name.toLowerCase().includes(searchName.toLowerCase())
 		)
 	}
 	if (searchPostalCode) {
 		const postalCodeToNumber = parseInt(searchPostalCode, 10)
-		filteredRows = individualStatsQuery?.data.filter(
+		filteredRows = individualStatsQuery?.data?.content.filter(
 			(row: { postalCode: number }) =>
 				row.postalCode === postalCodeToNumber
 		)
 	}
 	if (searchStatus) {
-		filteredRows = individualStatsQuery?.data.filter(
+		filteredRows = individualStatsQuery?.data?.content.filter(
 			(row: { internStatus: { name: string } }) =>
 				row.internStatus.name
 					.toLowerCase()
@@ -107,8 +104,18 @@ function StatisticsIndividualPage() {
 		XLSX.writeFile(wb, "export_statistique_individuel.xlsx")
 	}
 	const handlePageChange = (newPage: number) => {
-		fetchIndividualStats(newPage, pageSize)
 		setCurrentPage(newPage)
+		fetchIndividualStats(newPage, pageSize)
+	}
+	const rows = filteredRows || []
+	const loading = individualStatsQuery?.isLoading
+	const rowCount = individualStatsQuery?.data?.totalElements || 0
+	const pageChange = (newPage: number) => {
+		handlePageChange(newPage)
+	}
+	const pageSizeChange = (newPageSize: React.SetStateAction<number>) => {
+		setPageSize(newPageSize)
+		setCurrentPage(0)
 	}
 	return (
 		<section className="page">
@@ -176,20 +183,12 @@ function StatisticsIndividualPage() {
 				<div className="content h-full p-3">
 					<DataGrid
 						columns={TABLE_COLUMNS}
-						rows={filteredRows || []}
+						rows={rows}
 						pageSize={pageSize}
-						// pageSize={individualStatsQuery?.data.size}
-						loading={individualStatsQuery?.isLoading}
-						rowCount={
-							individualStatsQuery?.data?.totalElements || 0
-						}
-						onPageChange={newPage => {
-							handlePageChange(newPage)
-						}}
-						onPageSizeChange={newPageSize => {
-							setPageSize(newPageSize) // Update the page size state
-							setCurrentPage(1) // Reset the current page to 1 when changing page size
-						}}
+						loading={loading}
+						rowCount={rowCount}
+						onPageChange={pageChange}
+						onPageSizeChange={pageSizeChange}
 						pagination
 						paginationMode="server"
 						localeText={LOCALE_LANG}
