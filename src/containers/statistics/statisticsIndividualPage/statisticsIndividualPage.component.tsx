@@ -42,7 +42,6 @@ function StatisticsIndividualPage() {
 	}
 
 	let filteredRows: any = individualStatsQuery?.data?.content
-
 	if (searchFirstName) {
 		filteredRows = individualStatsQuery?.data?.content.filter(
 			(row: { firstName: string }) =>
@@ -72,13 +71,27 @@ function StatisticsIndividualPage() {
 					.includes(searchStatus.toLowerCase())
 		)
 	}
+	filteredRows = filteredRows?.map(
+		(item: { createdDate: string | number | Date }) => ({
+			...item,
+			createdDate: new Date(item.createdDate),
+		})
+	)
 
 	const handleExport = (data: any[]) => () => {
-		const filteredData = data.map(item => {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			const { id, ...rest } = item
-			return rest
-		})
+		const formattedData = data.map(item => ({
+			"Date d'inscription": item.createdDate,
+			Civilité: item.civility,
+			Nom: item.name,
+			Prénom: item.firstName,
+			Téléphone: item.phone,
+			Email: item.email,
+			"Code postal": item.postalCode,
+			Statut: item.internStatus ? item.internStatus.name : "",
+			"Durée de stage": item.internshipPeriod || "",
+			"Niveau de diplôme": item.diploma || "",
+			"Nombre de mise à jour du profil": item.updateProfil,
+		}))
 		const customHeader = [
 			"Date d'inscription",
 			"Civilité",
@@ -94,7 +107,7 @@ function StatisticsIndividualPage() {
 		]
 		const wb = XLSX.utils.book_new()
 		const ws = XLSX.utils.json_to_sheet([], { header: customHeader })
-		XLSX.utils.sheet_add_json(ws, filteredData, {
+		XLSX.utils.sheet_add_json(ws, formattedData, {
 			skipHeader: true,
 			origin: "A2",
 		})
