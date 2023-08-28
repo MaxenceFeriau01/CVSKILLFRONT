@@ -8,8 +8,8 @@ import {
 } from "../../utils/constants"
 import CustomSelect from "../inputs/customSelect"
 
-import FileUpload from "../inputs/fileUpload"
 import { CIVILITY_OPTIONS, DIPLOMA_OPTIONS } from "./constants"
+import PdfUpload from "../inputs/pdfUpload"
 
 interface UserControlsProps {
 	control: any
@@ -416,7 +416,7 @@ function UserControls({
 				</>
 			)}
 			<div className="file-control">
-				<FileUpload
+				<PdfUpload
 					register={register("cv")}
 					id="cv"
 					accept=".pdf"
@@ -427,7 +427,7 @@ function UserControls({
 			</div>
 
 			<div className="file-control">
-				<FileUpload
+				<PdfUpload
 					register={register("coverLetter")}
 					id="coverLetter"
 					accept=".pdf"
