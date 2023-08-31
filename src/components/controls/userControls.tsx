@@ -1,5 +1,5 @@
 import { Alert, FormHelperText, InputLabel, TextField } from "@mui/material"
-import { Controller } from "react-hook-form"
+import { Controller, FieldValues, UseFormSetValue } from "react-hook-form"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 import {
 	STUDENT_PERIOD_OPTIONS,
@@ -13,6 +13,7 @@ import PdfUpload from "../inputs/pdfUpload"
 
 interface UserControlsProps {
 	control: any
+	setValue: UseFormSetValue<FieldValues>
 	watch: any
 	errors: any
 	register: any // FileList | FileDb
@@ -28,6 +29,7 @@ function UserControls({
 	register,
 	jobsOptions,
 	statusesOptions,
+	setValue,
 	isProfile = false,
 }: UserControlsProps) {
 	return (
@@ -422,6 +424,7 @@ function UserControls({
 					accept=".pdf"
 					text="Importer un CV"
 					value={watch("cv")}
+					setValue={setValue}
 				/>
 				<FormHelperText>pdf only</FormHelperText>
 			</div>
@@ -433,6 +436,7 @@ function UserControls({
 					accept=".pdf"
 					text="Importer une lettre de motivation"
 					value={watch("coverLetter")}
+					setValue={setValue}
 				/>
 				<FormHelperText>pdf only</FormHelperText>
 			</div>

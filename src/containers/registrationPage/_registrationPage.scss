@@ -15,6 +15,7 @@
 		@include breakpoint {
 			width: 700px;
 		}
+
 		max-height: 85%;
 		position: relative;
 		width: 90%;
@@ -39,6 +40,7 @@
 			z-index: 0;
 			margin-top: 10px;
 			width: 80%;
+
 			@include breakpoint {
 				width: 48%;
 			}
@@ -61,6 +63,7 @@
 			z-index: 0;
 			margin: 10px 0;
 			width: 80%;
+
 			@include breakpoint {
 				width: 48%;
 			}
@@ -76,6 +79,7 @@
 			z-index: 3;
 			margin: 10px auto;
 			width: 80%;
+
 			@include breakpoint {
 				width: 100%;
 			}
@@ -85,6 +89,7 @@
 			z-index: 2;
 			margin: 10px 0;
 			width: 80%;
+
 			@include breakpoint {
 				width: 48%;
 			}
@@ -94,6 +99,7 @@
 			z-index: 1;
 			margin: 10px 0;
 			width: 80%;
+
 			@include breakpoint {
 				width: 48%;
 			}
@@ -101,6 +107,7 @@
 
 		.registration-form-registration {
 			font-size: 14px;
+
 			a {
 				color: $color-primary;
 
@@ -112,9 +119,11 @@
 			text-align: center;
 		}
 	}
+
 	.registration-form--scroll {
 		display: flex;
 		overflow-y: auto;
+		overflow-x: hidden;
 		justify-content: center;
 		flex-wrap: wrap;
 		padding: 0 5px;

@@ -22,6 +22,7 @@ function RegistrationPage() {
 		formState: { errors },
 		watch,
 		register,
+		setValue,
 	} = useForm()
 
 	const postRegister = useMutation(
@@ -72,6 +73,7 @@ function RegistrationPage() {
 				<img src={logo} alt="logo" width="300" height="90" />
 				<div className="registration-form--scroll">
 					<UserControls
+						setValue={setValue}
 						jobsOptions={jobs?.data}
 						statusesOptions={statuses?.data && statuses.data}
 						control={control}
