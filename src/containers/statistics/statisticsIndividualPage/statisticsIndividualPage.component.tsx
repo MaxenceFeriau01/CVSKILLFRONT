@@ -16,15 +16,36 @@ import useStatisticsIndividualPage from "./statisticsIndividualPage.hook"
 import user from "../../../contexts/user"
 
 function StatisticsIndividualPage() {
-	const [searchName, setSearchName] = useState<string>("")
+	const {
+		rows,
+		loading,
+		rowCount,
+		handleExport,
+		pageChange,
+		pageSizeChange,
+		searchName,
+		setSearchName,
+		searchFirstName,
+		setSearchFirstName,
+		searchPostalCode,
+		setSearchPostalCode,
+		onChangeName,
+		onChangeFirstName,
+		onChangePostalCode,
+		onChangeStatus,
+		pageSize,
+		filteredRows,
+		searchStatus,
+	} = useStatisticsIndividualPage()
+	/* const [searchName, setSearchName] = useState<string>("")
 	const [searchFirstName, setSearchFirstName] = useState<string>("")
 	const [searchPostalCode, setSearchPostalCode] = useState<any>("")
 	const [searchStatus, setSearchStatus] = useState<any>("")
 	const [currentPage, setCurrentPage] = useState(0)
-	const [pageSize, setPageSize] = useState<number>(PAGE_SIZE_DEFAULT)
+	const [pageSize, setPageSize] = useState<number>(PAGE_SIZE_DEFAULT) 
 	const { individualStatsQuery, fetchIndividualStats } =
 		useStatisticsIndividualPage(currentPage, pageSize)
-	const onChangeName = (evt: any) => {
+	 const onChangeName = (evt: any) => {
 		evt.preventDefault()
 		setSearchName(evt.target.value)
 	}
@@ -129,7 +150,7 @@ function StatisticsIndividualPage() {
 	const pageSizeChange = (newPageSize: React.SetStateAction<number>) => {
 		setPageSize(newPageSize)
 		setCurrentPage(0)
-	}
+	} */
 	return (
 		<section className="page">
 			<div className="content user-content">

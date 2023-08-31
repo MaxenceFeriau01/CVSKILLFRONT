@@ -1,5 +1,6 @@
 import { SetStateAction, useState } from "react"
 import { useQuery } from "react-query"
+import * as XLSX from "xlsx"
 import userService from "../../../api/services/userService"
 import { PAGE_SIZE_DEFAULT } from "./statisticsIndividualPage.constant"
 
@@ -9,14 +10,36 @@ function useStatisticsIndividualPage(initialPage = 0, initialPageSize = 20) {
 	const [searchPostalCode, setSearchPostalCode] = useState<any>("")
 	const [searchStatus, setSearchStatus] = useState<any>("")
 	const [currentPage, setCurrentPage] = useState(0)
+	let [filteredRows, setFilteredRows] = useState<any>([])
 	const [pageSize, setPageSize] = useState<number>(PAGE_SIZE_DEFAULT)
 	const individualStatsQuery = useQuery(
-		["user-stats", initialPage, initialPageSize],
+		[
+			"user-stats",
+			currentPage,
+			pageSize,
+			searchName,
+			searchFirstName,
+			searchPostalCode,
+			searchStatus,
+		],
 		() =>
-			userService.getAllPaginated({
-				page: initialPage,
-				size: initialPageSize,
-			})
+			userService
+				.getAllPaginated({
+					page: currentPage,
+					size: pageSize,
+					name: searchName !== "" ? searchName : null,
+					firstName: searchFirstName !== "" ? searchFirstName : null,
+					postalCode:
+						searchPostalCode !== "" ? searchPostalCode : null,
+					statut: searchStatus !== "" ? searchStatus : null,
+				})
+				.then(res => {
+					setFilteredRows(res.content)
+					return res
+				}),
+		{
+			keepPreviousData: true,
+		}
 	)
 	const onChangeName = (evt: any) => {
 		evt.preventDefault()
@@ -35,7 +58,7 @@ function useStatisticsIndividualPage(initialPage = 0, initialPageSize = 20) {
 		setSearchStatus(evt.target.value)
 	}
 
-	let filteredRows: any = individualStatsQuery?.data?.content
+	filteredRows = individualStatsQuery?.data?.content
 	if (searchFirstName) {
 		filteredRows = individualStatsQuery?.data?.content.filter(
 			(row: { firstName: string }) =>
@@ -71,8 +94,48 @@ function useStatisticsIndividualPage(initialPage = 0, initialPageSize = 20) {
 			createdDate: new Date(item.createdDate),
 		})
 	)
+	const handleExport = (data: any[]) => () => {
+		const formattedData = data.map(item => ({
+			"Date d'inscription": item.createdDate,
+			Civilité: item.civility,
+			Nom: item.name,
+			Prénom: item.firstName,
+			Téléphone: item.phone,
+			Email: item.email,
+			"Code postal": item.postalCode,
+			Statut: item.internStatus ? item.internStatus.name : "",
+			"Durée de stage": item.internshipPeriod || "",
+			"Niveau de diplôme": item.diploma || "",
+			"Nombre de mise à jour du profil": item.updateProfil,
+		}))
+		const customHeader = [
+			"Date d'inscription",
+			"Civilité",
+			"Nom",
+			"Prénom",
+			"Téléphone",
+			"Email",
+			"Code postal",
+			"Statut",
+			"durée de stage",
+			"Niveau de diplome",
+			"Nombre de mise à jour du profil",
+		]
+		const wb = XLSX.utils.book_new()
+		const ws = XLSX.utils.json_to_sheet([], { header: customHeader })
+		XLSX.utils.sheet_add_json(ws, formattedData, {
+			skipHeader: true,
+			origin: "A2",
+		})
+
+		XLSX.utils.book_append_sheet(wb, ws, "Sheet1")
+
+		XLSX.writeFile(wb, "export_statistique_individuel.xlsx")
+	}
 	const handlePageChange = (newPage: number) => {
 		setCurrentPage(newPage)
+		console.log(currentPage)
+		console.log(newPage)
 	}
 	const rows = filteredRows || []
 	const loading = individualStatsQuery?.isLoading
@@ -84,17 +147,27 @@ function useStatisticsIndividualPage(initialPage = 0, initialPageSize = 20) {
 		setPageSize(newPageSize)
 		setCurrentPage(0)
 	}
-
 	return {
 		individualStatsQuery,
-		fetchIndividualStats: (
-			page: unknown | string,
-			pageSize: unknown | string
-		) => {
-			individualStatsQuery.refetch({
-				queryKey: ["user-stats", page, pageSize],
-			})
-		},
+		rows,
+		loading,
+		rowCount,
+		handleExport,
+		pageChange,
+		pageSizeChange,
+		searchName,
+		setSearchName,
+		searchFirstName,
+		setSearchFirstName,
+		searchPostalCode,
+		setSearchPostalCode,
+		onChangeName,
+		onChangeFirstName,
+		onChangePostalCode,
+		onChangeStatus,
+		searchStatus,
+		filteredRows,
+		pageSize,
 	}
 }
 export default useStatisticsIndividualPage
