@@ -53,6 +53,7 @@ function ProfilePage() {
 				lUser.internStatus = data.internStatus
 				setUser(lUser)
 				localStorage.setItem("user", JSON.stringify(lUser))
+				apiUser.refetch()
 				Swal.fire({
 					position: "bottom-end",
 					title: "",
@@ -183,6 +184,7 @@ function ProfilePage() {
 					watch={watch}
 					errors={errors}
 					register={register}
+					setValue={setValue}
 					isProfile
 				/>
 				<Button type="submit">Mettre à jour</Button>
