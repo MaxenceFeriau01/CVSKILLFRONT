@@ -104,7 +104,7 @@ function StatisticsIndividualPage() {
 				<div className="content h-full p-3">
 					<DataGrid
 						columns={TABLE_COLUMNS}
-						rows={rows}
+						rows={rows || []}
 						pageSize={pageSize}
 						loading={loading}
 						rowCount={rowCount}

@@ -1,3 +1,3 @@
-import StatisticsIndividualPage from "./statisticsIndividualPage.component"
+import StatisticsIndividualPage from "./statisticsIndividualPage"
 
 export default StatisticsIndividualPage

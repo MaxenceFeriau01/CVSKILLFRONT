@@ -1,5 +1,5 @@
-import { SetStateAction, useState } from "react"
-import { useQuery } from "react-query"
+import { SetStateAction, useEffect, useState } from "react"
+import { useQuery, useQueryClient } from "react-query"
 import * as XLSX from "xlsx"
 import userService from "../../../api/services/userService"
 import { PAGE_SIZE_DEFAULT } from "./statisticsIndividualPage.constant"
@@ -10,8 +10,56 @@ function useStatisticsIndividualPage(initialPage = 0, initialPageSize = 20) {
 	const [searchPostalCode, setSearchPostalCode] = useState<any>("")
 	const [searchStatus, setSearchStatus] = useState<any>("")
 	const [currentPage, setCurrentPage] = useState(0)
-	let [filteredRows, setFilteredRows] = useState<any>([])
+
 	const [pageSize, setPageSize] = useState<number>(PAGE_SIZE_DEFAULT)
+	const queryClient = useQueryClient() // Utilisez useQueryClient pour réinitialiser la requête
+
+	// Utilisez un useEffect pour mettre à jour la requête en fonction des champs de recherche
+	useEffect(() => {
+		// Définissez une fonction pour exécuter la requête en fonction des valeurs actuelles des champs de recherche
+		const fetchData = async () => {
+			const filters: any = {
+				page: currentPage,
+				size: pageSize,
+				name: searchName !== "" ? searchName : null,
+				firstName: searchFirstName !== "" ? searchFirstName : null,
+				postalCode: searchPostalCode !== "" ? searchPostalCode : null,
+				statut: searchStatus !== "" ? searchStatus : null,
+			}
+
+			try {
+				const result = await userService.getUserStats(filters)
+				// Utilisez queryClient pour réinitialiser la requête avec les nouvelles données
+				queryClient.setQueryData(
+					[
+						"user-stats",
+						currentPage,
+						pageSize,
+						searchName,
+						searchFirstName,
+						searchPostalCode,
+						searchStatus,
+					],
+					result
+				)
+			} catch (error) {
+				// Gérer les erreurs ici
+				console.error(error)
+			}
+		}
+
+		// Appelez la fonction fetchData lorsque les champs de recherche changent
+		fetchData()
+	}, [
+		searchName,
+		searchFirstName,
+		searchPostalCode,
+		searchStatus,
+		currentPage,
+		pageSize,
+		queryClient,
+	])
+
 	const individualStatsQuery = useQuery(
 		[
 			"user-stats",
@@ -24,7 +72,7 @@ function useStatisticsIndividualPage(initialPage = 0, initialPageSize = 20) {
 		],
 		() =>
 			userService
-				.getAllPaginated({
+				.getUserStats({
 					page: currentPage,
 					size: pageSize,
 					name: searchName !== "" ? searchName : null,
@@ -33,16 +81,16 @@ function useStatisticsIndividualPage(initialPage = 0, initialPageSize = 20) {
 						searchPostalCode !== "" ? searchPostalCode : null,
 					statut: searchStatus !== "" ? searchStatus : null,
 				})
-				.then(res => {
-					setFilteredRows(res.content)
-					return res
-				}),
+				.then(res => res),
 		{
 			keepPreviousData: true,
 		}
 	)
+
+	let filteredRows: any = individualStatsQuery || []
 	const onChangeName = (evt: any) => {
 		evt.preventDefault()
+		console.log(searchName)
 		setSearchName(evt.target.value)
 	}
 	const onChangeFirstName = (evt: any) => {
@@ -58,9 +106,8 @@ function useStatisticsIndividualPage(initialPage = 0, initialPageSize = 20) {
 		setSearchStatus(evt.target.value)
 	}
 
-	filteredRows = individualStatsQuery?.data?.content
 	if (searchFirstName) {
-		filteredRows = individualStatsQuery?.data?.content.filter(
+		filteredRows = filteredRows?.data?.content.filter(
 			(row: { firstName: string }) =>
 				row.firstName
 					.toLowerCase()
@@ -68,32 +115,45 @@ function useStatisticsIndividualPage(initialPage = 0, initialPageSize = 20) {
 		)
 	}
 	if (searchName) {
-		filteredRows = individualStatsQuery?.data?.content.filter(
+		filteredRows = filteredRows?.data?.content.filter(
 			(row: { name: string }) =>
 				row.name.toLowerCase().includes(searchName.toLowerCase())
 		)
 	}
 	if (searchPostalCode) {
 		const postalCodeToNumber = parseInt(searchPostalCode, 10)
-		filteredRows = individualStatsQuery?.data?.content.filter(
+		filteredRows = filteredRows?.data?.content.filter(
 			(row: { postalCode: number }) =>
 				row.postalCode === postalCodeToNumber
 		)
 	}
 	if (searchStatus) {
-		filteredRows = individualStatsQuery?.data?.content.filter(
+		filteredRows = filteredRows?.data?.content.filter(
 			(row: { internStatus: { name: string } }) =>
 				row.internStatus.name
 					.toLowerCase()
 					.includes(searchStatus.toLowerCase())
 		)
 	}
-	filteredRows = filteredRows?.map(
+	const rows = filteredRows?.data?.content
+	console.log("row")
+	console.log(rows)
+	console.log("filteredRows")
+	console.log(filteredRows?.data)
+	console.log("individualStatsQuery?")
+	console.log(filteredRows.data?.totalElements)
+	const loading = individualStatsQuery?.isLoading
+	const rowCount = filteredRows?.data?.totalElements || 0
+	console.log("rowCount")
+	console.log(rowCount)
+
+	filteredRows = filteredRows.data?.content.map(
 		(item: { createdDate: string | number | Date }) => ({
 			...item,
 			createdDate: new Date(item.createdDate),
 		})
 	)
+
 	const handleExport = (data: any[]) => () => {
 		const formattedData = data.map(item => ({
 			"Date d'inscription": item.createdDate,
@@ -137,9 +197,7 @@ function useStatisticsIndividualPage(initialPage = 0, initialPageSize = 20) {
 		console.log(currentPage)
 		console.log(newPage)
 	}
-	const rows = filteredRows || []
-	const loading = individualStatsQuery?.isLoading
-	const rowCount = individualStatsQuery?.data?.totalElements || 0
+
 	const pageChange = (newPage: number) => {
 		handlePageChange(newPage)
 	}
@@ -147,6 +205,7 @@ function useStatisticsIndividualPage(initialPage = 0, initialPageSize = 20) {
 		setPageSize(newPageSize)
 		setCurrentPage(0)
 	}
+
 	return {
 		individualStatsQuery,
 		rows,

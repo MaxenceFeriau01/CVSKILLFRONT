@@ -210,7 +210,7 @@ function StatisticsIndividualPage() {
 					<GridActionsCellItem
 						icon={<FileDownload color="primary" />}
 						label="Exporter"
-						onClick={handleExport(filteredRows)}
+						// onClick={handleExport(filteredRows.data)}
 						title="Exporter"
 					/>
 				</header>

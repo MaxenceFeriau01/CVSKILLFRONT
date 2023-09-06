@@ -59,8 +59,19 @@ class UserService extends GeneralService<User | any> {
 		this.roles = roles
 	}
 
-	getUserStats(): Promise<any[]> {
-		return this.getAllWithFilters(null, "/stats")
+	getUserStats(filters?: Object, path: string = ""): Promise<any[]> {
+		console.log(filters)
+		console.log(this)
+		console.log(path)
+		console.log(`${this.url + path}/stats`)
+		return this.http
+			.get<any[]>(`${this.url + path}/stats`, { params: filters })
+			.then((res: any) => {
+				console.log("res.data")
+				console.log(res.data) // Ajoutez ce console.log pour afficher res.data
+				return res.data // Retourne res.data comme d'habitude
+			})
+			.catch(this.handleError)
 	}
 }
 
