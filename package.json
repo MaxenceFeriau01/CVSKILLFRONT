@@ -19,6 +19,7 @@
 		"@types/react-pdf": "^5.0.9",
 		"axios": "^0.24.0",
 		"breakpoint-sass": "^2.7.1",
+		"dayjs": "^1.11.9",
 		"env-cmd": "^10.1.0",
 		"eslint-plugin-prettier": "^4.0.0",
 		"react": "^17.0.2",

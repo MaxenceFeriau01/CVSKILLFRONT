@@ -13,6 +13,7 @@ function UserPopover() {
 
 	const logout = () => {
 		window.localStorage.removeItem("user")
+		window.localStorage.removeItem("counted")
 		navigate("/login")
 		userService.setRoles([])
 		setUser(null)

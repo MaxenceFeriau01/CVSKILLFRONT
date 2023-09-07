@@ -55,6 +55,7 @@ class GeneralService<T> {
 				new Promise(() => {
 					if (err.response?.status === 401) {
 						localStorage.removeItem("user")
+						localStorage.removeItem("counted")
 						window.location.replace("/login")
 					}
 					// Remove loading spinner

@@ -14,7 +14,7 @@ import PrivateRoute from "./privateRoute"
 import UserAdminPage from "../containers/admin/userAdminPage/userAdminPage"
 import ForgotPassword from "../containers/forgotPasswordPage/forgotPasswordPage"
 import ResetPassword from "../containers/resetPasswordPage/resetPasswordPage"
-import StatisticsGeneralPage from "../containers/statistics/statisticsGeneralPage/statisticsGeneralPage"
+import StatisticsGeneralPage from "../containers/statistics/statisticsGeneralPage"
 import StatisticsJobPage from "../containers/statistics/statisticsJobPage"
 import StatisticsIndividualPage from "../containers/statistics/statisticsIndividualPage/statisticsIndividualPage"
 

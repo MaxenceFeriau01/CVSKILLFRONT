@@ -14,6 +14,7 @@ import useStatusesQuery from "../../hooks/useStatusesQuery"
 import CompanyDetailsView from "./companyDetailsView"
 import useCompaniesInfiniteQuery from "./hooks/useCompaniesInfiniteQuery"
 import useSelectedCompany from "./hooks/useSelectedCompany"
+import useAddVisits from "./hooks/useAddVisits"
 
 function CompanyPage() {
 	const { user } = useContext(UserContext)
@@ -34,6 +35,9 @@ function CompanyPage() {
 		selectedActivities,
 		selectedJobs,
 	} = useCompaniesInfiniteQuery(setSelectedCompany)
+
+	useAddVisits()
+
 	return (
 		<section className="page company-page">
 			{user && user.token && (

@@ -138,6 +138,7 @@ function UserControls({
 								pattern: "[0-9]{4}-[0-9]{2}-[0-9]{2}",
 								max: "2100-01-01",
 							}}
+							className="hide-calendar"
 							onChange={onChange}
 							onClick={evt => evt.preventDefault()}
 							value={value || new Date("0000-00-00")}
@@ -241,6 +242,7 @@ function UserControls({
 								pattern: "[0-9]{4}-[0-9]{2}-[0-9]{2}",
 								max: "2100-01-01",
 							}}
+							className="hide-calendar"
 							onChange={onChange}
 							onClick={evt => evt.preventDefault()}
 							value={value || new Date("00-00-0000")}
@@ -270,6 +272,7 @@ function UserControls({
 								pattern: "[0-9]{4}-[0-9]{2}-[0-9]{2}",
 								max: "2100-01-01",
 							}}
+							className="hide-calendar"
 							onChange={onChange}
 							onClick={evt => evt.preventDefault()}
 							value={value || new Date("0000-00-00")}

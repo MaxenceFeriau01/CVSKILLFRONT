@@ -81,13 +81,13 @@ body {
 	}
 
 	//remove datePicker styles
-    input[type=date]::-moz-datepicker-appearance {
+    input[type=date].hide-calendar::-moz-datepicker-appearance {
         display: none;
     }
-	input[type=date]::-webkit-inner-spin-button {
+	input[type=date].hide-calendar::-webkit-inner-spin-button {
 		display: none;
 	}
-	input[type=date]::-webkit-calendar-picker-indicator {
+	input[type=date].hide-calendar::-webkit-calendar-picker-indicator {
 		display: none;
 	}
 

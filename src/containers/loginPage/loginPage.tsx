@@ -23,6 +23,7 @@ function LoginPage() {
 		{
 			onSuccess: (data: User) => {
 				localStorage.setItem("user", JSON.stringify(data))
+				localStorage.removeItem("counted")
 				setUser(data)
 				navigate("/companies")
 			},
