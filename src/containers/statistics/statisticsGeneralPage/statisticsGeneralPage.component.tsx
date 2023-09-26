@@ -18,7 +18,7 @@ import useStatisticsGeneralPage from "./statisticsGeneralPage.hook"
 import StatisticCard from "../../../components/statistics/statisticsGeneral/statisticsGeneralCard"
 
 function StatisticsGeneralPage() {
-	const { startedAt, setStartedAt, endedAt, setEndedAt, generalStats } =
+	const { startedAt, setStartDate, endedAt, setEndDate, generalStats } =
 		useStatisticsGeneralPage()
 
 	return (
@@ -30,13 +30,7 @@ function StatisticsGeneralPage() {
 					inputProps={{
 						pattern: "[0-9]{4}-[0-9]{2}-[0-9]{2}",
 					}}
-					onChange={(evt: any) =>
-						setStartedAt(
-							evt.target.value
-								? dayjs(evt.target.value).format("YYYY-MM-DD")
-								: dayjs().startOf("year").format("YYYY-MM-DD")
-						)
-					}
+					onChange={(evt: any) => setStartDate(evt.target.value)}
 					style={{ marginInline: "16px" }}
 					value={startedAt}
 					required
@@ -47,13 +41,7 @@ function StatisticsGeneralPage() {
 					inputProps={{
 						pattern: "[0-9]{4}-[0-9]{2}-[0-9]{2}",
 					}}
-					onChange={(evt: any) =>
-						setEndedAt(
-							evt.target.value
-								? dayjs(evt.target.value).format("YYYY-MM-DD")
-								: dayjs().format("YYYY-MM-DD")
-						)
-					}
+					onChange={(evt: any) => setEndDate(evt.target.value)}
 					style={{ marginInline: "16px" }}
 					value={endedAt}
 					required

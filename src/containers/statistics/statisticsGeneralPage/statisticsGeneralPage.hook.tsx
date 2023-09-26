@@ -22,11 +22,31 @@ function useStatisticsGeneralPage() {
 		}
 	)
 
+	const setStartDate = (startDate: any) => {
+		if (!startDate) {
+			setStartedAt(dayjs().startOf("year").format("YYYY-MM-DD"))
+		} else if (dayjs(startDate).isAfter(dayjs(endedAt))) {
+			setStartedAt(dayjs().startOf("year").format("YYYY-MM-DD"))
+		} else {
+			setStartedAt(dayjs(startDate).format("YYYY-MM-DD"))
+		}
+	}
+
+	const setEndDate = (endDate: any) => {
+		if (!endDate) {
+			setEndedAt(dayjs().format("YYYY-MM-DD"))
+		} else if (dayjs(endDate).isBefore(dayjs(startedAt))) {
+			setEndedAt(dayjs().format("YYYY-MM-DD"))
+		} else {
+			setEndedAt(dayjs(endDate).format("YYYY-MM-DD"))
+		}
+	}
+
 	return {
 		startedAt,
-		setStartedAt,
+		setStartDate,
 		endedAt,
-		setEndedAt,
+		setEndDate,
 		generalStats,
 	}
 }
