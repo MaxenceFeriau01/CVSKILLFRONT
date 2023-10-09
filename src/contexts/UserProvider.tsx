@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
 import userService from "../api/services/userService"
 import UserContext, { defaultState } from "./user"
+import User from "../api/models/user"
 
 interface UserProviderProps {
 	children: any
 }
 
 function UserProvider({ children }: UserProviderProps) {
-	const [user, setUser] = useState(defaultState.user)
+	const [user, setUser] = useState<User>()
 	const [userRoles, setUserRoles] = useState<string[]>([])
 
 	useEffect(() => {
@@ -17,7 +18,7 @@ function UserProvider({ children }: UserProviderProps) {
 		if (storageItem !== null) lUser = JSON.parse(storageItem)
 
 		if (lUser) {
-			setUser(lUser)
+			userService.getSelf().then(res => setUser(res))
 		}
 	}, [])
 

@@ -15,6 +15,7 @@ import CompanyDetailsView from "./companyDetailsView"
 import useCompaniesInfiniteQuery from "./hooks/useCompaniesInfiniteQuery"
 import useSelectedCompany from "./hooks/useSelectedCompany"
 import useAddVisits from "./hooks/useAddVisits"
+import useProfilePopup from "./hooks/useProfilePopup"
 
 function CompanyPage() {
 	const { user } = useContext(UserContext)
@@ -36,7 +37,11 @@ function CompanyPage() {
 		selectedJobs,
 	} = useCompaniesInfiniteQuery(setSelectedCompany)
 
+	// Increment visit for statistics (anonymous count)
 	useAddVisits()
+
+	// Show an alert every 3 months to invite user to update his profile
+	useProfilePopup()
 
 	return (
 		<section className="page company-page">

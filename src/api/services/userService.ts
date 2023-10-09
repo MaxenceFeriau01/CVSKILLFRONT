@@ -35,6 +35,10 @@ class UserService extends GeneralService<User | any> {
 		return this.get("/self/applied-companies").then(res => res)
 	}
 
+	refreshProfile(): Promise<void> {
+		return this.post(null, "/self/no-profile-update")
+	}
+
 	getSelf(): Promise<User> {
 		return this.get("/self")
 	}

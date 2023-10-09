@@ -37,6 +37,10 @@ class User {
 	coverLetter!: File | null
 
 	activated!: boolean
+
+	createdDate!: Date
+
+	lastModifiedDate!: Date
 }
 
 export default User

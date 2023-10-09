@@ -115,6 +115,13 @@ class GeneralService<T> {
 			.catch(this.handleError)
 	}
 
+	patch(entity: T, id: number | string): Promise<T> {
+		return this.http
+			.patch<T>(`${this.url}/${id}`, entity)
+			.then(this.handleResponse)
+			.catch(this.handleError)
+	}
+
 	delete(id: number | string): Promise<T> {
 		return this.http
 			.delete<T>(`${this.url}/${id}`)
