@@ -137,14 +137,9 @@ class GeneralService<T> {
 		if (response.results) {
 			return response.results
 		}
-
 		if (response.data) {
-			if (response.data?.content) {
-				return response.data.content
-			}
 			return response.data
 		}
-
 		return response
 	}
 

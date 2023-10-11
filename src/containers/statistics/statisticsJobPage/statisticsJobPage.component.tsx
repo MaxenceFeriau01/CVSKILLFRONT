@@ -1,4 +1,6 @@
 import { DataGrid } from "@mui/x-data-grid"
+import { InputAdornment, TextField } from "@mui/material"
+import SearchIcon from "@mui/icons-material/Search"
 import {
 	LOCALE_LANG,
 	PAGE_SIZE_OPTIONS,
@@ -7,22 +9,53 @@ import {
 import useStatisticsJobPage from "./statisticsJobPage.hook"
 
 function StatisticsJobPage() {
-	const { jobsStatsQuery, pageSize, onChangePageSize } =
-		useStatisticsJobPage()
+	const {
+		jobsStatsQuery,
+		pageSize,
+		setPageSize,
+		onPageChange,
+		pageNumber,
+		search,
+		onChange,
+		sortModel,
+		setSortModel,
+	} = useStatisticsJobPage()
 
 	return (
 		<section className="page">
 			<div className="content h-full p-3">
+				<header className="w-full mx-1 my-2">
+					<TextField
+						id="query"
+						label="Rechercher par nom"
+						value={search}
+						onChange={onChange}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="start">
+									<SearchIcon />
+								</InputAdornment>
+							),
+						}}
+					/>
+				</header>
 				<DataGrid
 					getRowId={row => row.name}
 					columns={TABLE_COLUMNS}
-					rows={jobsStatsQuery?.data || []}
+					rows={jobsStatsQuery?.data?.content ?? []}
 					pageSize={pageSize}
-					onPageSizeChange={onChangePageSize}
+					onPageSizeChange={setPageSize}
+					page={pageNumber}
+					onPageChange={onPageChange}
 					loading={jobsStatsQuery?.isLoading}
+					rowCount={jobsStatsQuery?.data?.totalElements ?? 0}
 					pagination
+					paginationMode="server"
 					localeText={LOCALE_LANG}
 					rowsPerPageOptions={PAGE_SIZE_OPTIONS}
+					sortingMode="server"
+					sortModel={sortModel}
+					onSortModelChange={model => setSortModel(model)}
 				/>
 			</div>
 		</section>

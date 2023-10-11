@@ -4,12 +4,16 @@
  */
 
 import Job from "../models/job"
-import { JobStat } from "../models/job.type"
 import GeneralService from "./generalService"
+import Page from "../models/utils/Page"
+import { JobRequestStat, JobStat } from "../models/job.type"
 
-class JobService extends GeneralService<Job | any> {
-	getJobStats(): Promise<JobStat[]> {
-		return this.get("/stats")
+class JobService extends GeneralService<Job | Page<JobStat> | any> {
+	getJobStat(filters: JobRequestStat): Promise<Page<JobStat>> {
+		return this.http
+			.get(`${this.url}/stats`, { params: filters })
+			.then(this.handleResponse)
+			.catch(this.handleError)
 	}
 }
 
