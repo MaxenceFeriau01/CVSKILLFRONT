@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { GridSortModel } from "@mui/x-data-grid"
 import jobService from "../../../api/services/jobService"
-import { PAGE, SIZE } from "../../admin/jobAdminPage/constant"
+import { PAGE, SIZE } from "../../admin/jobAdminPage/Constants"
 import Page from "../../../api/models/utils/Page"
 import { JobStat } from "../../../api/models/job.type"
 
