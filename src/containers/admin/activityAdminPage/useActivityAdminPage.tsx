@@ -1,37 +1,33 @@
 import { useEffect, useState } from "react"
 import { useMutation, useQuery } from "react-query"
-
-import DeleteIcon from "@mui/icons-material/Delete"
 import {
-	frFR,
 	GridActionsCellItem,
 	GridColumns,
 	GridRowId,
 	GridSortModel,
 } from "@mui/x-data-grid"
-
+import DeleteIcon from "@mui/icons-material/Delete"
 import Swal from "sweetalert2"
-import jobService from "../../../api/services/jobService"
-import Job from "../../../api/models/job"
-import { PAGE, SIZE } from "./Constants"
+import activityService from "../../../api/services/activityService"
+import Activity from "../../../api/models/activity"
+import { PAGE, SIZE } from "./constant"
 
-function useJobAdminPage() {
-	const locale = frFR.components.MuiDataGrid.defaultProps.localeText
+function useActivityAdminPage() {
 	const [search, setSearch] = useState<string>("")
 	const [pageSize, setPageSize] = useState<number>(SIZE)
 	const [pageNumber, setPageNumber] = useState<number>(PAGE)
 	const [sortModel, setSortModel] = useState<GridSortModel>([])
 	const [orderId, setOrderId] = useState<string>("")
 	const [orderName, setOrderName] = useState<string>("")
-	const [orderUserCount, setOrderUserCount] = useState<string>("")
 	const [orderCompanyCount, setOrderCompanyCount] = useState<string>("")
+	const [orderCompanySearchCount, setOrderCompanySearchCount] =
+		useState<string>("")
 
 	const columns: GridColumns = [
 		{
 			field: "id",
 			headerName: "Numéro",
 			type: "string",
-			editable: false,
 			flex: 0.1,
 		},
 		{
@@ -39,21 +35,19 @@ function useJobAdminPage() {
 			headerName: "Nom ",
 			type: "string",
 			editable: true,
-			flex: 0.2,
 			headerClassName: "info-cell",
+			flex: 0.2,
 		},
 		{
 			field: "companyCount",
-			headerName: "Entreprise(s) qui recherche(nt)",
+			headerName: "Entreprise(s) liée(s)",
 			type: "number",
-			editable: false,
 			flex: 0.2,
 		},
 		{
-			field: "userCount",
-			headerName: "Utilisateur(s) qui recherche(nt)",
+			field: "companySearchCount",
+			headerName: "Entreprise(s) qui recherche(nt)",
 			type: "number",
-			editable: false,
 			flex: 0.2,
 		},
 		{
@@ -63,51 +57,51 @@ function useJobAdminPage() {
 			cellClassName: "actions",
 			flex: 0.1,
 			// eslint-disable-next-line arrow-body-style
-			getActions: job => {
+			getActions: activity => {
 				return [
 					<GridActionsCellItem
-						key={`job-action-${job.id}`}
+						key={`deleteActivity${activity.id}`}
 						icon={
 							<DeleteIcon
 								color={`${
-									checkIfCanDelete(job.row)
+									checkIfCanDelete(activity.row)
 										? "error"
 										: "disabled"
 								}`}
 							/>
 						}
 						label="Supprimer"
-						title="Supprimer"
-						disabled={!checkIfCanDelete(job.row)}
-						onClick={() => handleDeleteClick(job.id)}
+						titile="Supprimer"
+						disabled={!checkIfCanDelete(activity.row)}
+						onClick={() => handleDeleteClick(activity.id)}
 					/>,
 				]
 			},
 		},
 	]
 
-	function checkIfCanDelete(job: any) {
-		return job.companyCount === 0 && job.userCount === 0
+	function checkIfCanDelete(activity: any) {
+		return activity.companyCount === 0 && activity.companySearchCount === 0
 	}
 
-	const jobs = useQuery(
+	const activities = useQuery(
 		[
-			"jobs",
+			"activities",
 			pageNumber,
 			search,
 			pageSize,
 			orderId,
 			orderName,
 			orderCompanyCount,
-			orderUserCount,
+			orderCompanySearchCount,
 		],
 		() =>
-			jobService.getAllPaginated({
+			activityService.getAllPaginated({
 				page: pageNumber,
 				size: pageSize,
-				query: search !== "" ? search : null,
+				name: search !== "" ? search : null,
+				orderCompanySearchCount: orderCompanySearchCount || null,
 				orderCompanyCount: orderCompanyCount || null,
-				orderUserCount: orderUserCount || null,
 				orderName: orderName || null,
 				orderId: orderId || null,
 			}),
@@ -128,11 +122,11 @@ function useJobAdminPage() {
 				case "name":
 					setOrderName(model.sort ?? "")
 					break
-				case "userCount":
-					setOrderUserCount(model.sort ?? "")
-					break
 				case "companyCount":
 					setOrderCompanyCount(model.sort ?? "")
+					break
+				case "companySearchCount":
+					setOrderCompanySearchCount(model.sort ?? "")
 					break
 			}
 		}
@@ -141,78 +135,83 @@ function useJobAdminPage() {
 	const clearSortingData = () => {
 		setOrderId("")
 		setOrderName("")
-		setOrderUserCount("")
 		setOrderCompanyCount("")
+		setOrderCompanySearchCount("")
 	}
 
-	const postJob = useMutation((job: Job) => jobService.post(job), {
-		onSuccess: () => {
-			jobs.refetch()
-			Swal.fire({
-				title: "Ce métier a bien été créé.",
-				icon: "success",
-				position: "bottom-end",
-				showConfirmButton: false,
-				timer: 1500,
-			})
-		},
+	const postActivity = useMutation(
+		(activity: Activity) => activityService.post(activity),
+		{
+			onSuccess: () => {
+				activities.refetch()
+				Swal.fire({
+					title: "Ce domaine d'activité a bien été créée.",
+					icon: "success",
+					position: "bottom-end",
+					showConfirmButton: false,
+					timer: 1500,
+				})
+			},
 
-		onError: () => {
-			Swal.fire({
-				title: "Erreur, veuillez recommencer la saisie.",
-				icon: "error",
-				position: "bottom-end",
-				showConfirmButton: false,
-				timer: 1500,
-			})
-		},
-	})
+			onError: () => {
+				Swal.showValidationMessage(
+					"Erreur, veuillez recommencer la saisie."
+				)
+			},
+		}
+	)
 
-	const putJob = useMutation((job: Job) => jobService.put(job, job.id), {
-		onSuccess: () => {
-			jobs.refetch()
-			Swal.fire({
-				title: "Ce métier a bien été sauvegardé.",
-				icon: "success",
-				position: "bottom-end",
-				showConfirmButton: false,
-				timer: 1500,
-			})
-		},
+	const putActivity = useMutation(
+		(activity: Activity) => activityService.put(activity, activity.id),
+		{
+			onSuccess: () => {
+				activities.refetch()
+				Swal.fire({
+					title: "Ce domaine d'activité a bien été sauvegardée.",
+					icon: "success",
+					position: "bottom-end",
+					showConfirmButton: false,
+					timer: 1500,
+				})
+			},
 
-		onError: () => {
-			Swal.fire({
-				title: "Erreur, veuillez recommencer la saisie.",
-				icon: "error",
-				position: "bottom-end",
-				showConfirmButton: false,
-				timer: 1500,
-			})
-		},
-	})
+			onError: () => {
+				Swal.fire({
+					title: "Erreur, veuillez recommencer la saisie.",
+					icon: "error",
+					position: "bottom-end",
+					showConfirmButton: false,
+					timer: 1500,
+				})
+			},
+		}
+	)
 
-	const deleteJob = useMutation((id: string) => jobService.delete(id), {
-		onSuccess: () => {
-			jobs.refetch()
-			Swal.fire({
-				title: "Ce job a bien été supprimé.",
-				icon: "success",
-				position: "bottom-end",
-				showConfirmButton: false,
-				timer: 1500,
-			})
-		},
+	const deleteActivity = useMutation(
+		(id: string) => activityService.delete(id),
+		{
+			onSuccess: () => {
+				activities.refetch()
+				Swal.fire({
+					title: "Ce domaine d'activité a bien été supprimée.",
+					icon: "success",
+					position: "bottom-end",
+					showConfirmButton: false,
+					timer: 1500,
+				})
+			},
 
-		onError: () => {
-			Swal.fire({
-				title: "Erreur lors de la suppression.",
-				icon: "error",
-				position: "bottom-end",
-				showConfirmButton: false,
-				timer: 1500,
-			})
-		},
-	})
+			onError: () => {
+				Swal.fire({
+					title: "Erreur lors de la suppression.",
+					icon: "error",
+					position: "bottom-end",
+					showConfirmButton: false,
+					timer: 1500,
+				})
+			},
+		}
+	)
 
 	const onChange = (evt: any) => {
 		evt.preventDefault()
@@ -221,7 +220,7 @@ function useJobAdminPage() {
 
 	const onPageChange = (page: number) => {
 		if (page > pageNumber) {
-			if (!jobs.isPreviousData) {
+			if (!activities.isPreviousData) {
 				setPageNumber(old => old + 1)
 			}
 		} else if (page < pageNumber) {
@@ -234,7 +233,7 @@ function useJobAdminPage() {
 			return
 		}
 
-		putJob.mutate(new Job(params.id, params.value))
+		putActivity.mutate(new Activity(params.id, params.value))
 	}
 
 	const handleDeleteClick = async (id: GridRowId) => {
@@ -247,21 +246,21 @@ function useJobAdminPage() {
 			cancelButtonText: "Annuler",
 		}).then(result => {
 			if (result.isConfirmed) {
-				deleteJob.mutate(id.toString())
+				deleteActivity.mutate(id.toString())
 			}
 		})
 	}
 
-	const addJob = () => {
+	const addActivity = () => {
 		Swal.fire({
-			title: "Ajouter un métier",
+			title: "Ajouter un domaine d'activité",
 			input: "text",
 			showCancelButton: true,
 			confirmButtonText: "Ajouter",
 			showLoaderOnConfirm: true,
 			preConfirm: (name: string) => {
 				if (name !== "") {
-					postJob.mutate(new Job(0, name))
+					postActivity.mutate(new Activity(0, name))
 				} else {
 					Swal.fire({
 						title: "Ce champ ne peut pas être vide",
@@ -276,12 +275,11 @@ function useJobAdminPage() {
 	}
 
 	return {
-		locale,
 		search,
 		onChange,
-		addJob,
+		addActivity,
 		columns,
-		jobs,
+		activities,
 		setPageSize,
 		onPageChange,
 		handleCellEditCommit,
@@ -290,4 +288,4 @@ function useJobAdminPage() {
 	}
 }
 
-export default useJobAdminPage
+export default useActivityAdminPage
