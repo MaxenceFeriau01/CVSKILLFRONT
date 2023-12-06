@@ -24,7 +24,7 @@ function UserAdminPage() {
 			<div className="content user-content">
 				<header className="user-page-header">
 					<TextField
-						id="searchUserName"
+						id="searchQuery"
 						label="Rechercher par nom"
 						value={search}
 						onChange={onChange}

@@ -143,7 +143,7 @@ function useUserAdminPage() {
 				.getAllPaginated({
 					page: pageNumber,
 					size: pageSize,
-					name: search !== "" ? search : null,
+					query: search !== "" ? search : null,
 					sortField: sorting?.field,
 					sortType: sorting?.type,
 				})

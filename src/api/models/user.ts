@@ -1,5 +1,6 @@
 import InternStatus from "./internStatus"
 import Job from "./job"
+import Company from "./company"
 
 class User {
 	email!: string
@@ -24,6 +25,10 @@ class User {
 
 	internshipPeriod!: String | null
 
+	internshipStartDate!: Date
+
+	internshipEndDate!: Date
+
 	civility!: String
 
 	diploma!: String | null
@@ -41,6 +46,10 @@ class User {
 	createdDate!: Date
 
 	lastModifiedDate!: Date
+
+	profileUpdateCount!: number
+
+	appliedCompanies?: Company[]
 }
 
 export default User
