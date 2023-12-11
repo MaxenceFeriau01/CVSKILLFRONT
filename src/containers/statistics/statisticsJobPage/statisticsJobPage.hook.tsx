@@ -47,6 +47,11 @@ function useStatisticsJobPage() {
 		}
 	}
 
+	const onPageSizeChange = (size: number) => {
+		setPageNumber(PAGE)
+		setPageSize(size)
+	}
+
 	useEffect(() => {
 		// eslint-disable-next-line no-restricted-syntax
 		for (const model of sortModel) {
@@ -66,7 +71,7 @@ function useStatisticsJobPage() {
 		search,
 		onChange,
 		pageSize,
-		setPageSize,
+		onPageSizeChange,
 		pageNumber,
 		onPageChange,
 		sortModel,

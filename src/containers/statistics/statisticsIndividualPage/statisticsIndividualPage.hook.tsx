@@ -93,6 +93,11 @@ function useStatisticsIndividualPage() {
 		}
 	}
 
+	const onPageSizeChange = (size: number) => {
+		setPageNumber(PAGE_NUMBER_DEFAULT)
+		setPageSize(size)
+	}
+
 	return {
 		users,
 		columns,
@@ -100,7 +105,7 @@ function useStatisticsIndividualPage() {
 		pageNumber,
 		setPageNumber,
 		pageSize,
-		setPageSize,
+		onPageSizeChange,
 		search,
 		setSearch,
 		excel,

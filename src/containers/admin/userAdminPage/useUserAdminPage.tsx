@@ -276,13 +276,18 @@ function useUserAdminPage() {
 		}
 	}
 
+	const onPageSizeChange = (size: number) => {
+		setPageNumber(PAGE)
+		setPageSize(size)
+	}
+
 	return {
 		search,
 		onChange,
 		formattedUsers,
 		columns,
 		users,
-		setPageSize,
+		onPageSizeChange,
 		sortModel,
 		setSortModel,
 		onPageChange,

@@ -284,13 +284,18 @@ function useCompanyAdminPage() {
 		}
 	}
 
+	const onPageSizeChange = (size: number) => {
+		setPageNumber(PAGE)
+		setPageSize(size)
+	}
+
 	return {
 		search,
 		onChange,
 		formattedCompanies,
 		columns,
 		companies,
-		setPageSize,
+		onPageSizeChange,
 		sortModel,
 		setSortModel,
 		onPageChange,

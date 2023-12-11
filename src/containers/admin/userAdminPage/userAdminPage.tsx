@@ -13,7 +13,7 @@ function UserAdminPage() {
 		users,
 		onPageChange,
 		formattedUsers,
-		setPageSize,
+		onPageSizeChange,
 		sortModel,
 		setSortModel,
 		columns,
@@ -45,9 +45,7 @@ function UserAdminPage() {
 							pageSize={users?.data?.size}
 							loading={users?.isLoading}
 							rowCount={users?.data?.totalElements || 0}
-							onPageSizeChange={newPageSize =>
-								setPageSize(newPageSize)
-							}
+							onPageSizeChange={onPageSizeChange}
 							rowsPerPageOptions={ROWS_OPTIONS}
 							pagination
 							paginationMode="server"

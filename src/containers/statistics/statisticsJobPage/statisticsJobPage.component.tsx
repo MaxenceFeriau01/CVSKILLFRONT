@@ -12,7 +12,7 @@ function StatisticsJobPage() {
 	const {
 		jobsStatsQuery,
 		pageSize,
-		setPageSize,
+		onPageSizeChange,
 		onPageChange,
 		pageNumber,
 		search,
@@ -44,7 +44,7 @@ function StatisticsJobPage() {
 					columns={TABLE_COLUMNS}
 					rows={jobsStatsQuery?.data?.content ?? []}
 					pageSize={pageSize}
-					onPageSizeChange={setPageSize}
+					onPageSizeChange={onPageSizeChange}
 					page={pageNumber}
 					onPageChange={onPageChange}
 					loading={jobsStatsQuery?.isLoading}

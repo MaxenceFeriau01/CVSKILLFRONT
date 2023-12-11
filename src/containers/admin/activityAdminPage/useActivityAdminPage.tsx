@@ -228,6 +228,11 @@ function useActivityAdminPage() {
 		}
 	}
 
+	const onPageSizeChange = (size: number) => {
+		setPageNumber(PAGE)
+		setPageSize(size)
+	}
+
 	const handleCellEditCommit = async (params: any) => {
 		if (params.value === params.formattedValue) {
 			return
@@ -280,7 +285,7 @@ function useActivityAdminPage() {
 		addActivity,
 		columns,
 		activities,
-		setPageSize,
+		onPageSizeChange,
 		onPageChange,
 		handleCellEditCommit,
 		sortModel,

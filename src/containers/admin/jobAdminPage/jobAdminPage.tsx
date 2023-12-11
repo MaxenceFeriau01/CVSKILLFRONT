@@ -12,7 +12,7 @@ function JobAdminPage() {
 		jobs,
 		addJob,
 		onPageChange,
-		setPageSize,
+		onPageSizeChange,
 		sortModel,
 		setSortModel,
 		columns,
@@ -49,7 +49,7 @@ function JobAdminPage() {
 					rowCount={jobs?.data?.totalElements || 0}
 					pagination
 					paginationMode="server"
-					onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+					onPageSizeChange={onPageSizeChange}
 					rowsPerPageOptions={ROWS_OPTIONS}
 					localeText={locale}
 					onPageChange={onPageChange}

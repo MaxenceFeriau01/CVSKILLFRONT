@@ -16,7 +16,7 @@ function CompanyAdminPage() {
 		companies,
 		onPageChange,
 		formattedCompanies,
-		setPageSize,
+		onPageSizeChange,
 		companyIdPreview,
 		columns,
 		sortModel,
@@ -57,9 +57,7 @@ function CompanyAdminPage() {
 							pageSize={companies?.data?.size}
 							loading={companies?.isLoading}
 							rowCount={companies?.data?.totalElements || 0}
-							onPageSizeChange={newPageSize =>
-								setPageSize(newPageSize)
-							}
+							onPageSizeChange={onPageSizeChange}
 							rowsPerPageOptions={ROWS_OPTIONS}
 							pagination
 							paginationMode="server"

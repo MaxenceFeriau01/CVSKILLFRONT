@@ -229,6 +229,11 @@ function useJobAdminPage() {
 		}
 	}
 
+	const onPageSizeChange = (size: number) => {
+		setPageNumber(PAGE)
+		setPageSize(size)
+	}
+
 	const handleCellEditCommit = async (params: any) => {
 		if (params.value === params.formattedValue) {
 			return
@@ -282,7 +287,7 @@ function useJobAdminPage() {
 		addJob,
 		columns,
 		jobs,
-		setPageSize,
+		onPageSizeChange,
 		onPageChange,
 		handleCellEditCommit,
 		sortModel,

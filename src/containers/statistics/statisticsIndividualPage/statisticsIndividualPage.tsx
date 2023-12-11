@@ -12,7 +12,7 @@ function StatisticsIndividualPage() {
 		users,
 		columns,
 		formattedUsers,
-		setPageSize,
+		onPageSizeChange,
 		sortModel,
 		setSortModel,
 		onPageChange,
@@ -48,7 +48,7 @@ function StatisticsIndividualPage() {
 					pageSize={users?.data?.size}
 					loading={users?.isLoading}
 					rowCount={users?.data?.totalElements || 0}
-					onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+					onPageSizeChange={onPageSizeChange}
 					rowsPerPageOptions={PAGE_SIZE_OPTIONS}
 					pagination
 					paginationMode="server"

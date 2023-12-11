@@ -13,8 +13,8 @@ function ActivityAdminPage() {
 		addActivity,
 		columns,
 		activities,
-		setPageSize,
 		onPageChange,
+		onPageSizeChange,
 		handleCellEditCommit,
 		sortModel,
 		setSortModel,
@@ -50,7 +50,7 @@ function ActivityAdminPage() {
 					rowCount={activities?.data?.totalElements || 0}
 					pagination
 					paginationMode="server"
-					onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+					onPageSizeChange={onPageSizeChange}
 					rowsPerPageOptions={ROWS_OPTIONS}
 					localeText={locale}
 					onPageChange={onPageChange}
