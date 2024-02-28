@@ -12,7 +12,7 @@ export const INPUT_FORM_THREE: Array<string> = [
 	"searchedInternsType",
 	"searchedActivities",
 	"searchedJobs",
-	"paidAndLongTermInternship",
+	"isPaidAndLongTermInternship",
 	"desiredInternsNumber",
 	"minorAccepted",
 ]

@@ -32,7 +32,7 @@ class Company {
 
 	desiredInternsNumber!: string
 
-	paidAndLongTermInternship!: boolean
+	isPaidAndLongTermInternship!: boolean
 
 	minorAccepted!: boolean
 
