@@ -1,7 +1,7 @@
 import Select from "react-select"
 
 function CustomSelect(props: any) {
-	const { disabled, value, required } = props
+	const { disabled, value, required, isMulti } = props
 	const styles = {
 		control: (base: any) => ({
 			...base,
@@ -20,6 +20,7 @@ function CustomSelect(props: any) {
 				classNamePrefix="react-select"
 				autoComplete="off"
 				styles={styles}
+				closeMenuOnSelect={!isMulti}
 				{...props}
 			/>
 			{!disabled && required && (
