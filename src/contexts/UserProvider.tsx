@@ -15,10 +15,17 @@ function UserProvider({ children }: UserProviderProps) {
 		// get user with jwt token from local storage
 		const storageItem = localStorage.getItem("user")
 		let lUser
-		if (storageItem !== null) lUser = JSON.parse(storageItem)
+		let token: string
+		if (storageItem !== null) {
+			lUser = JSON.parse(storageItem)
+			token = lUser.token
+		}
 
 		if (lUser) {
-			userService.getSelf().then(res => setUser(res))
+			userService.getSelf().then(res => {
+				res.token = token
+				setUser(res)
+			})
 		}
 	}, [])
 
