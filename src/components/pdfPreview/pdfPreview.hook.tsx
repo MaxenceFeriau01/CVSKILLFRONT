@@ -14,6 +14,15 @@ export default function usePdfPreview(file: any) {
 		if (file instanceof File) {
 			const blob = new Blob([file])
 			setUrl(URL.createObjectURL(blob))
+		} else {
+			const rawFile = new XMLHttpRequest()
+			rawFile.open("GET", file, true)
+			rawFile.onreadystatechange = () => {
+				if (rawFile.readyState === 4) {
+					setUrl(file)
+				}
+			}
+			rawFile.send()
 		}
 		setLFile(file)
 	}, [file])

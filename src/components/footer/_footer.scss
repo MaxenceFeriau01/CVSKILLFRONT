@@ -18,3 +18,11 @@
 		color: $color-secondary;
 	}
 }
+
+.help-button {
+    position: fixed;
+    bottom: 1.05rem;
+    right: 1.05rem;
+    cursor: pointer;
+    z-index: 9;
+}
