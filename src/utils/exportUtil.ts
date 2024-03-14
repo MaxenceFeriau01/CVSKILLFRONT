@@ -2,6 +2,7 @@
 import * as XLSX from "xlsx"
 import dayjs from "dayjs"
 import User from "../api/models/user"
+import Company from "../api/models/company"
 
 export const exportItem = (item: any, fileName: string) => {
 	const data = `data:application/json;charset=UTF-8,${encodeURIComponent(
@@ -42,4 +43,44 @@ export const exportExcel = (users: User[], fileName: string) => {
 	const wb = XLSX.utils.book_new()
 	XLSX.utils.book_append_sheet(wb, ws, "Utilisateurs")
 	XLSX.writeFile(wb, `${fileName}.xlsx`)
+}
+
+export const exportCompanyCsv = (companies: Company[], fileName: string) => {
+	const ws = XLSX.utils.json_to_sheet(
+		companies.map(c => ({
+			ID: c.id,
+			Nom: c.name,
+			Actif: c.activated ? "Oui" : "Non",
+			Type: c.type,
+			Description: c.description.replace(/(\r\n|\n|\r)/gm, " "),
+			"Site web": c.websiteUrl,
+			"Numéro de SIRET": c.siret,
+			Activités: c.activities.map(a => a.name).join(","),
+			Adresse: c.address,
+			"Code postal": c.city?.postalCode,
+			Ville: c.city?.name,
+			Département: c.department,
+			"Prénom Contact": c.contactFirstName,
+			"Nom Contact": c.contactLastName,
+			"Email Contact": c.contactMail,
+			"Téléphone Fixe Contact": c.fixContactNum,
+			"Téléphone Portable Contact": c.contactNum,
+			"Activités recherchés": c.searchedActivities
+				.map(sa => sa.name)
+				.join(","),
+			"Métiers recherchés": c.searchedJobs.map(sj => sj.name).join(","),
+			"Stagiaires acceptés": c.searchedInternsType
+				.map(sit => sit.internStatus.name)
+				.join(","),
+			"Périodes acceptés": c.searchedInternsType
+				.map(sit => sit.periods.join(","))
+				.join(","),
+			"Stages rémunérés": c.isPaidAndLongTermInternship ? "Oui" : "Non",
+			"Mineurs acceptés": c.minorAccepted ? "Oui" : "Non",
+			"Nombres de stagiaires acceptés": c.desiredInternsNumber,
+		}))
+	)
+	const wb = XLSX.utils.book_new()
+	XLSX.utils.book_append_sheet(wb, ws, "Entreprises")
+	XLSX.writeFile(wb, `${fileName}.csv`)
 }

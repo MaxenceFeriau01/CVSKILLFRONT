@@ -4,6 +4,7 @@
  */
 
 import Company from "../models/company"
+import Page from "../models/utils/Page"
 import GeneralService from "./generalService"
 
 class CompanyService extends GeneralService<Company | any> {
@@ -17,6 +18,15 @@ class CompanyService extends GeneralService<Company | any> {
 
 	getAllSimplePaginated(filters?: Object): Promise<any> {
 		return this.getAllPaginated(filters, `/simple`)
+	}
+
+	getAllExport(filters?: Object): Promise<Page<Company>> {
+		return this.http
+			.get<Page<Company>>(`${this.url}/export`, {
+				params: filters,
+			})
+			.then(this.handleResponse)
+			.catch(this.handleError)
 	}
 }
 

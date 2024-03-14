@@ -23,25 +23,32 @@ function CompanyAdminPage() {
 		setSortModel,
 		setOpenPreviewModal,
 		openPreviewModal,
+		setExcel,
 	} = useCompanyAdminPage()
 
 	return (
 		<section className="page">
 			<div className="content company-content">
 				<header className="company-page-header">
-					<TextField
-						id="searchCompanyName"
-						label="Rechercher par nom"
-						value={search}
-						onChange={onChange}
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position="start">
-									<SearchIcon />
-								</InputAdornment>
-							),
-						}}
-					/>
+					<div className="flex flex-row space-between items-center">
+						<TextField
+							id="searchCompanyName"
+							label="Rechercher par nom"
+							className="mr-2"
+							value={search}
+							onChange={onChange}
+							InputProps={{
+								endAdornment: (
+									<InputAdornment position="start">
+										<SearchIcon />
+									</InputAdornment>
+								),
+							}}
+						/>
+						<Button type="button" onClick={() => setExcel(true)}>
+							Exporter
+						</Button>
+					</div>
 					<Button
 						type="button"
 						onClick={() => navigate("/new-company")}

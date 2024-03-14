@@ -12,10 +12,12 @@ import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked"
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked"
 import DeleteIcon from "@mui/icons-material/Delete"
 import Swal from "sweetalert2"
+import dayjs from "dayjs"
 import companyService from "../../../api/services/companyService"
 import Activity from "../../../api/models/activity"
 import { PAGE, SIZE } from "./constant"
 import Company from "../../../api/models/company"
+import { exportCompanyCsv } from "../../../utils/exportUtil"
 
 function useCompanyAdminPage() {
 	const [search, setSearch] = useState<string>("")
@@ -27,6 +29,7 @@ function useCompanyAdminPage() {
 	const navigate = useNavigate()
 	const queryClient = useQueryClient()
 
+	const [excel, setExcel] = useState<boolean>(false)
 	const [pageNumber, setPageNumber] = useState<number>(PAGE)
 	const [sortModel, setSortModel] = useState<GridSortModel>()
 	const [sorting, setSorting] = useState<{ field: string; type?: string }>()
@@ -136,6 +139,26 @@ function useCompanyAdminPage() {
 		}
 	}, [sortModel])
 
+	useQuery(
+		["export-companies", excel],
+		() =>
+			companyService.getAllExport({
+				name: search !== "" ? search : null,
+				sortField: sorting?.field,
+				sortType: sorting?.type,
+			}),
+		{
+			enabled: excel,
+			onSuccess: data => {
+				exportCompanyCsv(
+					data.content,
+					`export_companies_${dayjs().format("YYYY-MM-DD-HH-mm")}`
+				)
+				setExcel(false)
+			},
+		}
+	)
+
 	const onOpenPreviewModal = (companyId: GridRowId) => {
 		setOpenPreviewModal(true)
 		setCompanyIdPreview(companyId)
@@ -171,6 +194,7 @@ function useCompanyAdminPage() {
 			keepPreviousData: true,
 		}
 	)
+
 	const postActive = useMutation(
 		({ activated, companyId }: any) =>
 			companyService.active(activated, companyId),
@@ -302,6 +326,7 @@ function useCompanyAdminPage() {
 		openPreviewModal,
 		setOpenPreviewModal,
 		companyIdPreview,
+		setExcel,
 	}
 }
 
