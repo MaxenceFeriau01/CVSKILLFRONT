@@ -17,7 +17,7 @@ function HomePage() {
 	}
 
 	return (
-		<section className="home">
+		<section className="home overflow overflow-y-auto">
 			<img
 				className="home__logo"
 				src={logo}
@@ -67,9 +67,23 @@ function HomePage() {
 					</Button>
 				</div>
 			</div>
-			<a href="https://storyset.com/people">
-				People illustrations by Storyset
-			</a>
+			<div className="action-call-video">
+				<h2 className="text-2xl text-secondary font-bold mb-3">
+					Tutoriel vidéo du site DKStages
+				</h2>
+				<iframe
+					src="https://www.youtube-nocookie.com/embed/F9422NQ9jVI?si=r_Rn3y2uGyRr2r6o&amp;start=1"
+					title="Tuto vidéo DKStages"
+					frameBorder="0"
+					allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+					allowFullScreen
+				/>
+			</div>
+			<article className="action-call-footer">
+				<a href="https://storyset.com/people">
+					People illustrations by Storyset
+				</a>
+			</article>
 		</section>
 	)
 }
