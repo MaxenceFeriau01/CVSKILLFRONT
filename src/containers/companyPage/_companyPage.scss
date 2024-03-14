@@ -225,3 +225,15 @@ $company-page-header-height-mobile: 135px;
 		}
 	}
 }
+
+.widget {
+	width: 8rem;
+	margin: 0px 2%;
+}
+
+.widget-container {
+	position: fixed;
+	bottom: 5%;
+	right: 1%;
+	display: inline-flex;
+}

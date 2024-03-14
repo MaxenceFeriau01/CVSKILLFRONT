@@ -16,6 +16,8 @@ import useCompaniesInfiniteQuery from "./hooks/useCompaniesInfiniteQuery"
 import useSelectedCompany from "./hooks/useSelectedCompany"
 import useAddVisits from "./hooks/useAddVisits"
 import useProfilePopup from "./hooks/useProfilePopup"
+import Widget from "../../components/widget/widget.component"
+import { IMAGES } from "./constants"
 
 function CompanyPage() {
 	const { user } = useContext(UserContext)
@@ -128,6 +130,13 @@ function CompanyPage() {
 					company={selectedCompany}
 					onClose={() => setSelectedCompany(null)}
 				/>
+			</section>
+			<section className="widget-container">
+				{IMAGES.map(item => (
+					<div className="widget">
+						<Widget img={item} />
+					</div>
+				))}
 			</section>
 		</section>
 	)
