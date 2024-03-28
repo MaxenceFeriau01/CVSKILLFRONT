@@ -1,10 +1,12 @@
 // GLOBAL CONSTANTS
 
+import { styled } from "@mui/material"
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings"
 import GroupIcon from "@mui/icons-material/Group"
 import DomainIcon from "@mui/icons-material/Domain"
 
 import ApartmentIcon from "@mui/icons-material/Apartment"
+import EventIcon from "@mui/icons-material/Event"
 import WorkIcon from "@mui/icons-material/Work"
 import BarChartIcon from "@mui/icons-material/BarChart"
 import PieChartIcon from "@mui/icons-material/PieChart"
@@ -57,6 +59,12 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 		roles: [],
 	},
 	{
+		url: "/events",
+		text: "Manifestations",
+		Icon: EventIcon,
+		roles: [Role.ADMIN, Role.COMPANY, Role.USER],
+	},
+	{
 		url: null,
 		text: "Administration",
 		Icon: AdminPanelSettingsIcon,
@@ -66,6 +74,11 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 				text: "Entreprises",
 				url: "/admin/companies",
 				Icon: ApartmentIcon,
+			},
+			{
+				text: "Evénements",
+				url: "/admin/events",
+				Icon: EventIcon,
 			},
 			{
 				text: "Utilisateurs",
@@ -108,3 +121,15 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 		],
 	},
 ]
+
+export const VisuallyHiddenInput = styled("input")({
+	clip: "rect(0 0 0 0)",
+	clipPath: "inset(50%)",
+	height: 1,
+	overflow: "hidden",
+	position: "absolute",
+	bottom: 0,
+	left: 0,
+	whiteSpace: "nowrap",
+	width: 1,
+})

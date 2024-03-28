@@ -1,0 +1,24 @@
+.location-table-header {
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    .MuiInputAdornment-root {
+        display: none;
+        @include breakpoint {
+            display: inherit;
+        }
+    }
+
+    .MuiButton-root {
+        max-height: 56px;
+    }
+}
+
+.location-table-content {
+    width: 100%;
+    height: 350px;
+}

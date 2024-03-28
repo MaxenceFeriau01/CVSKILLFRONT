@@ -5,11 +5,14 @@
 @import "../../components/inputs/inputs";
 @import "../../containers/app/app";
 @import "../../containers/companyPage/companyPage";
+@import "../../containers/eventPage/eventPage";
 @import "../../containers/admin/activityAdminPage/activityAdminPage";
 @import "../../containers/admin/companyAdminPage/companyAdminPage";
 @import "../../containers/admin/userAdminPage/userAdminPage";
 @import "../../containers/admin/jobAdminPage/jobAdminPage";
 @import "../../containers/companyDetailsPage/companyDetailsPage";
+@import "../../containers/admin/eventAdminPage/eventAdminPage";
+@import "../../containers/admin/eventAdminPage/eventAdminForm/eventAdminForm";
 @import "../../containers/loginPage/loginPage";
 @import "../../containers/profilePage/profilePage";
 @import "../../containers/registrationPage/registrationPage";
@@ -18,6 +21,8 @@
 @import "../../containers/forbiddenPage/forbiddenPage";
 @import "../../containers/forgotPasswordPage/forgotPasswordPage";
 @import "../../containers/resetPasswordPage/resetPasswordPage";
+@import "../../containers/admin/eventAdminPage/eventLocationModal/eventLocationModal";
+@import "../../containers/admin/eventAdminPage/eventLocationModal/LocationFormModal/locationFormModal";
 
 .MuiDataGrid-root {
 	background-color: $color-white;
@@ -201,6 +206,10 @@ body {
 	.swal2-warning {
 		border-color: $color-warning !important;
 		color: $color-warning !important;
+	}
+
+	.swal2-container {
+		z-index: 1500;
 	}
 	//END SWAL CSS
 
