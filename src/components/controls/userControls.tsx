@@ -8,8 +8,9 @@ import {
 } from "../../utils/constants"
 import CustomSelect from "../inputs/customSelect"
 
-import { CIVILITY_OPTIONS, DIPLOMA_OPTIONS } from "./constants"
+import { CIVILITY_OPTIONS, DIPLOMA_OPTIONS, SEARCH_OPTIONS } from "./constants"
 import PdfUpload from "../inputs/pdfUpload"
+import SearchSubject from "../../enums/SearchSubject"
 
 interface UserControlsProps {
 	control: any
@@ -287,7 +288,31 @@ function UserControls({
 					</Alert>
 				)}
 			</div>
-			<div className="select-form-control z-50">
+			<div className="select-form-control--half-first z-50">
+				<InputLabel>Objet de ma recherche *</InputLabel>
+				<Controller
+					rules={{
+						required: "L'objet de ma recherche est requis",
+					}}
+					name="searchSubject"
+					control={control}
+					render={({ field: { value, onChange, onBlur } }) => (
+						<CustomSelect
+							isSearchable
+							options={SEARCH_OPTIONS}
+							placeholder="Choisissez..."
+							onBlur={onBlur}
+							value={SEARCH_OPTIONS.find(
+								(c: ReactSelectOption) => c.value === value
+							)}
+							onChange={(val: ReactSelectOption) =>
+								onChange(val.value)
+							}
+						/>
+					)}
+				/>
+			</div>
+			<div className="select-form-control--half-second z-50">
 				<InputLabel>Statut *</InputLabel>
 				<Controller
 					rules={{
@@ -354,39 +379,47 @@ function UserControls({
 			)}
 			{watch("internStatus")?.label === STATUS_STUDENT && (
 				<>
-					<div className="select-form-control--half-second z-20">
-						<InputLabel>Durée du stage</InputLabel>
-						<Controller
-							rules={{
-								required: "La durée du stage est requise",
-							}}
-							name="internshipPeriod"
-							control={control}
-							render={({
-								field: { value, onChange, onBlur },
-							}) => (
-								<CustomSelect
-									isSearchable
-									options={STUDENT_PERIOD_OPTIONS}
-									placeholder="Choisissez..."
-									onBlur={onBlur}
-									value={STUDENT_PERIOD_OPTIONS.find(
-										(c: ReactSelectOption) =>
-											c.value === value
-									)}
-									onChange={(val: ReactSelectOption) =>
-										onChange(val.value)
-									}
-								/>
+					{watch("searchSubject") === SearchSubject.INTERNSHIP && (
+						<div className="select-form-control--half-second z-20">
+							<InputLabel>Durée du stage</InputLabel>
+							<Controller
+								rules={{
+									required: "La durée du stage est requise",
+								}}
+								name="internshipPeriod"
+								control={control}
+								render={({
+									field: { value, onChange, onBlur },
+								}) => (
+									<CustomSelect
+										isSearchable
+										options={STUDENT_PERIOD_OPTIONS}
+										placeholder="Choisissez..."
+										onBlur={onBlur}
+										value={STUDENT_PERIOD_OPTIONS.find(
+											(c: ReactSelectOption) =>
+												c.value === value
+										)}
+										onChange={(val: ReactSelectOption) =>
+											onChange(val.value)
+										}
+									/>
+								)}
+							/>
+							{errors?.internshipPeriod && (
+								<Alert severity="error">
+									{errors.internshipPeriod.message}
+								</Alert>
 							)}
-						/>
-						{errors?.internshipPeriod && (
-							<Alert severity="error">
-								{errors.internshipPeriod.message}
-							</Alert>
-						)}
-					</div>
-					<div className="select-form-control--half-second z-10">
+						</div>
+					)}
+					<div
+						className={
+							watch("searchSubject") === SearchSubject.INTERNSHIP
+								? "select-form-control--half-second z-10"
+								: "select-form-control z-10"
+						}
+					>
 						<InputLabel>Diplome</InputLabel>
 						<Controller
 							rules={{

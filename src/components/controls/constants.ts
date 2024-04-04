@@ -1,4 +1,5 @@
 import ReactSelectOption from "../../api/models/reactSelectOption"
+import SearchSubject from "../../enums/SearchSubject"
 
 export const CIVILITY_OPTIONS: Array<ReactSelectOption> = [
 	{
@@ -51,5 +52,16 @@ export const DIPLOMA_OPTIONS: Array<ReactSelectOption> = [
 	{
 		label: "BAC + 8",
 		value: "BAC + 8",
+	},
+]
+
+export const SEARCH_OPTIONS: Array<ReactSelectOption> = [
+	{
+		label: "Stage",
+		value: SearchSubject.INTERNSHIP,
+	},
+	{
+		label: "Alternance",
+		value: SearchSubject.WORK_STUDY,
 	},
 ]

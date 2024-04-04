@@ -29,6 +29,8 @@ class User {
 
 	internshipEndDate!: Date
 
+	searchSubject!: String
+
 	civility!: String
 
 	diploma!: String | null
