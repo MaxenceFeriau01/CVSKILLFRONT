@@ -1,55 +1,32 @@
-$company-page-header-height-desktop: 75px;
-$company-page-header-height-mobile: 135px;
+$offer-page-header-height-desktop: 75px;
+$offer-page-header-height-mobile: 135px;
 
-.company-page {
+.offer-page {
 	overflow-y: unset !important;
 
-	.company-page-header {
+	.offer-page-header {
 		@include breakpoint {
-			height: $company-page-header-height-desktop;
+			height: $offer-page-header-height-desktop;
 		}
 		max-width: 1400px;
-		height: $company-page-header-height-mobile;
+		height: $offer-page-header-height-mobile;
 		display: flex;
 		justify-content: space-evenly;
 		align-items: center;
 		flex-wrap: wrap;
 		margin: 0 auto;
+    }
 
-		.company-select--activities {
-			@include breakpoint {
-				width: 40%;
-				margin-right: 10px;
-				margin-bottom: unset;
-			}
-			z-index: 2;
-			width: 90%;
-			margin-bottom: 5px;
-		}
-
-		.company-select--status {
-			z-index: 1;
-			@include breakpoint {
-				width: 40%;
-				margin-right: 10px;
-				margin-bottom: unset;
-			}
-
-			width: 90%;
-			margin-bottom: 5px;
-		}
-	}
-
-	.company-container {
+	.offer-container {
 		@include breakpoint {
-			max-height: calc(100% - ($company-page-header-height-desktop));
+			max-height: calc(100% - ($offer-page-header-height-desktop));
 		}
 
-		max-height: calc(100% - ($company-page-header-height-mobile));
+		max-height: calc(100% - ($offer-page-header-height-mobile));
 		display: flex;
 		position: relative;
 
-		.company-list-content {
+		.offer-list-content {
 			margin-top: 5px;
 			width: 100%;
 			flex-flow: row wrap;
@@ -60,8 +37,8 @@ $company-page-header-height-mobile: 135px;
 			padding: 0 10px;
 			overflow-x: hidden;
 
-			.company-tile,
-			.company-tile {
+			.offer-tile,
+			.offer-tile {
 				position: relative;
 				cursor: pointer;
 				width: 90%;
@@ -93,7 +70,7 @@ $company-page-header-height-mobile: 135px;
 					box-shadow: $box-shadow;
 				}
 
-				.company-tile__clock {
+				.offer-tile__clock {
 					position: absolute;
 
 					right: 5px;
@@ -107,7 +84,7 @@ $company-page-header-height-mobile: 135px;
 					}
 				}
 
-				.company-tile__image {
+				.offer-tile__image {
 					margin: auto;
 					max-width: 100%;
 					max-height: 120px;
@@ -119,17 +96,19 @@ $company-page-header-height-mobile: 135px;
 					}
 				}
 
-				.company-tile__postal {
+				.offer-tile__postal {
 					width: 100%;
 					background-color: $color-primary;
 					color: $color-white;
+					font-weight: bolder;
+					text-transform: uppercase;
 					padding-top: 8px;
 					padding-bottom: 8px;
 					border-radius: 0 0 10px 10px;
 				}
 			}
 
-			.company-tile--selected {
+			.offer-tile--selected {
 				border: 1.5px solid $color-primary;
 
 				&:hover {
@@ -137,27 +116,10 @@ $company-page-header-height-mobile: 135px;
 				}
 			}
 		}
-		.company-tile__contact {
-			color: $color-white;
-			background-color: $color-primary;
-			width: 100%;
-			display: flex;
-			flex-direction: column;
-			text-align: center;
-			margin-top: auto;
-			border-radius: 0 0 10px 10px;
-
-			span {
-				overflow: hidden;
-				text-overflow: ellipsis;
-				margin: 5px 3px;
-				white-space: nowrap;
-			}
-		}
 	}
 }
 
-.company-details-container {
+.offer-details-container {
 	transition: width 0.4s linear;
 
 	background-color: $color-white;
@@ -173,7 +135,7 @@ $company-page-header-height-mobile: 135px;
 		margin: 10px;
 	}
 
-	.company-details-container-view {
+	.offer-details-container-view {
 		border: 1px solid $color-gray;
 		width: 100%;
 		height: 100%;
@@ -202,7 +164,7 @@ $company-page-header-height-mobile: 135px;
 			}
 		}
 
-		.company-details-container-view-content {
+		.offer-details-container-view-content {
 			padding: 10px;
 			display: flex;
 			flex-direction: column;
@@ -213,9 +175,14 @@ $company-page-header-height-mobile: 135px;
 			svg {
 				fill: $color-secondary;
 			}
+
+			iframe {
+				width: 100%;
+				height: 1200px;
+			}
 		}
 
-		.company-details-container--close {
+		.offer-details-container--close {
 			position: absolute;
 			right: 8px;
 			font-size: 27px;

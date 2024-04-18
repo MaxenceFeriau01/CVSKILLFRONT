@@ -20,11 +20,20 @@ import StatisticsIndividualPage from "../containers/statistics/statisticsIndivid
 import EventAdminPage from "../containers/admin/eventAdminPage/eventAdminPage"
 import EventAdminForm from "../containers/admin/eventAdminPage/eventAdminForm/eventAdminForm"
 import EventPage from "../containers/eventPage/eventPage"
+import OfferPage from "../containers/offerPage/offerPage"
 
 const routes = (
 	<Routes>
 		<Route path="/" element={<HomePage />} />
 		<Route path="/companies" element={<CompanyPage />} />
+		<Route
+			path="/offers"
+			element={
+				<PrivateRoute roles={[Role.USER]}>
+					<OfferPage />
+				</PrivateRoute>
+			}
+		/>
 		<Route
 			path="/events"
 			element={

@@ -5,6 +5,7 @@ import useHideElement from "../../hooks/hideElement"
 import logo from "../../resources/images/logo.svg"
 import internship from "../../resources/images/internship.svg"
 import working from "../../resources/images/working.svg"
+import learning from "../../resources/images/learning.svg"
 import ContactDialog from "../../components/contactDialog"
 
 function HomePage() {
@@ -14,6 +15,10 @@ function HomePage() {
 
 	function goToInternShip() {
 		navigate("/companies")
+	}
+
+	function goToOffers() {
+		navigate("/offers")
 	}
 
 	return (
@@ -65,6 +70,18 @@ function HomePage() {
 					<Button onClick={() => goToInternShip()}>
 						C'est parti !
 					</Button>
+				</div>
+				<div className="action-call-container">
+					<img src={learning} alt="Learning" width="72" height="72" />
+					<h2 className="text-2xl text-secondary font-bold">
+						Alternants
+					</h2>
+					<p>
+						Je suis à la recherche d’un contrat d’apprentissage ou
+						de professionnalisation afin de m’insérer dans la vie
+						professionnelle !
+					</p>
+					<Button onClick={() => goToOffers()}>C'est parti !</Button>
 				</div>
 			</div>
 			<div className="action-call-video">

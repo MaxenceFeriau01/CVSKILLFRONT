@@ -11,6 +11,7 @@ import WorkIcon from "@mui/icons-material/Work"
 import BarChartIcon from "@mui/icons-material/BarChart"
 import PieChartIcon from "@mui/icons-material/PieChart"
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts"
+import SchoolIcon from "@mui/icons-material/School"
 import ReactSelectOption from "../api/models/reactSelectOption"
 import Role from "../enums/Role"
 
@@ -57,6 +58,12 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 		text: "Entreprises",
 		Icon: ApartmentIcon,
 		roles: [],
+	},
+	{
+		url: "/offers",
+		text: "Alternances",
+		Icon: SchoolIcon,
+		roles: [Role.USER],
 	},
 	{
 		url: "/events",

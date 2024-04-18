@@ -125,18 +125,35 @@ function CompanyPage() {
 							</p>
 						)
 					)}
+					{IMAGES.map(item => (
+						<div
+							className={`company-tile ${
+								selectedCompany?.id ? "w-full" : ""
+							}`}
+						>
+							<div
+								className="company-tile__image"
+								onClick={() => {
+									window.open(item.url, "_blank")
+								}}
+							>
+								<img
+									alt="Logo"
+									src={item.src}
+									width="300"
+									height="140"
+								/>
+							</div>
+							<span className="company-tile__postal">
+								<b>{item.title.toLocaleUpperCase()}</b>
+							</span>
+						</div>
+					))}
 				</div>
 				<CompanyDetailsView
 					company={selectedCompany}
 					onClose={() => setSelectedCompany(null)}
 				/>
-			</section>
-			<section className="widget-container">
-				{IMAGES.map(item => (
-					<div className="widget">
-						<Widget img={item} />
-					</div>
-				))}
 			</section>
 		</section>
 	)
