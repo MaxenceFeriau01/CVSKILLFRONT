@@ -1,12 +1,17 @@
 import { Box, Container, Grid, TextField } from "@mui/material"
-import dayjs from "dayjs"
 import {
 	APPLYINGS_COLOR,
 	APPLYINGS_ICON,
 	APPLYINGS_TITLE,
+	LEARN_WORKER_COLOR,
+	LEARN_WORKER_ICON,
+	LEARN_WORKER_TITLE,
 	OFFERS_COLOR,
 	OFFERS_ICON,
 	OFFERS_TITLE,
+	TRAINEE_COLOR,
+	TRAINEE_ICON,
+	TRAINEE_TITLE,
 	USERS_COLOR,
 	USERS_ICON,
 	USERS_TITLE,
@@ -62,6 +67,18 @@ function StatisticsGeneralPage() {
 							Icon={USERS_ICON}
 							value={generalStats.data?.numbersUsers || 0}
 							backgroundColor={USERS_COLOR}
+						/>
+						<StatisticCard
+							title={TRAINEE_TITLE}
+							Icon={TRAINEE_ICON}
+							value={generalStats?.data?.numbersInterns || 0}
+							backgroundColor={TRAINEE_COLOR}
+						/>
+						<StatisticCard
+							title={LEARN_WORKER_TITLE}
+							Icon={LEARN_WORKER_ICON}
+							value={generalStats.data?.numbersLearnWorkers || 0}
+							backgroundColor={LEARN_WORKER_COLOR}
 						/>
 						<StatisticCard
 							title={APPLYINGS_TITLE}
