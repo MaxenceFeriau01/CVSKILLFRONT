@@ -12,6 +12,8 @@ class Event {
 
 	image!: string
 
+	website?: string
+
 	description?: string
 
 	startedAt!: string

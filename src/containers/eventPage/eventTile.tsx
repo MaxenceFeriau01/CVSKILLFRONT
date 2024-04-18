@@ -40,7 +40,7 @@ function EventTile({ event }: EventTileProps) {
 				event={event}
 				isOpen={isOpen}
 				closeModal={handleClose}
-				handleInterested={() => handleInterested(event.id || 0)}
+				handleInterested={() => handleInterested(event)}
 			/>
 		</>
 	)

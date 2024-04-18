@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useMutation } from "react-query"
 import eventService from "../../../api/services/eventService"
 import { showConfirm } from "../../../utils/popupUtil"
+import Event from "../../../api/models/event"
 
 function useEventTile() {
 	const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -28,8 +29,11 @@ function useEventTile() {
 		}
 	)
 
-	const handleInterested = (eventId: number) => {
-		applyEvent.mutate(eventId)
+	const handleInterested = (event: Event) => {
+		applyEvent.mutate(event.id || 0)
+		if (event.website) {
+			window.open(event.website, "_blank")
+		}
 	}
 
 	const handleClick = () => {

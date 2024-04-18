@@ -34,6 +34,7 @@ function useEventAdminForm({ id }: UseEventAdminFormProps) {
 			file: undefined,
 			eventLocation: {},
 			active: true,
+			website: "",
 			description: "",
 			startedAt: dayjs().format("YYYY-MM-DD [00:00]"),
 			endedAt: dayjs().format("YYYY-MM-DD [00:00]"),
@@ -62,6 +63,7 @@ function useEventAdminForm({ id }: UseEventAdminFormProps) {
 					setOtherField(true)
 				}
 				form.setValue("active", res.active)
+				form.setValue("website", res.website)
 				form.setValue("description", res.description)
 				form.setValue("image", res.image)
 				form.setValue("startedAt", res.startedAt)

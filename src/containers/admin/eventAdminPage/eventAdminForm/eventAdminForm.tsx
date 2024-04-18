@@ -187,10 +187,10 @@ function EventAdminForm() {
 										onUploadImage(evt)
 									}}
 								/>
-								{form.getValues().image && (
+								{form.watch("image") && (
 									<img
-										src={form.getValues().image}
-										alt={form.getValues().name}
+										src={form.watch("image")}
+										alt={form.watch("name")}
 										width="32"
 										className="ml-2"
 									/>
@@ -248,11 +248,26 @@ function EventAdminForm() {
 
 				<FormGroup row>
 					<Controller
+						name="website"
+						control={form.control}
+						render={({ field: { onChange, value } }) => (
+							<TextField
+								label="Lien internet vers l'événement"
+								variant="outlined"
+								className="form-control-full"
+								value={value}
+								onChange={onChange}
+							/>
+						)}
+					/>
+				</FormGroup>
+
+				<FormGroup row>
+					<Controller
 						name="description"
 						control={form.control}
 						render={({ field: { onChange, value } }) => (
 							<TextField
-								required
 								multiline
 								rows="5"
 								label="Description"
