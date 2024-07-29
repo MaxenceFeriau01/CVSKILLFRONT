@@ -1,6 +1,6 @@
+import SearchIcon from "@mui/icons-material/Search"
 import { InputAdornment, TextField } from "@mui/material"
 import { DataGrid, frFR } from "@mui/x-data-grid"
-import SearchIcon from "@mui/icons-material/Search"
 import { ROWS_OPTIONS } from "./constant"
 import useUserAdminPage from "./useUserAdminPage"
 

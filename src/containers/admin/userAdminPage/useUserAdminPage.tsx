@@ -1,22 +1,23 @@
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { useMutation, useQuery, useQueryClient } from "react-query"
+import { Edit } from "@mui/icons-material"
+import DeleteIcon from "@mui/icons-material/Delete"
+import FileDownload from "@mui/icons-material/FileDownload"
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked"
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked"
 import {
 	GridActionsCellItem,
 	GridColumns,
+	GridRenderCellParams,
 	GridRowId,
-	GridSortModel,
+	GridSortModel
 } from "@mui/x-data-grid"
-import FileDownload from "@mui/icons-material/FileDownload"
-import { Edit } from "@mui/icons-material"
-import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked"
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked"
-import DeleteIcon from "@mui/icons-material/Delete"
+import { useEffect, useState } from "react"
+import { useMutation, useQuery, useQueryClient } from "react-query"
+import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
-import { PAGE, SIZE } from "./constant"
-import userService from "../../../api/services/userService"
 import User from "../../../api/models/user"
+import userService from "../../../api/services/userService"
 import { exportItem } from "../../../utils/exportUtil"
+import { PAGE, SIZE } from "./constant"
 
 function useUserAdminPage() {
 	const [search, setSearch] = useState<string>("")
@@ -30,12 +31,23 @@ function useUserAdminPage() {
 	const [sortModel, setSortModel] = useState<GridSortModel>()
 	const [sorting, setSorting] = useState<{ field: string; type?: string }>()
 
-	const columns: GridColumns = [
+	const roles = [
+        { id: 1, role: 'ROLE_ADMIN' },
+        { id: 2, role: 'ROLE_COMPANY'},
+        { id: 3, role: 'ROLE_USER' }
+		]
+		const columns: GridColumns = [
 		{
-			field: "activated",
-			headerName: "Activé ",
-			type: "boolean",
-			headerClassName: "info-cell",
+		field: "activated",
+		headerName: "Activé ",
+		type: "boolean",
+		headerClassName: "info-cell",
+		flex: 0.1,
+		},
+		{
+			field: "civility",
+			headerName: "Civilité",
+			type: "string",
 			flex: 0.1,
 		},
 		{
@@ -65,8 +77,11 @@ function useUserAdminPage() {
 			flex: 0.1,
 		},
 		{
-			field: "civility",
-			headerName: "Civilité",
+			field: "roles",
+			headerName: "Roles",
+			renderCell: (params: GridRenderCellParams<any, User>) => {
+			return (params.value[0].role)
+			},
 			type: "string",
 			flex: 0.1,
 		},

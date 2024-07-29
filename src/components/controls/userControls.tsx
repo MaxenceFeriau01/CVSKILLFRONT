@@ -2,15 +2,18 @@ import { Alert, FormHelperText, InputLabel, TextField } from "@mui/material"
 import { Controller, FieldValues, UseFormSetValue } from "react-hook-form"
 import ReactSelectOption from "../../api/models/reactSelectOption"
 import {
-	STUDENT_PERIOD_OPTIONS,
 	STATUS_HIGH_SCHOOL_STUDENT,
 	STATUS_STUDENT,
+	STUDENT_PERIOD_OPTIONS,
 } from "../../utils/constants"
 import CustomSelect from "../inputs/customSelect"
 
-import { CIVILITY_OPTIONS, DIPLOMA_OPTIONS, SEARCH_OPTIONS } from "./constants"
-import PdfUpload from "../inputs/pdfUpload"
+import { useContext } from "react"
+import UserContext from "../../contexts/user"
 import SearchSubject from "../../enums/SearchSubject"
+import PdfUpload from "../inputs/pdfUpload"
+import { CIVILITY_OPTIONS, DIPLOMA_OPTIONS, ROLES, SEARCH_OPTIONS } from "./constants"
+
 
 interface UserControlsProps {
 	control: any
@@ -33,8 +36,43 @@ function UserControls({
 	setValue,
 	isProfile = false,
 }: UserControlsProps) {
+	const { userRoles } = useContext(UserContext)
+	const isAdmin = userRoles.includes("ROLE_ADMIN") 
 	return (
 		<>
+		{ isAdmin && <div className="select-form-control--half-second z-50">
+				<InputLabel>Role*</InputLabel>
+				<Controller
+					rules={{
+						required: "Le Role est requis",
+					}}
+					name="roles"
+					control={control}
+					render={({ field: { value, onChange, onBlur } }) => (
+						<CustomSelect
+							isSearchable
+							options = {ROLES}
+							placeholder="Choisissez..."
+							onBlur={onBlur}
+							value={ROLES.find(
+								(c: ReactSelectOption) =>
+								{console.log(c.value);console.log(value);
+								
+						if (value === undefined ) return null
+						return c.value === value[0]?.id.toString()}
+							
+								
+							)}
+							onChange={(val: ReactSelectOption) => onChange(val)}
+						/>
+					)}
+				/>
+				{errors?.internStatus && (
+					<Alert severity="error">
+						{errors.internStatus?.message}
+					</Alert>
+				)}
+			</div> }
 			<div className="select-form-control z-60">
 				<InputLabel>Civilité *</InputLabel>
 				<Controller
