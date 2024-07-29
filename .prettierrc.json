@@ -5,5 +5,7 @@
 	"semi": false,
 	"jsxSingleQuote": false,
 	"arrowParens": "avoid",
-	"endOfLine": "auto"
+	"endOfLine": "auto",
+	"printWidth": 80,
+
 }

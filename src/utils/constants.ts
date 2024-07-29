@@ -1,17 +1,17 @@
 // GLOBAL CONSTANTS
 
-import { styled } from "@mui/material"
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings"
-import GroupIcon from "@mui/icons-material/Group"
 import DomainIcon from "@mui/icons-material/Domain"
+import GroupIcon from "@mui/icons-material/Group"
+import { styled } from "@mui/material"
 
 import ApartmentIcon from "@mui/icons-material/Apartment"
-import EventIcon from "@mui/icons-material/Event"
-import WorkIcon from "@mui/icons-material/Work"
 import BarChartIcon from "@mui/icons-material/BarChart"
-import PieChartIcon from "@mui/icons-material/PieChart"
+import EventIcon from "@mui/icons-material/Event"
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts"
+import PieChartIcon from "@mui/icons-material/PieChart"
 import SchoolIcon from "@mui/icons-material/School"
+import WorkIcon from "@mui/icons-material/Work"
 import ReactSelectOption from "../api/models/reactSelectOption"
 import Role from "../enums/Role"
 
@@ -55,7 +55,7 @@ export interface ISubMenuItem {
 export const NAV_LINK_ARRAY: Array<INavLink> = [
 	{
 		url: "/companies",
-		text: "Entreprises",
+		text: "Stages",
 		Icon: ApartmentIcon,
 		roles: [],
 	},
