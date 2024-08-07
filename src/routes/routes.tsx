@@ -1,26 +1,32 @@
-import { Routes, Route } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import ActivityAdminPage from "../containers/admin/activityAdminPage/activityAdminPage"
+import CompanyAdminPage from "../containers/admin/companyAdminPage/companyAdminPage"
+import EventAdminForm from "../containers/admin/eventAdminPage/eventAdminForm/eventAdminForm"
+import EventAdminPage from "../containers/admin/eventAdminPage/eventAdminPage"
+import JobAdminPage from "../containers/admin/jobAdminPage/jobAdminPage"
+import UserAdminPage from "../containers/admin/userAdminPage/userAdminPage"
 import CompanyDetailsPage from "../containers/companyDetailsPage/companyDetailsPage"
 import CompanyPage from "../containers/companyPage/companyPage"
+import PageAcceuil from "../containers/cv-skill/pageAcceuil"
+import PoleAtouts from "../containers/cv-skill/poleAtouts"
+import Cvskillpage from "../containers/cv-skill/poleCivilite"
+import PoleInterets from "../containers/cv-skill/poleInterets"
+import PolePersonnalite from "../containers/cv-skill/polePersonalite"
+import PolePersonnalite2 from "../containers/cv-skill/PolePersonnalite2"
+import EventPage from "../containers/eventPage/eventPage"
 import ForbiddenPage from "../containers/forbiddenPage/forbiddenPage"
+import ForgotPassword from "../containers/forgotPasswordPage/forgotPasswordPage"
 import HomePage from "../containers/homePage/homePage"
-import JobAdminPage from "../containers/admin/jobAdminPage/jobAdminPage"
-import CompanyAdminPage from "../containers/admin/companyAdminPage/companyAdminPage"
 import LoginPage from "../containers/loginPage/loginPage"
+import OfferPage from "../containers/offerPage/offerPage"
 import ProfilePage from "../containers/profilePage/profilePage"
 import RegistrationPage from "../containers/registrationPage/registrationPage"
-import Role from "../enums/Role"
-import PrivateRoute from "./privateRoute"
-import UserAdminPage from "../containers/admin/userAdminPage/userAdminPage"
-import ForgotPassword from "../containers/forgotPasswordPage/forgotPasswordPage"
 import ResetPassword from "../containers/resetPasswordPage/resetPasswordPage"
 import StatisticsGeneralPage from "../containers/statistics/statisticsGeneralPage"
-import StatisticsJobPage from "../containers/statistics/statisticsJobPage"
 import StatisticsIndividualPage from "../containers/statistics/statisticsIndividualPage"
-import EventAdminPage from "../containers/admin/eventAdminPage/eventAdminPage"
-import EventAdminForm from "../containers/admin/eventAdminPage/eventAdminForm/eventAdminForm"
-import EventPage from "../containers/eventPage/eventPage"
-import OfferPage from "../containers/offerPage/offerPage"
+import StatisticsJobPage from "../containers/statistics/statisticsJobPage"
+import Role from "../enums/Role"
+import PrivateRoute from "./privateRoute"
 
 const routes = (
 	<Routes>
@@ -155,6 +161,55 @@ const routes = (
 				</PrivateRoute>
 			}
 		/>
+		<Route
+			path="/cvskill/pageAcceuil"
+			element={
+				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
+					<PageAcceuil/>
+				</PrivateRoute>
+			}
+			/>
+		<Route
+			path="/cvskill/poleCivilite"
+			element={
+				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
+					<Cvskillpage/>
+				</PrivateRoute>
+			}
+			/>
+			<Route
+			path="/cvskill/polePersonnalite"
+			element={
+				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
+					<PolePersonnalite/>
+				</PrivateRoute>
+			}
+			/>
+			<Route
+			path="/cvskill/poleAtouts"
+			element={
+				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
+					<PoleAtouts/>
+				</PrivateRoute>
+			}
+			/>
+			<Route
+			path="/cvskill/poleInterets"
+			element={
+				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
+					<PoleInterets/>
+				</PrivateRoute>
+			}
+			/>
+			<Route
+			path="/cvskill/polePersonnalite2"
+			element={
+				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
+					<PolePersonnalite2/>
+				</PrivateRoute>
+			}
+			/>
+		
 		<Route path="/login" element={<LoginPage />} />
 		<Route path="/forgot-password" element={<ForgotPassword />} />
 		<Route path="/:token/reset-password" element={<ResetPassword />} />

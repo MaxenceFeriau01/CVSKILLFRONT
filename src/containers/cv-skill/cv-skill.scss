@@ -1,0 +1,25 @@
+.cvskill-titre {
+	
+		max-width: 40%;
+		display: flex;
+		justify-content: center; /* Center content horizontally */
+		align-items: center; /* Center content vertically */
+		flex-wrap: wrap;
+		margin: 0 auto; /* Center the container horizontally */
+		font-size: 2em; /* Make the text bigger */
+		text-decoration: underline; /* Underline the text */
+		text-align: center;
+
+}
+
+.civilité {
+	flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+	flex-direction: column;
+    align-items: center; /* Center children horizontally */
+    gap: 1em; /* Space between children (adjust as needed) */
+}
+
+
+

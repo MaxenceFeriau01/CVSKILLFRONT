@@ -1,0 +1,18 @@
+
+
+  .button-bottom {
+    position: absolute;
+    bottom: 4rem; /* Ajustez la valeur selon vos besoins */
+    left: 80%;
+    transform: translateX(-50%);
+    width: 35%;
+  }
+
+
+  
+  .content {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  

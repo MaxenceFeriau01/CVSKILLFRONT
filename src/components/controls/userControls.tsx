@@ -81,7 +81,7 @@ function UserControls({
 					}}
 					name="civility"
 					control={control}
-					render={({ field: { value, onChange, onBlur } }) => (
+					render={({ field: { value, onChange, onBlur }}) => (
 						<CustomSelect
 							isSearchable
 							options={CIVILITY_OPTIONS}

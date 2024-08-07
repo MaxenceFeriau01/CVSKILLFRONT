@@ -127,7 +127,6 @@ function ProfilePage() {
 	const onSubmit = (data: any) => {
 		const formData = new FormData()
 		const toUpdate: User = { ...data }
-console.log(data);
 const uptadeRole : any = [{id:data.roles.value,value:data.roles.label}]
 		toUpdate.roles = uptadeRole
 		console.log(toUpdate);
