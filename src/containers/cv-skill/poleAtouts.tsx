@@ -1,10 +1,10 @@
-import { Button } from "@mui/material";
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Button } from "@mui/material"
+import React, { useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 
 interface AtoutType {
-	id: string;
-	name: string;
+	id: string
+	name: string
 }
 
 const atouts: AtoutType[] = [
@@ -25,35 +25,33 @@ const atouts: AtoutType[] = [
 	{ id: "15", name: "Réflexion" },
 	{ id: "16", name: "Altruisme" },
 	{ id: "17", name: "Sens du service" },
-];
+]
 
 function PoleAtouts() {
-	const [selectedAtouts, setSelectedAtouts] = useState<string[]>([]);
-	const [error, setError] = useState<string | null>(null);
-	const location = useLocation();
-	const formData: any = location.state;
+	const [selectedAtouts, setSelectedAtouts] = useState<string[]>([])
+	const [error, setError] = useState<string | null>(null)
+	const location = useLocation()
+	const formData: any = location.state
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, checked } = event.target;
+		const { name, checked } = event.target
 		if (checked && selectedAtouts.length >= 5) {
-			setError("Vous ne pouvez sélectionner que 5 choix maximum.");
-			return;
+			setError("Vous ne pouvez sélectionner que 5 choix maximum.")
+			return
 		}
-		setError(null);
-		setSelectedAtouts((prev) =>
-			checked ? [...prev, name] : prev.filter((item) => item !== name)
-		);
-	};
+		setError(null)
+		setSelectedAtouts(prev =>
+			checked ? [...prev, name] : prev.filter(item => item !== name)
+		)
+	}
 
-	const navigate = useNavigate();
+	const navigate = useNavigate()
 	const handleSubmit = () => {
-		console.log("Atouts sélectionnés:", selectedAtouts);
-		localStorage.setItem("selectedAtouts", JSON.stringify(selectedAtouts));
-		console.log("Form data:", formData);
+		localStorage.setItem("selectedAtouts", JSON.stringify(selectedAtouts))
 		navigate("/cvskill/poleInterets", {
 			state: { ...formData, atouts: selectedAtouts },
-		});
-	};
+		})
+	}
 
 	return (
 		<div className="container mx-auto p-4 max-w-md relative overflow-y-auto h-[calc(100vh-8rem)] pb-16">
@@ -69,7 +67,7 @@ function PoleAtouts() {
 			</h2>
 			{error && <p className="text-red-500 text-center">{error}</p>}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-				{atouts.map((atout) => (
+				{atouts.map(atout => (
 					<div key={atout.id} className="border p-4 rounded-lg">
 						<label
 							htmlFor={atout.id}
@@ -83,12 +81,16 @@ function PoleAtouts() {
 								onChange={handleChange}
 								className="h-5 w-5 text-green-500 border-green-500 focus:ring-green-500"
 							/>
-							<span className="text-gray-700 font-semibold">{atout.name}</span>
+							<span className="text-gray-700 font-semibold">
+								{atout.name}
+							</span>
 						</label>
 					</div>
 				))}
 			</div>
-			<p className="mt-4 font-bold text-center text-red-500">*5 choix maximum</p>
+			<p className="mt-4 font-bold text-center text-red-500">
+				*5 choix maximum
+			</p>
 			<div className="flex justify-center mt-8">
 				<Button
 					onClick={handleSubmit}
@@ -101,7 +103,7 @@ function PoleAtouts() {
 				</Button>
 			</div>
 		</div>
-	);
+	)
 }
 
-export default PoleAtouts;
+export default PoleAtouts

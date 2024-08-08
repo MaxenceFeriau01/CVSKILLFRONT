@@ -165,51 +165,51 @@ const routes = (
 			path="/cvskill/pageAcceuil"
 			element={
 				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
-					<PageAcceuil/>
+					<PageAcceuil />
 				</PrivateRoute>
 			}
-			/>
+		/>
 		<Route
 			path="/cvskill/poleCivilite"
 			element={
 				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
-					<Cvskillpage/>
+					<Cvskillpage />
 				</PrivateRoute>
 			}
-			/>
-			<Route
+		/>
+		<Route
 			path="/cvskill/polePersonnalite"
 			element={
 				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
-					<PolePersonnalite/>
+					<PolePersonnalite />
 				</PrivateRoute>
 			}
-			/>
-			<Route
+		/>
+		<Route
 			path="/cvskill/poleAtouts"
 			element={
 				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
-					<PoleAtouts/>
+					<PoleAtouts />
 				</PrivateRoute>
 			}
-			/>
-			<Route
+		/>
+		<Route
 			path="/cvskill/poleInterets"
 			element={
 				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
-					<PoleInterets/>
+					<PoleInterets />
 				</PrivateRoute>
 			}
-			/>
-			<Route
+		/>
+		<Route
 			path="/cvskill/polePersonnalite2"
 			element={
 				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
-					<PolePersonnalite2/>
+					<PolePersonnalite2 />
 				</PrivateRoute>
 			}
-			/>
-		
+		/>
+
 		<Route path="/login" element={<LoginPage />} />
 		<Route path="/forgot-password" element={<ForgotPassword />} />
 		<Route path="/:token/reset-password" element={<ResetPassword />} />

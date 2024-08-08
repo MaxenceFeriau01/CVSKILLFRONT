@@ -12,11 +12,11 @@ export const CIVILITY_OPTIONS: Array<ReactSelectOption> = [
 	},
 ]
 
-export const ROLES : Array<ReactSelectOption> = [
-	{ value: "1", label: 'ROLE_ADMIN' },
-	{ value: "2", label: 'ROLE_COMPANY'},
-	{ value: "3", label: 'ROLE_USER' }
-	]
+export const ROLES: Array<ReactSelectOption> = [
+	{ value: "1", label: "ROLE_ADMIN" },
+	{ value: "2", label: "ROLE_COMPANY" },
+	{ value: "3", label: "ROLE_USER" },
+]
 
 export const DIPLOMA_OPTIONS: Array<ReactSelectOption> = [
 	{

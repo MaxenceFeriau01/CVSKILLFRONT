@@ -8,7 +8,7 @@ import {
 	GridColumns,
 	GridRenderCellParams,
 	GridRowId,
-	GridSortModel
+	GridSortModel,
 } from "@mui/x-data-grid"
 import { useEffect, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
@@ -32,17 +32,17 @@ function useUserAdminPage() {
 	const [sorting, setSorting] = useState<{ field: string; type?: string }>()
 
 	const roles = [
-        { id: 1, role: 'ROLE_ADMIN' },
-        { id: 2, role: 'ROLE_COMPANY'},
-        { id: 3, role: 'ROLE_USER' }
-		]
-		const columns: GridColumns = [
+		{ id: 1, role: "ROLE_ADMIN" },
+		{ id: 2, role: "ROLE_COMPANY" },
+		{ id: 3, role: "ROLE_USER" },
+	]
+	const columns: GridColumns = [
 		{
-		field: "activated",
-		headerName: "Activé ",
-		type: "boolean",
-		headerClassName: "info-cell",
-		flex: 0.1,
+			field: "activated",
+			headerName: "Activé ",
+			type: "boolean",
+			headerClassName: "info-cell",
+			flex: 0.1,
 		},
 		{
 			field: "civility",
@@ -79,9 +79,8 @@ function useUserAdminPage() {
 		{
 			field: "roles",
 			headerName: "Roles",
-			renderCell: (params: GridRenderCellParams<any, User>) => {
-			return (params.value[0].role)
-			},
+			renderCell: (params: GridRenderCellParams<any, User>) =>
+				params.value[0].role,
 			type: "string",
 			flex: 0.1,
 		},

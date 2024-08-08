@@ -11,7 +11,7 @@ import EventIcon from "@mui/icons-material/Event"
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts"
 import PieChartIcon from "@mui/icons-material/PieChart"
 import SchoolIcon from "@mui/icons-material/School"
-import UploadFileIcon from '@mui/icons-material/UploadFile'
+import UploadFileIcon from "@mui/icons-material/UploadFile"
 import WorkIcon from "@mui/icons-material/Work"
 import ReactSelectOption from "../api/models/reactSelectOption"
 import Role from "../enums/Role"

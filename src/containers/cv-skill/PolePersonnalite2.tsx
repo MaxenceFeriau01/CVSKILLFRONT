@@ -1,16 +1,16 @@
 import {
-  Button,
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+	Button,
+	FormControl,
+	FormControlLabel,
+	Radio,
+	RadioGroup,
+} from "@mui/material"
+import React, { useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 
 interface PersonalityType {
-	type: string;
-	traits: string[];
+	type: string
+	traits: string[]
 }
 
 const personalityTypes: PersonalityType[] = [
@@ -78,35 +78,33 @@ const personalityTypes: PersonalityType[] = [
 		type: "Praticien (ISTP)",
 		traits: ["Observateur", "Calme", "Mesuré", "Curieux"],
 	},
-];
+]
 
 function PolePersonnalite2() {
-	const [selectedType, setSelectedType] = useState<string>("");
-	const location = useLocation();
-	const formData: any = location.state;
+	const [selectedType, setSelectedType] = useState<string>("")
+	const location = useLocation()
+	const formData: any = location.state
 
 	const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setSelectedType(event.target.value);
-	};
+		setSelectedType(event.target.value)
+	}
 
-	const navigate = useNavigate();
+	const navigate = useNavigate()
 
 	const handleSubmit = () => {
-		console.log("Type de personnalité sélectionné:", selectedType);
-		localStorage.setItem("selectedPersonalityType", selectedType);
-		console.log("Form data:", formData);
+		localStorage.setItem("selectedPersonalityType", selectedType)
 		navigate("/cvskill/PoleAtouts", {
 			state: { ...formData, personnalite2: selectedType },
-		});
-	};
+		})
+	}
 
 	return (
 		<div className="container mx-auto p-4 max-w-md relative overflow-y-auto h-[calc(100vh-8rem)] pb-16">
 			<style>
 				{`
-      .container::-webkit-scrollbar {
+    .container::-webkit-scrollbar {
         display: none;
-      }
+    }
     `}
 			</style>
 			<h2 className="text-2xl font-bold text-green-500 text-center mb-6">
@@ -121,8 +119,11 @@ function PolePersonnalite2() {
 					onChange={handleRadioChange}
 				>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-						{personalityTypes.map((personality) => (
-							<div key={personality.type} className="border p-4 rounded-lg">
+						{personalityTypes.map(personality => (
+							<div
+								key={personality.type}
+								className="border p-4 rounded-lg"
+							>
 								<FormControlLabel
 									value={personality.type}
 									control={
@@ -130,7 +131,9 @@ function PolePersonnalite2() {
 									}
 									label={
 										<div>
-											<p className="font-semibold">{personality.type}</p>
+											<p className="font-semibold">
+												{personality.type}
+											</p>
 											<p className="text-sm text-gray-600">
 												{personality.traits.join(", ")}
 											</p>
@@ -154,7 +157,7 @@ function PolePersonnalite2() {
 				</Button>
 			</div>
 		</div>
-	);
+	)
 }
 
-export default PolePersonnalite2;
+export default PolePersonnalite2

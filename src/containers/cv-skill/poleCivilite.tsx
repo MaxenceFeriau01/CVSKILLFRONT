@@ -1,28 +1,28 @@
-import { Alert, Button, InputLabel, TextField } from "@mui/material";
-import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import ReactSelectOption from "../../api/models/reactSelectOption";
-import { CIVILITY_OPTIONS } from "../../components/controls/constants";
-import CustomSelect from "../../components/inputs/customSelect";
-import "./cv-skill.scss";
-import UploadPhoto from "./uploadPhoto";
+import { Alert, Button, InputLabel, TextField } from "@mui/material"
+import { Controller, useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+import ReactSelectOption from "../../api/models/reactSelectOption"
+import { CIVILITY_OPTIONS } from "../../components/controls/constants"
+import CustomSelect from "../../components/inputs/customSelect"
+import "./cv-skill.scss"
+import UploadPhoto from "./uploadPhoto"
 
 interface UserControlsProps {
-	errors?: Record<string, any>;
+	errors?: Record<string, any>
 }
 
 interface FormValues {
-	civility: string;
-	name: string;
-	firstName: string;
-	phone: string;
-	email: string;
-	dateOfBirth: string;
-	diplome: string;
+	civility: string
+	name: string
+	firstName: string
+	phone: string
+	email: string
+	dateOfBirth: string
+	diplome: string
 }
 
 function Cvskillpage({ errors }: UserControlsProps) {
-	const { control, handleSubmit, getValues } = useForm<FormValues>({
+	const { control, getValues } = useForm<FormValues>({
 		defaultValues: {
 			civility: "",
 			name: "",
@@ -32,20 +32,14 @@ function Cvskillpage({ errors }: UserControlsProps) {
 			dateOfBirth: "",
 			diplome: "",
 		},
-	});
+	})
 
-	const navigate = useNavigate();
-
-	const onSubmit = (data: FormValues) => {
-		console.log("Form data:", data);
-		navigate("/cvskill/polePersonnalite");
-	};
+	const navigate = useNavigate()
 
 	const handleClick = () => {
-		const currentValues = getValues();
-		console.log("Current form values:", currentValues);
-		navigate("/cvskill/polePersonnalite", { state: currentValues });
-	};
+		const currentValues = getValues()
+		navigate("/cvskill/polePersonnalite", { state: currentValues })
+	}
 
 	return (
 		<div className="container mx-auto p-4 max-w-md relative overflow-y-auto h-[calc(100vh-8rem)] pb-16">
@@ -75,22 +69,30 @@ function Cvskillpage({ errors }: UserControlsProps) {
 							}}
 							name="civility"
 							control={control}
-							render={({ field: { value, onChange, onBlur } }) => (
+							render={({
+								field: { value, onChange, onBlur },
+							}) => (
 								<CustomSelect
 									isSearchable
 									options={CIVILITY_OPTIONS}
 									placeholder="Choisissez..."
 									onBlur={onBlur}
 									value={CIVILITY_OPTIONS.find(
-										(c: ReactSelectOption) => c.value === value
+										(c: ReactSelectOption) =>
+											c.value === value
 									)}
-									onChange={(val: ReactSelectOption) => onChange(val.value)}
+									onChange={(val: ReactSelectOption) =>
+										onChange(val.value)
+									}
 									className="select-form-control z-60"
 								/>
 							)}
 						/>
 						{errors?.civility && (
-							<Alert severity="error" className="mt-2 text-sm text-red-600">
+							<Alert
+								severity="error"
+								className="mt-2 text-sm text-red-600"
+							>
 								{errors.civility.message}
 							</Alert>
 						)}
@@ -108,7 +110,8 @@ function Cvskillpage({ errors }: UserControlsProps) {
 								autoComplete="family-name"
 								className="w-full mt-4"
 								InputProps={{
-									className: "rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50",
+									className:
+										"rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50",
 								}}
 							/>
 						)}
@@ -125,7 +128,8 @@ function Cvskillpage({ errors }: UserControlsProps) {
 								autoComplete="given-name"
 								className="w-full mt-4"
 								InputProps={{
-									className: "rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50",
+									className:
+										"rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50",
 								}}
 							/>
 						)}
@@ -143,7 +147,8 @@ function Cvskillpage({ errors }: UserControlsProps) {
 								autoComplete="tel"
 								className="w-full mt-4"
 								InputProps={{
-									className: "rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50",
+									className:
+										"rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50",
 								}}
 							/>
 						)}
@@ -161,7 +166,8 @@ function Cvskillpage({ errors }: UserControlsProps) {
 								autoComplete="email"
 								className="w-full mt-4"
 								InputProps={{
-									className: "rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50",
+									className:
+										"rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50",
 								}}
 							/>
 						)}
@@ -189,14 +195,18 @@ function Cvskillpage({ errors }: UserControlsProps) {
 							)}
 						/>
 						{errors?.dateOfBirth && (
-							<Alert severity="error" className="mt-2 text-sm text-red-600">
+							<Alert
+								severity="error"
+								className="mt-2 text-sm text-red-600"
+							>
 								{errors.dateOfBirth.message}
 							</Alert>
 						)}
 					</div>
 					<div className="mt-4">
 						<InputLabel className="block text-sm font-medium text-gray-700 mb-1">
-							Sélection de votre dernière classe fréquentée ou diplôme obtenu
+							Sélection de votre dernière classe fréquentée ou
+							diplôme obtenu
 						</InputLabel>
 						<Controller
 							name="diplome"
@@ -206,7 +216,10 @@ function Cvskillpage({ errors }: UserControlsProps) {
 									{...field}
 									isSearchable
 									options={[
-										{ value: "brevet", label: "Brevet des collèges" },
+										{
+											value: "brevet",
+											label: "Brevet des collèges",
+										},
 										{
 											value: "cap",
 											label: "CAP (Certificat d'Aptitude Professionnelle)",
@@ -227,10 +240,22 @@ function Cvskillpage({ errors }: UserControlsProps) {
 											value: "dut",
 											label: "DUT (Diplôme Universitaire de Technologie)",
 										},
-										{ value: "licence", label: "Licence (Bac+3)" },
-										{ value: "master", label: "Master (Bac+5)" },
-										{ value: "doctorat", label: "Doctorat (Bac+8)" },
-										{ value: "autre", label: "Autre diplôme ou formation" },
+										{
+											value: "licence",
+											label: "Licence (Bac+3)",
+										},
+										{
+											value: "master",
+											label: "Master (Bac+5)",
+										},
+										{
+											value: "doctorat",
+											label: "Doctorat (Bac+8)",
+										},
+										{
+											value: "autre",
+											label: "Autre diplôme ou formation",
+										},
 									]}
 									placeholder="Choisissez..."
 									className="select-form-control"
@@ -251,7 +276,7 @@ function Cvskillpage({ errors }: UserControlsProps) {
 				</div>
 			</div>
 		</div>
-	);
+	)
 }
 
-export default Cvskillpage;
+export default Cvskillpage
