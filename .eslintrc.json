@@ -32,7 +32,7 @@
 				"tsx": "never"
 			}
 		],
-		"prettier/prettier": "warning",
+		"prettier/prettier": "error",
 		"react/no-unescaped-entities": "off",
 		"no-unused-vars": "off",
 		"react/jsx-indent": [
