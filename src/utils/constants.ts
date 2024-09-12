@@ -61,6 +61,12 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 		roles: [],
 	},
 	{
+		url: "/cvskill/cvskillend",
+		text: "Cv-Skill",
+		Icon: UploadFileIcon,
+		roles: [Role.USER],
+	},
+	{
 		url: "/offers",
 		text: "Alternances",
 		Icon: SchoolIcon,
@@ -73,10 +79,10 @@ export const NAV_LINK_ARRAY: Array<INavLink> = [
 		roles: [Role.ADMIN, Role.COMPANY, Role.USER],
 	},
 	{
-		url: "/cvskill/pageAcceuil",
+		url: "/cvskill/cvskillRecherche",
 		text: "Cv-Skill",
 		Icon: UploadFileIcon,
-		roles: [Role.ADMIN, Role.USER],
+		roles: [Role.ADMIN],
 	},
 	{
 		url: null,

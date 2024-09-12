@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import { Alert, FormHelperText, InputLabel, TextField } from "@mui/material"
 import { useContext } from "react"
 import { Controller, FieldValues, UseFormSetValue } from "react-hook-form"
@@ -332,6 +333,33 @@ function UserControls({
 					</Alert>
 				)}
 			</div>
+			<div className="select-form-control--half-second z-50">
+				<InputLabel>Diplome*</InputLabel>
+				<Controller
+					rules={{
+						required: "Le diplome est requis",
+					}}
+					name="diploma"
+					control={control}
+					render={({ field: { value, onChange, onBlur } }) => (
+						<CustomSelect
+							isSearchable
+							options={DIPLOMA_OPTIONS}
+							placeholder="Choisissez..."
+							onBlur={onBlur}
+							value={DIPLOMA_OPTIONS.find(
+								(c: ReactSelectOption) => c.value === value
+							)}
+							onChange={(val: ReactSelectOption) =>
+								onChange(val.value)
+							}
+						/>
+					)}
+				/>
+				{errors?.diploma && (
+					<Alert severity="error">{errors.diploma.message}</Alert>
+				)}
+			</div>
 			<div className="select-form-control--half-first z-50">
 				<InputLabel>Objet de ma recherche *</InputLabel>
 				<Controller
@@ -419,83 +447,47 @@ function UserControls({
 					{errors?.jobs && (
 						<Alert severity="error">{errors.jobs.message}</Alert>
 					)}
-				</div>
-			)}
-			{watch("internStatus")?.label === STATUS_STUDENT && (
-				<>
-					{watch("searchSubject") === SearchSubject.INTERNSHIP && (
-						<div className="select-form-control--half-second z-20">
-							<InputLabel>Durée du stage</InputLabel>
-							<Controller
-								rules={{
-									required: "La durée du stage est requise",
-								}}
-								name="internshipPeriod"
-								control={control}
-								render={({
-									field: { value, onChange, onBlur },
-								}) => (
-									<CustomSelect
-										isSearchable
-										options={STUDENT_PERIOD_OPTIONS}
-										placeholder="Choisissez..."
-										onBlur={onBlur}
-										value={STUDENT_PERIOD_OPTIONS.find(
-											(c: ReactSelectOption) =>
-												c.value === value
+					{watch("internStatus")?.label === STATUS_STUDENT && (
+						<>
+							{watch("searchSubject") ===
+								SearchSubject.INTERNSHIP && (
+								<div className="select-form-control--half-second z-20">
+									<InputLabel>Durée du stage</InputLabel>
+									<Controller
+										rules={{
+											required:
+												"La durée du stage est requise",
+										}}
+										name="internshipPeriod"
+										control={control}
+										render={({
+											field: { value, onChange, onBlur },
+										}) => (
+											<CustomSelect
+												isSearchable
+												options={STUDENT_PERIOD_OPTIONS}
+												placeholder="Choisissez..."
+												onBlur={onBlur}
+												value={STUDENT_PERIOD_OPTIONS.find(
+													(c: ReactSelectOption) =>
+														c.value === value
+												)}
+												onChange={(
+													val: ReactSelectOption
+												) => onChange(val.value)}
+											/>
 										)}
-										onChange={(val: ReactSelectOption) =>
-											onChange(val.value)
-										}
 									/>
-								)}
-							/>
-							{errors?.internshipPeriod && (
-								<Alert severity="error">
-									{errors.internshipPeriod.message}
-								</Alert>
-							)}
-						</div>
-					)}
-					<div
-						className={
-							watch("searchSubject") === SearchSubject.INTERNSHIP
-								? "select-form-control--half-second z-10"
-								: "select-form-control z-10"
-						}
-					>
-						<InputLabel>Diplome</InputLabel>
-						<Controller
-							rules={{
-								required: "Le diplome est requis",
-							}}
-							name="diploma"
-							control={control}
-							render={({
-								field: { value, onChange, onBlur },
-							}) => (
-								<CustomSelect
-									isSearchable
-									options={DIPLOMA_OPTIONS}
-									placeholder="Choisissez..."
-									onBlur={onBlur}
-									value={DIPLOMA_OPTIONS.find(
-										(c: ReactSelectOption) =>
-											c.value === value
+									{errors?.internshipPeriod && (
+										<Alert severity="error">
+											{errors.internshipPeriod.message}
+										</Alert>
 									)}
-									onChange={(val: ReactSelectOption) =>
-										onChange(val.value)
-									}
-								/>
+								</div>
 							)}
-						/>
-						{errors?.diploma && (
-							<Alert severity="error">
-								{errors.diploma.message}
-							</Alert>
-						)}
-					</div>
-				</>
+						</>
+					)}
+				</div>
 			)}
 			<div className="file-control">
 				<PdfUpload

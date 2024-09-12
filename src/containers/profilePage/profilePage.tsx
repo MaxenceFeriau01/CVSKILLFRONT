@@ -39,6 +39,7 @@ function ProfilePage() {
 	} = useForm()
 
 	const { id } = useParams()
+	const numericId = Number(id)
 
 	const putUser = useMutation(
 		({ userId, updatedUser }: any) => userService.put(updatedUser, userId),
@@ -67,8 +68,8 @@ function ProfilePage() {
 
 	const apiUser = useQuery("user", () => {
 		let endpointToCall = userService.getSelf()
-		if (id) {
-			endpointToCall = userService.getById(id)
+		if (numericId) {
+			endpointToCall = userService.getById(numericId)
 		}
 		return endpointToCall.then((res: any) => {
 			Object.keys(res).forEach((key: any) => {
@@ -131,7 +132,6 @@ function ProfilePage() {
 			{ id: data.roles.value, value: data.roles.label },
 		]
 		toUpdate.roles = uptadeRole
-		console.log(toUpdate)
 
 		if (data.internStatus.label === STATUS_COLLEGE_STUDENT) {
 			toUpdate.jobs = null
@@ -141,10 +141,12 @@ function ProfilePage() {
 			toUpdate.jobs = data.jobs?.map((j: any) => ({ id: j }))
 		}
 
-		if (data.internStatus.label === STATUS_HIGH_SCHOOL_STUDENT) {
-			toUpdate.diploma = null
-			toUpdate.internshipPeriod = null
-		}
+		toUpdate.diploma = data.diploma
+
+		toUpdate.internStatus = new InternStatus(
+			data.internStatus?.value,
+			data.internStatus?.label
+		)
 
 		toUpdate.internStatus = new InternStatus(
 			data.internStatus?.value,

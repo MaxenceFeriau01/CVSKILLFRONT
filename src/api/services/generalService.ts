@@ -2,7 +2,7 @@
  * Used to extend all other services.
  * It supplies basic functions of CRUD
  */
-import axios, { AxiosInstance } from "axios"
+import axios, { AxiosInstance, AxiosResponse } from "axios"
 import Swal from "sweetalert2"
 import User from "../models/user"
 
@@ -155,6 +155,50 @@ class GeneralService<T> {
 			})
 		}
 		throw error.response
+	}
+
+	uploadFile(
+		file: File,
+		url: string,
+		additionalData?: Record<string, any>
+	): Promise<T> {
+		const formData = new FormData()
+		formData.append("file", file)
+
+		if (additionalData) {
+			Object.entries(additionalData).forEach(([key, value]) => {
+				formData.append(key, value)
+			})
+		}
+
+		return this.http
+			.post<T>(this.url + url, formData, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			})
+			.then(this.handleResponse)
+			.catch(this.handleError)
+	}
+
+	getBinaryData(url: string): Promise<Blob> {
+		return this.http
+			.get(this.url + url, {
+				responseType: "blob",
+			})
+			.then(response => {
+				if (response.status === 404) {
+					throw new Error("Photo non trouvée")
+				}
+				return response.data
+			})
+			.catch(error => {
+				console.error(
+					"Erreur lors de la récupération de la photo:",
+					error
+				)
+				throw error // Propagez l'erreur pour la gérer dans le composant
+			})
 	}
 }
 

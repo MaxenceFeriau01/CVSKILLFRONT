@@ -4,4 +4,5 @@ enum Role {
 	USER = "ROLE_USER",
 	COMPANY = "ROLE_COMPANY",
 }
+
 export default Role

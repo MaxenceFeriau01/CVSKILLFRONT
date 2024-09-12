@@ -43,6 +43,10 @@ class UserService extends GeneralService<User | any> {
 		return this.get("/self")
 	}
 
+	getById(userId: number): Promise<User> {
+		return this.get(`/${userId}`)
+	}
+
 	active(activated: boolean, userId: number): Promise<void> {
 		return this.post({ activated }, `/${userId}/active`)
 	}
@@ -61,6 +65,10 @@ class UserService extends GeneralService<User | any> {
 
 	setRoles(roles: Array<string>): void {
 		this.roles = roles
+	}
+
+	getAllUsers(): Promise<User[]> {
+		return this.get("/all")
 	}
 }
 

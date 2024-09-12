@@ -27,6 +27,9 @@ import StatisticsIndividualPage from "../containers/statistics/statisticsIndivid
 import StatisticsJobPage from "../containers/statistics/statisticsJobPage"
 import Role from "../enums/Role"
 import PrivateRoute from "./privateRoute"
+import Cvskillend from "../containers/cv-skill/cvskillend"
+import CvSkillHome from "../containers/cv-skill/cvskillRecherche"
+import PoleloisirsInterets from "../containers/cv-skill/pageloisirInteret"
 
 const routes = (
 	<Routes>
@@ -162,7 +165,7 @@ const routes = (
 			}
 		/>
 		<Route
-			path="/cvskill/pageAcceuil"
+			path="/cvSkill/pageAcceuil"
 			element={
 				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
 					<PageAcceuil />
@@ -170,7 +173,7 @@ const routes = (
 			}
 		/>
 		<Route
-			path="/cvskill/poleCivilite"
+			path="/cvSkill/poleCivilite"
 			element={
 				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
 					<Cvskillpage />
@@ -178,7 +181,7 @@ const routes = (
 			}
 		/>
 		<Route
-			path="/cvskill/polePersonnalite"
+			path="/cvSkill/polePersonnalite"
 			element={
 				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
 					<PolePersonnalite />
@@ -186,7 +189,7 @@ const routes = (
 			}
 		/>
 		<Route
-			path="/cvskill/poleAtouts"
+			path="/cvSkill/poleAtouts"
 			element={
 				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
 					<PoleAtouts />
@@ -194,7 +197,7 @@ const routes = (
 			}
 		/>
 		<Route
-			path="/cvskill/poleInterets"
+			path="/cvSkill/poleInterets"
 			element={
 				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
 					<PoleInterets />
@@ -202,10 +205,34 @@ const routes = (
 			}
 		/>
 		<Route
-			path="/cvskill/polePersonnalite2"
+			path="/cvSkill/polePersonnalite2"
 			element={
 				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
 					<PolePersonnalite2 />
+				</PrivateRoute>
+			}
+		/>
+		<Route
+			path="/cvSkill/cvskillend"
+			element={
+				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
+					<Cvskillend />
+				</PrivateRoute>
+			}
+		/>
+		<Route
+			path="/cvSkill/poleloisirsInteret"
+			element={
+				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
+					<PoleloisirsInterets />
+				</PrivateRoute>
+			}
+		/>
+		<Route
+			path="/cvSkill/cvskillRecherche"
+			element={
+				<PrivateRoute roles={[Role.ADMIN, Role.USER]}>
+					<CvSkillHome />
 				</PrivateRoute>
 			}
 		/>

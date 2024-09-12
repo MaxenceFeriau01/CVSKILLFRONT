@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import {
 	Button,
 	FormControl,
@@ -5,8 +6,19 @@ import {
 	Radio,
 	RadioGroup,
 } from "@mui/material"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { useMutation, useQuery } from "react-query"
+import Swal from "sweetalert2"
+import cvskillService from "../../api/services/cvskillService"
+import CvSkillDto, { LocationState } from "../../api/models/cvskill"
+import userService from "../../api/services/userService"
+
+interface polePersonnaliteType {
+	id?: number
+	personnaliteType: string
+	associatedTraits: string[]
+}
 
 interface PersonalityType {
 	type: string
@@ -22,10 +34,7 @@ const personalityTypes: PersonalityType[] = [
 		type: "Communicateur (ENFP)",
 		traits: ["Enthousiate", "Créatif", "Flexible", "Altruiste"],
 	},
-	{
-		type: "Meneur (ENTJ)",
-		traits: ["Direct", "Franc", "Décidé", "Leader"],
-	},
+	{ type: "Meneur (ENTJ)", traits: ["Direct", "Franc", "Décidé", "Leader"] },
 	{
 		type: "Innovateur (ENTP)",
 		traits: ["Ingénieux", "Polyvalent", "Créatif", "Décideur"],
@@ -56,7 +65,7 @@ const personalityTypes: PersonalityType[] = [
 	},
 	{
 		type: "Perfectionniste (INTJ)",
-		traits: ["Indépendant", "Déterminée", "Critique", "Organisé"],
+		traits: ["Indépendant", "Déterminé", "Critique", "Organisé"],
 	},
 	{
 		type: "Concepteur (INTP)",
@@ -82,34 +91,184 @@ const personalityTypes: PersonalityType[] = [
 
 function PolePersonnalite2() {
 	const [selectedType, setSelectedType] = useState<string>("")
+	const [error, setError] = useState<string | null>(null)
 	const location = useLocation()
-	const formData: any = location.state
+	const navigate = useNavigate()
+	const state = location.state as LocationState
+	const [userId, setUserId] = useState<number | null>(null)
+	const [cvSkillId, setCvSkillId] = useState<number | null>(null)
+	const { editMode } = state
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const storedUserId = localStorage.getItem("selectedUserId")
+			const storedCvSkillId = localStorage.getItem("selectedCvSkillId")
+
+			try {
+				if (!storedUserId) {
+					throw new Error("ID utilisateur sélectionné non trouvé")
+				}
+				setUserId(Number(storedUserId))
+
+				if (storedCvSkillId) {
+					setCvSkillId(Number(storedCvSkillId))
+					const cvSkill = await cvskillService.getCvSkillById(
+						Number(storedCvSkillId)
+					)
+					if (
+						cvSkill &&
+						cvSkill.polePersonnalitesTypes &&
+						cvSkill.polePersonnalitesTypes.length > 0
+					) {
+						setSelectedType(
+							cvSkill.polePersonnalitesTypes[0].personnaliteType
+						)
+					}
+				} else {
+					const storedType = localStorage.getItem(
+						`selectedPersonalityType-${storedUserId}`
+					)
+					if (storedType) {
+						setSelectedType(storedType)
+					}
+				}
+			} catch (error) {
+				console.error(
+					"Erreur lors de la récupération des données:",
+					error
+				)
+				setError(
+					"Impossible de récupérer les données. Veuillez réessayer."
+				)
+			}
+		}
+
+		fetchData()
+	}, [editMode])
 
 	const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setSelectedType(event.target.value)
+		const newType = event.target.value
+		setSelectedType(newType)
+		setError(null)
+
+		if (!editMode && userId) {
+			const selectedPersonality = personalityTypes.find(
+				p => p.type === newType
+			)
+			if (selectedPersonality) {
+				localStorage.setItem(
+					`selectedPersonalityType-${userId}`,
+					newType
+				)
+				localStorage.setItem(
+					`selectedAssociatedTraits-${userId}`,
+					JSON.stringify(selectedPersonality.traits)
+				)
+			}
+		}
 	}
 
-	const navigate = useNavigate()
+	const updateCvSkillMutation = useMutation<
+		CvSkillDto,
+		Error,
+		{ id: number; cvSkillDto: CvSkillDto; userId: number }
+	>(
+		({ id, cvSkillDto, userId }) =>
+			cvskillService.updateCvSkill(id, cvSkillDto, userId),
+		{
+			onSuccess: () => {
+				Swal.fire({
+					icon: "success",
+					title: "Type de personnalité mis à jour avec succès",
+					showConfirmButton: false,
+					timer: 1500,
+				})
+				navigate("/cvskill/Cvskillend", {
+					state: { userId, cvSkillId },
+				})
+			},
+			onError: error => {
+				console.error(
+					"Erreur lors de la mise à jour du type de personnalité:",
+					error
+				)
+				setError("Erreur lors de la mise à jour. Veuillez réessayer.")
+			},
+		}
+	)
 
-	const handleSubmit = () => {
-		localStorage.setItem("selectedPersonalityType", selectedType)
-		navigate("/cvskill/PoleAtouts", {
-			state: { ...formData, personnalite2: selectedType },
-		})
+	const handleSubmit = async () => {
+		if (!userId) {
+			setError("ID utilisateur manquant. Impossible de continuer.")
+			return
+		}
+
+		const selectedPersonality = personalityTypes.find(
+			p => p.type === selectedType
+		)
+		if (!selectedPersonality) {
+			setError("Veuillez sélectionner un type de personnalité.")
+			return
+		}
+
+		const personalityData: polePersonnaliteType = {
+			personnaliteType: selectedPersonality.type,
+			associatedTraits: selectedPersonality.traits,
+		}
+
+		if (editMode && cvSkillId) {
+			try {
+				const currentCvSkill = await cvskillService.getCvSkillById(
+					cvSkillId
+				)
+				const updatedCvSkill: CvSkillDto = new CvSkillDto({
+					...currentCvSkill,
+					polePersonnalitesTypes: [personalityData],
+				})
+				updateCvSkillMutation.mutate({
+					id: cvSkillId,
+					cvSkillDto: updatedCvSkill,
+					userId,
+				})
+			} catch (error) {
+				console.error(
+					"Erreur lors de la récupération du CV Skill:",
+					error
+				)
+				setError("Erreur lors de la mise à jour. Veuillez réessayer.")
+			}
+		} else {
+			localStorage.setItem(
+				`selectedPersonalityType-${userId}`,
+				selectedType
+			)
+			localStorage.setItem(
+				`selectedAssociatedTraits-${userId}`,
+				JSON.stringify(selectedPersonality.traits)
+			)
+			navigate("/cvskill/PoleAtouts", {
+				state: {
+					...state,
+					userId,
+					cvSkillId,
+					polePersonnalitesTypes: [personalityData],
+				},
+			})
+		}
 	}
-
 	return (
 		<div className="container mx-auto p-4 max-w-md relative overflow-y-auto h-[calc(100vh-8rem)] pb-16">
-			<style>
-				{`
-    .container::-webkit-scrollbar {
-        display: none;
-    }
-    `}
-			</style>
+			<style>{`
+                .container::-webkit-scrollbar {
+                    display: none;
+                }
+            `}</style>
 			<h2 className="text-2xl font-bold text-green-500 text-center mb-6">
-				Pôle Personnalité
+				{editMode
+					? "Modifier le type de personnalité"
+					: "Pôle Personnalité"}
 			</h2>
+			{error && <p className="text-red-500 text-center mb-4">{error}</p>}
 			<p className="mt-6 font-bold">Partie 2</p>
 			<FormControl component="fieldset">
 				<RadioGroup
@@ -153,7 +312,7 @@ function PolePersonnalite2() {
 					className="w-full mt-6 py-2 px-4 MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButtonBase-root css-4sfg2-MuiButton-root"
 					disabled={!selectedType}
 				>
-					Sauvegarder le choix
+					{editMode ? "Mettre à jour" : "Sauvegarder le choix"}
 				</Button>
 			</div>
 		</div>
