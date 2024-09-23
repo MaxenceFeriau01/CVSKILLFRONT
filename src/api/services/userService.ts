@@ -70,6 +70,10 @@ class UserService extends GeneralService<User | any> {
 	getAllUsers(): Promise<User[]> {
 		return this.get("/all")
 	}
+
+	getCurrentUser(): Promise<User> {
+		return this.get("/self").then(res => res) // Récupérer les données de l'utilisateur connecté depuis l'API
+	}
 }
 
 const userService = new UserService("users")

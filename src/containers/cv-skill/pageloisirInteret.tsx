@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Button, FormControl, FormControlLabel, Checkbox } from "@mui/material"
+import { Button } from "@mui/material"
 import { useLocation, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import { useMutation } from "react-query"
@@ -58,36 +58,45 @@ function PoleLoisirsInterets() {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const storedUserId = localStorage.getItem("selectedUserId")
-			const storedCvSkillId = localStorage.getItem("selectedCvSkillId")
-
 			try {
-				if (!storedUserId) {
-					throw new Error("ID utilisateur sélectionné non trouvé")
+				if (state && state.userId) {
+					setUserId(state.userId)
+				} else {
+					const storedUserId = localStorage.getItem("selectedUserId")
+					if (storedUserId) {
+						setUserId(Number(storedUserId))
+					} else {
+						throw new Error("ID utilisateur non trouvé")
+					}
 				}
-				setUserId(Number(storedUserId))
 
-				if (storedCvSkillId) {
-					setCvSkillId(Number(storedCvSkillId))
+				if (state && state.cvSkillId) {
+					setCvSkillId(state.cvSkillId)
+				} else {
+					const storedCvSkillId =
+						localStorage.getItem("selectedCvSkillId")
+					if (storedCvSkillId) {
+						setCvSkillId(Number(storedCvSkillId))
+					}
+				}
+
+				if (cvSkillId) {
 					const cvSkill = await cvskillService.getCvSkillById(
-						Number(storedCvSkillId)
+						cvSkillId
 					)
 					if (cvSkill && cvSkill.poleLoisirInterets) {
 						setSelectedItems(cvSkill.poleLoisirInterets)
 					}
-				} else {
+				} else if (userId) {
 					const storedItems = localStorage.getItem(
-						`poleLoisirInterets-${storedUserId}`
+						`poleLoisirInterets-${userId}`
 					)
 					if (storedItems) {
 						setSelectedItems(JSON.parse(storedItems))
 					}
 				}
+				// eslint-disable-next-line no-shadow
 			} catch (error) {
-				console.error(
-					"Erreur lors de la récupération des données:",
-					error
-				)
 				setError(
 					"Impossible de récupérer les données. Veuillez réessayer."
 				)
@@ -95,7 +104,7 @@ function PoleLoisirsInterets() {
 		}
 
 		fetchData()
-	}, [editMode])
+	}, [state, editMode])
 
 	const handleChange = (item: PoleLoisirInteret) => {
 		setSelectedItems(prev => {

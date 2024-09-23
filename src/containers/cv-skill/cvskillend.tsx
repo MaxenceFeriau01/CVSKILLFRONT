@@ -1,62 +1,19 @@
+/* eslint-disable no-undef */
+/* eslint-disable import/extensions */
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable react/function-component-definition */
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState, useCallback, useRef } from "react"
 import { useQuery, useMutation, useQueryClient } from "react-query"
 import { useNavigate, useLocation } from "react-router-dom"
-import {
-	Button,
-	Typography,
-	Box,
-	CircularProgress,
-	Grid,
-	SvgIcon,
-	Paper,
-} from "@mui/material"
+import { Button, Typography, Box, CircularProgress, Grid } from "@mui/material"
 import Swal from "sweetalert2"
 import cvskillService from "../../api/services/cvskillService"
 import userService from "../../api/services/userService"
 import CvSkillDto, { LocationState } from "../../api/models/cvskill"
-import "./cv-skill.scss"
-
-interface PuzzlePieceProps {
-	title: string
-	content: string
-	color: string
-	onClick: () => void
-}
-
-const PuzzlePiece: React.FC<PuzzlePieceProps> = ({
-	title,
-	content,
-	color,
-	onClick,
-}) => (
-	<Paper
-		elevation={3}
-		style={{
-			width: "200px",
-			height: "200px",
-			margin: "10px",
-			padding: "10px",
-			backgroundColor: color,
-			clipPath:
-				"polygon(0% 25%, 25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%)",
-			display: "flex",
-			flexDirection: "column",
-			justifyContent: "space-between",
-		}}
-	>
-		<Typography variant="h6" align="center">
-			{title}
-		</Typography>
-		<Typography variant="body2" align="center">
-			{content}
-		</Typography>
-		<Button variant="contained" size="small" onClick={onClick}>
-			Modifier
-		</Button>
-	</Paper>
-)
+import CercleInterets from "./InterestsCircle"
+import DiagrammeAtouts from "./DiagrammeAtoutsProps"
+import DiagrammePersonnalite from "./diagrammePersonnaliteProps"
 
 function Cvskillend() {
 	const navigate = useNavigate()
@@ -77,18 +34,45 @@ function Cvskillend() {
 			const storedCvSkillId = localStorage.getItem("selectedCvSkillId")
 
 			try {
+				// Récupérer les rôles de l'utilisateur connecté
 				const userRoles = await userService.getUserRoles()
 				const isAdminUser = userRoles.includes("ROLE_ADMIN")
 				setIsAdmin(isAdminUser)
 
+				// Récupération des données depuis le localStorage
 				if (storedUserId) {
-					setUserId(Number(storedUserId))
+					setUserId(Number(storedUserId)) // Conversion en nombre
+				} else if (userRoles.includes("ROLE_USER")) {
+					// Si l'utilisateur est un ROLE_USER, récupérer son ID et son CV Skill depuis l'API
+					const user = await userService.getSelf()
+					if (user && user.id) {
+						setUserId(Number(user.id)) // Conversion en nombre
+
+						// Récupérer le CV Skill pour cet utilisateur
+						const cvSkill =
+							await cvskillService.getCvSkillsByUserId(
+								Number(user.id)
+							)
+						if (cvSkill && cvSkill.id !== undefined) {
+							setCvSkillId(Number(cvSkill.id)) // Vérification et conversion
+						} else {
+							setError("CV Skill non trouvé pour cet utilisateur")
+						}
+					} else {
+						setError(
+							"Impossible de récupérer l'utilisateur connecté"
+						)
+					}
 				} else {
 					setError("ID utilisateur non trouvé dans le localStorage")
 				}
 
+				// Vérifier si l'ID du CV Skill est dans le localStorage
 				if (storedCvSkillId) {
-					setCvSkillId(Number(storedCvSkillId))
+					setCvSkillId(Number(storedCvSkillId)) // Conversion en nombre
+				} else if (userRoles.includes("ROLE_USER")) {
+					// Si l'utilisateur est un ROLE_USER, le CV Skill a déjà été récupéré ci-dessus
+					// donc aucune action supplémentaire n'est nécessaire ici.
 				} else {
 					setError("ID du CV Skill non trouvé dans le localStorage")
 				}
@@ -215,6 +199,34 @@ function Cvskillend() {
 		})
 	}
 
+	const formatNumberedInterests = (
+		interests: { interet: string }[] | undefined
+	): JSX.Element => {
+		if (!interests || interests.length === 0) {
+			return (
+				<Typography variant="body2" align="center">
+					Non spécifié
+				</Typography>
+			)
+		}
+
+		return (
+			<>
+				{interests.map((interest, index) => (
+					<Typography
+						key={index}
+						variant="body2"
+						align="center"
+						className="focus-in-contract-bck"
+						style={{ animationDelay: `${index * 0.1}s` }}
+					>
+						{`${index + 1}. ${interest.interet}`}
+					</Typography>
+				))}
+			</>
+		)
+	}
+
 	const handleEditLoisirInteret = () => {
 		if (cvSkillData && cvSkillData.user) {
 			navigate("/cvSkill/poleloisirsInteret", {
@@ -223,6 +235,15 @@ function Cvskillend() {
 					cvSkillId: cvSkillData.id,
 					userId: cvSkillData.user.id,
 					poleLoisirInterets: cvSkillData.poleLoisirInterets || [],
+				},
+			})
+		} else if (userId) {
+			navigate("/cvSkill/poleloisirsInteret", {
+				state: {
+					editMode: true,
+					cvSkillId,
+					userId,
+					poleLoisirInterets: cvSkillData?.poleLoisirInterets || [],
 				},
 			})
 		} else {
@@ -261,12 +282,25 @@ function Cvskillend() {
 
 	const handleEditPersonnalite = () => {
 		if (isAdmin) {
-			navigate("/cvSkill/polePersonnalite2", {
+			navigate("/cvSkill/polePersonnalite", {
 				state: {
 					editMode: true,
 					cvSkillId: cvSkillData?.id,
 					userId: cvSkillData?.user?.id,
 					polePersonnaliteTraits: cvSkillData?.polePersonnaliteTraits,
+					polePersonnalitesTypes: cvSkillData?.polePersonnalitesTypes,
+				},
+			})
+		}
+	}
+
+	const handleEditPersonnalite2 = () => {
+		if (isAdmin) {
+			navigate("/cvSkill/polePersonnalite2", {
+				state: {
+					editMode: true,
+					cvSkillId: cvSkillData?.id,
+					userId: cvSkillData?.user?.id,
 					polePersonnalitesTypes: cvSkillData?.polePersonnalitesTypes,
 				},
 			})
@@ -345,136 +379,118 @@ function Cvskillend() {
 	}
 
 	return (
-		<Box className="container mx-auto p-4 max-w-4xl">
-			<Typography variant="h4" className="text-center mb-6">
-				Résumé de votre CV Skill
-			</Typography>
+		<div className="container mx-auto p-4 max-w-4xl relative overflow-y-auto h-[calc(100vh-8rem)] pb-16">
+			<style>{`
+                .container::-webkit-scrollbar {
+                    display: none;
+                }
+            `}</style>
+			<h2 className="text-2xl font-bold text-green-500 text-center mb-6">
+				Mon CV Skill
+			</h2>
+			{error && <p className="text-red-500 text-center">{error}</p>}
 
-			{/* Photo section */}
-			<Box
-				className="photo-container"
-				style={{
-					width: "150px",
-					height: "150px",
-					borderRadius: "50%",
-					margin: "0 auto 20px",
-					backgroundColor: "#f0f0f0",
-					overflow: "hidden",
-				}}
-			>
-				{isPhotoLoading || isUploading ? (
-					<CircularProgress />
-				) : photoUrl ? (
+			<Box sx={{ textAlign: "center", mb: 4 }}>
+				{photoUrl ? (
 					<img
 						src={photoUrl}
-						alt={`Profil de ${
-							cvSkillData?.user?.firstName || "l'utilisateur"
-						}`}
+						alt="Profil"
 						style={{
-							width: "100%",
-							height: "100%",
-							objectFit: "cover",
+							width: 200,
+							height: 200,
+							borderRadius: "50%",
+							margin: "0 auto",
 						}}
 					/>
 				) : (
-					<Box
-						display="flex"
-						flexDirection="column"
-						alignItems="center"
-						justifyContent="center"
-						height="100%"
-					>
-						<Typography style={{ color: "#888" }}>
-							Ajouter une photo
-						</Typography>
-					</Box>
+					<Typography>Aucune photo</Typography>
 				)}
+				<Button onClick={handleEditPhotoClick} className="mt-2">
+					{photoUrl ? "Modifier la photo" : "Ajouter une photo"}
+				</Button>
+				<input
+					type="file"
+					ref={fileInputRef}
+					onChange={handlePhotoUpload}
+					style={{ display: "none" }}
+					accept="image/*"
+				/>
 			</Box>
 
-			<Button
-				variant="contained"
-				color="primary"
-				onClick={handleEditPhotoClick}
-				disabled={isUploading}
-				style={{ display: "block", margin: "0 auto 20px" }}
-			>
-				{photoUrl ? "Modifier la photo" : "Ajouter une photo"}
-			</Button>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+				<CercleInterets
+					interets={
+						cvSkillData.poleInterets?.map(
+							interet => interet.interet
+						) || []
+					}
+					onModifier={handleEditInterets}
+				/>
 
-			<input
-				type="file"
-				ref={fileInputRef}
-				onChange={handlePhotoUpload}
-				style={{ display: "none" }}
-				id="photo-upload-input"
-				accept="image/*"
-			/>
+				<DiagrammeAtouts
+					atouts={cvSkillData.poleAtouts || []}
+					onModifier={handleEditAtouts}
+				/>
 
-			<Grid container justifyContent="center" spacing={2}>
-				<Grid item>
-					<PuzzlePiece
-						title="Informations personnelles"
-						content={`${cvSkillData?.user?.firstName} ${cvSkillData?.user?.name}`}
-						color="lightblue"
-						onClick={handleEditPersonalInfo}
-					/>
-				</Grid>
-				<Grid item>
-					<PuzzlePiece
-						title="Atouts"
-						content={
-							cvSkillData?.poleAtouts
-								?.map(atout => atout.atout)
-								.join(", ") || "Non spécifié"
-						}
-						color="lightgreen"
-						onClick={handleEditAtouts}
-					/>
-				</Grid>
-				<Grid item>
-					<PuzzlePiece
-						title="Intérêts"
-						content={
-							cvSkillData?.poleInterets
-								?.map(interet => interet.interet)
-								.join(", ") || "Non spécifié"
-						}
-						color="lightyellow"
-						onClick={handleEditInterets}
-					/>
-				</Grid>
-				<Grid item>
-					<PuzzlePiece
-						title="Personnalité"
-						content={
-							cvSkillData?.polePersonnaliteTraits
-								?.map(trait => trait.personnaliteTrait)
-								.join(", ") || "Non spécifié"
-						}
-						color="lightpink"
-						onClick={handleEditPersonnalite}
-					/>
-				</Grid>
-				<Grid item>
-					<PuzzlePiece
-						title="Loisirs et Centres d'Intérêts"
-						content={
-							cvSkillData?.poleLoisirInterets
-								?.map(item => item.name)
-								.join(", ") || "Non spécifié"
-						}
-						color="lightsalmon"
-						onClick={handleEditLoisirInteret}
-					/>
-				</Grid>
-			</Grid>
+				<DiagrammePersonnalite
+					polePersonnalitesTypes={
+						cvSkillData.polePersonnalitesTypes || []
+					}
+					polePersonnaliteTraits={
+						cvSkillData.polePersonnaliteTraits || []
+					}
+					onModifierType={handleEditPersonnalite2}
+					onModifierTraits={handleEditPersonnalite}
+				/>
 
-			<Box className="flex justify-between mt-8">
+				<Box className="border p-4 rounded-lg">
+					<Typography variant="h5" className="font-semibold mb-2">
+						Mes Informations personnelles
+					</Typography>
+					<Typography>{`${cvSkillData.user?.civility || ""} ${
+						cvSkillData.user?.firstName || ""
+					} ${cvSkillData.user?.name || ""}`}</Typography>
+					<Typography>{`Tél: ${
+						cvSkillData.user?.phone || "Non spécifié"
+					}`}</Typography>
+					<Typography>{`Email: ${
+						cvSkillData.user?.email || "Non spécifié"
+					}`}</Typography>
+					<Typography>{`Date de naissance: ${
+						cvSkillData.user?.dateOfBirth
+							? new Date(
+									cvSkillData.user.dateOfBirth
+							  ).toLocaleDateString()
+							: "Non spécifié"
+					}`}</Typography>
+					<Typography>{`Diplôme: ${
+						cvSkillData.user?.diploma || "Non spécifié"
+					}`}</Typography>
+					<Button onClick={handleEditPersonalInfo} className="mt-2">
+						Modifier les informations personnelles
+					</Button>
+				</Box>
+
+				<Box className="border p-4 rounded-lg">
+					<Typography variant="h5" className="font-semibold mb-2">
+						Mes Loisirs et Centres d'Intérêts
+					</Typography>
+					<ul className="list-disc pl-5">
+						{cvSkillData.poleLoisirInterets?.map((item, index) => (
+							<li key={index}>{item.name}</li>
+						))}
+					</ul>
+					<Button onClick={handleEditLoisirInteret} className="mt-2">
+						Modifier les loisirs et intérêts
+					</Button>
+				</Box>
+			</div>
+
+			<div className="flex justify-center mt-8">
 				<Button
 					variant="contained"
-					color="primary"
 					onClick={() => navigate("/companies")}
-					className="bg-green-500 hover:bg-green-700"
+					className="mr-4"
 				>
 					Retour au tableau de bord
 				</Button>
@@ -483,13 +499,12 @@ function Cvskillend() {
 						variant="contained"
 						color="secondary"
 						onClick={handleDeleteCvSkill}
-						className="bg-red-500 hover:bg-red-700"
 					>
 						Supprimer le CV Skill
 					</Button>
 				)}
-			</Box>
-		</Box>
+			</div>
+		</div>
 	)
 }
 
