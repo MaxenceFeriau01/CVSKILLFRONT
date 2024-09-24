@@ -3,17 +3,35 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/function-component-definition */
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState, useCallback, useRef } from "react"
-import { useQuery, useMutation, useQueryClient } from "react-query"
-import { useNavigate, useLocation } from "react-router-dom"
-import { Button, Typography, Box, CircularProgress, Grid } from "@mui/material"
+import {
+	Box,
+	Button,
+	CircularProgress,
+	Grid,
+	Paper,
+	Typography,
+} from "@mui/material"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import { useMutation, useQuery, useQueryClient } from "react-query"
+import { useLocation, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
+import {
+	Check,
+	EmojiEvents,
+	Favorite,
+	LocalActivity,
+	Palette,
+	PictureAsPdf,
+	Star,
+} from "@mui/icons-material"
+import CvSkillDto, { LocationState } from "../../api/models/cvskill"
 import cvskillService from "../../api/services/cvskillService"
 import userService from "../../api/services/userService"
-import CvSkillDto, { LocationState } from "../../api/models/cvskill"
-import CercleInterets from "./InterestsCircle"
 import DiagrammeAtouts from "./DiagrammeAtoutsProps"
 import DiagrammePersonnalite from "./diagrammePersonnaliteProps"
+import InformationsPersonnelles from "./InformationsPersonnellesProps"
+import CercleInterets from "./InterestsCircle"
+import CentresInteret from "./CentresInteretProp"
 
 function Cvskillend() {
 	const navigate = useNavigate()
@@ -198,35 +216,6 @@ function Cvskillend() {
 			},
 		})
 	}
-
-	const formatNumberedInterests = (
-		interests: { interet: string }[] | undefined
-	): JSX.Element => {
-		if (!interests || interests.length === 0) {
-			return (
-				<Typography variant="body2" align="center">
-					Non spécifié
-				</Typography>
-			)
-		}
-
-		return (
-			<>
-				{interests.map((interest, index) => (
-					<Typography
-						key={index}
-						variant="body2"
-						align="center"
-						className="focus-in-contract-bck"
-						style={{ animationDelay: `${index * 0.1}s` }}
-					>
-						{`${index + 1}. ${interest.interet}`}
-					</Typography>
-				))}
-			</>
-		)
-	}
-
 	const handleEditLoisirInteret = () => {
 		if (cvSkillData && cvSkillData.user) {
 			navigate("/cvSkill/poleloisirsInteret", {
@@ -443,66 +432,42 @@ function Cvskillend() {
 					onModifierTraits={handleEditPersonnalite}
 				/>
 
-				<Box className="border p-4 rounded-lg">
-					<Typography variant="h5" className="font-semibold mb-2">
-						Mes Informations personnelles
-					</Typography>
-					<Typography>{`${cvSkillData.user?.civility || ""} ${
-						cvSkillData.user?.firstName || ""
-					} ${cvSkillData.user?.name || ""}`}</Typography>
-					<Typography>{`Tél: ${
-						cvSkillData.user?.phone || "Non spécifié"
-					}`}</Typography>
-					<Typography>{`Email: ${
-						cvSkillData.user?.email || "Non spécifié"
-					}`}</Typography>
-					<Typography>{`Date de naissance: ${
-						cvSkillData.user?.dateOfBirth
-							? new Date(
-									cvSkillData.user.dateOfBirth
-							  ).toLocaleDateString()
-							: "Non spécifié"
-					}`}</Typography>
-					<Typography>{`Diplôme: ${
-						cvSkillData.user?.diploma || "Non spécifié"
-					}`}</Typography>
-					<Button onClick={handleEditPersonalInfo} className="mt-2">
-						Modifier les informations personnelles
-					</Button>
-				</Box>
+				<InformationsPersonnelles
+					user={cvSkillData.user}
+					onEditInfo={handleEditPersonalInfo}
+				/>
 
-				<Box className="border p-4 rounded-lg">
-					<Typography variant="h5" className="font-semibold mb-2">
-						Mes Loisirs et Centres d'Intérêts
-					</Typography>
-					<ul className="list-disc pl-5">
-						{cvSkillData.poleLoisirInterets?.map((item, index) => (
-							<li key={index}>{item.name}</li>
-						))}
-					</ul>
-					<Button onClick={handleEditLoisirInteret} className="mt-2">
-						Modifier les loisirs et intérêts
-					</Button>
-				</Box>
-			</div>
+				<CentresInteret
+					poleLoisirInterets={cvSkillData.poleLoisirInterets}
+					onModifier={handleEditLoisirInteret}
+				/>
 
-			<div className="flex justify-center mt-8">
-				<Button
-					variant="contained"
-					onClick={() => navigate("/companies")}
-					className="mr-4"
-				>
-					Retour au tableau de bord
-				</Button>
-				{isAdmin && (
+				<div className="flex justify-center mt-8">
 					<Button
 						variant="contained"
-						color="secondary"
-						onClick={handleDeleteCvSkill}
+						onClick={() => navigate("/companies")}
+						className="mr-4"
 					>
-						Supprimer le CV Skill
+						Retour au tableau de bord
 					</Button>
-				)}
+					<Button
+						variant="contained"
+						color="primary"
+						// onClick={handleSavePDF}
+						startIcon={<PictureAsPdf />}
+					>
+						Enregistrer en PDF
+					</Button>
+					{isAdmin && (
+						<Button
+							variant="contained"
+							color="secondary"
+							onClick={handleDeleteCvSkill}
+						>
+							Supprimer le CV Skill
+						</Button>
+					)}
+				</div>
 			</div>
 		</div>
 	)

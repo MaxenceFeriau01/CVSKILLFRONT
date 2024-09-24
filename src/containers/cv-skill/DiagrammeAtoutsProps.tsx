@@ -49,6 +49,11 @@ const DiagrammeAtouts: React.FC<DiagrammeAtoutsProps> = ({
 					<g transform="translate(30, 30)">
 						{atouts.slice(0, 5).map((atout, index) => {
 							const barWidth = maxBarWidth - index * 7
+							// Calcul du pourcentage basé sur la longueur de la barre
+							const percentage = Math.round(
+								(barWidth / maxBarWidth) * 100
+							)
+
 							return (
 								<g
 									key={index}
@@ -71,6 +76,17 @@ const DiagrammeAtouts: React.FC<DiagrammeAtoutsProps> = ({
 										fontWeight="bold"
 									>
 										{atout.atout}
+									</text>
+									{/* Afficher le pourcentage calculé à la fin de chaque barre */}
+									<text
+										x={`${barWidth}%`}
+										y="20"
+										fill="black"
+										fontSize="14"
+										fontWeight="bold"
+										dx="10"
+									>
+										{`${percentage}%`}
 									</text>
 								</g>
 							)

@@ -19,19 +19,77 @@ interface DiagrammePersonnaliteProps {
 	onModifierTraits: () => void
 }
 
+const COLORS = ["#36A2EB", "#4BC0C0", "#FFCE56", "#FF6384", "#9966FF"]
+
 const DiagrammePersonnalite: React.FC<DiagrammePersonnaliteProps> = ({
 	polePersonnalitesTypes,
 	polePersonnaliteTraits,
 	onModifierType,
 	onModifierTraits,
 }) => {
-	const traitsPersonnels = polePersonnaliteTraits.map(
-		t => t.personnaliteTrait
-	)
-	const traitsAssocies = polePersonnalitesTypes[0]?.associatedTraits || []
+	const traitsPersonnels = polePersonnaliteTraits
+		.map(t => t.personnaliteTrait)
+		.slice(0, 5)
+	const traitsAssocies =
+		polePersonnalitesTypes[0]?.associatedTraits.slice(0, 5) || []
 
-	const traitColors = ["#FF6B6B", "#4ECDC4", "#45B7D1"]
-	const typeColors = ["#FFD93D", "#6BCB77", "#4D96FF", "#FFFFFF"]
+	const createPieChart = (
+		data: string[],
+		centerX: number,
+		centerY: number
+	) => {
+		const totalItems = data.length
+		const anglePas = (2 * Math.PI) / totalItems
+		const radius = 100
+
+		return data.map((item, index) => {
+			const startAngle = index * anglePas
+			const endAngle = (index + 1) * anglePas
+
+			const startX = centerX + radius * Math.cos(startAngle)
+			const startY = centerY + radius * Math.sin(startAngle)
+			const endX = centerX + radius * Math.cos(endAngle)
+			const endY = centerY + radius * Math.sin(endAngle)
+
+			const largeArcFlag = endAngle - startAngle <= Math.PI ? "0" : "1"
+
+			const pathD = `
+                M ${centerX} ${centerY}
+                L ${startX} ${startY}
+                A ${radius} ${radius} 0 ${largeArcFlag} 1 ${endX} ${endY}
+                Z
+            `
+
+			const midAngle = (startAngle + endAngle) / 2
+			const textX = centerX + (radius + 20) * Math.cos(midAngle)
+			const textY = centerY + (radius + 20) * Math.sin(midAngle)
+
+			return (
+				<g key={index}>
+					<path d={pathD} fill={COLORS[index % COLORS.length]} />
+					<line
+						x1={centerX + radius * Math.cos(midAngle)}
+						y1={centerY + radius * Math.sin(midAngle)}
+						x2={textX}
+						y2={textY}
+						stroke={COLORS[index % COLORS.length]}
+						strokeWidth="2"
+					/>
+					<text
+						x={textX}
+						y={textY}
+						textAnchor={textX > centerX ? "start" : "end"}
+						dominantBaseline="middle"
+						fill={COLORS[index % COLORS.length]}
+						fontSize="10"
+						dx={textX > centerX ? "5" : "-5"}
+					>
+						{item}
+					</text>
+				</g>
+			)
+		})
+	}
 
 	return (
 		<Box
@@ -60,98 +118,8 @@ const DiagrammePersonnalite: React.FC<DiagrammePersonnaliteProps> = ({
 						left: 0,
 					}}
 				>
-					{/* Cercle central - Ma Personnalité */}
-					<circle cx="300" cy="150" r="60" fill="#4CAF50" />
-					<text
-						x="300"
-						y="145"
-						textAnchor="middle"
-						fill="white"
-						fontSize="14"
-						fontWeight="bold"
-					>
-						Ma
-					</text>
-					<text
-						x="300"
-						y="165"
-						textAnchor="middle"
-						fill="white"
-						fontSize="14"
-						fontWeight="bold"
-					>
-						Personnalité
-					</text>
-
-					{/* Cercle gauche - Traits */}
-					<circle cx="100" cy="150" r="90" fill="#FFC107" />
-					<text
-						x="100"
-						y="80"
-						textAnchor="middle"
-						fill="white"
-						fontSize="16"
-						fontWeight="bold"
-					>
-						Traits
-					</text>
-					{traitsPersonnels.slice(0, 3).map((trait, index) => (
-						<text
-							key={`trait-${index}`}
-							x="100"
-							y={120 + index * 30}
-							textAnchor="middle"
-							fill={traitColors[index]}
-							fontSize="14"
-							fontWeight="bold"
-						>
-							{trait}
-						</text>
-					))}
-
-					{/* Cercle droit - Types */}
-					<circle cx="500" cy="150" r="90" fill="#2196F3" />
-					<text
-						x="500"
-						y="80"
-						textAnchor="middle"
-						fill="white"
-						fontSize="16"
-						fontWeight="bold"
-					>
-						Types
-					</text>
-					{traitsAssocies.slice(0, 4).map((trait, index) => (
-						<text
-							key={`type-${index}`}
-							x="500"
-							y={110 + index * 25}
-							textAnchor="middle"
-							fill={typeColors[index]}
-							fontSize="14"
-							fontWeight="bold"
-						>
-							{trait}
-						</text>
-					))}
-
-					{/* Connexions */}
-					<line
-						x1="200"
-						y1="150"
-						x2="230"
-						y2="150"
-						stroke="black"
-						strokeWidth="2"
-					/>
-					<line
-						x1="370"
-						y1="150"
-						x2="400"
-						y2="150"
-						stroke="black"
-						strokeWidth="2"
-					/>
+					<g>{createPieChart(traitsAssocies, 150, 150)}</g>
+					<g>{createPieChart(traitsPersonnels, 450, 150)}</g>
 				</svg>
 			</Box>
 			<Box className="mt-4 text-center">
@@ -171,7 +139,7 @@ const DiagrammePersonnalite: React.FC<DiagrammePersonnaliteProps> = ({
 						},
 					}}
 				>
-					MODIFIER LE TYPE
+					MODIFIER LES TYPES
 				</Button>
 				<Button
 					onClick={onModifierTraits}

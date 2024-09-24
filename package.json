@@ -24,6 +24,8 @@
 		"env-cmd": "^10.1.0",
 		"eslint-plugin-prettier": "^4.0.0",
 		"framer-motion": "^11.5.4",
+		"html2canvas": "^1.4.1",
+		"jspdf": "^2.5.2",
 		"react": "^17.0.2",
 		"react-collapse": "^5.1.1",
 		"react-data-grid": "^7.0.0-beta.44",
