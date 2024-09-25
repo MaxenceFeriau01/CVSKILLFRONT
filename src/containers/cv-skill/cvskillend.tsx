@@ -1,11 +1,7 @@
-/* eslint-disable no-undef */
-/* eslint-disable import/extensions */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable react/function-component-definition */
-/* eslint-disable no-nested-ternary */
+/* eslint-disable prefer-promise-reject-errors */
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { PictureAsPdf } from "@mui/icons-material"
 import { Box, Button, CircularProgress, Typography } from "@mui/material"
-import React, { useCallback, useEffect, useRef, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useLocation, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
@@ -26,38 +22,33 @@ function Cvskillend() {
 	const [cvSkillId, setCvSkillId] = useState<number | null>(null)
 	const [error, setError] = useState<string | null>(null)
 	const [isAdmin, setIsAdmin] = useState<boolean>(false)
-	const [isUploading, setIsUploading] = useState<boolean>(false)
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
 	const queryClient = useQueryClient()
 
+	// Effet pour charger les données initiales
 	useEffect(() => {
 		const fetchData = async () => {
 			const storedUserId = localStorage.getItem("selectedUserId")
 			const storedCvSkillId = localStorage.getItem("selectedCvSkillId")
 
 			try {
-				// Récupérer les rôles de l'utilisateur connecté
+				// Récupération des rôles de l'utilisateur
 				const userRoles = await userService.getUserRoles()
-				const isAdminUser = userRoles.includes("ROLE_ADMIN")
-				setIsAdmin(isAdminUser)
+				setIsAdmin(userRoles.includes("ROLE_ADMIN"))
 
-				// Récupération des données depuis le localStorage
 				if (storedUserId) {
-					setUserId(Number(storedUserId)) // Conversion en nombre
+					setUserId(Number(storedUserId))
 				} else if (userRoles.includes("ROLE_USER")) {
-					// Si l'utilisateur est un ROLE_USER, récupérer son ID et son CV Skill depuis l'API
 					const user = await userService.getSelf()
-					if (user && user.id) {
-						setUserId(Number(user.id)) // Conversion en nombre
-
-						// Récupérer le CV Skill pour cet utilisateur
+					if (user?.id) {
+						setUserId(Number(user.id))
 						const cvSkill =
 							await cvskillService.getCvSkillsByUserId(
 								Number(user.id)
 							)
-						if (cvSkill && cvSkill.id !== undefined) {
-							setCvSkillId(Number(cvSkill.id)) // Vérification et conversion
+						if (cvSkill?.id) {
+							setCvSkillId(Number(cvSkill.id))
 						} else {
 							setError("CV Skill non trouvé pour cet utilisateur")
 						}
@@ -70,20 +61,12 @@ function Cvskillend() {
 					setError("ID utilisateur non trouvé dans le localStorage")
 				}
 
-				// Vérifier si l'ID du CV Skill est dans le localStorage
 				if (storedCvSkillId) {
-					setCvSkillId(Number(storedCvSkillId)) // Conversion en nombre
-				} else if (userRoles.includes("ROLE_USER")) {
-					// Si l'utilisateur est un ROLE_USER, le CV Skill a déjà été récupéré ci-dessus
-					// donc aucune action supplémentaire n'est nécessaire ici.
-				} else {
+					setCvSkillId(Number(storedCvSkillId))
+				} else if (!userRoles.includes("ROLE_USER")) {
 					setError("ID du CV Skill non trouvé dans le localStorage")
 				}
 			} catch (error) {
-				console.error(
-					"Erreur lors de la récupération des données:",
-					error
-				)
 				setError("Impossible de récupérer les données utilisateur")
 				setUserId(null)
 				setCvSkillId(null)
@@ -93,40 +76,36 @@ function Cvskillend() {
 		fetchData()
 	}, [])
 
+	// Requête pour obtenir les données du CV Skill
 	const {
 		data: cvSkillData,
 		isLoading: isCvSkillLoading,
 		isError: isCvSkillError,
 	} = useQuery<CvSkillDto | null, Error>(
 		["cvSkill", cvSkillId],
-		async () => {
-			if (cvSkillId) {
-				return cvskillService.getCvSkillById(cvSkillId)
-			}
-			throw new Error("Aucun ID de CV Skill disponible")
-		},
+		() =>
+			cvSkillId
+				? cvskillService.getCvSkillById(cvSkillId)
+				: Promise.reject("Aucun ID de CV Skill disponible"),
 		{
 			enabled: !!cvSkillId,
-			onError: (error: Error) => {
-				console.error("Error fetching CV Skill data:", error.message)
-				setError(error.message)
-			},
+			onError: (error: Error) => setError(error.message),
 		}
 	)
 
+	// Requête pour obtenir la photo du profil
 	const { data: photoData, isLoading: isPhotoLoading } =
 		useQuery<ArrayBuffer | null>(
 			["photo", cvSkillId],
 			() => (cvSkillId ? cvskillService.getPhoto(cvSkillId) : null),
-			{
-				enabled: !!cvSkillId,
-			}
+			{ enabled: !!cvSkillId }
 		)
 
 	const photoUrl = photoData
 		? URL.createObjectURL(new Blob([photoData], { type: "image/jpeg" }))
 		: null
 
+	// Mutation pour uploader une photo
 	const uploadPhotoMutation = useMutation(
 		(file: File) => cvskillService.uploadPhoto(cvSkillId!, file),
 		{
@@ -139,8 +118,7 @@ function Cvskillend() {
 					timer: 1500,
 				})
 			},
-			onError: error => {
-				console.error("Erreur lors de l'upload de la photo:", error)
+			onError: () => {
 				Swal.fire({
 					icon: "error",
 					title: "Erreur lors de l'upload de la photo",
@@ -150,6 +128,7 @@ function Cvskillend() {
 		}
 	)
 
+	// Mutation pour supprimer un CV Skill
 	const deleteCvSkillMutation = useMutation(
 		(id: number) => cvskillService.deleteCvSkill(id),
 		{
@@ -164,11 +143,7 @@ function Cvskillend() {
 				})
 				navigate("/companies")
 			},
-			onError: error => {
-				console.error(
-					"Erreur lors de la suppression du CV Skill:",
-					error
-				)
+			onError: () => {
 				Swal.fire({
 					icon: "error",
 					title: "Erreur lors de la suppression du CV Skill",
@@ -178,6 +153,7 @@ function Cvskillend() {
 		}
 	)
 
+	// Gestion de l'upload de photo
 	const handlePhotoUpload = useCallback(
 		(event: React.ChangeEvent<HTMLInputElement>) => {
 			const file = event.target.files?.[0]
@@ -188,9 +164,8 @@ function Cvskillend() {
 		[cvSkillId, uploadPhotoMutation]
 	)
 
-	const handleEditPhotoClick = () => {
-		fileInputRef.current?.click()
-	}
+	// Fonctions de navigation pour l'édition des différentes sections
+	const handleEditPhotoClick = () => fileInputRef.current?.click()
 
 	const handleEditPersonalInfo = () => {
 		navigate("/my-profile", {
@@ -201,6 +176,7 @@ function Cvskillend() {
 			},
 		})
 	}
+
 	const handleEditLoisirInteret = () => {
 		if (cvSkillData && cvSkillData.user) {
 			navigate("/cvSkill/poleloisirsInteret", {
@@ -221,7 +197,6 @@ function Cvskillend() {
 				},
 			})
 		} else {
-			console.error("Données du CV Skill ou de l'utilisateur manquantes")
 			setError(
 				"Impossible de modifier les loisirs et intérêts. Données manquantes."
 			)
@@ -281,6 +256,7 @@ function Cvskillend() {
 		}
 	}
 
+	// Gestion de la suppression du CV Skill
 	const handleDeleteCvSkill = () => {
 		if (isAdmin) {
 			Swal.fire({
@@ -300,11 +276,10 @@ function Cvskillend() {
 		}
 	}
 
+	// Nettoyage de l'URL de la photo lors du démontage du composant
 	useEffect(
 		() => () => {
-			if (photoUrl) {
-				URL.revokeObjectURL(photoUrl)
-			}
+			if (photoUrl) URL.revokeObjectURL(photoUrl)
 		},
 		[photoUrl]
 	)
@@ -352,6 +327,7 @@ function Cvskillend() {
 		)
 	}
 
+	// Rendu principal du composant
 	return (
 		<div className="container mx-auto p-4 max-w-4xl relative overflow-y-auto h-[calc(100vh-8rem)] pb-16">
 			<style>{`
@@ -441,7 +417,6 @@ function Cvskillend() {
 					<Button
 						variant="contained"
 						color="primary"
-						// onClick={handleSavePDF}
 						startIcon={<PictureAsPdf />}
 					>
 						Enregistrer en PDF

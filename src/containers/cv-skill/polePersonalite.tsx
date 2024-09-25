@@ -1,16 +1,17 @@
-import { Button } from "@mui/material"
 import React, { useEffect, useState } from "react"
+import { Button } from "@mui/material"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useMutation } from "react-query"
 import Swal from "sweetalert2"
 import { LocationState } from "../../api/models/cvskill"
 import cvskillService from "../../api/services/cvskillService"
-import userService from "../../api/services/userService"
 
+// Interface pour gérer l'état des cases à cocher
 interface CheckedItems {
 	[key: string]: boolean
 }
 
+// Liste des traits de personnalité disponibles
 const items = [
 	{ id: "1", name: "Sociabilité" },
 	{ id: "2", name: "Esprit de compétition" },
@@ -23,61 +24,67 @@ const items = [
 ]
 
 function PolePersonnalite() {
+	// État pour gérer les cases cochées
 	const [checkedItems, setCheckedItems] = useState<CheckedItems>({})
+	// État pour gérer les messages d'erreur
 	const [error, setError] = useState<string | null>(null)
 	const navigate = useNavigate()
 	const location = useLocation()
 	const state = location.state as LocationState
+	// États pour stocker l'ID de l'utilisateur et du CV Skill
 	const [userId, setUserId] = useState<number | null>(null)
 	const [cvSkillId, setCvSkillId] = useState<number | null>(null)
 	const { editMode } = state
 
+	// Effet pour charger les données initiales
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
+				// Récupération des IDs stockés dans le localStorage
 				const storedUserId = localStorage.getItem("selectedUserId")
 				const storedCvSkillId =
 					localStorage.getItem("selectedCvSkillId")
 
-				if (storedUserId) {
-					setUserId(Number(storedUserId))
-				} else {
+				if (!storedUserId)
 					throw new Error("ID utilisateur sélectionné non disponible")
-				}
 
-				if (storedCvSkillId) {
-					setCvSkillId(Number(storedCvSkillId))
-				}
+				setUserId(Number(storedUserId))
+				if (storedCvSkillId) setCvSkillId(Number(storedCvSkillId))
 
+				// Chargement des données en mode édition
 				if (editMode && storedCvSkillId) {
 					const cvSkill = await cvskillService.getCvSkillById(
 						Number(storedCvSkillId)
 					)
-					if (cvSkill && cvSkill.polePersonnaliteTraits) {
-						const initialCheckedItems: CheckedItems = {}
-						cvSkill.polePersonnaliteTraits.forEach(trait => {
-							initialCheckedItems[trait.personnaliteTrait] = true
-						})
-						setCheckedItems(initialCheckedItems)
+					if (cvSkill?.polePersonnaliteTraits) {
+						setCheckedItems(
+							cvSkill.polePersonnaliteTraits.reduce(
+								(acc, trait) => ({
+									...acc,
+									[trait.personnaliteTrait]: true,
+								}),
+								{}
+							)
+						)
 					}
 				} else {
+					// Chargement des données sauvegardées localement
 					const storedTraits = localStorage.getItem(
 						`selectedPersonalityTraits-${storedUserId}`
 					)
 					if (storedTraits) {
-						const parsedTraits = JSON.parse(storedTraits)
-						const initialCheckedItems: CheckedItems = {}
-						parsedTraits.forEach((trait: string) => {
-							initialCheckedItems[trait] = true
-						})
-						setCheckedItems(initialCheckedItems)
+						setCheckedItems(
+							JSON.parse(storedTraits).reduce(
+								(acc: CheckedItems, trait: string) => ({
+									...acc,
+									[trait]: true,
+								}),
+								{}
+							)
+						)
 					}
 				}
 			} catch (error) {
-				console.error(
-					"Erreur lors de la récupération des données:",
-					error
-				)
 				setError(
 					"Impossible de récupérer les données. Veuillez réessayer."
 				)
@@ -87,12 +94,14 @@ function PolePersonnalite() {
 		fetchData()
 	}, [editMode])
 
+	// Gestion du changement d'état des cases à cocher
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, checked } = event.target
 		const updatedCheckedItems = { ...checkedItems, [name]: checked }
 		const checkedCount =
 			Object.values(updatedCheckedItems).filter(Boolean).length
 
+		// Vérification du nombre maximum de sélections
 		if (checkedCount > 3) {
 			setError("Vous ne pouvez sélectionner que 3 choix maximum.")
 			return
@@ -101,6 +110,7 @@ function PolePersonnalite() {
 		setCheckedItems(updatedCheckedItems)
 		setError(null)
 
+		// Sauvegarde locale des sélections en mode création
 		if (!editMode && userId) {
 			localStorage.setItem(
 				`selectedPersonalityTraits-${userId}`,
@@ -113,16 +123,16 @@ function PolePersonnalite() {
 		}
 	}
 
+	// Mutation pour mettre à jour le CV Skill
 	const updateCvSkillMutation = useMutation(
 		(updatedCvSkill: any) => {
-			if (cvSkillId && userId) {
-				return cvskillService.updateCvSkill(
-					cvSkillId,
-					updatedCvSkill,
-					userId
-				)
-			}
-			throw new Error("CV Skill ID ou User ID invalide")
+			if (!cvSkillId || !userId)
+				throw new Error("CV Skill ID ou User ID invalide")
+			return cvskillService.updateCvSkill(
+				cvSkillId,
+				updatedCvSkill,
+				userId
+			)
 		},
 		{
 			onSuccess: () => {
@@ -136,16 +146,13 @@ function PolePersonnalite() {
 					state: { userId, cvSkillId },
 				})
 			},
-			onError: error => {
-				console.error(
-					"Erreur lors de la mise à jour des traits de personnalité:",
-					error
-				)
+			onError: () => {
 				setError("Erreur lors de la mise à jour. Veuillez réessayer.")
 			},
 		}
 	)
 
+	// Gestion de la soumission du formulaire
 	const handleSubmit = async () => {
 		if (!userId) {
 			setError("ID utilisateur manquant. Impossible de continuer.")
@@ -170,34 +177,26 @@ function PolePersonnalite() {
 				const currentCvSkill = await cvskillService.getCvSkillById(
 					cvSkillId
 				)
-				const updatedCvSkill = {
+				updateCvSkillMutation.mutate({
 					...currentCvSkill,
 					polePersonnaliteTraits,
-				}
-				updateCvSkillMutation.mutate(updatedCvSkill)
-			} catch (error) {
-				console.error(
-					"Erreur lors de la récupération du CV Skill:",
-					error
-				)
+				})
+			} catch {
 				setError("Erreur lors de la mise à jour. Veuillez réessayer.")
 			}
 		} else {
+			// Navigation vers la page suivante en mode création
 			localStorage.setItem(
 				`selectedPersonalityTraits-${userId}`,
 				JSON.stringify(selectedItems)
 			)
 			navigate("/cvskill/polePersonnalite2", {
-				state: {
-					...state,
-					userId,
-					cvSkillId,
-					polePersonnaliteTraits,
-				},
+				state: { ...state, userId, cvSkillId, polePersonnaliteTraits },
 			})
 		}
 	}
 
+	// Rendu du composant
 	return (
 		<div className="container mx-auto p-4 max-w-md relative overflow-y-auto h-[calc(100vh-8rem)] pb-16">
 			<style>{`

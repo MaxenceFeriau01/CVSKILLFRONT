@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+import React, { useEffect, useState } from "react"
 import {
 	Button,
 	FormControl,
@@ -6,13 +6,11 @@ import {
 	Radio,
 	RadioGroup,
 } from "@mui/material"
-import React, { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { useMutation, useQuery } from "react-query"
+import { useMutation } from "react-query"
 import Swal from "sweetalert2"
 import cvskillService from "../../api/services/cvskillService"
 import CvSkillDto, { LocationState } from "../../api/models/cvskill"
-import userService from "../../api/services/userService"
 
 interface polePersonnaliteType {
 	id?: number

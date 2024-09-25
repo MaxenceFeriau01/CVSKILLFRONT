@@ -59,32 +59,29 @@ function PoleLoisirsInterets() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				if (state && state.userId) {
-					setUserId(state.userId)
+				// Récupération de l'ID utilisateur
+				const storedUserId =
+					state?.userId || localStorage.getItem("selectedUserId")
+				if (storedUserId) {
+					setUserId(Number(storedUserId))
 				} else {
-					const storedUserId = localStorage.getItem("selectedUserId")
-					if (storedUserId) {
-						setUserId(Number(storedUserId))
-					} else {
-						throw new Error("ID utilisateur non trouvé")
-					}
+					throw new Error("ID utilisateur non trouvé")
 				}
 
-				if (state && state.cvSkillId) {
-					setCvSkillId(state.cvSkillId)
-				} else {
-					const storedCvSkillId =
-						localStorage.getItem("selectedCvSkillId")
-					if (storedCvSkillId) {
-						setCvSkillId(Number(storedCvSkillId))
-					}
+				// Récupération de l'ID CV Skill
+				const storedCvSkillId =
+					state?.cvSkillId ||
+					localStorage.getItem("selectedCvSkillId")
+				if (storedCvSkillId) {
+					setCvSkillId(Number(storedCvSkillId))
 				}
 
+				// Chargement des données existantes
 				if (cvSkillId) {
 					const cvSkill = await cvskillService.getCvSkillById(
 						cvSkillId
 					)
-					if (cvSkill && cvSkill.poleLoisirInterets) {
+					if (cvSkill?.poleLoisirInterets) {
 						setSelectedItems(cvSkill.poleLoisirInterets)
 					}
 				} else if (userId) {
@@ -95,7 +92,6 @@ function PoleLoisirsInterets() {
 						setSelectedItems(JSON.parse(storedItems))
 					}
 				}
-				// eslint-disable-next-line no-shadow
 			} catch (error) {
 				setError(
 					"Impossible de récupérer les données. Veuillez réessayer."
@@ -154,11 +150,7 @@ function PoleLoisirsInterets() {
 					state: { userId, cvSkillId },
 				})
 			},
-			onError: error => {
-				console.error(
-					"Erreur lors de la mise à jour des loisirs et intérêts:",
-					error
-				)
+			onError: () => {
 				setError("Erreur lors de la mise à jour. Veuillez réessayer.")
 			},
 		}
@@ -192,10 +184,6 @@ function PoleLoisirsInterets() {
 					userId,
 				})
 			} catch (error) {
-				console.error(
-					"Erreur lors de la récupération du CV Skill:",
-					error
-				)
 				setError("Erreur lors de la mise à jour. Veuillez réessayer.")
 			}
 		} else {
@@ -227,83 +215,51 @@ function PoleLoisirsInterets() {
 			{error && <p className="text-red-500 text-center">{error}</p>}
 
 			<div className="flex flex-col md:flex-row justify-between">
-				<div className="w-full md:w-1/2 pr-2">
-					<h3 className="text-xl font-semibold mb-4">Sports</h3>
-					<div className="grid grid-cols-1 gap-4">
-						{allItems
-							.filter(
-								item =>
-									item.type === PoleLoisirInteretType.SPORT
-							)
-							.map(item => (
-								<div
-									key={item.name}
-									className="border p-4 rounded-lg"
-								>
-									<label
-										htmlFor={item.name}
-										className="flex items-center space-x-3 cursor-pointer"
+				{[
+					PoleLoisirInteretType.SPORT,
+					PoleLoisirInteretType.INTERET,
+				].map(type => (
+					<div key={type} className="w-full md:w-1/2 pr-2">
+						<h3 className="text-xl font-semibold mb-4">
+							{type === PoleLoisirInteretType.SPORT
+								? "Sports"
+								: "Centres d'Intérêts"}
+						</h3>
+						<div className="grid grid-cols-1 gap-4">
+							{allItems
+								.filter(item => item.type === type)
+								.map(item => (
+									<div
+										key={item.name}
+										className="border p-4 rounded-lg"
 									>
-										<input
-											type="checkbox"
-											id={item.name}
-											name={item.name}
-											checked={selectedItems.some(
-												i =>
-													i.name === item.name &&
-													i.type === item.type
-											)}
-											onChange={() => handleChange(item)}
-											className="h-5 w-5 text-green-500 border-green-500 focus:ring-green-500"
-										/>
-										<span className="text-gray-700 font-semibold">
-											{item.name}
-										</span>
-									</label>
-								</div>
-							))}
+										<label
+											htmlFor={item.name}
+											className="flex items-center space-x-3 cursor-pointer"
+										>
+											<input
+												type="checkbox"
+												id={item.name}
+												name={item.name}
+												checked={selectedItems.some(
+													i =>
+														i.name === item.name &&
+														i.type === item.type
+												)}
+												onChange={() =>
+													handleChange(item)
+												}
+												className="h-5 w-5 text-green-500 border-green-500 focus:ring-green-500"
+											/>
+											<span className="text-gray-700 font-semibold">
+												{item.name}
+											</span>
+										</label>
+									</div>
+								))}
+						</div>
 					</div>
-				</div>
-
-				<div className="w-full md:w-1/2 pl-2 mt-4 md:mt-0">
-					<h3 className="text-xl font-semibold mb-4">
-						Centres d'Intérêts
-					</h3>
-					<div className="grid grid-cols-1 gap-4">
-						{allItems
-							.filter(
-								item =>
-									item.type === PoleLoisirInteretType.INTERET
-							)
-							.map(item => (
-								<div
-									key={item.name}
-									className="border p-4 rounded-lg"
-								>
-									<label
-										htmlFor={item.name}
-										className="flex items-center space-x-3 cursor-pointer"
-									>
-										<input
-											type="checkbox"
-											id={item.name}
-											name={item.name}
-											checked={selectedItems.some(
-												i =>
-													i.name === item.name &&
-													i.type === item.type
-											)}
-											onChange={() => handleChange(item)}
-											className="h-5 w-5 text-green-500 border-green-500 focus:ring-green-500"
-										/>
-										<span className="text-gray-700 font-semibold">
-											{item.name}
-										</span>
-									</label>
-								</div>
-							))}
-					</div>
-				</div>
+				))}
 			</div>
 
 			<p className="mt-4 font-bold text-center text-red-500">

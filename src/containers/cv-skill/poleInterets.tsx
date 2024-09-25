@@ -31,14 +31,17 @@ function PoleInterets() {
 		Array<{ name: string; type: PoleLoisirInteretType }>
 	>([])
 	const [error, setError] = useState<string | null>(null)
-	const location = useLocation()
-	const state = location.state as LocationState
 	const [userId, setUserId] = useState<number | null>(null)
 	const [cvSkillId, setCvSkillId] = useState<number | null>(null)
-	const { editMode } = state || { editMode: false }
-	const navigate = useNavigate()
 	const [isLoading, setIsLoading] = useState(false)
 
+	const location = useLocation()
+	const navigate = useNavigate()
+	const { editMode } = (location.state as LocationState) || {
+		editMode: false,
+	}
+
+	// Effet pour charger les données initiales
 	useEffect(() => {
 		const fetchData = async () => {
 			setIsLoading(true)
@@ -47,14 +50,10 @@ function PoleInterets() {
 				const storedCvSkillId =
 					localStorage.getItem("selectedCvSkillId")
 
-				if (!storedUserId) {
+				if (!storedUserId)
 					throw new Error("ID utilisateur sélectionné non trouvé")
-				}
 				setUserId(Number(storedUserId))
-
-				if (storedCvSkillId) {
-					setCvSkillId(Number(storedCvSkillId))
-				}
+				if (storedCvSkillId) setCvSkillId(Number(storedCvSkillId))
 
 				if (editMode && storedCvSkillId) {
 					const cvSkill = await cvskillService.getCvSkillById(
@@ -76,23 +75,18 @@ function PoleInterets() {
 					const storedInterests = localStorage.getItem(
 						`selectedInterests-${storedUserId}`
 					)
-					if (storedInterests) {
+					if (storedInterests)
 						setSelectedInterests(JSON.parse(storedInterests))
-					}
+
 					const storedPoleLoisirInterets = localStorage.getItem(
 						`poleLoisirInterets-${storedUserId}`
 					)
-					if (storedPoleLoisirInterets) {
+					if (storedPoleLoisirInterets)
 						setPoleLoisirInterets(
 							JSON.parse(storedPoleLoisirInterets)
 						)
-					}
 				}
 			} catch (error) {
-				console.error(
-					"Erreur lors de la récupération des données:",
-					error
-				)
 				setError(
 					"Impossible de récupérer les données. Veuillez réessayer."
 				)
@@ -104,23 +98,15 @@ function PoleInterets() {
 		fetchData()
 	}, [editMode])
 
+	// Mutation pour créer un nouveau CV Skill
 	const createCvSkillMutation = useMutation(
 		(newCvSkill: Partial<CvSkill>) => {
-			console.log("Tentative de création de CvSkill:", newCvSkill)
-			if (userId) {
-				return cvskillService.createCvSkill(
-					newCvSkill as CvSkill,
-					userId
-				)
-			}
-			throw new Error("User ID invalide")
+			if (!userId) throw new Error("User ID invalide")
+			return cvskillService.createCvSkill(newCvSkill as CvSkill, userId)
 		},
 		{
-			onMutate: () => {
-				setIsLoading(true)
-			},
+			onMutate: () => setIsLoading(true),
 			onSuccess: (data: CvSkill) => {
-				console.log("CvSkill créé avec succès:", data)
 				if (data.id) {
 					localStorage.setItem(
 						"selectedCvSkillId",
@@ -136,43 +122,35 @@ function PoleInterets() {
 						state: { userId, cvSkillId: data.id },
 					})
 				} else {
-					console.error("L'ID du CvSkill créé est undefined")
 					setError(
 						"Erreur lors de la création du CV Skill: ID non défini"
 					)
 				}
 			},
 			onError: (error: any) => {
-				console.error("Erreur lors de la création du CV Skill:", error)
 				setError(
 					error.response?.data?.message ||
 						"Erreur inconnue lors de la création"
 				)
 			},
-			onSettled: () => {
-				setIsLoading(false)
-			},
+			onSettled: () => setIsLoading(false),
 		}
 	)
 
+	// Mutation pour mettre à jour un CV Skill existant
 	const updateCvSkillMutation = useMutation(
 		(updatedCvSkill: Partial<CvSkill>) => {
-			console.log("Tentative de mise à jour de CvSkill:", updatedCvSkill)
-			if (cvSkillId && userId) {
-				return cvskillService.updateCvSkill(
-					cvSkillId,
-					updatedCvSkill as CvSkill,
-					userId
-				)
-			}
-			throw new Error("CV Skill ID ou User ID invalide")
+			if (!cvSkillId || !userId)
+				throw new Error("CV Skill ID ou User ID invalide")
+			return cvskillService.updateCvSkill(
+				cvSkillId,
+				updatedCvSkill as CvSkill,
+				userId
+			)
 		},
 		{
-			onMutate: () => {
-				setIsLoading(true)
-			},
+			onMutate: () => setIsLoading(true),
 			onSuccess: () => {
-				console.log("CvSkill mis à jour avec succès")
 				Swal.fire({
 					icon: "success",
 					title: "Intérêts mis à jour avec succès",
@@ -184,24 +162,20 @@ function PoleInterets() {
 				})
 			},
 			onError: (error: any) => {
-				console.error(
-					"Erreur lors de la mise à jour des intérêts:",
-					error
-				)
 				setError(
 					error.response?.data?.message ||
 						"Erreur lors de la mise à jour. Veuillez réessayer."
 				)
 			},
-			onSettled: () => {
-				setIsLoading(false)
-			},
+			onSettled: () => setIsLoading(false),
 		}
 	)
 
+	// Gestion du changement de sélection des intérêts
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, checked } = event.target
 		let updatedInterests: string[]
+
 		if (checked) {
 			if (selectedInterests.length >= 6) {
 				setError("Vous ne pouvez sélectionner que 6 choix maximum.")
@@ -211,6 +185,7 @@ function PoleInterets() {
 		} else {
 			updatedInterests = selectedInterests.filter(item => item !== name)
 		}
+
 		setSelectedInterests(updatedInterests)
 		setError(null)
 
@@ -222,6 +197,7 @@ function PoleInterets() {
 		}
 	}
 
+	// Gestion de la soumission du formulaire
 	const handleSubmit = async () => {
 		if (!userId) {
 			setError("ID utilisateur manquant. Impossible de continuer.")
@@ -246,11 +222,7 @@ function PoleInterets() {
 					poleLoisirInterets: poleLoisirInterets,
 				}
 				updateCvSkillMutation.mutate(updatedCvSkill)
-			} catch (error) {
-				console.error(
-					"Erreur lors de la récupération du CV Skill:",
-					error
-				)
+			} catch {
 				setError("Erreur lors de la mise à jour. Veuillez réessayer.")
 			}
 		} else {
@@ -297,22 +269,22 @@ function PoleInterets() {
 			createCvSkillMutation.mutate(newCvSkill)
 		}
 
-		// Efface le localStorage
-		localStorage.removeItem(`selectedAtouts-${userId}`)
-		localStorage.removeItem(`selectedPersonalityTraits-${userId}`)
-		localStorage.removeItem(`selectedPersonalityType-${userId}`)
-		localStorage.removeItem(`selectedAssociatedTraits-${userId}`)
-		localStorage.removeItem(`selectedInterests-${userId}`)
-		localStorage.removeItem(`poleLoisirInterets-${userId}`)
+		// Nettoyage du localStorage
+		const itemsToRemove = [
+			"selectedAtouts",
+			"selectedPersonalityTraits",
+			"selectedPersonalityType",
+			"selectedAssociatedTraits",
+			"selectedInterests",
+			"poleLoisirInterets",
+		]
+		itemsToRemove.forEach(item =>
+			localStorage.removeItem(`${item}-${userId}`)
+		)
 	}
 
-	if (isLoading) {
-		return <CircularProgress />
-	}
-
-	if (error) {
-		return <Typography color="error">{error}</Typography>
-	}
+	if (isLoading) return <CircularProgress />
+	if (error) return <Typography color="error">{error}</Typography>
 
 	return (
 		<div className="container mx-auto p-4 max-w-md relative overflow-y-auto h-[calc(100vh-8rem)] pb-16">

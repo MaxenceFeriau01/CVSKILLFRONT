@@ -5,7 +5,6 @@ import { useMutation } from "react-query"
 import Swal from "sweetalert2"
 import { LocationState } from "../../api/models/cvskill"
 import cvskillService from "../../api/services/cvskillService"
-import userService from "../../api/services/userService"
 
 interface AtoutType {
 	id: string
@@ -40,9 +39,9 @@ function PoleAtouts() {
 	const [userId, setUserId] = useState<number | null>(null)
 	const [cvSkillId, setCvSkillId] = useState<number | null>(null)
 	const { editMode } = state
-
 	const navigate = useNavigate()
 
+	// Effet pour charger les données initiales
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -50,20 +49,17 @@ function PoleAtouts() {
 				const storedCvSkillId =
 					localStorage.getItem("selectedCvSkillId")
 
-				if (!storedUserId) {
+				if (!storedUserId)
 					throw new Error("ID utilisateur sélectionné non trouvé")
-				}
 				setUserId(Number(storedUserId))
 
-				if (storedCvSkillId) {
-					setCvSkillId(Number(storedCvSkillId))
-				}
+				if (storedCvSkillId) setCvSkillId(Number(storedCvSkillId))
 
 				if (editMode && storedCvSkillId) {
 					const cvSkill = await cvskillService.getCvSkillById(
 						Number(storedCvSkillId)
 					)
-					if (cvSkill && cvSkill.poleAtouts) {
+					if (cvSkill?.poleAtouts) {
 						setSelectedAtouts(
 							cvSkill.poleAtouts.map(atout => atout.atout)
 						)
@@ -72,15 +68,10 @@ function PoleAtouts() {
 					const storedAtouts = localStorage.getItem(
 						`selectedAtouts-${storedUserId}`
 					)
-					if (storedAtouts) {
+					if (storedAtouts)
 						setSelectedAtouts(JSON.parse(storedAtouts))
-					}
 				}
 			} catch (error) {
-				console.error(
-					"Erreur lors de la récupération des données:",
-					error
-				)
 				setError(
 					"Impossible de récupérer les données. Veuillez réessayer."
 				)
@@ -90,9 +81,11 @@ function PoleAtouts() {
 		fetchData()
 	}, [editMode])
 
+	// Gestion du changement de sélection des atouts
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, checked } = event.target
 		let updatedAtouts: string[]
+
 		if (checked) {
 			if (selectedAtouts.length >= 5) {
 				setError("Vous ne pouvez sélectionner que 5 choix maximum.")
@@ -102,6 +95,7 @@ function PoleAtouts() {
 		} else {
 			updatedAtouts = selectedAtouts.filter(item => item !== name)
 		}
+
 		setSelectedAtouts(updatedAtouts)
 		setError(null)
 
@@ -113,16 +107,16 @@ function PoleAtouts() {
 		}
 	}
 
+	// Mutation pour mettre à jour le CV Skill
 	const updateCvSkillMutation = useMutation(
 		(updatedCvSkill: any) => {
-			if (cvSkillId && userId) {
-				return cvskillService.updateCvSkill(
-					cvSkillId,
-					updatedCvSkill,
-					userId
-				)
-			}
-			throw new Error("CV Skill ID ou User ID invalide")
+			if (!cvSkillId || !userId)
+				throw new Error("CV Skill ID ou User ID invalide")
+			return cvskillService.updateCvSkill(
+				cvSkillId,
+				updatedCvSkill,
+				userId
+			)
 		},
 		{
 			onSuccess: () => {
@@ -136,16 +130,13 @@ function PoleAtouts() {
 					state: { userId, cvSkillId },
 				})
 			},
-			onError: error => {
-				console.error(
-					"Erreur lors de la mise à jour des atouts:",
-					error
-				)
+			onError: () => {
 				setError("Erreur lors de la mise à jour. Veuillez réessayer.")
 			},
 		}
 	)
 
+	// Gestion de la soumission du formulaire
 	const handleSubmit = async () => {
 		if (!userId) {
 			setError("ID utilisateur manquant. Impossible de continuer.")
@@ -164,11 +155,7 @@ function PoleAtouts() {
 					poleAtouts: atoutsData,
 				}
 				updateCvSkillMutation.mutate(updatedCvSkill)
-			} catch (error) {
-				console.error(
-					"Erreur lors de la récupération du CV Skill:",
-					error
-				)
+			} catch {
 				setError("Erreur lors de la mise à jour. Veuillez réessayer.")
 			}
 		} else {
@@ -177,15 +164,12 @@ function PoleAtouts() {
 				JSON.stringify(selectedAtouts)
 			)
 			navigate("/cvskill/poleInterets", {
-				state: {
-					...state,
-					userId,
-					cvSkillId,
-					poleAtouts: atoutsData,
-				},
+				state: { ...state, userId, cvSkillId, poleAtouts: atoutsData },
 			})
 		}
 	}
+
+	// Rendu du composant
 	return (
 		<div className="container mx-auto p-4 max-w-md relative overflow-y-auto h-[calc(100vh-8rem)] pb-16">
 			<style>{`

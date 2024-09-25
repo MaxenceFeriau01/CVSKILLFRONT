@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useMemo } from "react"
 import { useQuery } from "react-query"
@@ -21,33 +20,23 @@ function CvSkillHome() {
 	const [selectedUser, setSelectedUser] = useState<User | null>(null)
 	const navigate = useNavigate()
 
+	// Récupération de tous les utilisateurs
 	const { data: users, isLoading: isLoadingUsers } = useQuery<User[], Error>(
 		"allUsers",
-		() => userService.getAllUsers()
+		userService.getAllUsers
 	)
 
+	// Filtrage des utilisateurs basé sur la saisie de recherche
 	const filteredUsers = useMemo(() => {
-		if (!users || !Array.isArray(users) || searchInput.length < 4) return []
-		return users.filter(
-			(user: User) =>
-				user &&
-				typeof user.firstName === "string" &&
-				typeof user.name === "string" &&
-				`${user.firstName} ${user.name}`
-					.toLowerCase()
-					.includes(searchInput.toLowerCase())
+		if (!users || searchInput.length < 4) return []
+		return users.filter((user: User) =>
+			`${user.firstName} ${user.name}`
+				.toLowerCase()
+				.includes(searchInput.toLowerCase())
 		)
 	}, [users, searchInput])
 
-	const fetchCvSkill = async (userId: number): Promise<CvSkillDto | null> => {
-		try {
-			return await cvskillService.getCvSkillsByUserId(userId)
-		} catch (error) {
-			console.error("Error fetching CV Skill:", error)
-			return null
-		}
-	}
-
+	// Récupération du CV Skill pour l'utilisateur sélectionné
 	const { data: cvSkill, isLoading: isLoadingCvSkill } = useQuery<
 		CvSkillDto | null,
 		Error
@@ -55,13 +44,12 @@ function CvSkillHome() {
 		["cvSkill", selectedUser?.id],
 		() =>
 			selectedUser?.id
-				? fetchCvSkill(Number(selectedUser.id))
-				: Promise.resolve(null),
-		{
-			enabled: !!selectedUser?.id,
-		}
+				? cvskillService.getCvSkillsByUserId(Number(selectedUser.id))
+				: null,
+		{ enabled: !!selectedUser?.id }
 	)
 
+	// Gestion de la sélection d'un utilisateur
 	const handleUserSelect = (user: User | null) => {
 		setSelectedUser(user)
 		if (user?.id) {
@@ -71,39 +59,36 @@ function CvSkillHome() {
 		}
 	}
 
+	// Navigation vers la vue du CV Skill
 	const handleViewCvSkill = () => {
 		if (selectedUser?.id && cvSkill?.id) {
 			localStorage.setItem("selectedUserId", selectedUser.id.toString())
 			localStorage.setItem("selectedCvSkillId", cvSkill.id.toString())
 			navigate("/cvskill/cvskillend")
-		} else {
-			console.error("User ID or CV Skill ID is missing")
 		}
 	}
 
+	// Navigation vers la création d'un CV Skill
 	const handleCreateCvSkill = () => {
 		if (selectedUser?.id) {
 			localStorage.setItem("selectedUserId", selectedUser.id.toString())
 			navigate("/cvSkill/pageAcceuil")
-		} else {
-			console.error("User ID is missing")
 		}
 	}
 
 	return (
 		<Box className="container mx-auto p-4 max-w-md">
-			<h2 className="text-2xl font-bold text-green-500 text-center mb-6">
+			<Typography
+				variant="h4"
+				className="text-green-500 text-center mb-6"
+			>
 				Rechercher votre CV Skill
-			</h2>
+			</Typography>
 
 			<Autocomplete
 				options={filteredUsers}
 				getOptionLabel={(option: User) =>
-					option
-						? `${option.firstName || ""} ${
-								option.name || ""
-					}`.trim()
-						: ""
+					`${option.firstName || ""} ${option.name || ""}`.trim()
 				}
 				renderInput={params => (
 					<TextField
