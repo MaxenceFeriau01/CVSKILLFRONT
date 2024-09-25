@@ -1,7 +1,13 @@
 /* eslint-disable prefer-promise-reject-errors */
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { PictureAsPdf } from "@mui/icons-material"
-import { Box, Button, CircularProgress, Typography } from "@mui/material"
+import {
+	Box,
+	Button,
+	CircularProgress,
+	styled,
+	Typography,
+} from "@mui/material"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useLocation, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
@@ -13,6 +19,39 @@ import DiagrammeAtouts from "./DiagrammeAtoutsProps"
 import DiagrammePersonnalite from "./diagrammePersonnaliteProps"
 import InformationsPersonnelles from "./InformationsPersonnellesProps"
 import CercleInterets from "./InterestsCircle"
+
+const TitreStylise = styled(Typography)`
+	font-family: "Bungee", cursive; // Vous devrez importer cette police
+	font-size: 1.9rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	background: linear-gradient(
+		45deg,
+		#ff00ff,
+		#00ffff,
+		#ff0000,
+		#00ff00,
+		#ffff00
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	animation: rainbow 6s ease infinite;
+	background-size: 400% 400%;
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+
+	@keyframes rainbow {
+		0% {
+			background-position: 0% 50%;
+		}
+		50% {
+			background-position: 100% 50%;
+		}
+		100% {
+			background-position: 0% 50%;
+		}
+	}
+`
 
 function Cvskillend() {
 	const navigate = useNavigate()
@@ -335,9 +374,9 @@ function Cvskillend() {
                     display: none;
                 }
             `}</style>
-			<h2 className="text-2xl font-bold text-green-500 text-center mb-6">
-				Mon CV Skill
-			</h2>
+			<TitreStylise variant="h5" className="mb-4 text-center">
+				MON CV SKILL
+			</TitreStylise>
 			{error && <p className="text-red-500 text-center">{error}</p>}
 
 			<Box sx={{ textAlign: "center", mb: 4 }}>
@@ -346,8 +385,8 @@ function Cvskillend() {
 						src={photoUrl}
 						alt="Profil"
 						style={{
-							width: 200,
-							height: 200,
+							width: 300,
+							height: 300,
 							borderRadius: "50%",
 							margin: "0 auto",
 						}}

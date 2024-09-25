@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React from "react"
-import { Box, Typography, Button } from "@mui/material"
+import { Box, Typography, Button, styled } from "@mui/material"
 
 interface CercleInteretsProps {
 	interets: (
@@ -14,6 +14,39 @@ interface CercleInteretsProps {
 	onModifier: () => void
 	isAdmin: boolean
 }
+
+const TitreStylise = styled(Typography)`
+	font-family: "Bungee", cursive; // Vous devrez importer cette police
+	font-size: 1.4rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	background: linear-gradient(
+		45deg,
+		#ff00ff,
+		#00ffff,
+		#ff0000,
+		#00ff00,
+		#ffff00
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	animation: rainbow 6s ease infinite;
+	background-size: 400% 400%;
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+
+	@keyframes rainbow {
+		0% {
+			background-position: 0% 50%;
+		}
+		50% {
+			background-position: 100% 50%;
+		}
+		100% {
+			background-position: 0% 50%;
+		}
+	}
+`
 
 function CercleInterets({
 	interets,
@@ -34,9 +67,9 @@ function CercleInterets({
 				flexDirection: "column",
 			}}
 		>
-			<Typography variant="h5" className="font-semibold mb-2 text-center">
-				Mes Interets Pour Réussir
-			</Typography>
+			<TitreStylise variant="h5" className="mb-4 text-center">
+				Mes Intérêts Pour Réussir
+			</TitreStylise>
 			<Box
 				className="flex-grow"
 				style={{ minHeight: "350px", position: "relative" }}
@@ -130,7 +163,7 @@ function CercleInterets({
 										}
 										dominantBaseline="middle"
 										fill={colors[index % colors.length]}
-										fontSize="10"
+										fontSize="11"
 										dx={textX > 150 ? "5" : "-5"}
 									>
 										{interet}
