@@ -17,6 +17,7 @@ interface DiagrammePersonnaliteProps {
 	polePersonnaliteTraits: PolePersonnaliteTrait[]
 	onModifierType: () => void
 	onModifierTraits: () => void
+	isAdmin: boolean
 }
 
 const COLORS = ["#36A2EB", "#4BC0C0", "#FFCE56", "#FF6384", "#9966FF"]
@@ -26,6 +27,7 @@ const DiagrammePersonnalite: React.FC<DiagrammePersonnaliteProps> = ({
 	polePersonnaliteTraits,
 	onModifierType,
 	onModifierTraits,
+	isAdmin,
 }) => {
 	const traitsPersonnels = polePersonnaliteTraits
 		.map(t => t.personnaliteTrait)
@@ -122,43 +124,45 @@ const DiagrammePersonnalite: React.FC<DiagrammePersonnaliteProps> = ({
 					<g>{createPieChart(traitsPersonnels, 450, 150)}</g>
 				</svg>
 			</Box>
-			<Box className="mt-4 text-center">
-				<Button
-					onClick={onModifierType}
-					variant="outlined"
-					size="small"
-					sx={{
-						borderColor: "#4caf50",
-						color: "#4caf50",
-						fontSize: "0.8rem",
-						padding: "4px 12px",
-						marginRight: "8px",
-						"&:hover": {
-							backgroundColor: "#4caf50",
-							color: "white",
-						},
-					}}
-				>
-					MODIFIER LES TYPES
-				</Button>
-				<Button
-					onClick={onModifierTraits}
-					variant="outlined"
-					size="small"
-					sx={{
-						borderColor: "#4caf50",
-						color: "#4caf50",
-						fontSize: "0.8rem",
-						padding: "4px 12px",
-						"&:hover": {
-							backgroundColor: "#4caf50",
-							color: "white",
-						},
-					}}
-				>
-					MODIFIER LES TRAITS
-				</Button>
-			</Box>
+			{isAdmin && (
+				<Box className="mt-4 text-center">
+					<Button
+						onClick={onModifierType}
+						variant="outlined"
+						size="small"
+						sx={{
+							borderColor: "#4caf50",
+							color: "#4caf50",
+							fontSize: "0.8rem",
+							padding: "4px 12px",
+							marginRight: "8px",
+							"&:hover": {
+								backgroundColor: "#4caf50",
+								color: "white",
+							},
+						}}
+					>
+						MODIFIER LES TYPES
+					</Button>
+					<Button
+						onClick={onModifierTraits}
+						variant="outlined"
+						size="small"
+						sx={{
+							borderColor: "#4caf50",
+							color: "#4caf50",
+							fontSize: "0.8rem",
+							padding: "4px 12px",
+							"&:hover": {
+								backgroundColor: "#4caf50",
+								color: "white",
+							},
+						}}
+					>
+						MODIFIER LES TRAITS
+					</Button>
+				</Box>
+			)}
 		</Box>
 	)
 }

@@ -39,7 +39,7 @@ const InformationsPersonnelles: React.FC<InformationsPersonnellesProps> = ({
 		},
 		{ label: "Diplôme", value: user.diploma || "Non spécifié" },
 		{ label: "Civilité", value: user.civility },
-		{ label: "Email", value: user.email },
+		{ label: "Email", value: user.email, isLarge: true },
 		{ label: "Téléphone", value: user.phone },
 	]
 
@@ -47,6 +47,7 @@ const InformationsPersonnelles: React.FC<InformationsPersonnellesProps> = ({
 		const centerX = 300
 		const centerY = 225
 		const radius = 180
+		const centerRadius = 70
 		const totalItems = infos.length
 		const anglePas = (2 * Math.PI) / totalItems
 
@@ -55,21 +56,27 @@ const InformationsPersonnelles: React.FC<InformationsPersonnellesProps> = ({
 			const x = centerX + radius * Math.cos(angle)
 			const y = centerY + radius * Math.sin(angle)
 
+			const startX = centerX + centerRadius * Math.cos(angle)
+			const startY = centerY + centerRadius * Math.sin(angle)
+
+			const width = info.isLarge ? 200 : 140
+			const height = info.isLarge ? 60 : 50
+
 			return (
 				<g key={index}>
 					<line
-						x1={centerX}
-						y1={centerY}
+						x1={startX}
+						y1={startY}
 						x2={x}
 						y2={y}
 						stroke={COLORS[index % COLORS.length]}
 						strokeWidth="1"
 					/>
 					<rect
-						x={x - 70}
-						y={y - 25}
-						width="140"
-						height="50"
+						x={x - width / 2}
+						y={y - height / 2}
+						width={width}
+						height={height}
 						rx="10"
 						ry="10"
 						fill="white"
@@ -78,7 +85,7 @@ const InformationsPersonnelles: React.FC<InformationsPersonnellesProps> = ({
 					/>
 					<text
 						x={x}
-						y={y - 8}
+						y={y - height / 4}
 						textAnchor="middle"
 						fill={COLORS[index % COLORS.length]}
 						fontSize="13"
@@ -88,10 +95,10 @@ const InformationsPersonnelles: React.FC<InformationsPersonnellesProps> = ({
 					</text>
 					<text
 						x={x}
-						y={y + 15}
+						y={y + height / 4}
 						textAnchor="middle"
 						fill="black"
-						fontSize="11"
+						fontSize="13"
 					>
 						{info.value}
 					</text>
@@ -127,19 +134,12 @@ const InformationsPersonnelles: React.FC<InformationsPersonnellesProps> = ({
 						left: 0,
 					}}
 				>
-					<circle
-						cx="300"
-						cy="225"
-						r="70"
-						fill="#f0f0f0"
-						stroke="#3f51b5"
-						strokeWidth="1"
-					/>
+					<circle cx="300" cy="225" r="70" fill="#3f51b5" />
 					<text
 						x="300"
 						y="220"
 						textAnchor="middle"
-						fill="#3f51b5"
+						fill="white"
 						fontSize="16"
 						fontWeight="bold"
 					>
@@ -149,7 +149,7 @@ const InformationsPersonnelles: React.FC<InformationsPersonnellesProps> = ({
 						x="300"
 						y="240"
 						textAnchor="middle"
-						fill="#3f51b5"
+						fill="white"
 						fontSize="16"
 						fontWeight="bold"
 					>

@@ -3,35 +3,20 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/function-component-definition */
 /* eslint-disable no-nested-ternary */
-import {
-	Box,
-	Button,
-	CircularProgress,
-	Grid,
-	Paper,
-	Typography,
-} from "@mui/material"
+import { PictureAsPdf } from "@mui/icons-material"
+import { Box, Button, CircularProgress, Typography } from "@mui/material"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useLocation, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
-import {
-	Check,
-	EmojiEvents,
-	Favorite,
-	LocalActivity,
-	Palette,
-	PictureAsPdf,
-	Star,
-} from "@mui/icons-material"
 import CvSkillDto, { LocationState } from "../../api/models/cvskill"
 import cvskillService from "../../api/services/cvskillService"
 import userService from "../../api/services/userService"
+import CentresInteret from "./CentresInteretProp"
 import DiagrammeAtouts from "./DiagrammeAtoutsProps"
 import DiagrammePersonnalite from "./diagrammePersonnaliteProps"
 import InformationsPersonnelles from "./InformationsPersonnellesProps"
 import CercleInterets from "./InterestsCircle"
-import CentresInteret from "./CentresInteretProp"
 
 function Cvskillend() {
 	const navigate = useNavigate()
@@ -414,11 +399,13 @@ function Cvskillend() {
 						) || []
 					}
 					onModifier={handleEditInterets}
+					isAdmin={isAdmin}
 				/>
 
 				<DiagrammeAtouts
 					atouts={cvSkillData.poleAtouts || []}
 					onModifier={handleEditAtouts}
+					isAdmin={isAdmin}
 				/>
 
 				<DiagrammePersonnalite
@@ -430,6 +417,7 @@ function Cvskillend() {
 					}
 					onModifierType={handleEditPersonnalite2}
 					onModifierTraits={handleEditPersonnalite}
+					isAdmin={isAdmin}
 				/>
 
 				<InformationsPersonnelles

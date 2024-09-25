@@ -12,9 +12,14 @@ interface CercleInteretsProps {
 		| undefined
 	)[]
 	onModifier: () => void
+	isAdmin: boolean
 }
 
-function CercleInterets({ interets, onModifier }: CercleInteretsProps) {
+function CercleInterets({
+	interets,
+	onModifier,
+	isAdmin,
+}: CercleInteretsProps) {
 	const totalInterets = interets.length
 	const anglePas = (2 * Math.PI) / totalInterets
 	const colors = ["#36A2EB", "#4BC0C0", "#FFCE56", "#FF6384", "#9966FF"]
@@ -157,25 +162,27 @@ function CercleInterets({ interets, onModifier }: CercleInteretsProps) {
 					</text>
 				</svg>
 			</Box>
-			<Box className="mt-4 text-center">
-				<Button
-					onClick={onModifier}
-					variant="outlined"
-					size="small"
-					sx={{
-						borderColor: "#4caf50",
-						color: "#4caf50",
-						fontSize: "0.8rem",
-						padding: "4px 12px",
-						"&:hover": {
-							backgroundColor: "#4caf50",
-							color: "white",
-						},
-					}}
-				>
-					MODIFIER MES INTERETS
-				</Button>
-			</Box>
+			{isAdmin && (
+				<Box className="mt-4 text-center">
+					<Button
+						onClick={onModifier}
+						variant="outlined"
+						size="small"
+						sx={{
+							borderColor: "#4caf50",
+							color: "#4caf50",
+							fontSize: "0.8rem",
+							padding: "4px 12px",
+							"&:hover": {
+								backgroundColor: "#4caf50",
+								color: "white",
+							},
+						}}
+					>
+						MODIFIER MES INTERETS
+					</Button>
+				</Box>
+			)}
 		</Box>
 	)
 }

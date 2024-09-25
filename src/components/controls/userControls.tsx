@@ -333,6 +333,30 @@ function UserControls({
 					</Alert>
 				)}
 			</div>
+			<div className="select-form-control--half-first z-50">
+				<InputLabel>Objet de ma recherche *</InputLabel>
+				<Controller
+					rules={{
+						required: "L'objet de ma recherche est requis",
+					}}
+					name="searchSubject"
+					control={control}
+					render={({ field: { value, onChange, onBlur } }) => (
+						<CustomSelect
+							isSearchable
+							options={SEARCH_OPTIONS}
+							placeholder="Choisissez..."
+							onBlur={onBlur}
+							value={SEARCH_OPTIONS.find(
+								(c: ReactSelectOption) => c.value === value
+							)}
+							onChange={(val: ReactSelectOption) =>
+								onChange(val.value)
+							}
+						/>
+					)}
+				/>
+			</div>
 			<div className="select-form-control--half-second z-50">
 				<InputLabel>Diplome*</InputLabel>
 				<Controller
@@ -359,30 +383,6 @@ function UserControls({
 				{errors?.diploma && (
 					<Alert severity="error">{errors.diploma.message}</Alert>
 				)}
-			</div>
-			<div className="select-form-control--half-first z-50">
-				<InputLabel>Objet de ma recherche *</InputLabel>
-				<Controller
-					rules={{
-						required: "L'objet de ma recherche est requis",
-					}}
-					name="searchSubject"
-					control={control}
-					render={({ field: { value, onChange, onBlur } }) => (
-						<CustomSelect
-							isSearchable
-							options={SEARCH_OPTIONS}
-							placeholder="Choisissez..."
-							onBlur={onBlur}
-							value={SEARCH_OPTIONS.find(
-								(c: ReactSelectOption) => c.value === value
-							)}
-							onChange={(val: ReactSelectOption) =>
-								onChange(val.value)
-							}
-						/>
-					)}
-				/>
 			</div>
 			<div className="select-form-control--half-second z-50">
 				<InputLabel>Statut *</InputLabel>

@@ -1,4 +1,5 @@
 /* eslint-disable react/no-array-index-key */
+/* eslint-disable react/function-component-definition */
 import React from "react"
 import { Box, Typography, Button } from "@mui/material"
 
@@ -9,15 +10,23 @@ interface AtoutItem {
 interface DiagrammeAtoutsProps {
 	atouts: AtoutItem[]
 	onModifier: () => void
+	isAdmin: boolean
 }
 
-// eslint-disable-next-line react/function-component-definition
 const DiagrammeAtouts: React.FC<DiagrammeAtoutsProps> = ({
 	atouts,
 	onModifier,
+	isAdmin,
 }) => {
 	const colors = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
-	const maxBarWidth = 70 // Pourcentage de la largeur maximale
+
+	// Trier les atouts par longueur de chaîne décroissante
+	const sortedAtouts = [...atouts].sort(
+		(a, b) => b.atout.length - a.atout.length
+	)
+
+	// Trouver la longueur maximale pour calculer les pourcentages
+	const maxLength = sortedAtouts[0]?.atout.length || 1
 
 	return (
 		<Box
@@ -47,13 +56,10 @@ const DiagrammeAtouts: React.FC<DiagrammeAtoutsProps> = ({
 					}}
 				>
 					<g transform="translate(30, 30)">
-						{atouts.slice(0, 5).map((atout, index) => {
-							const barWidth = maxBarWidth - index * 7
-							// Calcul du pourcentage basé sur la longueur de la barre
+						{sortedAtouts.slice(0, 5).map((atout, index) => {
 							const percentage = Math.round(
-								(barWidth / maxBarWidth) * 100
+								(atout.atout.length / maxLength) * 100
 							)
-
 							return (
 								<g
 									key={index}
@@ -62,7 +68,7 @@ const DiagrammeAtouts: React.FC<DiagrammeAtoutsProps> = ({
 									<rect
 										x="0"
 										y="0"
-										width={`${barWidth}%`}
+										width={`${percentage}%`}
 										height="30"
 										fill={colors[index]}
 										rx="5"
@@ -77,9 +83,8 @@ const DiagrammeAtouts: React.FC<DiagrammeAtoutsProps> = ({
 									>
 										{atout.atout}
 									</text>
-									{/* Afficher le pourcentage calculé à la fin de chaque barre */}
 									<text
-										x={`${barWidth}%`}
+										x={`${percentage}%`}
 										y="20"
 										fill="black"
 										fontSize="14"
@@ -94,25 +99,27 @@ const DiagrammeAtouts: React.FC<DiagrammeAtoutsProps> = ({
 					</g>
 				</svg>
 			</Box>
-			<Box className="mt-4 text-center">
-				<Button
-					onClick={onModifier}
-					variant="outlined"
-					size="small"
-					sx={{
-						borderColor: "#4caf50",
-						color: "#4caf50",
-						fontSize: "0.8rem",
-						padding: "4px 12px",
-						"&:hover": {
-							backgroundColor: "#4caf50",
-							color: "white",
-						},
-					}}
-				>
-					MODIFIER MES ATOUTS
-				</Button>
-			</Box>
+			{isAdmin && (
+				<Box className="mt-4 text-center">
+					<Button
+						onClick={onModifier}
+						variant="outlined"
+						size="small"
+						sx={{
+							borderColor: "#4caf50",
+							color: "#4caf50",
+							fontSize: "0.8rem",
+							padding: "4px 12px",
+							"&:hover": {
+								backgroundColor: "#4caf50",
+								color: "white",
+							},
+						}}
+					>
+						MODIFIER MES ATOUTS
+					</Button>
+				</Box>
+			)}
 		</Box>
 	)
 }

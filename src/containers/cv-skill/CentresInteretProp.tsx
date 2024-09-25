@@ -1,5 +1,4 @@
 /* eslint-disable no-plusplus */
-/* eslint-disable no-undef */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/function-component-definition */
 import React from "react"
@@ -31,6 +30,9 @@ const CentresInteret: React.FC<CentresInteretProps> = ({
 		return color
 	}
 
+	// Function to get a random number of filled circles (1 to 6)
+	const getRandomFilledCircles = () => Math.floor(Math.random() * 6) + 1
+
 	return (
 		<Box
 			className="border p-5 rounded-lg relative flex flex-col"
@@ -39,7 +41,7 @@ const CentresInteret: React.FC<CentresInteretProps> = ({
 				height: "auto",
 				display: "flex",
 				flexDirection: "column",
-				alignItems: "center", // Center content horizontally
+				alignItems: "center",
 			}}
 		>
 			<Typography variant="h5" className="font-semibold mb-2 text-center">
@@ -62,8 +64,8 @@ const CentresInteret: React.FC<CentresInteretProps> = ({
 					alignItems="center"
 				>
 					{poleLoisirInterets.map((item, index) => {
-						const color = getRandomColor() // Get a random color for this interest
-						const filledCircles = 6 - index // Number of filled circles based on index
+						const color = getRandomColor()
+						const filledCircles = getRandomFilledCircles()
 						return (
 							<Grid
 								item
@@ -80,7 +82,6 @@ const CentresInteret: React.FC<CentresInteretProps> = ({
 									/>
 									<Typography>{item.name}</Typography>
 								</Box>
-								{/* Render 6 balls below each interest */}
 								<Box className="flex justify-center">
 									{Array.from({ length: 6 }).map(
 										(_, ballIndex) => (
@@ -94,8 +95,8 @@ const CentresInteret: React.FC<CentresInteretProps> = ({
 														ballIndex <
 														filledCircles
 															? color
-															: "transparent", // Fill color based on index
-													border: `2px solid ${color}`, // Border color
+															: "transparent",
+													border: `2px solid ${color}`,
 													marginRight: "5px",
 												}}
 											/>
