@@ -1,7 +1,15 @@
+/* eslint-disable react/no-unused-prop-types */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/function-component-definition */
 import React from "react"
-import { Box, Typography, Button, styled } from "@mui/material"
+import {
+	Box,
+	Typography,
+	Button,
+	styled,
+	useTheme,
+	useMediaQuery,
+} from "@mui/material"
 
 interface AtoutItem {
 	atout: string
@@ -11,46 +19,37 @@ interface DiagrammeAtoutsProps {
 	atouts: AtoutItem[]
 	onModifier: () => void
 	isAdmin: boolean
+	printMode?: boolean
+	compact: boolean
 }
 
 const TitreStylise = styled(Typography)`
-	font-family: "Bungee", cursive; // Vous devrez importer cette police
+	font-family: "Bungee", cursive;
 	font-size: 1.4rem;
 	font-weight: 700;
 	text-transform: uppercase;
-	background: linear-gradient(
-		45deg,
-		#ff00ff,
-		#00ffff,
-		#ff0000,
-		#00ff00,
-		#ffff00
-	);
-	-webkit-background-clip: text;
-	background-clip: text;
-	color: transparent;
-	animation: rainbow 6s ease infinite;
-	background-size: 400% 400%;
-	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-
-	@keyframes rainbow {
-		0% {
-			background-position: 0% 50%;
-		}
-		50% {
-			background-position: 100% 50%;
-		}
-		100% {
-			background-position: 0% 50%;
-		}
-	}
+	color: #333;
+	margin-bottom: 1rem;
 `
+const ResponsiveSvg = styled("svg")(({ theme }) => ({
+	width: "100%",
+	height: "auto",
+	[theme.breakpoints.down("sm")]: {
+		height: "300px",
+	},
+	[theme.breakpoints.up("md")]: {
+		height: "400px",
+	},
+}))
 const DiagrammeAtouts: React.FC<DiagrammeAtoutsProps> = ({
 	atouts,
 	onModifier,
 	isAdmin,
 }) => {
 	const colors = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
+
+	const theme = useTheme()
+	const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
 	// Trier les atouts par longueur de chaîne décroissante
 	const sortedAtouts = [...atouts].sort(
@@ -70,13 +69,18 @@ const DiagrammeAtouts: React.FC<DiagrammeAtoutsProps> = ({
 				flexDirection: "column",
 			}}
 		>
-			<TitreStylise variant="h5" className="mb-4 text-center">
+			<TitreStylise
+				variant={isMobile ? "h6" : "h5"}
+				sx={{ mb: 2, textAlign: "center" }}
+			>
 				Mes Atouts Pour Réussir
 			</TitreStylise>
 			<Box
 				className="flex-grow"
 				style={{ minHeight: "350px", position: "relative" }}
+				sx={{ flexGrow: 1, position: "relative" }}
 			>
+				<ResponsiveSvg viewBox="0 0 300 300" />
 				<svg
 					viewBox="0 0 300 300"
 					style={{

@@ -1,16 +1,18 @@
 /* eslint-disable prefer-promise-reject-errors */
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { PictureAsPdf } from "@mui/icons-material"
 import {
 	Box,
 	Button,
 	CircularProgress,
+	Grid,
 	styled,
 	Typography,
 } from "@mui/material"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useLocation, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useReactToPrint } from "react-to-print"
 import CvSkillDto, { LocationState } from "../../api/models/cvskill"
 import cvskillService from "../../api/services/cvskillService"
 import userService from "../../api/services/userService"
@@ -19,9 +21,10 @@ import DiagrammeAtouts from "./DiagrammeAtoutsProps"
 import DiagrammePersonnalite from "./diagrammePersonnaliteProps"
 import InformationsPersonnelles from "./InformationsPersonnellesProps"
 import CercleInterets from "./InterestsCircle"
+import CvSkillPrint from "./cvSkillPrint"
 
 const TitreStylise = styled(Typography)`
-	font-family: "Bungee", cursive; // Vous devrez importer cette police
+	font-family: "Bungee", cursive;
 	font-size: 1.9rem;
 	font-weight: 700;
 	text-transform: uppercase;
@@ -53,6 +56,17 @@ const TitreStylise = styled(Typography)`
 	}
 `
 
+const ActionButton = styled(Button)(({ theme }) => ({
+	marginTop: theme.spacing(1),
+	width: "100%",
+	borderColor: "#4caf50",
+	color: "#4caf50",
+	"&:hover": {
+		backgroundColor: "#4caf50",
+		color: "white",
+	},
+}))
+
 function Cvskillend() {
 	const navigate = useNavigate()
 	const location = useLocation()
@@ -62,17 +76,16 @@ function Cvskillend() {
 	const [error, setError] = useState<string | null>(null)
 	const [isAdmin, setIsAdmin] = useState<boolean>(false)
 	const fileInputRef = useRef<HTMLInputElement>(null)
+	const printRef = useRef<HTMLDivElement>(null)
 
 	const queryClient = useQueryClient()
 
-	// Effet pour charger les données initiales
 	useEffect(() => {
 		const fetchData = async () => {
 			const storedUserId = localStorage.getItem("selectedUserId")
 			const storedCvSkillId = localStorage.getItem("selectedCvSkillId")
 
 			try {
-				// Récupération des rôles de l'utilisateur
 				const userRoles = await userService.getUserRoles()
 				setIsAdmin(userRoles.includes("ROLE_ADMIN"))
 
@@ -115,7 +128,6 @@ function Cvskillend() {
 		fetchData()
 	}, [])
 
-	// Requête pour obtenir les données du CV Skill
 	const {
 		data: cvSkillData,
 		isLoading: isCvSkillLoading,
@@ -132,7 +144,6 @@ function Cvskillend() {
 		}
 	)
 
-	// Requête pour obtenir la photo du profil
 	const { data: photoData, isLoading: isPhotoLoading } =
 		useQuery<ArrayBuffer | null>(
 			["photo", cvSkillId],
@@ -144,7 +155,6 @@ function Cvskillend() {
 		? URL.createObjectURL(new Blob([photoData], { type: "image/jpeg" }))
 		: null
 
-	// Mutation pour uploader une photo
 	const uploadPhotoMutation = useMutation(
 		(file: File) => cvskillService.uploadPhoto(cvSkillId!, file),
 		{
@@ -167,7 +177,6 @@ function Cvskillend() {
 		}
 	)
 
-	// Mutation pour supprimer un CV Skill
 	const deleteCvSkillMutation = useMutation(
 		(id: number) => cvskillService.deleteCvSkill(id),
 		{
@@ -192,7 +201,6 @@ function Cvskillend() {
 		}
 	)
 
-	// Gestion de l'upload de photo
 	const handlePhotoUpload = useCallback(
 		(event: React.ChangeEvent<HTMLInputElement>) => {
 			const file = event.target.files?.[0]
@@ -203,7 +211,6 @@ function Cvskillend() {
 		[cvSkillId, uploadPhotoMutation]
 	)
 
-	// Fonctions de navigation pour l'édition des différentes sections
 	const handleEditPhotoClick = () => fileInputRef.current?.click()
 
 	const handleEditPersonalInfo = () => {
@@ -295,7 +302,6 @@ function Cvskillend() {
 		}
 	}
 
-	// Gestion de la suppression du CV Skill
 	const handleDeleteCvSkill = () => {
 		if (isAdmin) {
 			Swal.fire({
@@ -315,7 +321,11 @@ function Cvskillend() {
 		}
 	}
 
-	// Nettoyage de l'URL de la photo lors du démontage du composant
+	const handlePrint = useReactToPrint({
+		content: () => printRef.current,
+		documentTitle: `CV_Skill_${cvSkillData?.user?.firstName}_${cvSkillData?.user?.name}`,
+	})
+
 	useEffect(
 		() => () => {
 			if (photoUrl) URL.revokeObjectURL(photoUrl)
@@ -366,110 +376,118 @@ function Cvskillend() {
 		)
 	}
 
-	// Rendu principal du composant
 	return (
-		<div className="container mx-auto p-4 max-w-4xl relative overflow-y-auto h-[calc(100vh-8rem)] pb-16">
+		<div className="container mx-auto p-4 max-w-7xl relative overflow-y-auto h-[calc(100vh-8rem)] pb-16">
 			<style>{`
-                .container::-webkit-scrollbar {
-                    display: none;
-                }
-            `}</style>
-			<TitreStylise variant="h5" className="mb-4 text-center">
-				MON CV SKILL
-			</TitreStylise>
+        .container::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
 			{error && <p className="text-red-500 text-center">{error}</p>}
-
-			<Box sx={{ textAlign: "center", mb: 4 }}>
-				{photoUrl ? (
-					<img
-						src={photoUrl}
-						alt="Profil"
-						style={{
-							width: 300,
-							height: 300,
-							borderRadius: "50%",
-							margin: "0 auto",
-						}}
+			<Grid container spacing={4}>
+				{/* Colonne de gauche */}
+				<Grid item xs={12} md={4}>
+					<Box sx={{ textAlign: "center", mb: 4 }}>
+						{photoUrl ? (
+							<img
+								src={photoUrl}
+								alt="Profil"
+								style={{
+									width: 200,
+									height: 200,
+									borderRadius: "50%",
+									margin: "0 auto",
+								}}
+							/>
+						) : (
+							<Typography>Aucune photo</Typography>
+						)}
+					</Box>
+					<InformationsPersonnelles
+						user={cvSkillData.user}
+						onEditInfo={handleEditPersonalInfo}
+						compact
 					/>
-				) : (
-					<Typography>Aucune photo</Typography>
-				)}
-				<Button onClick={handleEditPhotoClick} className="mt-2">
-					{photoUrl ? "Modifier la photo" : "Ajouter une photo"}
-				</Button>
-				<input
-					type="file"
-					ref={fileInputRef}
-					onChange={handlePhotoUpload}
-					style={{ display: "none" }}
-					accept="image/*"
-				/>
-			</Box>
+					<Box mt={4}>
+						<CentresInteret
+							poleLoisirInterets={cvSkillData.poleLoisirInterets}
+							onModifier={handleEditLoisirInteret}
+							compact
+						/>
+					</Box>
+					{/* Boutons d'action */}
+					<Box mt={4}>
+						<ActionButton onClick={() => navigate("/companies")}>
+							Retour au tableau de bord
+						</ActionButton>
+						<ActionButton onClick={handlePrint}>
+							Imprimer en PDF (1 page)
+						</ActionButton>
+						<ActionButton onClick={handleEditPhotoClick}>
+							{photoUrl
+								? "Modifier la photo"
+								: "Ajouter une photo"}
+						</ActionButton>
+						<input
+							type="file"
+							ref={fileInputRef}
+							onChange={handlePhotoUpload}
+							style={{ display: "none" }}
+							accept="image/*"
+						/>
+						{isAdmin && (
+							<ActionButton
+								onClick={handleDeleteCvSkill}
+								color="secondary"
+							>
+								Supprimer le CV Skill
+							</ActionButton>
+						)}
+					</Box>
+				</Grid>
+				<Grid item xs={12} md={8}>
+					<DiagrammePersonnalite
+						polePersonnalitesTypes={
+							cvSkillData.polePersonnalitesTypes || []
+						}
+						polePersonnaliteTraits={
+							cvSkillData.polePersonnaliteTraits || []
+						}
+						onModifierType={handleEditPersonnalite2}
+						onModifierTraits={handleEditPersonnalite}
+						isAdmin={isAdmin}
+						compact
+					/>
+					<Box mt={4}>
+						<DiagrammeAtouts
+							atouts={cvSkillData.poleAtouts || []}
+							onModifier={handleEditAtouts}
+							isAdmin={isAdmin}
+							compact
+						/>
+					</Box>
+					<Box mt={4}>
+						<CercleInterets
+							interets={
+								cvSkillData.poleInterets?.map(
+									interet => interet.interet
+								) || []
+							}
+							onModifier={handleEditInterets}
+							isAdmin={isAdmin}
+							compact
+						/>
+					</Box>
+				</Grid>
+			</Grid>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-				<CercleInterets
-					interets={
-						cvSkillData.poleInterets?.map(
-							interet => interet.interet
-						) || []
-					}
-					onModifier={handleEditInterets}
-					isAdmin={isAdmin}
+			{/* Composant CvSkillPrint pour l'impression */}
+			<div style={{ display: "none" }}>
+				<CvSkillPrint
+					ref={printRef}
+					cvSkillData={cvSkillData}
+					photoUrl={photoUrl}
 				/>
-
-				<DiagrammeAtouts
-					atouts={cvSkillData.poleAtouts || []}
-					onModifier={handleEditAtouts}
-					isAdmin={isAdmin}
-				/>
-
-				<DiagrammePersonnalite
-					polePersonnalitesTypes={
-						cvSkillData.polePersonnalitesTypes || []
-					}
-					polePersonnaliteTraits={
-						cvSkillData.polePersonnaliteTraits || []
-					}
-					onModifierType={handleEditPersonnalite2}
-					onModifierTraits={handleEditPersonnalite}
-					isAdmin={isAdmin}
-				/>
-
-				<InformationsPersonnelles
-					user={cvSkillData.user}
-					onEditInfo={handleEditPersonalInfo}
-				/>
-
-				<CentresInteret
-					poleLoisirInterets={cvSkillData.poleLoisirInterets}
-					onModifier={handleEditLoisirInteret}
-				/>
-
-				<div className="flex justify-center mt-8">
-					<Button
-						variant="contained"
-						onClick={() => navigate("/companies")}
-						className="mr-4"
-					>
-						Retour au tableau de bord
-					</Button>
-					<Button
-						variant="contained"
-						color="primary"
-						startIcon={<PictureAsPdf />}
-					>
-						Enregistrer en PDF
-					</Button>
-					{isAdmin && (
-						<Button
-							variant="contained"
-							color="secondary"
-							onClick={handleDeleteCvSkill}
-						>
-							Supprimer le CV Skill
-						</Button>
-					)}
-				</div>
 			</div>
 		</div>
 	)

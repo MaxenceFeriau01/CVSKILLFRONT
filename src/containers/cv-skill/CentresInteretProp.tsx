@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/function-component-definition */
 import React, { useMemo } from "react"
@@ -43,6 +44,9 @@ interface PoleLoisirInteret {
 interface CentresInteretProps {
 	poleLoisirInterets: PoleLoisirInteret[] | undefined
 	onModifier: () => void
+	printMode?: boolean
+	hideModifyButton?: boolean
+	compact: boolean
 }
 
 const COLORS = [
@@ -63,36 +67,12 @@ const COLORS = [
 ]
 
 const TitreStylise = styled(Typography)`
-	font-family: "Bungee", cursive; // Vous devrez importer cette police
+	font-family: "Bungee", cursive;
 	font-size: 1.4rem;
 	font-weight: 700;
 	text-transform: uppercase;
-	background: linear-gradient(
-		45deg,
-		#ff00ff,
-		#00ffff,
-		#ff0000,
-		#00ff00,
-		#ffff00
-	);
-	-webkit-background-clip: text;
-	background-clip: text;
-	color: transparent;
-	animation: rainbow 6s ease infinite;
-	background-size: 400% 400%;
-	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-
-	@keyframes rainbow {
-		0% {
-			background-position: 0% 50%;
-		}
-		50% {
-			background-position: 100% 50%;
-		}
-		100% {
-			background-position: 0% 50%;
-		}
-	}
+	color: #333;
+	margin-bottom: 1rem;
 `
 
 const ICONS: { [key: string]: React.ComponentType } = {
@@ -128,6 +108,8 @@ const ICONS: { [key: string]: React.ComponentType } = {
 const CentresInteret: React.FC<CentresInteretProps> = ({
 	poleLoisirInterets,
 	onModifier,
+	printMode = false,
+	hideModifyButton = false,
 }) => {
 	if (!poleLoisirInterets) return null
 
@@ -143,7 +125,12 @@ const CentresInteret: React.FC<CentresInteretProps> = ({
 		const filledCircles = getRandomFilledCircles()
 		const Icon = ICONS[item.name] || SportsScore
 		return (
-			<Grid item xs={4} key={index} style={{ textAlign: "center" }}>
+			<Grid
+				item
+				xs={6}
+				key={index}
+				style={{ textAlign: "center", marginBottom: "20px" }}
+			>
 				<Box className="flex items-center justify-center mb-2">
 					<Box
 						sx={{
@@ -162,15 +149,15 @@ const CentresInteret: React.FC<CentresInteretProps> = ({
 						<Box
 							key={ballIndex}
 							sx={{
-								width: "20px",
-								height: "20px",
+								width: "15px",
+								height: "15px",
 								borderRadius: "50%",
 								backgroundColor:
 									ballIndex < filledCircles
 										? color
 										: "transparent",
 								border: `2px solid ${color}`,
-								marginRight: "5px",
+								marginRight: "3px",
 								transition: "all 0.3s ease",
 								"&:hover": {
 									transform: "scale(1.2)",
@@ -212,43 +199,21 @@ const CentresInteret: React.FC<CentresInteretProps> = ({
 					container
 					spacing={2}
 					justifyContent="center"
-					alignItems="center"
+					alignItems="flex-start"
 				>
-					{poleLoisirInterets.slice(0, 3).map(renderInteretItem)}
-				</Grid>
-				<Box sx={{ height: "40px" }} /> {/* Espace vertical */}
-				<Grid
-					container
-					spacing={2}
-					justifyContent="center"
-					alignItems="center"
-				>
-					{poleLoisirInterets
-						.slice(3, 6)
-						.map((item, index) =>
-							renderInteretItem(item, index + 3)
-						)}
+					{poleLoisirInterets.map(renderInteretItem)}
 				</Grid>
 			</Box>
 			<Box className="mt-4 text-center">
-				<Button
-					onClick={onModifier}
-					variant="outlined"
-					size="small"
-					sx={{
-						borderColor: "#4caf50",
-						color: "#4caf50",
-						fontSize: "0.8rem",
-						padding: "4px 12px",
-						marginRight: "8px",
-						"&:hover": {
-							backgroundColor: "#4caf50",
-							color: "white",
-						},
-					}}
-				>
-					Modifier les centres d'intérêt
-				</Button>
+				{!printMode && !hideModifyButton && onModifier && (
+					<Button
+						onClick={onModifier}
+						variant="outlined"
+						color="primary"
+					>
+						Modifier les centres d'intérêt
+					</Button>
+				)}
 			</Box>
 		</Box>
 	)

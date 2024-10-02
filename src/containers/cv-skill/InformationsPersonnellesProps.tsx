@@ -1,56 +1,40 @@
+/* eslint-disable react/no-unused-prop-types */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/function-component-definition */
 import React from "react"
-import { Box, Typography, Button, styled } from "@mui/material"
+import { Box, Typography, Button, styled, Divider } from "@mui/material"
 import UserCvSkillDto from "../../api/models/usercvskill"
 
 interface InformationsPersonnellesProps {
 	user: UserCvSkillDto | undefined
 	onEditInfo: () => void
+	printMode?: boolean
+	compact: boolean
 }
 
 const TitreStylise = styled(Typography)`
-	font-family: "Bungee", cursive; // Vous devrez importer cette police
+	font-family: "Bungee", cursive;
 	font-size: 1.4rem;
 	font-weight: 700;
 	text-transform: uppercase;
-	background: linear-gradient(
-		45deg,
-		#ff00ff,
-		#00ffff,
-		#ff0000,
-		#00ff00,
-		#ffff00
-	);
-	-webkit-background-clip: text;
-	background-clip: text;
-	color: transparent;
-	animation: rainbow 6s ease infinite;
-	background-size: 400% 400%;
-	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-
-	@keyframes rainbow {
-		0% {
-			background-position: 0% 50%;
-		}
-		50% {
-			background-position: 100% 50%;
-		}
-		100% {
-			background-position: 0% 50%;
-		}
-	}
+	color: #333;
+	margin-bottom: 1rem;
 `
 
-const COLORS = [
-	"#FF6384",
-	"#36A2EB",
-	"#FFCE56",
-	"#4BC0C0",
-	"#9966FF",
-	"#FF9F40",
-	"#FF6384",
-]
+const InfoItem = styled(Box)`
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 0.5rem;
+`
+
+const InfoLabel = styled(Typography)`
+	font-weight: bold;
+	color: #555;
+`
+
+const InfoValue = styled(Typography)`
+	color: #333;
+`
 
 const InformationsPersonnelles: React.FC<InformationsPersonnellesProps> = ({
 	user,
@@ -64,6 +48,7 @@ const InformationsPersonnelles: React.FC<InformationsPersonnellesProps> = ({
 	}
 
 	const infos = [
+		{ label: "Civilité", value: user.civility },
 		{ label: "Nom", value: user.name },
 		{ label: "Prénom", value: user.firstName },
 		{
@@ -71,126 +56,34 @@ const InformationsPersonnelles: React.FC<InformationsPersonnellesProps> = ({
 			value: formatDateOfBirth(user.dateOfBirth),
 		},
 		{ label: "Diplôme", value: user.diploma || "Non spécifié" },
-		{ label: "Civilité", value: user.civility },
-		{ label: "Email", value: user.email, isLarge: true },
+	]
+
+	const contact = [
+		{ label: "Email", value: user.email },
 		{ label: "Téléphone", value: user.phone },
 	]
 
-	const createStarDiagram = () => {
-		const centerX = 300
-		const centerY = 225
-		const radius = 180
-		const centerRadius = 70
-		const totalItems = infos.length
-		const anglePas = (2 * Math.PI) / totalItems
-
-		return infos.map((info, index) => {
-			const angle = index * anglePas - Math.PI / 2
-			const x = centerX + radius * Math.cos(angle)
-			const y = centerY + radius * Math.sin(angle)
-
-			const startX = centerX + centerRadius * Math.cos(angle)
-			const startY = centerY + centerRadius * Math.sin(angle)
-
-			const width = info.isLarge ? 200 : 140
-			const height = info.isLarge ? 60 : 50
-
-			return (
-				<g key={index}>
-					<line
-						x1={startX}
-						y1={startY}
-						x2={x}
-						y2={y}
-						stroke={COLORS[index % COLORS.length]}
-						strokeWidth="1"
-					/>
-					<rect
-						x={x - width / 2}
-						y={y - height / 2}
-						width={width}
-						height={height}
-						rx="10"
-						ry="10"
-						fill="white"
-						stroke={COLORS[index % COLORS.length]}
-						strokeWidth="1"
-					/>
-					<text
-						x={x}
-						y={y - height / 4}
-						textAnchor="middle"
-						fill={COLORS[index % COLORS.length]}
-						fontSize="13"
-						fontWeight="bold"
-					>
-						{info.label}
-					</text>
-					<text
-						x={x}
-						y={y + height / 4}
-						textAnchor="middle"
-						fill="black"
-						fontSize="13"
-					>
-						{info.value}
-					</text>
-				</g>
-			)
-		})
-	}
-
 	return (
-		<Box
-			className="border p-5 rounded-lg relative flex flex-col"
-			sx={{
-				minHeight: "550px",
-				height: "auto",
-				display: "flex",
-				flexDirection: "column",
-			}}
-		>
-			<TitreStylise variant="h5" className="mb-4 text-center">
-				Mes Informations Personnelles
-			</TitreStylise>
-			<Box
-				className="flex-grow"
-				style={{ minHeight: "500px", position: "relative" }}
-			>
-				<svg
-					viewBox="0 0 600 500"
-					style={{
-						width: "100%",
-						height: "100%",
-						position: "absolute",
-						top: 0,
-						left: 0,
-					}}
-				>
-					<circle cx="300" cy="225" r="70" fill="#3f51b5" />
-					<text
-						x="300"
-						y="220"
-						textAnchor="middle"
-						fill="white"
-						fontSize="16"
-						fontWeight="bold"
-					>
-						Informations
-					</text>
-					<text
-						x="300"
-						y="240"
-						textAnchor="middle"
-						fill="white"
-						fontSize="16"
-						fontWeight="bold"
-					>
-						Personnelles
-					</text>
-					{createStarDiagram()}
-				</svg>
-			</Box>
+		<Box className="border p-5 rounded-lg">
+			<TitreStylise variant="h5">Informations Personnelles</TitreStylise>
+
+			{infos.map((info, index) => (
+				<InfoItem key={index}>
+					<InfoLabel>{info.label}:</InfoLabel>
+					<InfoValue>{info.value}</InfoValue>
+				</InfoItem>
+			))}
+
+			<Divider sx={{ my: 2 }} />
+
+			<TitreStylise gutterBottom>Contact</TitreStylise>
+			{contact.map((info, index) => (
+				<InfoItem key={index}>
+					<InfoLabel>{info.label}:</InfoLabel>
+					<InfoValue>{info.value}</InfoValue>
+				</InfoItem>
+			))}
+
 			<Box className="mt-4 text-center">
 				<Button
 					onClick={onEditInfo}
