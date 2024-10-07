@@ -37,8 +37,6 @@ function Footer() {
 					l’adresse mail{" "}
 					<a href="mailto:jobexplorer@eedk.fr">jobexplorer@eedk.fr</a>
 				</p>
-				<br />
-				<p>Site créé par Lilliad - Akkodis</p>
 			</div>
 			<button
 				type="button"
