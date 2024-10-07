@@ -192,14 +192,14 @@ function ProfilePage() {
 					<p>
 						Conformément à l’article <b>17</b> du{" "}
 						<b>
-						Règlement Général sur la Protection des Données
-						Personnelles (RGPD)
+							Règlement Général sur la Protection des Données
+							Personnelles (RGPD)
 						</b>{" "}
 						relative au droit à l’oubli, pour toute demande de
-						suppression de compte utilisateur du site JobExplorer, merci
-						de nous envoyer un mail à{" "}
+						suppression de compte utilisateur du site JobExplorer,
+						merci de nous envoyer un mail à{" "}
 						<a href="mailto:jobexplorers@eedk.fr">
-						jobexplorer@eedk.fr
+							jobexplorer@eedk.fr
 						</a>
 						:
 					</p>
