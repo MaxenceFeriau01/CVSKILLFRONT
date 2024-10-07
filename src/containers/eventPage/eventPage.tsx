@@ -19,7 +19,8 @@ function EventPage() {
 							))
 						) : (
 							<p className="text-info text-md mt-10 tablet:text-lg">
-								Il n'y a aucun événement sur le site DKStages.
+								Il n'y a aucun événement sur le site
+								JobExplorer.
 							</p>
 						)
 					)}

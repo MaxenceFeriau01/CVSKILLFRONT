@@ -9,7 +9,7 @@ import UserControls from "../../components/controls/userControls"
 import useHideElement from "../../hooks/hideElement"
 import useJobsQuery from "../../hooks/useJobsQuery"
 import useStatusesQuery from "../../hooks/useStatusesQuery"
-import logo from "../../resources/images/logo.svg"
+import logo from "../../resources/images/LOGO_JOBEXPLORER.png"
 import convertFormToApiData from "./utils"
 
 function RegistrationPage() {

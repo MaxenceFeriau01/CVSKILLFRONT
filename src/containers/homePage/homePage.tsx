@@ -2,7 +2,7 @@ import { Button } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 import useHideElement from "../../hooks/hideElement"
-import logo from "../../resources/images/logo.svg"
+import logo from "../../resources/images/LOGO_JOBEXPLORER.png"
 import internship from "../../resources/images/internship.svg"
 import working from "../../resources/images/working.svg"
 import learning from "../../resources/images/learning.svg"
@@ -86,11 +86,11 @@ function HomePage() {
 			</div>
 			<div className="action-call-video">
 				<h2 className="text-2xl text-secondary font-bold mb-3">
-					Tutoriel vidéo du site DKStages
+					Tutoriel vidéo du site JobExplorer
 				</h2>
 				<iframe
 					src="https://www.youtube-nocookie.com/embed/F9422NQ9jVI?si=r_Rn3y2uGyRr2r6o&amp;start=1"
-					title="Tuto vidéo DKStages"
+					title="Tuto vidéo JobExplorer"
 					frameBorder="0"
 					allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 					allowFullScreen

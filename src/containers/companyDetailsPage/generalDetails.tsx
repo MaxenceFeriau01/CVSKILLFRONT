@@ -163,14 +163,14 @@ function GeneralDetails({
 							"i"
 						),
 						message:
-							"L'url saisie n'est pas valide. Ex: https://www.dkstage.eedk.fr",
+							"L'url saisie n'est pas valide. Ex: https://www.jobexplorer.eedk.fr",
 					},
 				}}
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<TextField
 						className="tablet:w-full"
-						placeholder="https://www.dkstage.eedk.fr"
+						placeholder="https://www.jobexplorer.eedk.fr"
 						label="Site web"
 						variant="outlined"
 						value={value ?? ""}

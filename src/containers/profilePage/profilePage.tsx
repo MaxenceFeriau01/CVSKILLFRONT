@@ -196,13 +196,16 @@ function ProfilePage() {
 							Personnelles (RGPD)
 						</b>{" "}
 						relative au droit à l’oubli, pour toute demande de
-						suppression de compte utilisateur du site dkstage, merci
-						de nous envoyer un mail à{" "}
-						<a href="mailto:dkstages@eedk.fr">dkstages@eedk.fr</a> :
+						suppression de compte utilisateur du site JobExplorer,
+						merci de nous envoyer un mail à{" "}
+						<a href="mailto:jobexplorers@eedk.fr">
+							jobexplorer@eedk.fr
+						</a>
+						:
 					</p>
 					<div className="pt-2 text-sm">
 						➔ [ <b>Objet du mail</b>: Demande suppression compte
-						utilisateur Dkstage ]
+						utilisateur JobExplorer ]
 					</div>
 					<div className="text-sm">
 						➔ | <b>Corps du mail</b> : Pouvez-vous supprimer mon

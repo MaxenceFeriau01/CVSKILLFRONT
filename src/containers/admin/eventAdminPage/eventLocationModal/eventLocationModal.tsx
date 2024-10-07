@@ -40,7 +40,7 @@ function EventLocationModal({ isOpen, closeModal }: EventLocationModalProps) {
 			<DialogContent>
 				<DialogContentText>
 					Ci-dessous, vous pouvez gérer les différents lieux de
-					manifestations enregistrés sur l'application DKStages.
+					manifestations enregistrés sur l'application JobExplorer.
 				</DialogContentText>
 				<div className="location-content">
 					<header className="location-table-header my-2">
