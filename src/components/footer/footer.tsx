@@ -35,8 +35,10 @@ function Footer() {
 				<p>
 					Besoin d’aide, d’une info ? Envoyez vos questions sur
 					l’adresse mail{" "}
-					<a href="mailto:dkstages@eedk.fr">dkstages@eedk.fr</a>
+					<a href="mailto:jobexplorer@eedk.fr">jobexplorer@eedk.fr</a>
 				</p>
+				<br />
+				<p>Site créé par Lilliad - Akkodis</p>
 			</div>
 			<button
 				type="button"

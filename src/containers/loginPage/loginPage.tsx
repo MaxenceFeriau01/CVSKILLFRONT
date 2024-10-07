@@ -8,7 +8,7 @@ import User from "../../api/models/user"
 import userService from "../../api/services/userService"
 import UserContext from "../../contexts/user"
 import useHideElement from "../../hooks/hideElement"
-import logo from "../../resources/images/logo.svg"
+import logo from "../../resources/images/LOGO_JOBEXPLORER.png"
 
 function LoginPage() {
 	useHideElement(["header", "footer"])
@@ -44,7 +44,7 @@ function LoginPage() {
 				<Typography variant="h4" mb={2}>
 					Authentification
 				</Typography>
-				<img src={logo} alt="logo" width="300" height="90" />
+				<img src={logo} alt="logo" width="100" height="100" />
 				<Controller
 					name="email"
 					control={control}
