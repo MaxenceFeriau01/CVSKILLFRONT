@@ -189,20 +189,20 @@ function ProfilePage() {
 				/>
 				<Button type="submit">Mettre à jour</Button>
 				<div className="w-[80%]  tablet:w-full">
-				<p>
-					Conformément à l’article <b>17</b> du{" "}
-					<b>
-					Règlement Général sur la Protection des Données
-					Personnelles (RGPD)
-					</b>{" "}
-					relative au droit à l’oubli, pour toute demande de
-					suppression de compte utilisateur du site JobExplorer, merci
-					de nous envoyer un mail à{" "}
-					<a href="mailto:jobexplorers@eedk.fr">
-					jobexplorer@eedk.fr
-					</a>
-					:
-				</p>
+					<p>
+						Conformément à l’article <b>17</b> du{" "}
+						<b>
+						Règlement Général sur la Protection des Données
+						Personnelles (RGPD)
+						</b>{" "}
+						relative au droit à l’oubli, pour toute demande de
+						suppression de compte utilisateur du site JobExplorer, merci
+						de nous envoyer un mail à{" "}
+						<a href="mailto:jobexplorers@eedk.fr">
+						jobexplorer@eedk.fr
+						</a>
+						:
+					</p>
 					<div className="pt-2 text-sm">
 						➔ [ <b>Objet du mail</b>: Demande suppression compte
 						utilisateur JobExplorer ]
